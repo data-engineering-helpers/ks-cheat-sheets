@@ -1,6 +1,11 @@
 Cheat Sheets - JavaScript (JS)
 ==============================
 
+# Overview
+[This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/js-world/README.md)
+explains how to install and to maintain a few tools pertaining to
+programming with JavaScript.
+
 # Quick start
 
 ## NVM - Parallel installable NodeJS
