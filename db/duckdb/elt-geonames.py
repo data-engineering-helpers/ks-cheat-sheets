@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 #
-# File: http://github.com/opentraveldata/opentraveldata/blob/master/tools/
+# File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/elt-geonames.py
+# Inspired from: http://github.com/opentraveldata/opentraveldata/blob/master/tools/elt-geonames.py
 #
 import duckdb
 import polars as pl
