@@ -3,3 +3,4 @@ allCountries.*
 alternateNamesV2.*
 alternateNames.*
 geonames.parquet
+.ipynb_checkpoints/
