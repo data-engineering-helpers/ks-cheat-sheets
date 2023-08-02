@@ -16,6 +16,9 @@ these companies.
 ## JavaScript (JS) development
 * [Directory dedicated to JS world](programming/js-world/)
 
+## JupyterLab with PySpark and DuckDB
+* [Directory dedicated to JupyterLab with PySpark and DuckDB](programming/jupyter/jupyter-pyspark-duckdb)
+
 # Databases
 
 ## DuckDB

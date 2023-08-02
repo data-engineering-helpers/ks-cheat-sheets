@@ -1,5 +1,5 @@
-Cheat Sheets - DuckDB
-=====================
+Cheat Sheet - DuckDB
+====================
 
 # Table of Content (ToC)
 * [Cheat Sheets \- DuckDB](#cheat-sheets---duckdb)

@@ -1,5 +1,5 @@
-Cheat Sheets - Jupyter with PySpark and DuckDB
-==============================================
+Cheat Sheet - Jupyter with PySpark and DuckDB
+=============================================
 
 # Table of Content (ToC)
 * [Overview](#overview)
@@ -9,6 +9,8 @@ Cheat Sheets - Jupyter with PySpark and DuckDB
       * [Spark Connect](#spark-connect)
     * [DuckDB](#duckdb)
 * [Quick start](#quick-start)
+  * [Start JupyterLab with a PySpark\-Delta kernel](#start-jupyterlab-with-a-pyspark-delta-kernel)
+  * [Simple PySpark notebook](#simple-pyspark-notebook)
 * [Use cases](#use-cases)
 * [Initial setup](#initial-setup)
   * [Python libraries](#python-libraries)
@@ -17,12 +19,12 @@ Cheat Sheets - Jupyter with PySpark and DuckDB
   * [PySpark and Spark Connect](#pyspark-and-spark-connect)
   * [JupyterLab](#jupyterlab)
   * [Shell environment and aliases](#shell-environment-and-aliases)
-    * [Install native Spark manually](#install-native-spark-manually)
+  * [Install native Spark manually](#install-native-spark-manually)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
 # Overview
-[This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/jupyter/jupyter-pyspark-duckdb/README.md)
+[This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/jupyter/jupyter-pyspark-duckdb/README.md)
 explains how to install and to use JupyterLab with a PySpark kernel
 and a DuckDB database.
 Together, these open source tools offer kind of a so-called
@@ -50,6 +52,7 @@ See also the
 
 # Quick start
 
+## Start JupyterLab with a PySpark-Delta kernel
 > **Note**
 For the sake of reference, there are two options described
 in this cheat sheet:
@@ -69,28 +72,40 @@ makes sense for at least the following use cases:
 	 
 
 * If using an independent Spark cluster, from a dedicated terminal window/tab,
-  launch Spark Connect server.
+  launch Spark Connect server in the background.
   Note that the `SPARK_REMOTE` environment variable should not be set at this
   stage, otherwise the Spark Connect server will try to connect to the
-  corresponding Spark Connect server and will therefore not start
+  corresponding Spark Connect server and will therefore not start.
+  The [Shell aliases given in this cheat sheet](#shell-environment-and-aliases)
+  first unset that environment variable before launching the Spark Connect
+  server (if you use those aliases, all is good)
 ```bash
 $ sparkconnectstart
 ```
+
+* Note that JupyterLab will be available locally from a web browser on
+  a port, which may be configured thanks to the `PYSPARK_DRIVER_PYTHON_OPTS`
+  environment variable (see the
+  [Shell environment and aliases section](#shell-environment-and-aliases)
+  for further details). By default, that port is specified to be `8889`
+  in this cheat sheet; the local web browser URL is therefore
+  http://localhost:8889/lab
 
 * If not using an independent Spark cluster, simply launch PySpark
   from the command-line, which in turn launches Jupyter Lab
   + Follow the details given by PySpark to open Jupyter in a web browser
   commands from any terminal/tab:
 ```bash
-$ sparkconnectunset; pyspark
+$ pysparkdeltawoconnect
 ```
 
-* If using an independent Spark cluster, from any terminal/tab, different
-  from the window/tab having launched the Spark Connect server,
+* If using an independent Spark cluster, from any terminal window/tab,
+  different from the window/tab having launched the Spark Connect server,
   launch PySpark from the command-line, which in turn launches Jupyter Lab
-  + Follow the details given by PySpark to open Jupyter in a web browser
+  + Follow the details given by PySpark/Jupyter to open Jupyter
+    in a web browser
 ```bash
-$ sparkconnectset; pyspark
+$ pysparkdeltawconnect
 ```
 
 * In both cases, the output of the PySpark command (triggering JupyterLab)
@@ -127,17 +142,11 @@ $ open ~/Library/Jupyter/runtime/jpserver-*-open.html
 +-------+--------+-------+-------+
 ```
 
-* Notes:
-  + The first cell stops the initial Spark session,
-    when that latter has been started by Spark without making use of
-	Spark Connect, for instance when the `SPARK_REMOTE` environment
-	variable has not been set properly.
-    There is a try-catch clause, as once the Spark session has been
-    started through Spark Connect, it cannot be stopped that way;
-    the first cell may thus be re-executed at will with no further
-    side-effect on the Spark session
-  + The same first cell then starts, or uses when already existing,
-    the Spark session through Spark Connect
+## Simple PySpark notebook
+* Source:
+  + [Local web browser - `simple-spark-pandas.ipynb` notebook](http://localhost:8889/lab/tree/ipython-notebooks/simple-spark-pandas.ipynb)
+  + [Local file-system - `simple-spark-pandas.ipynb` notebook](ipython-notebooks/simple-spark-pandas.ipynb)
+  + [On GitHub - `simple-spark-pandas.ipynb` notebook](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/jupyter/jupyter-pyspark-duckdb/ipython-notebooks/simple-spark-pandas.ipynb)
 
 # Use cases
 
@@ -219,18 +228,20 @@ $ ls -lFh $SPARK_HOME/sbin/*connect*.sh
 -rwxr-xr-x  1 user  staff   1.0K Jun 28 16:54 $PY_LIBDIR/pyspark/sbin/stop-connect-server.sh*
 ```
 
-* Add the following Shell aliases to start and stop Spark Connect server:
+* Add the following Shell aliases to start and stop Spark, Spark Connect server
+  and JupyterLab:
 ```bash
 $ cat >> ~/.bash_aliases << _EOF
 
 # Spark Connect
 alias sparkconnectset='export SPARK_REMOTE="sc://localhost:15002"'
 alias sparkconnectunset='unset SPARK_REMOTE'
-alias sparkconnectstart='unset SPARK_REMOTE; start-connect-server.sh --packages org.apache.spark:spark-connect_2.12:\$SPARK_VERSION,io.delta:delta-core_2.12:2.4.0 --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" --conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog"'
+alias sparkconnectstart='sparkconnectunset; start-connect-server.sh --packages org.apache.spark:spark-connect_2.12:\$SPARK_VERSION,io.delta:delta-core_2.12:2.4.0 --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" --conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog"'
 alias sparkconnectstop='stop-connect-server.sh'
 
-# PySpark
-alias pysparkdelta='pyspark --packages io.delta:delta-core_2.12:2.4.0 --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" --conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog"'
+# PySpark and/or PySpark kernel within JupyterLab
+alias pysparkdeltawconnect='sparkconnectset; pysparkdelta'
+alias pysparkdeltawoconnect='sparkconnectunset; pysparkdelta'
 
 _EOF
 ```
@@ -240,7 +251,7 @@ _EOF
 . ~/.bash_aliases
 ```
 
-### Install native Spark manually
+## Install native Spark manually
 * That section is kept for reference only. It is normally not needed
 
 * Install Spark/PySpark manually, _e.g._ with Spark 3.4.1:
