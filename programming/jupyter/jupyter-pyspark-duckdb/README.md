@@ -151,6 +151,13 @@ $ open ~/Library/Jupyter/runtime/jpserver-*-open.html
 # Use cases
 
 # Initial setup
+* If not already done so, clone
+  [this Git repository](https://github.com/data-engineering-helpers/ks-cheat-sheets):
+```bash
+mkdir -p ~/dev/ks && \
+  git clone https://github.com/data-engineering-helpers/ks-cheat-sheets.git ~/dev/ks/ks-cheat-sheets && \
+  cd ~/dev/ks/ks-cheat-sheets
+```
 
 ## Python libraries
 * Install a few Python libraries from PyPi:
