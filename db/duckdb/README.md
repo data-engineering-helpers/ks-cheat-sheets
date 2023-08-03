@@ -2,8 +2,9 @@ Cheat Sheet - DuckDB
 ====================
 
 # Table of Content (ToC)
-* [Cheat Sheets \- DuckDB](#cheat-sheets---duckdb)
 * [Overview](#overview)
+  * [References](#references)
+    * [DuckDB in Jupyter](#duckdb-in-jupyter)
 * [Use cases](#use-cases)
 * [Setup](#setup)
   * [DuckDB on the command\-line (CLI)](#duckdb-on-the-command-line-cli)
@@ -32,9 +33,11 @@ The following is an excerpt from https://duckdb.org/why_duckdb .
 * DuckDB home page: https://duckdb.org/
    + Why DuckDB: https://duckdb.org/why_duckdb
 * DuckDB project on GitHub: https://github.com/duckdb/duckdb
-* DuckDB docs - DuckDB in Jupyter:
-  https://duckdb.org/docs/guides/python/jupyter.html
 * [DuckDB - Modern Data Stack (MDS) in a box](https://duckdb.org/2022/10/12/modern-data-stack-in-a-box.html)
+
+### DuckDB in Jupyter
+* [GitHub - Data Engineering Helpers - Cheat Sheet - Jupyter with PySpark and DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/jupyter/jupyter-pyspark-duckdb/)
+* [DuckDB docs - DuckDB in Jupyter](https://duckdb.org/docs/guides/python/jupyter.html)
 
 # Use cases
 * Denormalize Geonames tables
@@ -79,6 +82,13 @@ D select distinct ac.geonameid,
 ```
 
 # Setup
+* If not already done so, clone
+  [this Git repository](https://github.com/data-engineering-helpers/ks-cheat-sheets):
+```bash
+mkdir -p ~/dev/ks && \
+  git clone https://github.com/data-engineering-helpers/ks-cheat-sheets.git ~/dev/ks/ks-cheat-sheets && \
+  cd ~/dev/ks/ks-cheat-sheets
+```
 
 ## DuckDB on the command-line (CLI)
 * On MacOS:
@@ -87,13 +97,45 @@ brew install duckdb
 ```
 
 ## DuckDB Python library
+* DuckDB, as a Python library, perfectly works with Jupyter. For the details
+  on how to install JupyterLab so that it works with DuckDB, refer to the
+  [installation section of the Jupyter with PySpark and DuckDB cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/tree/main/programming/jupyter/jupyter-pyspark-duckdb#initial-setup)
+  + The
+    [`ipython-notebooks/simple-duckdb.ipynb` Jupyter notebook](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/jupyter/jupyter-pyspark-duckdb/ipython-notebooks/simple-spark-pandas.ipynb)
+    features a simple example of DuckDB reading a Parquet file as a standard
+	table with SQL. It is as simple as executing the following SQL query:
+	`select * from 'data/parquet/user-details.parquet';`
+
 * Simply install with Pip:
 ```bash
 python -mpip install -U pip duckdb
 ```
 
+* Check that DuckDB works well:
+```bash
+duckdb programming/jupyter/jupyter-pyspark-duckdb/db.duckdb
+```
+```sql
+D select * from 'programming/jupyter/jupyter-pyspark-duckdb/data/parquet/user-details.parquet';
+┌─────────┬──────────┬─────────┬─────────┐
+│ User ID │ Username │ Browser │   OS    │
+│  int32  │ varchar  │ varchar │ varchar │
+├─────────┼──────────┼─────────┼─────────┤
+│    1580 │ Barry    │ FireFox │ Windows │
+│    5820 │ Sam      │ MS Edge │ Linux   │
+│    2340 │ Harry    │ Vivaldi │ Windows │
+│    7860 │ Albert   │ Chrome  │ Windows │
+│    1123 │ May      │ Safari  │ macOS   │
+└─────────┴──────────┴─────────┴─────────┘
+D .exit
+```
+
 ## Geonames data files
 * Reference: http://download.geonames.org/export/dump/
+
+* The goal of this section (Geonames data) is to test DuckDB with bigger
+  tables (with smaller tables, other tools such as SQLites would perfectly
+  do as well)
 
 * Download the Zip-compressed versions of the main CSV data file,
   named `allCountries.txt` (sized around 360 MB), and the CSV data file
