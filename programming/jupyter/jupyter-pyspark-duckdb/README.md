@@ -51,6 +51,12 @@ See also the
 * [GitHub - Data Engineering Helpers - Cheat sheet for DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/README.md)
 
 # Quick start
+* Go into the directory dedicated to that cheat sheet (see the
+  [Initial setup](#initial-setup)
+  on how to clone this Git repository):
+```bash
+cd ~/dev/ks/ks-cheat-sheets
+```
 
 ## Start JupyterLab with a PySpark-Delta kernel
 > **Note**
@@ -181,13 +187,14 @@ $ python -mpip install -U duckdb
 * As per the official
   [Apache Spark documentation](https://spark.apache.org/docs/latest/api/python/getting_started/install.html),
   PyPi-installed PySpark (`pip install pyspark[connect]`) comes with
-  Spark Connect from Spark version 3.4 or later. However, as of Spark
-  version up to 3.4.1, the PySpark installation lacks the two new
-  administration scripts allowing to start and to stop the Spark Connect
-  server. For convenience, these two scripts have therefore been copied into
-  this Git repository, in the [`tools/` directory](tools/). They may then be
-  simply copied in the PySpark `sbin` directory, once PySpark has been
-  installed with `pip`
+  Spark Connect from Spark version 3.4 or later.
+  + However, as of Spark version up to 3.4.1, the PySpark installation
+    lacks the two new administration scripts allowing to start and
+	to stop the Spark Connect server.
+  + For convenience, these two scripts have therefore been copied into this
+    Git repository, in the
+    [`tools/` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/tree/main/tools). They may then be simply copied in the PySpark
+	`sbin` directory, once PySpark has been installed with `pip`
 
 * Install PySpark, with the Spark Connect extension, from PyPi:
 ```bash

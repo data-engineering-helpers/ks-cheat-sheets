@@ -33,6 +33,8 @@ The following is an excerpt from https://duckdb.org/why_duckdb .
 * DuckDB home page: https://duckdb.org/
    + Why DuckDB: https://duckdb.org/why_duckdb
 * DuckDB project on GitHub: https://github.com/duckdb/duckdb
+* DuckDQ - Embeddable Data Quality (DQ) validation:
+  https://github.com/tdoehmen/duckdq
 * [DuckDB - Modern Data Stack (MDS) in a box](https://duckdb.org/2022/10/12/modern-data-stack-in-a-box.html)
 
 ### DuckDB in Jupyter
