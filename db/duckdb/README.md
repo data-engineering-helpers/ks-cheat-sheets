@@ -36,7 +36,7 @@ The following is an excerpt from https://duckdb.org/why_duckdb .
 * DuckDQ - Embeddable Data Quality (DQ) validation:
   https://github.com/tdoehmen/duckdq
 * [DuckDB - Modern Data Stack (MDS) in a box](https://duckdb.org/2022/10/12/modern-data-stack-in-a-box.html)
-* Connectivity with Arrow: https://link.sbstck.com/redirect/f65e3b27-738c-45e9-a0df-7678d55a6254?j=eyJ1IjoiMjNlam5qIn0.OKc3I6Zdd7usMfEOAKbgU1hwo6z6aJHoLWbcroQd9VI
+* Connectivity with Arrow: https://duckdb.org/2023/08/04/adbc.html
 
 ### DuckDB in Jupyter
 * [GitHub - Data Engineering Helpers - Cheat Sheet - Jupyter with PySpark and DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/jupyter/jupyter-pyspark-duckdb/)
