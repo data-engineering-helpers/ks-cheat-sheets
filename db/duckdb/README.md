@@ -41,6 +41,9 @@ The following is an excerpt from https://duckdb.org/why_duckdb .
 * [GitHub - Data Engineering Helpers - Cheat Sheet - Jupyter with PySpark and DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/jupyter/jupyter-pyspark-duckdb/)
 * [DuckDB docs - DuckDB in Jupyter](https://duckdb.org/docs/guides/python/jupyter.html)
 
+### Orchestrating DuckDB with dbt
+* [GitHub - dbt-duckdb](https://github.com/jwills/dbt-duckdb)
+
 # Use cases
 * Denormalize Geonames tables
   (reference:
