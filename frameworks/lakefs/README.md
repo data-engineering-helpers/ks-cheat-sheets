@@ -52,35 +52,35 @@ $ brew install minio/stable/minio
   brew install minio/stable/mc
 ```
 
-* Create a default environment file:
+* Create a default configuration file:
 ```bash
 % sudo mkdir -p /etc/default
   sudo chown $USER /etc/default
-  cat > /etc/default/minio << _EOF
-# MINIO_ROOT_USER and MINIO_ROOT_PASSWORD sets the root account for the MinIO server.
-# This user has unrestricted permissions to perform S3 and administrative API operations on any resource in the deployment.
-# Omit to use the default values 'minioadmin:minioadmin'.
-# MinIO recommends setting non-default values as a best practice, regardless of environment
-
-MINIO_ROOT_USER=myminioadmin
-MINIO_ROOT_PASSWORD=minio-secret-key-change-me
-
-# MINIO_VOLUMES sets the storage volume or path to use for the MinIO server.
-
-MINIO_VOLUMES="/mnt/data"
-
-# MINIO_SERVER_URL sets the hostname of the local machine for use with the MinIO Server
-# MinIO assumes your network control plane can correctly resolve this hostname to the local machine
-
-# Uncomment the following line and replace the value with the correct hostname for the local machine and port for the MinIO server (9000 by default).
-
-#MINIO_SERVER_URL="http://minio.example.net:9000" 
-_EOF
+  curl https://raw.githubusercontent.com/data-engineering-helpers/ks-cheat-sheets/main/frameworks/lakefs/etc/minio -o /etc/default/minio
 ```
 
-* Copy the MacOS service plist file to the place where Minio was installed:
+* In that new Minio configuration file, adjust the `MINIO_VOLUMES`,
+  administrative user and password values:
 ```bash
-$ BREW_PFX="$(brew --prefix)"
-  MINIO_DIR="$(brew info minio|grep "^$BREW_PFX"|cut -d' ' -f1,1)"
-  curl https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/lakefs/etc/homebrew.mxcl.minio.plist -o $BREW_DIR/homebrew.mxcl.minio.plist
+$ vi /etc/default/minio
+```
+
+* If, for some reason, HomeBrew does not install the Minio service (specified
+  with a Plist file), copy the
+  [MacOS service plist file](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/lakefs/etc/homebrew.mxcl.minio.plist)
+  to the place where Minio was installed (that solution was documented
+  as a
+  [GitHub issue on Minio repository](https://github.com/minio/minio/issues/16382)):
+```bash
+$ export BREW_PFX="$(brew --prefix)"
+  export MINIO_DIR="$(brew info minio|grep "^$BREW_PFX"|cut -d' ' -f1,1)"
+  export MINIO_VOLUMES="$(grep "^MINIO_VOLUMES=" /etc/default/minio | cut -d'=' -f2,2 | sed -e 's/"//g')"
+  curl https://raw.githubusercontent.com/data-engineering-helpers/ks-cheat-sheets/main/frameworks/lakefs/etc/homebrew.mxcl.minio.plist -o homebrew.mxcl.minio.plist.in
+  subst < homebrew.mxcl.minio.plist.in > $MINIO_DIR/homebrew.mxcl.minio.plist
+  
+```
+
+* Start the Minio service:
+```bash
+$ vrew services start minio
 ```
