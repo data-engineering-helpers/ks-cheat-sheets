@@ -4,6 +4,11 @@
 <dict>
 	<key>KeepAlive</key>
 	<true/>
+    <key>EnvironmentVariables</key>
+    <dict>
+           <key>MINIO_CONFIG_ENV_FILE</key>
+           <string>/etc/default/minio</string>
+    </dict>
 	<key>Label</key>
 	<string>homebrew.mxcl.minio</string>
 	<key>LimitLoadToSessionType</key>
