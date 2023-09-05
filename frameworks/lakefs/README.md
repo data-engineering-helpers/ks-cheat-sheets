@@ -40,8 +40,18 @@ or on a virtual machine (VM).
 ### Installation
 * On premises deployment: https://docs.lakefs.io/howto/deploy/onprem.html
 * Deploy LakeFS on AWS: https://docs.lakefs.io/howto/deploy/aws.html
+* LakeFS command-line (CLI) tool: https://docs.lakefs.io/reference/cli.html
 
 # Installation
+
+## PostgreSQL
+
+### MacOS
+* PostgreSQL, with the PostgreSQL client, may be installed on MacOS
+  with HomeBrew:
+```bash
+$ brew install postgresql@15
+```
 
 ## Minio
 
@@ -92,6 +102,10 @@ $ . /etc/default/minio
   mc alias set myminio http://localhost:9000 $MINIO_ROOT_USER $MINIO_ROOT_PASSWORD
 ```
 
+* Create access key pair on http://localhost:9000/access-keys
+  and take note of it. That key pair will be fed in the LakeFS service
+  configuration file (`/.lakefs/config.yaml`, see below)
+
 * Create some content
   + Create some buckets and folders:
 ```bash
@@ -110,4 +124,86 @@ $ mc cp db/duckdb/data/parquet/al*.parquet myminio/bronze/geonames
 * Browse the content:
 ```bash
 $ mc ls -r --summarize myminio/bronze
+```
+
+## LakeFS server
+
+### MacOS
+* Install the LakeFS HomeBrew tap:
+```bash
+$ brew tap treeverse/lakefs
+```
+
+* Install LakeFS:
+```bash
+$ brew install lakefs
+```
+
+* Setup the LakeFS server configuration file
+  + Download the sample into the LakeFS configuration directory:
+```bash
+$ mkdir -p ~/.lakefs
+  https://raw.githubusercontent.com/data-engineering-helpers/ks-cheat-sheets/main/frameworks/lakefs/etc/config.yaml -o ~/.lakefs/config.yaml
+```
+  + Edit the LakeFS server configuration file, and specify the PostgreSQL
+    connection string as well as the Minio access key (as setup in the above
+	section):
+```bash
+$ vi ~/.lakefs/config.yaml
+```
+
+* Run the LakeFS server:
+```bash
+$ lakefs --config ~/.lakefs/config.yaml run &
+```
+
+* Perform the server setup by visiting http://localhost:8000/setup
+  + Leave the admin username as suggested (`admin`)
+  + Click on the "Setup" button
+  + Access keys are then created. Make a note of them, as they will be needed
+    in the section below to set up the LakeFS CLI
+
+* Create a `silver` repository by visiting http://localhost:8000/repositories
+  and clicking on the "Create repository" button. The details are as following:
+  + Repository ID: `silver`
+  + Default branch name: leave it as `main`
+  + Storage namespace: `s3://silver/`. Here, `silver` corresponds to the
+    Minio bucket setup in the above section
+  + Click on the "Create" button
+
+* The content of the newly created `silver` repository is available by
+  visiting http://localhost:8000/repositories/silver/objects?ref=main
+  
+* The newly created content on LakeFS may also be browsed on Minio. However,
+  like with Git, the object files are named according to IDs, which makes it
+  very hard for a human being to recognize anything without the overlay of
+  LakeFS
+```bash
+$ mc ls -r --summarize myminio/silver/data
+```
+
+## LakeFS CLI
+* Generate the LakeFS configuration file for the CLI (to be stored as
+  `/.lakectl.yaml`):
+```bash
+$ lakectl config
+```
+
+* Edit the LakeFS CLI configuration
+  + Set up the access key as created in the above section (LakeFS server setup)
+  + Specify the server endpoint to http://localhost:8000
+
+* List the repositories:
+```bash
+$ lakectl repo list
++------------+--------------------------------+------------------+-------------------+
+| REPOSITORY | CREATION DATE                  | DEFAULT REF NAME | STORAGE NAMESPACE |
++------------+--------------------------------+------------------+-------------------+
+| silver     | 2023-09-05 22:50:11 +0200 CEST | main             | s3://silver/      |
++------------+--------------------------------+------------------+-------------------+
+```
+
+* List the content of the `silver` repository:
+```bash
+$ lakectl fs ls --recursive lakefs://silver/main/lakes.parquet
 ```

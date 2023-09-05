@@ -1,0 +1,21 @@
+---
+database:
+  type: "postgres"
+  postgres:
+    connection_string: "postgres://localhost:5432/postgres?sslmode=disable"
+  
+auth:
+  encrypt:
+    # replace this with a randomly-generated string. Make sure to keep it safe!
+    secret_key: "10a718b3f285d89c36e9864494cdd1507f3bc85b342df24736ea81f9a1134bcc09e90b6641"
+   
+blockstore:
+  type: s3
+  s3:
+     force_path_style: true
+     endpoint: http://localhost:9000
+     discover_bucket_region: false
+     credentials:
+        access_key_id: <minio_access_key>
+        secret_access_key: <minio_secret_key>
+
