@@ -7,6 +7,9 @@ explains how to install and to use PostgreSQL server.
 
 # References
 
+## PostgreSQL
+* PostgreSQL home page: https://www.postgresql.org
+
 ## Linux
 * Examples of recent RedHat-based distributions:
   [Amazon Linux 2023](https://aws.amazon.com/linux/amazon-linux-2023/),
