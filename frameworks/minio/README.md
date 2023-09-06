@@ -35,6 +35,9 @@ on a laptop or on a virtual machine (VM).
 ### Use Minio with standard client tools
 * [Minio doc - AWS CLI with MinIO Server](https://min.io/docs/minio/linux/integrations/aws-cli-with-minio.html)
 
+## Client tools
+* Cloudpathlib: https://cloudpathlib.drivendata.org
+
 # Installation
 
 ## MacOS
@@ -170,7 +173,7 @@ $ cat >> ~/.bash_aliases << _EOF
 
 # AWSume
 alias awsume="source \\\$(pyenv which awsume)"
-alias awsumeminio="\$(awsume minio; export AWS_ENDPOINT_URL="http://localhost:9000")"
+alias awsumeminio="awsume minio; export AWS_ENDPOINT_URL=\"http://localhost:9000\""
 
 _EOF
  . ~/.bash_aliases
@@ -188,5 +191,23 @@ $ aws s3 ls --summarize --human --recursive s3://bronze
 
 Total Objects: 3
    Total Size: 892.7 MiB
+```
+
+### Python SDK
+
+#### Cloudpathlib
+* If not already done so, install the
+  [Cloudpathlib module](https://cloudpathlib.drivendata.org):
+```bash
+$ python -mpip install -U pip cloudpathlib[s3]
+```
+
+#### Sample code
+* A simple Jupyter notebook showcases how to browse data files from the
+  Minio Bronze bucket. Just open
+  http://localhost:8889/lab/tree/ipython-notebooks/lakefs-browse.ipynb
+  after starting Jupyter Lab locally:
+```bash
+$ jupyter lab frameworks/minio --port 8889 --allow-root --no-browser --ip 0.0.0.0 --IdendityProvider.token=
 ```
 
