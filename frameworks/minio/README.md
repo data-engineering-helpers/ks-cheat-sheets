@@ -211,3 +211,22 @@ $ python -mpip install -U pip cloudpathlib[s3]
 $ jupyter lab frameworks/minio --port 8889 --allow-root --no-browser --ip 0.0.0.0 --IdendityProvider.token=
 ```
 
+* A
+  [simple Python script](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/minio/python/minio-browse.ipynb)
+  allows to browse the same Minio Bronze bucket:
+```bash
+$ ./frameworks/minio/python/minio-browse.py
+s3://bronze/geonames/allCountries.parquet
+s3://bronze/geonames/alternateNames.parquet
+```
+
+* The corresponding Python code is:
+```python
+import os
+from cloudpathlib import CloudPath
+
+geo_dir = CloudPath("s3://bronze/geonames")
+for f in geo_dir.glob("**/*.parquet"):
+    print(f)
+```
+
