@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/minio/python/minio-browse.ipynb
+# File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/minio/python/minio-browse.py
 #
 import os
 from cloudpathlib import CloudPath

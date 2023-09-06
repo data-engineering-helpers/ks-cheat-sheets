@@ -212,7 +212,7 @@ $ jupyter lab frameworks/minio --port 8889 --allow-root --no-browser --ip 0.0.0.
 ```
 
 * A
-  [simple Python script](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/minio/python/minio-browse.ipynb)
+  [simple Python script](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/minio/python/minio-browse.py)
   allows to browse the same Minio Bronze bucket:
 ```bash
 $ ./frameworks/minio/python/minio-browse.py
