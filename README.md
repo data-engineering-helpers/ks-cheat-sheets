@@ -34,7 +34,7 @@ these companies.
 # Databases
 
 ## PostgreSQL
-* [Directory dedicated to PostgreSQL](db/posthresql/)
+* [Directory dedicated to PostgreSQL](db/postgresql/)
 
 ## DuckDB
 * [Directory dedicated to DuckDB](db/duckdb/)
