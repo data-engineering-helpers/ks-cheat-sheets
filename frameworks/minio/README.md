@@ -205,7 +205,7 @@ $ python -mpip install -U pip cloudpathlib[s3]
 #### Sample code
 * A simple Jupyter notebook showcases how to browse data files from the
   Minio Bronze bucket. Just open
-  http://localhost:8889/lab/tree/ipython-notebooks/lakefs-browse.ipynb
+  http://localhost:8889/lab/tree/ipython-notebooks/minio-browse.ipynb
   after starting Jupyter Lab locally:
 ```bash
 $ jupyter lab frameworks/minio --port 8889 --allow-root --no-browser --ip 0.0.0.0 --IdendityProvider.token=
