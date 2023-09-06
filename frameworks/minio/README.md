@@ -163,7 +163,8 @@ Total Objects: 3
 $ python -mpip install -U pip awsume
   awsume-configure
 ```
-  + Add an alias for `awsume` in the Shell initialization script:
+  + Add an alias for `awsume` in the Shell initialization script, and source
+    the Shell aliases:
 ```bash
 $ cat >> ~/.bash_aliases << _EOF
 
@@ -172,6 +173,7 @@ alias awsume="source \\\$(pyenv which awsume)"
 alias awsumeminio="\$(awsume minio; export AWS_ENDPOINT_URL="http://localhost:9000")"
 
 _EOF
+ . ~/.bash_aliases
 ```
   + Switch to the `minio` profile:
 ```bash
