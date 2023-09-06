@@ -84,7 +84,7 @@ $ brew install lakefs
   + Download the sample into the LakeFS configuration directory:
 ```bash
 $ mkdir -p ~/.lakefs
-  https://raw.githubusercontent.com/data-engineering-helpers/ks-cheat-sheets/main/frameworks/lakefs/etc/config.yaml -o ~/.lakefs/config.yaml
+  curl https://raw.githubusercontent.com/data-engineering-helpers/ks-cheat-sheets/main/frameworks/lakefs/etc/config.yaml -o ~/.lakefs/config.yaml
 ```
   + Edit the LakeFS server configuration file, and specify the PostgreSQL
     connection string as well as the Minio access key (as setup in the above
