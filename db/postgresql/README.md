@@ -101,7 +101,7 @@ $ psql -h $PG_SVR -U lakefs -c "select 42 as nb;"
 * [AWS console - Policies](https://us-east-1.console.aws.amazon.com/iamv2/home)
     (associated to the IAM role of the proxy)
 
-## Browse the database
+## Import files, create and browse tables
 * List the tables:
 ```bash
 $ psql -h $PG_SVR -U guest -c "\dt"
@@ -117,7 +117,7 @@ $ psql -h $PG_SVR -U guest -c "\d mytable"
 $ psql -h $PG_SVR -U guest -f db/postgresql/sql/create-geonames-tables.sql
 ```
 
-* Load CSV date into a table
+* Load CSV data into a table
   + Download the country information CSV data file from
     [Geonames](https://download.geonames.org/export/dump/):
 ```bash
@@ -128,8 +128,8 @@ $ curl https://download.geonames.org/export/dump/countryInfo.txt -o db/duckdb/da
 $ tail -n +51 db/duckdb/data/csv/countryInfo.txt > db/duckdb/data/csv/countryInfo.csv
 ```
   + Parse and load the data into PostgreSQL
-    (`<CTRL-V-TAB>` means: on the terminal, press the Control-V key
-	and then the TAB key while holding the Control-V key):
+    (`<CTRL-V-TAB>` means: on the terminal, press successively the Control-V
+	  and the TAB keys):
 ```bash
 $ psql -h $PG_SVR -U guest -c "\copy country_info(iso_alpha2, iso_alpha3, iso_numeric, fips_code, name, capital, areainsqkm, population, continent, tld, currency_code, currency_name, phone, postal_code_format, postal_code_regex, languages, geonameId, neighbours, equivalent_fips_code) from 'db/duckdb/data/csv/countryInfo.csv' delimiter '<CTRL-V-TAB>' csv header;"
 ```
