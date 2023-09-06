@@ -38,6 +38,9 @@ these companies.
 
 # Frameworks
 
+## Minio
+* [Directory dedicated to Minio](frameworks/minio/)
+
 ## LakeFS
 * [Directory dedicated to LakeFS](frameworks/lakefs/)
 

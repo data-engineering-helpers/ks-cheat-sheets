@@ -25,108 +25,48 @@ or on a virtual machine (VM).
 
 # References
 
+## Data Engineering helpers
+* [Material for the Data platform - Modern Data Stack (MDS) in a box](https://github.com/data-engineering-helpers/mds-in-a-box/blob/main/README.md)
+* [Material for the Data platform - Data life cycle](https://github.com/data-engineering-helpers/data-life-cycle/blob/main/README.md)
+* [Data Engineering Helpers - Knowledge Sharing - Minio](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/minio/README.md)
+* [Data Engineering Helpers - Knowledge Sharing - LakeFS](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/lakefs/README.md)
+
 ## Minio
 * [Minio](https://min.io/) is a dependency for on-premise deployment
-* Install and deploy Minio on MacOS:
-  https://min.io/docs/minio/macos/operations/installation.html
-* Install and deploy containerized Minio:
-  https://min.io/docs/minio/container/operations/installation.html
+* See [Data Engineering Helpers - Knowledge Sharing - Minio](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/minio/README.md)
+  for more details on how to install the Minio service
 
 ## LakeFS
 * GitHub repository: https://github.com/treeverse/lakeFS
 * End-to-end Write-Audit-Publish (WAP) pattern with LakeFS:
   https://lakefs.io/blog/write-audit-publish-with-lakefs/
 
-### Installation
+### Installation of LakeFS
 * On premises deployment: https://docs.lakefs.io/howto/deploy/onprem.html
 * Deploy LakeFS on AWS: https://docs.lakefs.io/howto/deploy/aws.html
 * LakeFS command-line (CLI) tool: https://docs.lakefs.io/reference/cli.html
 
 # Installation
 
-## PostgreSQL
+## Dependencies
 
-### MacOS
+### PostgreSQL
+
+#### MacOS
 * PostgreSQL, with the PostgreSQL client, may be installed on MacOS
   with HomeBrew:
 ```bash
 $ brew install postgresql@15
 ```
 
-## Minio
-
-### MacOS
-* Minio, with the Minio client, may be installed on MacOS with HomeBrew:
-```bash
-$ brew install minio/stable/minio
-  brew install minio/stable/mc
-```
-
-* Create a default configuration file:
-```bash
-% sudo mkdir -p /etc/default
-  sudo chown $USER /etc/default
-  curl https://raw.githubusercontent.com/data-engineering-helpers/ks-cheat-sheets/main/frameworks/lakefs/etc/minio -o /etc/default/minio
-```
-
-* In that new Minio configuration file, adjust the `MINIO_VOLUMES`,
-  administrative user and password values:
-```bash
-$ vi /etc/default/minio
-```
-
-* If, for some reason, HomeBrew does not install the Minio service (specified
-  with a Plist file), copy the
-  [MacOS service plist file](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/lakefs/etc/homebrew.mxcl.minio.plist)
-  to the place where Minio was installed (that solution was documented
-  as a
-  [GitHub issue on Minio repository](https://github.com/minio/minio/issues/16382)):
-```bash
-$ export BREW_PFX="$(brew --prefix)"
-  export MINIO_DIR="$(brew info minio|grep "^$BREW_PFX"|cut -d' ' -f1,1)"
-  export MINIO_VOLUMES="$(grep "^MINIO_VOLUMES=" /etc/default/minio | cut -d'=' -f2,2 | sed -e 's/"//g')"
-  curl https://raw.githubusercontent.com/data-engineering-helpers/ks-cheat-sheets/main/frameworks/lakefs/etc/homebrew.mxcl.minio.plist -o homebrew.mxcl.minio.plist.in
-  envsubst < homebrew.mxcl.minio.plist.in > $MINIO_DIR/homebrew.mxcl.minio.plist
-```
-
-* Start the Minio service:
-```bash
-$ vrew services start minio
-```
-
-* The Minio data lake is now accessible through http://localhost:9090/
-
-* Specify an alias for the Minio service for the Minio client:
-```bash
-$ . /etc/default/minio
-  mc alias set myminio http://localhost:9000 $MINIO_ROOT_USER $MINIO_ROOT_PASSWORD
-```
-
-* Create access key pair on http://localhost:9000/access-keys
-  and take note of it. That key pair will be fed in the LakeFS service
-  configuration file (`/.lakefs/config.yaml`, see below)
-
-* Create some content
-  + Create some buckets and folders:
-```bash
-$ mc mb myminio/bronze/geonames
-  mc mb myminio/silver/geonames
-  mc mb myminio/gold/geonames
-```
-  + Copy some Parquet data files (_e.g._, copy the Parquet files resulting from
-    launching the
-	[EL script](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/elt-geonames.py)
-	in the [DuckDB cheat sheet folder](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/)):
-```bash
-$ mc cp db/duckdb/data/parquet/al*.parquet myminio/bronze/geonames
-```
-
-* Browse the content:
-```bash
-$ mc ls -r --summarize myminio/bronze
-```
+### Minio
+See [Data Engineering Helpers - Knowledge Sharing - Minio](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/minio/README.md)
+for more details on how to install the Minio service
 
 ## LakeFS server
+
+### Linux
+TBC
 
 ### MacOS
 * Install the LakeFS HomeBrew tap:
@@ -139,6 +79,7 @@ $ brew tap treeverse/lakefs
 $ brew install lakefs
 ```
 
+### General
 * Setup the LakeFS server configuration file
   + Download the sample into the LakeFS configuration directory:
 ```bash
