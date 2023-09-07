@@ -1,0 +1,16 @@
+{
+ "display_name": "PySpark (Spark 3.4.1)",
+ "language": "python",
+ "argv": [
+  "/usr/bin/python3",
+  "-m",
+  "ipykernel",
+  "-f",
+  "{connection_file}"
+ ],
+ "env": {
+  "SPARK_HOME": "$SPARK_HOME",
+  "PYSPARK_PYTHON": "/usr/bin/python3"
+ }
+}
+

@@ -1,5 +1,5 @@
 --
--- File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/create-geonames-tables.sql
+-- File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/sql/create-geonames-tables.sql
 --
 -- Tables for Geonames data
 --

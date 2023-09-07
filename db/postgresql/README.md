@@ -141,6 +141,62 @@ $ psql -h $PG_SVR -U guest -c "select iso_alpha2, iso_alpha3, name, capital, con
 
 # Installation
 
+## Python
+* The Python notebooks and/or scripts make use of some libraries,
+  which therefore need to be installed:
+```bash
+$ python -mpip install -U pip sqlalchemy psycopg2 cloudpathlib[s3] pandas jupyterlab jupysql
+```
+
+## PySpark
+* Install PySpark:
+```bash
+$ python -mpip install -U pip sqlalchemy psycopg2 cloudpathlib[s3] pandas jupyterlab jupysql pyspark
+```
+
+* In the Shell initialization scripts (_e.g._, `~/.bashrc`), add the following
+  setup for Spark-related environment variables:
+```bash
+$ cat >> ~/.bashrc << _EOF
+
+# Spark
+## The following lines are for Spark coming simply from pip install pyspark[connect,sql,pandas_on_spark]
+PY_LIBDIR="\$(python -mpip show pyspark|grep "^Location:"|cut -d' ' -f2,2)"
+export SPARK_VERSION="\$(python -mpip show pyspark|grep "^Version:"|cut -d' ' -f2,2)"
+export SPARK_HOME="\$PY_LIBDIR/pyspark"
+export PATH="\$SPARK_HOME/sbin:\$PATH"
+export PYSPARK_PYTHON="\$(which python3)"
+export PYSPARK_DRIVER_PYTHON="\$(which python3)"
+
+_EOF
+ exec bash
+```
+
+* Download Spark-related JAR artifacts, required by PySpark:
+```bash
+$ curl https://repo1.maven.org/maven2/org/postgresql/postgresql/42.6.0/postgresql-42.6.0.jar -o db/postgresql/jars/postgresql-42.6.0.jar
+  curl https://repo1.maven.org/maven2/io/delta/delta-core_2.12/2.4.0/delta-core_2.12-2.4.0.jar -o db/postgresql/jars/delta-core_2.12-2.4.0.jar
+```
+
+* Setup the PySpark Jupyter kernel
+  + Create the directory for the Jupyter kernel:
+```bash
+$ mkdir -p ~/.local/share/jupyter/kernels/pyspark
+```
+
+* Copy the kernel configuration file:
+```bash
+$ envsubst > ~/.local/share/jupyter/kernels/spark-local/kernel.json < db/postgresql/jupyter/pyspark-kernel.json
+```
+
+* Check that the kernel has been added:
+```bash
+$ jupyter kernelspec list
+Available kernels:
+  spark-local  ~/.local/share/jupyter/kernels/spark-local
+  python3      ~/.pyenv/versions/3.11.4/share/jupyter/kernels/python3
+```
+
 ## PostgreSQL clients
 
 ### MacOS

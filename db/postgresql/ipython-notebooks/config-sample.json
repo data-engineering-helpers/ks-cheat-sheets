@@ -1,0 +1,15 @@
+{
+	"meta": {
+		"project_name": "Knowledge Sharing - PostgreSQL cheat sheet",
+		"project_url": "https://github.com/data-engineering-helpers/ks-cheat-sheets/tree/main/db/postgresql"
+	},
+	"db": {
+		"type": "postgresql",
+		"host": "localhost",
+		"port": 5432,
+		"dbname": "guest",
+		"user": "guest",
+		"passwd": "<guest-passwd>"
+    }
+}
+
