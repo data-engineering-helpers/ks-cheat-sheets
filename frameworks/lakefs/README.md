@@ -42,6 +42,15 @@ or on a virtual machine (VM).
 * See [Data Engineering Helpers - Knowledge Sharing - Minio](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/minio/README.md)
   for more details on how to install the Minio service
 
+## DuckDB
+* [DuckDB](https://duckdb.org/) is fully integrated with the LakeFS web console.
+  That is, LakeFS relies on an embedded DuckDB engine to browse and alter data
+  on LakeFS repositories
+* From the command-line, or from a Python editor (_e.g._, iPython, Jupyter),
+  DuckDB has to be configured to interact with LakeFS
+  + [LakeFS doc - Using lakeFS with DuckDB](https://docs.lakefs.io/integrations/duckdb.html)
+  + [DuckDB doc - HTTPFS extension](https://duckdb.org/docs/extensions/httpfs.html)
+
 ## LakeFS
 * GitHub repository: https://github.com/treeverse/lakeFS
 * End-to-end Write-Audit-Publish (WAP) pattern with LakeFS:
@@ -51,6 +60,182 @@ or on a virtual machine (VM).
 * On premises deployment: https://docs.lakefs.io/howto/deploy/onprem.html
 * Deploy LakeFS on AWS: https://docs.lakefs.io/howto/deploy/aws.html
 * LakeFS command-line (CLI) tool: https://docs.lakefs.io/reference/cli.html
+
+# Quickstart
+
+## Launch the LakeFS service
+* If not already done so, launch the LakeFS service from a terminal tab
+  dedicated to LakeFS (so that the logs produced by the service may be seen
+  while the service is operating):
+```bash
+$ lakefs --config ~/.lakefs/config.yaml run
+```
+
+## Browse the data from the web console
+* Browse some specific data objects on a given repository (_e.g._, `silver`
+  repository and `lakes.parquet` data file here):
+  http://localhost:8000/repositories/silver/object?ref=main&path=lakes.parquet
+
+* Query the data with DuckDB-powered SQL (_e.g._, top five of the lakes
+  by countries):
+```sql
+SELECT   country, COUNT(*) as nb_lakes
+FROM     READ_PARQUET('lakefs://silver/main/lakes.parquet')
+GROUP BY country
+ORDER BY nb_lakes
+DESC LIMIT 5;
+```
+
+## Browse the data from DuckDB on the CLI
+* Basically, once configured properly, the only difference between using the
+  LakeFS web UI embedded version of DuckDB and DuckDB on the command-line
+  is the prefix/scheme used in the paths. The path is:
+  + `lakefs://` for the LakeFS embedded DuckDB engine
+  + `s3://` for DuckDB on the command-line (CLI)
+
+* If not already done so, clone
+  [this Git repository](https://github.com:data-engineering-helpers/ks-cheat-sheets)
+  and go into it:
+```bash
+$ mkdir -p ~/dev/knowledge-sharing && \
+  git clone git@github.com:data-engineering-helpers/ks-cheat-sheets.git ~/dev/knowledge-sharing/ks-cheat-sheets
+  cd ~/dev/knowledge-sharing/ks-cheat-sheets/frameworks/lakefs
+```
+
+* From the command-line (CLI), from within this project LakeFS directory,
+  launch DuckDB:
+```bash
+$ duckdb db.duckdb
+```
+
+* Setup DuckDB to access LakeFS (the access key credentials may be seen in the
+  `~/.lakectl.yaml` file):
+```sql
+D INSTALL httpfs;
+  LOAD httpfs;
+  SET global s3_region='eu-west-1';
+  SET global s3_endpoint='localhost:8000';
+  SET global s3_access_key_id='AKIAIOSFODNN7EXAMPLE';
+  SET global s3_secret_access_key='wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY';
+  SET global s3_url_style='path';
+  SET global s3_use_ssl=false;
+```
+
+* Query the data from LakeFS (_e.g._, the `lakes.parquet` file on the silver
+  repository here):
+```sql
+$ SELECT country, COUNT(*) as nb_lakes FROM READ_PARQUET('s3://silver/main/lakes.parquet') GROUP BY country ORDER BY nb_lakes DESC LIMIT 5;
+┌──────────────────────────┬──────────┐
+│         Country          │ nb_lakes │
+│         varchar          │  int64   │
+├──────────────────────────┼──────────┤
+│ Canada                   │    83819 │
+│ United States of America │     6175 │
+│ Russia                   │     2524 │
+│ Denmark                  │     1677 │
+│ China                    │      966 │
+└──────────────────────────┴──────────┘
+```
+
+* Create a DuckDB table with the content of the Parquet file:
+```sql
+D CREATE OR REPLACE TABLE lakes AS SELECT * FROM READ_PARQUET('s3://silver/main/lakes.parquet');
+```
+
+* Check that the DuckDB table has been created correctly:
+```sql
+D SELECT country, COUNT(*) as nb_lakes FROM lakes GROUP BY country ORDER BY nb_lakes DESC LIMIT 5;
+```
+
+## Create a publication branch
+* Create a branch from the command-line (CLI):
+```bash
+$ lakectl branch create \
+  lakefs://silver/denmark-lakes \
+  --source lakefs://silver/main
+Source ref: lakefs://silver/main
+created branch 'denmark-lakes' 908dbxxxa7787
+```
+
+* Alter the data on the newly created branch
+  + Visit
+    http://localhost:8000/repositories/silver/object?ref=denmark-lakes&path=lakes.parquet
+  + Replace the SQL query by the following, which will create a DuckDB table
+    with the content of the Parquet file:
+```sql
+CREATE OR REPLACE TABLE lakes AS 
+    SELECT * FROM READ_PARQUET('lakefs://silver/denmark-lakes/lakes.parquet');
+```
+  + Check that the DuckDB table has been created correctly:
+```sql
+SELECT   country, COUNT(*) as nb_lakes
+FROM     lakes
+GROUP BY country
+ORDER BY nb_lakes
+DESC LIMIT 5;
+```
+  + Alter the data, _e.g._, remove any lake record not located in Denmark:
+```sql
+DELETE FROM lakes WHERE Country != 'Denmark';
+```
+  + Check that the DuckDB table has been altered correctly:
+```sql
+SELECT   country, COUNT(*) as nb_lakes
+FROM     lakes
+GROUP BY country
+ORDER BY nb_lakes
+DESC LIMIT 5;
+```
+
+* Write the data back to LakeFS in the publication branch:
+```sql
+COPY lakes TO 'lakefs://silver/denmark-lakes/lakes.parquet';
+```
+
+* Check that the data has changed on the publication branch:
+```sql
+DROP TABLE lakes;
+
+SELECT   country, COUNT(*) as nb_lakes
+FROM     READ_PARQUET('lakefs://silver/denmark-lakes/lakes.parquet')
+GROUP BY country
+ORDER BY nb_lakes
+DESC LIMIT 5;
+```
+
+* Commit the changes of the publication branch:
+```bash
+$ lakectl commit lakefs://silver/denmark-lakes \
+  -m "Create a dataset of just the lakes in Denmark"
+Branch: lakefs://silver/denmark-lakes
+Commit for branch "denmark-lakes" completed.
+
+ID: 25fed72dxxx7aa92
+Message: Create a dataset of just the lakes in Denmark
+Timestamp: 2023-09-20 12:06:18 +0200 CEST
+Parents: 908db9xxx7787
+```
+
+## Merge the publication branch
+* Merge the publication branch onto the main branch:
+```bash
+$ lakectl merge \
+  lakefs://silver/denmark-lakes \
+  lakefs://silver/main
+Source: lakefs://silver/denmark-lakes
+Destination: lakefs://silver/main
+Merged "denmark-lakes" into "main" to get "110dxxxd141".
+```
+
+## Revert changes
+* Roll-back the changes:
+```bash
+$ lakectl branch revert \
+  lakefs://silver/main \
+  main --parent-number 1 --yes
+Branch: lakefs://silver/main
+commit main successfully reverted
+```
 
 # Installation
 
