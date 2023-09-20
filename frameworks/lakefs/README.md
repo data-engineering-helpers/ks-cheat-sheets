@@ -7,8 +7,8 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
 # Overview
 [This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/lakefs/README.md)
-explains how to install and to use LakeFS on premises, _e.g._, on a laptop
-or on a virtual machine (VM).
+explains how to install and to use [LakeFS](https://lakefs.io/) on premises,
+_e.g._, on a laptop or on a virtual machine (VM).
 
 > LakeFS is Data Version Control (Git for Data)
 >
