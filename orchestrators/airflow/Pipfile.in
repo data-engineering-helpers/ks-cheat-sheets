@@ -1,0 +1,14 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+apache-airflow = {extras = ["celery"], version = "==$AIRFLOW_VERSION"}
+sqlalchemy = "*"
+psycopg2 = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "$PYTHON_VERSION"
