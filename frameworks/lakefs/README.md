@@ -270,7 +270,7 @@ $ brew tap treeverse/lakefs
 $ brew install lakefs
 ```
 
-### General
+### Configuration of the LakeFS service
 * Setup the LakeFS server configuration file
   + Download the sample into the LakeFS configuration directory:
 ```bash
@@ -284,6 +284,38 @@ $ mkdir -p ~/.lakefs
 $ vi ~/.lakefs/config.yaml
 ```
 
+### MacOS service
+* Create a default configuration file:
+```bash
+% sudo mkdir -p /etc/default
+  sudo chown $USER /etc/default
+  curl https://raw.githubusercontent.com/data-engineering-helpers/ks-cheat-sheets/main/frameworks/lakefs/etc/lakefs -o /etc/default/lakefs
+```
+
+* In that new LakeFS configuration file, adjust the `LAKEFS_CFG`,
+  administrative user and password values:
+```bash
+$ vi /etc/default/lakefs
+```
+
+* Copy the
+  [MacOS service plist file](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/lakefs/etc/homebrew.mxcl.lakefs.plist)
+  to the place where LakeFS was installed:
+```bash
+$ export BREW_PFX="$(brew --prefix)"
+  export LAKEFS_DIR="$(brew info lakefs|grep "^$BREW_PFX"|cut -d' ' -f1,1)"
+  source /etc/default/lakefs ; export LAKEFS_CFG
+  curl https://raw.githubusercontent.com/data-engineering-helpers/ks-cheat-sheets/main/frameworks/lakefs/etc/homebrew.mxcl.lakefs.plist -o homebrew.mxcl.lakefs.plist.in
+  envsubst < homebrew.mxcl.lakefs.plist.in > $LAKEFS_DIR/homebrew.mxcl.lakefs.plist
+  rm -f homebrew.mxcl.lakefs.plist.in
+```
+
+* Start the LakeFS service:
+```bash
+$ brew services start lakefs
+```
+
+### General service from the command-line
 * Run the LakeFS server:
 ```bash
 $ lakefs --config ~/.lakefs/config.yaml run &

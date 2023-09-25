@@ -66,7 +66,7 @@ $ vi /etc/default/minio
   to the place where Minio was installed (that solution was documented
   as a
   [GitHub issue on Minio repository](https://github.com/minio/minio/issues/16382)).
-  That operation will have to be repeted everytime Minio is upgraded
+  That operation will have to be repeated everytime Minio is upgraded
   by HomeBrew (_i.e._, once every few weeks):
 ```bash
 $ export BREW_PFX="$(brew --prefix)"

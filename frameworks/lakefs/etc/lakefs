@@ -1,0 +1,5 @@
+# LakeFS configuration is usually specified in the following two places:
+# ~/.lakectl.yaml
+# ~/.lakefs/config.yaml
+
+LAKEFS_CFG="/Users/DENIS/.lakefs/config.yaml"

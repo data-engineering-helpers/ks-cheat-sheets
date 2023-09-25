@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>KeepAlive</key>
+	<true/>
+    <key>EnvironmentVariables</key>
+    <dict>
+           <key>LAKEFS_CONFIG_ENV_FILE</key>
+           <string>/etc/default/lakefs</string>
+    </dict>
+	<key>Label</key>
+	<string>homebrew.mxcl.lakefs</string>
+	<key>LimitLoadToSessionType</key>
+	<array>
+		<string>Aqua</string>
+		<string>Background</string>
+		<string>LoginWindow</string>
+		<string>StandardIO</string>
+		<string>System</string>
+	</array>
+	<key>ProgramArguments</key>
+	<array>
+		<string>$BREW_PFX/bin/lakefs</string>
+		<string>--config</string>
+		<string>$LAKEFS_CFG</string>
+		<string>run</string>
+	</array>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>StandardErrorPath</key>
+	<string>$BREW_PFX/var/log/lakefs.log</string>
+	<key>StandardOutPath</key>
+  <string>$BREW_PFX/var/log/lakefs.log</string>
+	<key>WorkingDirectory</key>
+	<string>$BREW_PFX</string>
+</dict>
+</plist>
+
