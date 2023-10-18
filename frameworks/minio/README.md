@@ -2,6 +2,22 @@ Cheat Sheet - Minio
 ===================
 
 # Table of Content (ToC)
+* [Overview](#overview)
+* [References](#references)
+  * [Data Engineering helpers](#data-engineering-helpers)
+  * [Minio](#minio)
+    * [Installation of Minio](#installation-of-minio)
+    * [Use Minio with standard client tools](#use-minio-with-standard-client-tools)
+  * [Client tools](#client-tools)
+* [Installation](#installation)
+  * [MacOS](#macos)
+  * [Linux](#linux)
+  * [General](#general)
+  * [Minio client tools](#minio-client-tools)
+    * [AWS CLI](#aws-cli)
+    * [Python SDK](#python-sdk)
+      * [Cloudpathlib](#cloudpathlib)
+      * [Sample code](#sample-code)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 

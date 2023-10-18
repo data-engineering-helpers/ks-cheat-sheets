@@ -1,6 +1,38 @@
 Cheat Sheet - PostgreSQL
 ========================
 
+# Table of Content (ToC)
+* [Overview](#overview)
+* [References](#references)
+  * [PostgreSQL](#postgresql)
+  * [Linux](#linux)
+* [Use cases](#use-cases)
+  * [Quick setup for the use cases](#quick-setup-for-the-use-cases)
+  * [Create a database and associated user](#create-a-database-and-associated-user)
+    * [Guest database and user](#guest-database-and-user)
+    * [LakeFS database and user](#lakefs-database-and-user)
+    * [Hive Metastore database and user](#hive-metastore-database-and-user)
+    * [AWS RDS proxy and PostgreSQL database](#aws-rds-proxy-and-postgresql-database)
+  * [Import files, create and browse tables](#import-files-create-and-browse-tables)
+* [Installation](#installation)
+  * [Python](#python)
+  * [PySpark](#pyspark)
+  * [PostgreSQL clients](#postgresql-clients)
+    * [MacOS](#macos)
+    * [Linux](#linux-1)
+      * [Recent RedHat\-based Linux](#recent-redhat-based-linux)
+    * [General](#general)
+  * [PostgreSQL server](#postgresql-server)
+    * [MacOS](#macos-1)
+    * [Linux](#linux-2)
+      * [Recent RedHat\-based Linux](#recent-redhat-based-linux-1)
+    * [Nginx](#nginx)
+  * [PostgreSQL as a managed service with AWS RDS](#postgresql-as-a-managed-service-with-aws-rds)
+    * [AWS RDS PostgreSQL database](#aws-rds-postgresql-database)
+    * [AWS RDS proxy](#aws-rds-proxy)
+
+Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
+
 # Overview
 [This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/README.md)
 explains how to install and to use PostgreSQL server.
@@ -74,6 +106,27 @@ GRANT
 * Check that the access to the PostgreSQL database works:
 ```bash
 $ psql -h $PG_SVR -U lakefs -c "select 42 as nb;"
+ nb 
+----
+ 42
+(1 row)
+```
+
+### Hive Metastore database and user
+* Create on PostgreSQL a `metastore` database and a `metastore` user:
+```bash
+$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create database metastore;"
+CREATE DATABASE
+$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create user metastore with encrypted password '<metastore-pass>'; grant all privileges on database metastore to metastore;"
+CREATE ROLE
+GRANT
+$ psql -h $PG_SVR -U $PG_ADM_USR -d metastore -c "grant all on schema public to metastore;"
+GRANT
+```
+
+* Check that the access to the PostgreSQL database works:
+```bash
+$ psql -h $PG_SVR -U metastore -c "select 42 as nb;"
  nb 
 ----
  42

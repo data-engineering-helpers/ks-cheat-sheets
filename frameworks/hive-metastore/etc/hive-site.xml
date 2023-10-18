@@ -1,0 +1,32 @@
+<configuration>
+    <property>
+        <name>hive.exec.scratchdir</name>
+        <value>scratchdir</value>
+        <description>Scratch space for Hive jobs</description>
+    </property>
+    <property>
+        <name>hive.metastore.warehouse.dir</name>
+        <value>spark-warehouse</value>
+        <description>Spark Warehouse</description>
+    </property>
+    <property>
+      <name>javax.jdo.option.ConnectionURL</name>
+      <value>jdbc:postgresql://localhost:5432/metastore</value>
+    <description>PostgreSQL JDBC driver connection URL</description>
+    </property>
+    <property>
+      <name>javax.jdo.option.ConnectionDriverName</name>
+      <value>org.postgresql.Driver</value>
+      <description>PostgreSQL metastore driver class name</description>
+    </property>
+    <property>
+      <name>javax.jdo.option.ConnectionUserName</name>
+      <value>metastore</value>
+      <description>username for the DB instance</description>
+    </property>
+    <property>
+      <name>javax.jdo.option.ConnectionPassword</name>
+      <value>metastore-passwd</value>
+      <description>password for the DB instance</description>
+    </property>
+</configuration>
