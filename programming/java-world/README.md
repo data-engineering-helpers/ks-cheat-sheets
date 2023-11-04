@@ -1,5 +1,5 @@
-Cheat Sheets - Java and Scala)
-==============================
+Cheat Sheets - Java and Scala
+=============================
 
 # Overview
 [This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/java-world/README.md)
