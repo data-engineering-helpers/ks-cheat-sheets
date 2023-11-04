@@ -21,16 +21,45 @@ on premises, _e.g._, on a laptop or on a virtual machine (VM).
 * [Data Engineering Helpers - Knowledge Sharing - Minio](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/minio/README.md)
 * [Data Engineering Helpers - Knowledge Sharing - DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/README.md)
 
+## PostgreSQL
+* The Hive Metastore service needs a RDBMS (relational database system) to store the metadata,
+  and PostgreSQL fulfills that purpose. In this cheat sheet, the procedure to install Hive Metastore
+  is therefore documented with PostgreSQL, which is itself documented in another cheat sheet of this Git repository:
+  + [Data Engineering Helpers - Cheat sheet for PostgreSQL](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/README.md)
+* PostgreSQL JDBC driver download page (as of end 2023, the latest version is 42.6):
+  https://jdbc.postgresql.org/download
+
+## Java and OpenJDK
+* The [PostgreSQL drivers are available only for JDK up to version 8](https://jdbc.postgresql.org/download)
+* If Java needs to be installed (_e.g._, on systems not packaging it natively),
+  it is advised to install and use [SDKMan](https://sdkman.io/)
+  + Once SDKMan has been installed, installing in parallel a specific version of Java becomes as easy as
+    `sdk install 11.0.21-amzn` (here, for the Amazon-supported Corretto OpenJDK 11)
+  + On MacOS, Java may simply be installed with HomeBrew: `brew install openjdk`
+
 ## Hive Metastore
 * Hive home page: https://cwiki.apache.org/confluence/display/Hive/Home
   + [Hive doc - Admin manual for Metastore 3.0](https://cwiki.apache.org/confluence/display/Hive/AdminManual+Metastore+3.0+Administration)
   + Git repository: https://github.com/apache/hive/tree/master/metastore
     - [Git - PostgreSQL DDL script](https://github.com/apache/hive/blob/master/metastore/scripts/upgrade/postgres/hive-schema-2.3.0.postgres.sql)
 	  ([copy of the PostgreSQL DDL script in this Git repository](sql/hive-schema-2.3.0.postgres.sql))
+* Hive Metastore standalone download page (as of end 2023, the latest version is 3.0.0 and dates back to 2018):
+  https://downloads.apache.org/hive/hive-standalone-metastore-3.0.0/
+* Hadoop download page (as of end 2023, the [latest version is 3.3.6](https://archive.apache.org/dist/hadoop/common/hadoop-3.3.6/)
+  and dates back to June 2023): https://archive.apache.org/dist/hadoop/common/current/
 * [AWS blog post - How do I use a PostgreSQL database as the external metastore for Hive on Amazon EMR?](https://repost.aws/knowledge-center/postgresql-hive-metastore-emr)
 * [Pivotal BI blog - The Hive Metastore and local development](https://pivotalbi.com/the-hive-metastore-and-local-development/),
   by Nigel Meakins, Dec. 2021
 * JDBC driver for PostgreSQL: https://jdbc.postgresql.org/download/
+
+### Material about Hive Metastore
+* [Medium - Visualize parquet files with Apache Superset using Trino or PrestoSQL](https://sairamkrish.medium.com/visualize-parquet-files-with-apache-superset-using-trino-or-prestosql-511f18a37e3b),
+  by [Sairam Krish](https://www.linkedin.com/in/sairamkrish/),
+  Dec. 2021
+  + [GitHub - Containerized Hive Metastore service](https://github.com/bitsondatadev/hive-metastore)
+    - [GitHub - Containerized Hive Metastore service - `Dockerfile`](https://github.com/bitsondatadev/hive-metastore/blob/master/Dockerfile)
+    - [GitHub - Containerized Hive Metastore service - `entrypoint.sh` service launch script](https://github.com/bitsondatadev/hive-metastore/blob/master/scripts/entrypoint.sh)
+  + [GitHub - Trino demo - `metastore-site.xml` Hive Metastore client configuration](https://github.com/sairamkrish/trino-superset-demo/blob/main/hive/conf/metastore-site.xml)
 
 # Installation
 
