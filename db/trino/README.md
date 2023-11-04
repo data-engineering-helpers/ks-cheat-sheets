@@ -28,6 +28,7 @@ on premises, _e.g._, on a laptop or on a virtual machine (VM).
 * Trino home page: https://trino.io/
   + Presto home page (still existing, as of end 2023): https://prestodb.io/
 * GitHub project: https://github.com/trinodb/trino
+* [Trino doc - Hive connector](https://trino.io/docs/current/connector/hive.html)
 
 ## Articles
 * [Medium - Visualize parquet files with Apache Superset using Trino or PrestoSQL](https://sairamkrish.medium.com/visualize-parquet-files-with-apache-superset-using-trino-or-prestosql-511f18a37e3b),
