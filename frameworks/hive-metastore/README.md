@@ -1,5 +1,5 @@
-Cheat Sheet - LakeFS
-====================
+Cheat Sheet - Hive Metastore
+============================
 
 # Table of Content (ToC)
 
