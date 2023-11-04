@@ -20,6 +20,7 @@ on premises, _e.g._, on a laptop or on a virtual machine (VM).
 * [Material for the Data platform - Data life cycle](https://github.com/data-engineering-helpers/data-life-cycle/blob/main/README.md)
 * [Data Engineering Helpers - Knowledge Sharing - Minio](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/minio/README.md)
 * [Data Engineering Helpers - Knowledge Sharing - DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/README.md)
+* [Data Engineering Helpers - Knowledge Sharing - Java world](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/java-world/README.md)
 
 ## PostgreSQL
 * The Hive Metastore service needs a RDBMS (relational database system) to store the metadata,
@@ -30,6 +31,8 @@ on premises, _e.g._, on a laptop or on a virtual machine (VM).
   https://jdbc.postgresql.org/download
 
 ## Java and OpenJDK
+* See also the cheat sheet dedicated to the Java world in this Git repository:
+  [Data Engineering Helpers - Knowledge Sharing - Java world](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/java-world/README.md)
 * The [PostgreSQL drivers are available only for JDK up to version 8](https://jdbc.postgresql.org/download)
 * If Java needs to be installed (_e.g._, on systems not packaging it natively),
   it is advised to install and use [SDKMan](https://sdkman.io/)
