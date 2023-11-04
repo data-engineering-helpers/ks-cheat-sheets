@@ -36,6 +36,9 @@ these companies.
 ## PostgreSQL
 * [Directory dedicated to PostgreSQL](db/postgresql/)
 
+## Trino (formerly Presto)
+* [Directory dedicated to Trino](db/trino/)
+
 ## DuckDB
 * [Directory dedicated to DuckDB](db/duckdb/)
 
@@ -46,4 +49,7 @@ these companies.
 
 ## LakeFS
 * [Directory dedicated to LakeFS](frameworks/lakefs/)
+
+## Hive Metastore
+* [Directory dedicated to Hive Metastore](frameworks/hive-metastore/)
 
