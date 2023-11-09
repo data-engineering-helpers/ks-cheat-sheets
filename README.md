@@ -28,6 +28,9 @@ these companies.
 ## JavaScript (JS) development
 * [Directory dedicated to JS world](programming/js-world/)
 
+## Java development
+* [Directory dedicated to Java-world (including Scala) development](programming/java-world/)
+
 ## JupyterLab with PySpark and DuckDB
 * [Directory dedicated to JupyterLab with PySpark and DuckDB](programming/jupyter/jupyter-pyspark-duckdb)
 
@@ -50,6 +53,12 @@ these companies.
 ## LakeFS
 * [Directory dedicated to LakeFS](frameworks/lakefs/)
 
+## DBT
+* [Directory dedicated to DBT](frameworks/dbt/)
+
 ## Hive Metastore
 * [Directory dedicated to Hive Metastore](frameworks/hive-metastore/)
+
+## Kubernetes (k8s)
+* [Directory dedicated to Kubernetes (k8s)](frameworks/k8s/)
 
