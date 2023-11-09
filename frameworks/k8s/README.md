@@ -14,6 +14,7 @@ and interacting with remote Kubernetes services (_e.g._, pods, services, jobs).
 
 ## Data Engineering helpers
 * [Architecture principles for data engineering pipelines on the Modern Data Stack (MDS)](https://github.com/data-engineering-helpers/architecture-principles)
+* [Data Engineering Helpers - Knowledge Sharing - AWS](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/clouds/aws/)
 * [Data Engineering Helpers - Knowledge Sharing - PostgreSQL](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/README.md)
 
 # Installation
