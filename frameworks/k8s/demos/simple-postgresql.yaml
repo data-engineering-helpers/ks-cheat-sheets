@@ -1,0 +1,57 @@
+#
+# Ref: https://stackoverflow.com/a/76748564/798053
+#
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: db
+
+spec:
+  selector:
+    matchLabels:
+      app: db
+
+  serviceName: "db"
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+
+      securityContext:
+        fsGroup: 999
+
+      containers:
+      - name: db
+        image: postgres
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 999  # postgres user in container
+          runAsGroup: 999
+          allowPrivilegeEscalation: false
+
+        resources:
+          limits:
+            memory: 200Mi
+            cpu: 300m
+          requests:
+            memory: 100Mi
+            cpu: 100m
+        
+        env:
+        - name: POSTGRES_PASSWORD
+          value: "secret"
+        - name: PGDATA
+          value: "/var/lib/postgresql/data/pgdata"
+
+        ports:
+        - containerPort: 5432
+          name: db
+
+        volumeMounts:
+        - name: db
+          mountPath: /var/lib/postgresql/data
+
+      volumes:
+        - name: db
+          emptyDir: {}
