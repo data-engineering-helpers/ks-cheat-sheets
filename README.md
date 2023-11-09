@@ -45,6 +45,17 @@ these companies.
 ## DuckDB
 * [Directory dedicated to DuckDB](db/duckdb/)
 
+# Cloud services
+
+## Amazon web services (AWS)
+* [Directory dedicated to Amazon Web Services (AWS)](clouds/aws/)
+
+## Azure cloud services
+* [Directory dedicated to Azure cloud services](clouds/azure/)
+
+## Google Cloud Platform (GCP)
+* [Directory dedicated to Google Cloud Platform (GCP)](clouds/gcp/)
+
 # Frameworks
 
 ## Minio
