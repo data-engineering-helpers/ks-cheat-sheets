@@ -10,8 +10,7 @@ Cheat Sheets - Python - Geography-related work
     * [New\-York taxis](#new-york-taxis)
       * [Data preparation](#data-preparation)
     * [Analyzing changes in geospatial data](#analyzing-changes-in-geospatial-data)
-* [References](#references-1)
-  * [DataBricks notebooks](#databricks-notebooks)
+    * [Create a Simple GIS Map with Plotly and Streamlit](#create-a-simple-gis-map-with-plotly-and-streamlit)
     * [Constructing hexagon maps with H3 and Plotly](#constructing-hexagon-maps-with-h3-and-plotly)
       * [Data](#data)
   * [Use cases](#use-cases)
@@ -25,6 +24,8 @@ Cheat Sheets - Python - Geography-related work
     * [Cartopy](#cartopy)
     * [Geospatial projections](#geospatial-projections)
     * [Choropleth map](#choropleth-map)
+    * [Plotly](#plotly)
+    * [Streamlit](#streamlit)
     * [H3](#h3)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
@@ -46,7 +47,7 @@ references material about data analysis related to geography with Python.
   ([Alan Jones on Medium](https://medium.com/@alan-jones),
   [Alan Jones on LinkedIn](https://www.linkedin.com/in/alan-jones-032699100/))
   + Publisher: Medium TowardsDataScience
-* Source: [Medium - 5 Visualizations with Python to Show Simultaneous Changes in Geospatial Data](https://towardsdatascience.com/5-visualizations-with-python-to-show-simultaneous-changes-in-geospatial-data-ddc2eaab9d78)
+* [Medium - 5 Visualizations with Python to Show Simultaneous Changes in Geospatial Data](https://towardsdatascience.com/5-visualizations-with-python-to-show-simultaneous-changes-in-geospatial-data-ddc2eaab9d78)
   + Date: Nov. 2023
   + Author: Boriharn K.
   ([Boriharn K. on Medium](https://medium.com/@borih.k)
@@ -54,6 +55,10 @@ references material about data analysis related to geography with Python.
   + Date: Nov. 2023
   + Author: Boriharn K.
 * [IBM - What is geospatial data?](https://www.ibm.com/topics/geospatial-data)
+* [Medium - Constructing Hexagon Maps with H3 and Plotly: A Comprehensive Tutorial](https://towardsdatascience.com/constructing-hexagon-maps-with-h3-and-plotly-a-comprehensive-tutorial-8f37a91573bb)
+  + Date: Nov. 2023
+  + Author: Amanda Iglesias Moreno
+    ([Amanda Iglesias Moreno on LinkedIn](https://www.linkedin.com/in/amanda-iglesias-moreno-55029417a/))
 
 ## Samples of data analysis
 
@@ -76,28 +81,20 @@ references material about data analysis related to geography with Python.
   (forked notebook to adapt with new format of data)
 
 ### Analyzing changes in geospatial data
-# References
-* Source: [Medium - 5 Visualizations with Python to Show Simultaneous Changes in Geospatial Data](https://towardsdatascience.com/5-visualizations-with-python-to-show-simultaneous-changes-in-geospatial-data-ddc2eaab9d78)
-  + Date: Nov. 2023
-  + Author: Boriharn K.
-* [GitHub - Geojson-XYZ](https://github.com/geojson-xyz)
-* [IBM - What is geospatial data?](https://www.ibm.com/topics/geospatial-data)
-* [Wikipedia - List of U.S. states and territories by income](https://en.wikipedia.org/wiki/List_of_U.S._states_and_territories_by_income)
-* [Wikipedia - Choropleth map](https://en.wikipedia.org/wiki/Choropleth_map)
-
-## DataBricks notebooks
+* Source (see above):
+  [Medium - 5 Visualizations with Python to Show Simultaneous Changes in Geospatial Data](https://towardsdatascience.com/5-visualizations-with-python-to-show-simultaneous-changes-in-geospatial-data-ddc2eaab9d78)
 * [GitHub - Data Engineering Helpers - DataBricks notebook - Show Simultaneous Changes in Geospatial Data - Part 1](https://github.com/data-engineering-helpers/databricks-examples/blob/main/ipython-notebooks/demos-geo-show-simultaneous-changes-in-geospatial-data-1_2.ipynb)
 * [GitHub - Data Engineering Helpers - DataBricks notebook - Show Simultaneous Changes in Geospatial Data - Part 2](https://github.com/data-engineering-helpers/databricks-examples/blob/main/ipython-notebooks/demos-geo-show-simultaneous-changes-in-geospatial-data-2_2.ipynb)
-* [GitHub - Data Engineering Helpers - DataBricks notebook - Python Contextily package](https://github.com/data-engineering-helpers/databricks-examples/blob/main/ipython-notebooks/demos-geo-python-contextily-package.ipynb)
-* [GitHub - Data Engineering Helpers - DataBricks notebook - Spatial projections](https://github.com/data-engineering-helpers/databricks-examples/blob/main/ipython-notebooks/demos-geo-spatial-projections.ipynb)
+
+### Create a Simple GIS Map with Plotly and Streamlit
+* Source (see above):
+  [Medium - How to Create a Simple GIS Map with Plotly and Streamlit](https://towardsdatascience.com/how-to-create-a-simple-gis-map-with-plotly-and-streamlit-7732d67b84e2)
+* [GitHub - Data Engineering Helpers - DataBricks notebook - Create a Simple GIS Map with Plotly and Streamlit](https://github.com/data-engineering-helpers/databricks-examples/blob/main/ipython-notebooks/demos-geo-plotly-and-streamlit.ipynb)
 
 ### Constructing hexagon maps with H3 and Plotly
 * [GitHub - Data Engineering Helpers - DataBricks notebook - Constructing Hexagon Maps with H3 and Plotly: A Comprehensive Tutorial](https://github.com/data-engineering-helpers/databricks-examples/blob/main/ipython-notebooks/demos-geo-constructing-hexagon-maps-with-h3-and-plotly.ipynb)
-* Original article:
-  + [Medium - Constructing Hexagon Maps with H3 and Plotly: A Comprehensive Tutorial](https://towardsdatascience.com/constructing-hexagon-maps-with-h3-and-plotly-a-comprehensive-tutorial-8f37a91573bb)
-  + Date: Nov. 2023
-  + Author: Amanda Iglesias Moreno
-    ([Amanda Iglesias Moreno on LinkedIn](https://www.linkedin.com/in/amanda-iglesias-moreno-55029417a/))
+* Source (see above):
+  [Medium - Constructing Hexagon Maps with H3 and Plotly: A Comprehensive Tutorial](https://towardsdatascience.com/constructing-hexagon-maps-with-h3-and-plotly-a-comprehensive-tutorial-8f37a91573bb)
 
 #### Data
 * Home page:
@@ -136,6 +133,7 @@ references material about data analysis related to geography with Python.
 * [Introduction guide to contextily — contextily 1.1.0 documentation](https://contextily.readthedocs.io/en/latest/intro_guide.html)
 * GitHub page: https://github.com/geopandas/contextily
 * Description: context geo tiles in Python with GeoPandas
+* [GitHub - Data Engineering Helpers - DataBricks notebook - Python Contextily package](https://github.com/data-engineering-helpers/databricks-examples/blob/main/ipython-notebooks/demos-geo-python-contextily-package.ipynb)
 
 ### Graviz
 * Gravis documentation: https://robert-haas.github.io/gravis-docs/
@@ -154,9 +152,15 @@ references material about data analysis related to geography with Python.
   https://proj.org/operations/projections/cea.html
 * Very detailed answer on GIS Stack Exchange/Stack Overflow:
   https://gis.stackexchange.com/a/401815/23550
+* [GitHub - Data Engineering Helpers - DataBricks notebook - Spatial projections](https://github.com/data-engineering-helpers/databricks-examples/blob/main/ipython-notebooks/demos-geo-spatial-projections.ipynb)
+
 
 ### Choropleth map
 * [Wikipedia - Choropleth map](https://en.wikipedia.org/wiki/Choropleth_map)
+
+### Plotly
+
+### Streamlit
 
 ### H3
 * Home page: https://h3geo.org/
