@@ -37,8 +37,8 @@ references material about data analysis related to geography with Python.
 # References
 
 ## Data Engineering helpers
+* [Data Engineering Helpers - Knowledge Sharing - Cheat Sheets (this Git repository)](https://github.com/data-engineering-helpers/ks-cheat-sheets)
 * [Data Engineering Helpers - Knowledge Sharing - DataBricks examples](https://github.com/data-engineering-helpers/databricks-examples)
-
 
 ## Blog articles
 * [Medium - How to Create a Simple GIS Map with Plotly and Streamlit](https://towardsdatascience.com/how-to-create-a-simple-gis-map-with-plotly-and-streamlit-7732d67b84e2)
