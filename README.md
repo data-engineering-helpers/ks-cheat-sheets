@@ -70,6 +70,9 @@ these companies.
 ## Hive Metastore
 * [Directory dedicated to Hive Metastore](frameworks/hive-metastore/)
 
+## Egeria
+* [Directory dedicated to Egeria OMAG (Open Metadata and Governance)](frameworks/egeria/)
+
 ## Kubernetes (k8s)
 * [Directory dedicated to Kubernetes (k8s)](frameworks/k8s/)
 
