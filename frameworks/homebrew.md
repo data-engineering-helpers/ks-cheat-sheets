@@ -14,7 +14,9 @@ cask "bruno"
 
 brew "git"
 brew "gh"
+brew "coreutils"
 brew "gnu-sed"
+brew "gawk"
 
 _EOF
 ```
