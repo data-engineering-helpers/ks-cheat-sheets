@@ -19,10 +19,19 @@ programming with JavaScript.
 $ NVM_VER=$(curl -Ls https://api.github.com/repos/nvm-sh/nvm/releases/latest | grep 'tag_name' | cut -d'v' -f2 | cut -d'"' -f1)
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v${NVM_VER}/install.sh | bash
 ```
-
-* Reset the terminal:
+  * To upgrade NVM, just go into the NVM folder (`~/.nvm`) and pull the latest
+    changes:
+```bash
+$ pushd ~/.nvm && git pull && popd
+```
+  * Reset the terminal:
 ```bash
 $ exec bash
+```
+  * Check the version of NVM:
+```bash
+$ nvm --version
+0.39.7
 ```
 
 ## NodeJS
