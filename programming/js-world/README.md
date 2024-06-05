@@ -52,12 +52,28 @@ $ nvm ls-remote
 
 * Install some specific version of NodeJS:
 ```bash
-$ nvm install 20.10.0
+$ nvm install 20.14.0
+Downloading and installing node v20.14.0...
+...
+Now using node v20.14.0 (npm v10.7.0)
 ```
 
 * Have a specific NodeJS version as global default:
 ```bash
-$ nvm use 20.10.0
+$ nvm use 20.14.0
+Now using node v20.14.0 (npm v10.7.0)
+```
+
+* Uninstall some older version of NodeJS:
+```bash
+$ nvm uninstall 20.10.0
+Uninstalled node v20.10.0
+```
+
+* Set default Node version on the Shell:
+```bash
+$ nvm alias default 20.14.0
+default -> 20.14.0 (-> v20.14.0)
 ```
 
 ## Node modules
