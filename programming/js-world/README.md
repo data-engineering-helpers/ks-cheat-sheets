@@ -39,7 +39,7 @@ $ nvm --version
 
 * List the installed versions of NodeJS:
 ```bash
-$ nvm list
+$ nvm ls
 ```
 
 * List the available versions of NodeJS, which may be installed locally:
@@ -52,28 +52,28 @@ $ nvm ls-remote
 
 * Install some specific version of NodeJS:
 ```bash
-$ nvm install 20.14.0
-Downloading and installing node v20.14.0...
+$ nvm install 20.15.1
+Downloading and installing node v20.15.1...
 ...
-Now using node v20.14.0 (npm v10.7.0)
+Now using node v20.15.1 (npm v10.7.0)
 ```
 
 * Have a specific NodeJS version as global default:
 ```bash
-$ nvm use 20.14.0
-Now using node v20.14.0 (npm v10.7.0)
+$ nvm use 20.15.1
+Now using node v20.15.1 (npm v10.7.0)
 ```
 
 * Uninstall some older version of NodeJS:
 ```bash
-$ nvm uninstall 20.10.0
-Uninstalled node v20.10.0
+$ nvm uninstall 20.14.0
+Uninstalled node v20.14.0
 ```
 
 * Set default Node version on the Shell:
 ```bash
-$ nvm alias default 20.14.0
-default -> 20.14.0 (-> v20.14.0)
+$ nvm alias default 20.15.1
+default -> 20.15.1 (-> v20.15.1)
 ```
 
 ## Node modules
@@ -83,17 +83,26 @@ default -> 20.14.0 (-> v20.14.0)
 
 * Install Yarn:
 ```bash
-$ npm install --global yarn
+$ npm install -g yarn
+```
+
+### TypeScript (TS)
+* Reference: https://www.npmjs.com/package/ts-node
+
+* Install TypeScript and `ts-node`:
+```bash
+$ npm install -g typescript
+  npm install -g ts-node
 ```
 
 # Update / upgrade
 * In a given project
-  + Download the latest information about packages:
+  * Download the latest information about packages:
 ```bash
 $ npm update
 ```
-  + Upgrade the packages of the project (as seen in the `package-lock.json`
-    file)):
+  * Upgrade the packages of the project (as seen in the `package-lock.json`
+    file):
 ```bash
 $ npm upgrade
 ```
