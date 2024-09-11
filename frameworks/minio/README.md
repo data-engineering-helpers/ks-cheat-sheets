@@ -98,7 +98,7 @@ $ export BREW_PFX="$(brew --prefix)"
 $ brew services start minio
 ```
 
-* The Minio data lake is now accessible through http://localhost:9090/
+* The Minio data lake is now accessible through http://localhost:9000/
 
 * Specify an alias for the Minio service for the Minio client:
 ```bash
