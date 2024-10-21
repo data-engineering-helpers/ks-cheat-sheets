@@ -254,6 +254,7 @@ alias sparkconnectstart='sparkconnectunset; start-connect-server.sh --packages o
 alias sparkconnectstop='stop-connect-server.sh'
 
 # PySpark and/or PySpark kernel within JupyterLab
+alias pysparkdelta='pyspark --packages io.delta:delta-core_2.12:2.4.0,org.postgresql:postgresql:42.6.0 --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" --conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog"'
 alias pysparkdeltawconnect='sparkconnectset; pysparkdelta'
 alias pysparkdeltawoconnect='sparkconnectunset; pysparkdelta'
 
