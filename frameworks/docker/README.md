@@ -35,6 +35,17 @@ containers and images.
 
 ### Podman Desktop
 
+## SBOM
+* [SPDX - Homepage](https://spdx.dev/)
+  * [SPDX - Overview for users](https://spdx.dev/use/overview/)
+* [Earthly docs - Docker SBOM](https://earthly.dev/blog/docker-sbom/)
+* [GitHub - Docker SBOM plugin](https://github.com/docker/sbom-cli-plugin)
+  for Docker-compatible CLI tools (like Rancher or Podman) not shipping
+  with integrated SBOM
+* SPDX tools
+  * [GitHub - SPDX tools - Quickstart guides](https://github.com/spdx/outreach/tree/main/quickstart)
+  * [GitHub - SPDX spec examples](https://github.com/spdx/spdx-spec/tree/development/v2.3.1/examples)
+
 # Typical workflow
 * Build an image:
 ```bash
@@ -54,6 +65,11 @@ $ docker push project-name:version
   docker push project-name:latest
 ```
 
+* Create the SBOM for the image:
+```bash
+$ docker sbom project-name:version -o sbom.txt
+```
+
 # Build images for multiple platforms
 * Source: [StackOverflow - Multiple-platform-feature](https://unix.stackexchange.com/a/748634/115196)
 
@@ -71,4 +87,21 @@ $ docker buildx inspect --bootstrap
 * Build an image for multiple platforms:
 ```bash
 $ docker buildx build --platform=linux/arm64,linux/amd64 --push --tag project-name:latest -f ./project-name/Dockerfile .
+```
+
+* Build an image for multiple platforms, adding support for SBOM and provenance:
+```bash
+$ docker buildx build --platform=linux/arm64,linux/amd64 --provenance true --sbom true --push --tag project-name:latest -f ./project-name/Dockerfile .
+```
+
+# Installation
+
+## SBOM plugin
+* Install the [Docker SBOM plugin](https://github.com/docker/sbom-cli-plugin):
+```bash
+$ curl -sSfL https://raw.githubusercontent.com/docker/sbom-cli-plugin/main/install.sh | sh -s --
+```
+* The Docker SBOM may then be used on a specific image as follows:
+```bash
+$ docker sbom image-name:version --format spdx-json -o sbom.json
 ```
