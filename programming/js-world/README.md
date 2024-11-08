@@ -31,7 +31,7 @@ $ exec bash
   * Check the version of NVM:
 ```bash
 $ nvm --version
-0.39.7
+0.40.1
 ```
 
 ## NodeJS
@@ -52,28 +52,28 @@ $ nvm ls-remote
 
 * Install some specific version of NodeJS:
 ```bash
-$ nvm install 20.15.1
-Downloading and installing node v20.15.1...
+$ nvm install 22.11.0
+Downloading and installing node v22.11.0...
 ...
-Now using node v20.15.1 (npm v10.7.0)
+Now using node v22.11.0 (npm v10.9.0)
 ```
 
 * Have a specific NodeJS version as global default:
 ```bash
-$ nvm use 20.15.1
-Now using node v20.15.1 (npm v10.7.0)
+$ nvm use 22.11.0
+Now using node v22.11.0 (npm v10.9.0)
 ```
 
 * Uninstall some older version of NodeJS:
 ```bash
-$ nvm uninstall 20.14.0
-Uninstalled node v20.14.0
+$ nvm uninstall 20.15.1
+Uninstalled node v20.15.1
 ```
 
 * Set default Node version on the Shell:
 ```bash
-$ nvm alias default 20.15.1
-default -> 20.15.1 (-> v20.15.1)
+$ nvm alias default 22.11.0
+default -> 22.11.0 (-> v22.11.0)
 ```
 
 ## Node modules
@@ -84,6 +84,7 @@ default -> 20.15.1 (-> v20.15.1)
 * Install Yarn:
 ```bash
 $ npm install -g yarn
+added 1 package in 883ms
 ```
 
 ### TypeScript (TS)
