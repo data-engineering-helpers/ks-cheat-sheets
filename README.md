@@ -22,6 +22,7 @@ Knowledge sharing - Cheat sheets
 * [Data processing](#data-processing)
   * [DBT](#dbt)
 * [Data catalogs](#data-catalogs)
+  * [Unity Catalog](#unity-catalog)
   * [Hive Metastore](#hive-metastore)
   * [Egeria](#egeria)
 * [Infrastructure](#infrastructure)
@@ -99,6 +100,9 @@ these companies.
 * [Directory dedicated to DBT](data-processing/dbt/)
 
 # Data catalogs
+
+## Unity Catalog
+* [Directory dedicated to Unity Catalog](data-catalogs/unity-catalog/)
 
 ## Hive Metastore
 * [Directory dedicated to Hive Metastore](data-catalogs/hive-metastore/)
