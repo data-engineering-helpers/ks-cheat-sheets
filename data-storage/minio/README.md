@@ -22,7 +22,7 @@ Cheat Sheet - Minio
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
 # Overview
-[This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/minio/README.md)
+[This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-storage/minio/README.md)
 explains how to install and to use Minio service on premises, _e.g._,
 on a laptop or on a virtual machine (VM).
 
@@ -35,8 +35,8 @@ on a laptop or on a virtual machine (VM).
 ## Data Engineering helpers
 * [Material for the Data platform - Modern Data Stack (MDS) in a box](https://github.com/data-engineering-helpers/mds-in-a-box/blob/main/README.md)
 * [Material for the Data platform - Data life cycle](https://github.com/data-engineering-helpers/data-life-cycle/blob/main/README.md)
-* [Data Engineering Helpers - Knowledge Sharing - Minio](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/minio/README.md)
-* [Data Engineering Helpers - Knowledge Sharing - LakeFS](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/lakefs/README.md)
+* [Data Engineering Helpers - Knowledge Sharing - Minio](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-storage/minio/README.md)
+* [Data Engineering Helpers - Knowledge Sharing - LakeFS](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-storage/lakefs/README.md)
 
 ## Minio
 * Minio home page: https://min.io/
@@ -67,7 +67,7 @@ $ brew install minio/stable/minio
 ```bash
 % sudo mkdir -p /etc/default
   sudo chown $USER /etc/default
-  curl https://raw.githubusercontent.com/data-engineering-helpers/ks-cheat-sheets/main/frameworks/minio/etc/minio -o /etc/default/minio
+  curl https://raw.githubusercontent.com/data-engineering-helpers/ks-cheat-sheets/main/data-storage/minio/etc/minio -o /etc/default/minio
 ```
 
 * In that new Minio configuration file, adjust the `MINIO_VOLUMES`,
@@ -78,7 +78,7 @@ $ vi /etc/default/minio
 
 * If, for some reason, HomeBrew does not install the Minio service (specified
   with a Plist file), copy the
-  [MacOS service plist file](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/minio/etc/homebrew.mxcl.minio.plist)
+  [MacOS service plist file](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-storage/minio/etc/homebrew.mxcl.minio.plist)
   to the place where Minio was installed (that solution was documented
   as a
   [GitHub issue on Minio repository](https://github.com/minio/minio/issues/16382)).
@@ -88,7 +88,7 @@ $ vi /etc/default/minio
 $ export BREW_PFX="$(brew --prefix)"
   export MINIO_DIR="$(brew info minio|grep "^$BREW_PFX"|cut -d' ' -f1,1)"
   export MINIO_VOLUMES="$(grep "^MINIO_VOLUMES=" /etc/default/minio | cut -d'=' -f2,2 | sed -e 's/"//g')"
-  curl https://raw.githubusercontent.com/data-engineering-helpers/ks-cheat-sheets/main/frameworks/minio/etc/homebrew.mxcl.minio.plist -o homebrew.mxcl.minio.plist.in
+  curl https://raw.githubusercontent.com/data-engineering-helpers/ks-cheat-sheets/main/data-storage/minio/etc/homebrew.mxcl.minio.plist -o homebrew.mxcl.minio.plist.in
   envsubst < homebrew.mxcl.minio.plist.in > $MINIO_DIR/homebrew.mxcl.minio.plist
   rm -f homebrew.mxcl.minio.plist.in
 ```
@@ -114,7 +114,7 @@ TBC
   and take note of it. That key pair will be required for client tools
   of the Minio service, such as the AWS CLI (see the
   [AWS CLI section below](#aws-cli)) or LakeFS (see for instance the
-  [Knowledge Sharing - LakeFS cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/lakefs/README.md)).
+  [Knowledge Sharing - LakeFS cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-storage/lakefs/README.md)).
 
 * Create some content
   + Create some buckets and folders:
@@ -227,14 +227,14 @@ $ python -mpip install -U pip cloudpathlib[s3]
   http://localhost:8889/lab/tree/ipython-notebooks/minio-browse.ipynb
   after starting Jupyter Lab locally:
 ```bash
-$ jupyter lab frameworks/minio --port 8889 --allow-root --no-browser --ip 0.0.0.0 --IdendityProvider.token=
+$ jupyter lab data-storage/minio --port 8889 --allow-root --no-browser --ip 0.0.0.0 --IdendityProvider.token=
 ```
 
 * A
-  [simple Python script](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/minio/python/minio-browse.py)
+  [simple Python script](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-storage/minio/python/minio-browse.py)
   allows to browse the same Minio Bronze bucket:
 ```bash
-$ ./frameworks/minio/python/minio-browse.py
+$ ./data-storage/minio/python/minio-browse.py
 s3://bronze/geonames/allCountries.parquet
 s3://bronze/geonames/alternateNames.parquet
 ```

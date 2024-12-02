@@ -6,7 +6,7 @@ Cheat Sheet - Serverless (AWS Lambda)
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
 # Overview
-[This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/serverless/README.md)
+[This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/infrastructure/serverless/README.md)
 explains how to deploy payloads on AWS Lambda, which is part of the serverless framework.
 
 # References

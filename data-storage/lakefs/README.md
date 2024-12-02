@@ -33,7 +33,7 @@ Cheat Sheet - LakeFS
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
 # Overview
-[This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/lakefs/README.md)
+[This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-storage/lakefs/README.md)
 explains how to install and to use [LakeFS](https://lakefs.io/) on premises,
 _e.g._, on a laptop or on a virtual machine (VM).
 
@@ -55,8 +55,8 @@ _e.g._, on a laptop or on a virtual machine (VM).
 ## Data Engineering helpers
 * [Material for the Data platform - Modern Data Stack (MDS) in a box](https://github.com/data-engineering-helpers/mds-in-a-box/blob/main/README.md)
 * [Material for the Data platform - Data life cycle](https://github.com/data-engineering-helpers/data-life-cycle/blob/main/README.md)
-* [Data Engineering Helpers - Knowledge Sharing - Minio](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/minio/README.md)
-* [Data Engineering Helpers - Knowledge Sharing - LakeFS](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/lakefs/README.md)
+* [Data Engineering Helpers - Knowledge Sharing - Minio](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-storage/minio/README.md)
+* [Data Engineering Helpers - Knowledge Sharing - LakeFS](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-storage/lakefs/README.md)
 * [Data Engineering Helpers - Knowledge Sharing - DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/README.md)
 * [Data Engineering Helpers - Knowledge Sharing - PostgreSQL](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/README.md)
 
@@ -67,7 +67,7 @@ _e.g._, on a laptop or on a virtual machine (VM).
 
 ## Minio
 * [Minio](https://min.io/) is a dependency for on-premise deployment
-* See [Data Engineering Helpers - Knowledge Sharing - Minio](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/minio/README.md)
+* See [Data Engineering Helpers - Knowledge Sharing - Minio](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-storage/minio/README.md)
   for more details on how to install the Minio service
 
 ## DuckDB
@@ -127,7 +127,7 @@ DESC LIMIT 5;
 ```bash
 $ mkdir -p ~/dev/knowledge-sharing && \
   git clone git@github.com:data-engineering-helpers/ks-cheat-sheets.git ~/dev/knowledge-sharing/ks-cheat-sheets
-  cd ~/dev/knowledge-sharing/ks-cheat-sheets/frameworks/lakefs
+  cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-storage/lakefs
 ```
 
 * From the command-line (CLI), from within this project LakeFS directory,
@@ -279,7 +279,7 @@ $ brew install postgresql@15
 ```
 
 ### Minio
-See [Data Engineering Helpers - Knowledge Sharing - Minio](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/minio/README.md)
+See [Data Engineering Helpers - Knowledge Sharing - Minio](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-storage/minio/README.md)
 for more details on how to install the Minio service
 
 ## LakeFS server
@@ -303,7 +303,7 @@ $ brew install lakefs
   + Download the sample into the LakeFS configuration directory:
 ```bash
 $ mkdir -p ~/.lakefs
-  curl https://raw.githubusercontent.com/data-engineering-helpers/ks-cheat-sheets/main/frameworks/lakefs/etc/config.yaml -o ~/.lakefs/config.yaml
+  curl https://raw.githubusercontent.com/data-engineering-helpers/ks-cheat-sheets/main/data-storage/lakefs/etc/config.yaml -o ~/.lakefs/config.yaml
 ```
   + Edit the LakeFS server configuration file, and specify the PostgreSQL
     connection string as well as the Minio access key (as setup in the above
@@ -317,7 +317,7 @@ $ vi ~/.lakefs/config.yaml
 ```bash
 % sudo mkdir -p /etc/default
   sudo chown $USER /etc/default
-  curl https://raw.githubusercontent.com/data-engineering-helpers/ks-cheat-sheets/main/frameworks/lakefs/etc/lakefs -o /etc/default/lakefs
+  curl https://raw.githubusercontent.com/data-engineering-helpers/ks-cheat-sheets/main/data-storage/lakefs/etc/lakefs -o /etc/default/lakefs
 ```
 
 * In that new LakeFS configuration file, adjust the `LAKEFS_CFG`,
@@ -327,13 +327,13 @@ $ vi /etc/default/lakefs
 ```
 
 * Copy the
-  [MacOS service plist file](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/lakefs/etc/homebrew.mxcl.lakefs.plist)
+  [MacOS service plist file](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-storage/lakefs/etc/homebrew.mxcl.lakefs.plist)
   to the place where LakeFS was installed:
 ```bash
 $ export BREW_PFX="$(brew --prefix)"
   export LAKEFS_DIR="$(brew info lakefs|grep "^$BREW_PFX"|cut -d' ' -f1,1)"
   source /etc/default/lakefs ; export LAKEFS_CFG
-  curl https://raw.githubusercontent.com/data-engineering-helpers/ks-cheat-sheets/main/frameworks/lakefs/etc/homebrew.mxcl.lakefs.plist -o homebrew.mxcl.lakefs.plist.in
+  curl https://raw.githubusercontent.com/data-engineering-helpers/ks-cheat-sheets/main/data-storage/lakefs/etc/homebrew.mxcl.lakefs.plist -o homebrew.mxcl.lakefs.plist.in
   envsubst < homebrew.mxcl.lakefs.plist.in > $LAKEFS_DIR/homebrew.mxcl.lakefs.plist
   rm -f homebrew.mxcl.lakefs.plist.in
 ```

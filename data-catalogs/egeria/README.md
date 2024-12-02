@@ -1,12 +1,12 @@
-Cheat Sheet - Frameworks - Egeria
-=================================
+Cheat Sheet - Data catalogs - Egeria
+====================================
 
 # Table of Content (ToC)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
 # Overview
-[This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/egeria/README.md)
+[This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/egeria/README.md)
 explains how to install and to use
 [Egeria](https://github.com/odpi/egeria/)
 on premises, _e.g._, on a laptop or on a virtual machine (VM).
@@ -16,10 +16,10 @@ on premises, _e.g._, on a laptop or on a virtual machine (VM).
 ## Data Engineering helpers
 * [Material for the Data platform - Modern Data Stack (MDS) in a box](https://github.com/data-engineering-helpers/mds-in-a-box/blob/main/README.md)
 * [Material for the Data platform - Data life cycle](https://github.com/data-engineering-helpers/data-life-cycle/blob/main/README.md)
-* [Data Engineering Helpers - Knowledge Sharing - Minio](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/minio/README.md)
+* [Data Engineering Helpers - Knowledge Sharing - Minio](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-storage/minio/README.md)
 * [Data Engineering Helpers - Knowledge Sharing - DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/README.md)
 * [Data Engineering Helpers - Knowledge Sharing - PostgreSQL](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/README.md)
-* [Data Engineering Helpers - Knowledge Sharing - Hive Metastore](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/hive-metastore/README.md)
+* [Data Engineering Helpers - Knowledge Sharing - Hive Metastore](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/hive-metastore/README.md)
 * [Data Engineering Helpers - Knowledge Sharing - Trino](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/trino/README.md)
 * [Data Engineering Helpers - Knowledge Sharing - Dremio](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/dremio/README.md)
 * [Data Engineering Helpers - Knowledge Sharing - Java world](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/java-world/README.md)
@@ -63,15 +63,15 @@ $ java -Dloader.path=lib,extra -jar omag-server-platform*.jar
 
 * In order to ease the launching of the Egeria server in the background,
   two Shell scripts are provided in this Git repository:
-  * [GitHub - KS Egeria - `bin/egeria-start.sh`](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/egeria/bin/egeria-start.sh)
-  * [GitHub - KS Egeria - `bin/egeria-screen.sh`](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/egeria/bin/egeria-screen.sh)
+  * [GitHub - KS Egeria - `bin/egeria-start.sh`](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/egeria/bin/egeria-start.sh)
+  * [GitHub - KS Egeria - `bin/egeria-screen.sh`](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/egeria/bin/egeria-screen.sh)
 * If not already done so, install `screen`, _e.g._, on MacOS, `brew install screen`
 * Copy those 2 scripts in the local `~/bin/` directory, so that the Egeria server may be launched and audited as following:
   * Installation:
 ```bash
 $ mkdir -p ~/bin
-  curl https://raw.githubusercontent.com/data-engineering-helpers/ks-cheat-sheets/main/frameworks/egeria/bin/egeria-start.sh -o ~/bin/egeria-start.sh
-  curl https://raw.githubusercontent.com/data-engineering-helpers/ks-cheat-sheets/main/frameworks/egeria/bin/egeria-screen.sh -o ~/bin/egeria-screen.sh
+  curl https://raw.githubusercontent.com/data-engineering-helpers/ks-cheat-sheets/main/data-catalogs/egeria/bin/egeria-start.sh -o ~/bin/egeria-start.sh
+  curl https://raw.githubusercontent.com/data-engineering-helpers/ks-cheat-sheets/main/data-catalogs/egeria/bin/egeria-screen.sh -o ~/bin/egeria-screen.sh
   chmod +x ~/bin/egeria-*.sh
 ```
   * Start the Egeria server in a dedicated screen:

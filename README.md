@@ -56,23 +56,33 @@ these companies.
 ## Google Cloud Platform (GCP)
 * [Directory dedicated to Google Cloud Platform (GCP)](clouds/gcp/)
 
-# Frameworks
+# Data storage
 
 ## Minio
-* [Directory dedicated to Minio](frameworks/minio/)
+* [Directory dedicated to Minio](data-storage/minio/)
 
 ## LakeFS
-* [Directory dedicated to LakeFS](frameworks/lakefs/)
+* [Directory dedicated to LakeFS](data-storage/lakefs/)
+
+# Data processing
 
 ## DBT
-* [Directory dedicated to DBT](frameworks/dbt/)
+* [Directory dedicated to DBT](data-processing/dbt/)
+
+# Data catalogs
 
 ## Hive Metastore
-* [Directory dedicated to Hive Metastore](frameworks/hive-metastore/)
+* [Directory dedicated to Hive Metastore](data-catalogs/hive-metastore/)
 
 ## Egeria
-* [Directory dedicated to Egeria OMAG (Open Metadata and Governance)](frameworks/egeria/)
+* [Directory dedicated to Egeria OMAG (Open Metadata and Governance)](data-catlogs/egeria/)
+
+# Infrastructure
+
+## Docker
+* [Directory dedicated to containerization (Docker)](infrasrtructure/docker/)
 
 ## Kubernetes (k8s)
-* [Directory dedicated to Kubernetes (k8s)](frameworks/k8s/)
+* [Directory dedicated to Kubernetes (k8s)](infrastructure/k8s/)
+
 

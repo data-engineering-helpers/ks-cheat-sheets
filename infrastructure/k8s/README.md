@@ -18,7 +18,7 @@ Cheat Sheet - Kubernetes (K8S)
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
 # Overview
-[This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/frameworks/k8s/README.md)
+[This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/infrastructure/k8s/README.md)
 explains how to use Kubernetes services, that is, installing Kubernetes client
 utilities such as `kubectl` and interacting with remote Kubernetes services
 (_e.g._, pods, services, jobs).

@@ -20,9 +20,9 @@ programming with Java and Scala, in particular for Spark-powered data processing
 # SDKMan
 * If Java needs to be installed (_e.g._, on systems not packaging it natively),
   it is advised to install and use [SDKMan](https://sdkman.io/)
-  + Once SDKMan has been installed, installing in parallel a specific version of Java becomes as easy as
+  * Once SDKMan has been installed, installing in parallel a specific version of Java becomes as easy as
     `sdk install 11.0.21-amzn` (here, for the Amazon-supported Corretto OpenJDK 11)
-  + On MacOS, Java may simply be installed with HomeBrew: `brew install openjdk`
+  * On MacOS, Java may simply be installed with HomeBrew: `brew install openjdk`
 
 # JAR packages on Maven Central
 * The packages may be searched for on [Maven Central](https://mvnrepository.com/)
@@ -40,7 +40,7 @@ programming with Java and Scala, in particular for Spark-powered data processing
 ## PostgreSQL JDBC drivers
 * The [PostgreSQL drivers are available only for JDK up to version 8](https://jdbc.postgresql.org/download)
 * PostgreSQL JDBC driver:
-  + [`org.postgresql:postgresql:42.6.0` package page](https://mvnrepository.com/artifact/org.postgresql/postgresql/42.6.0)
+  * [`org.postgresql:postgresql:42.6.0` package page](https://mvnrepository.com/artifact/org.postgresql/postgresql/42.6.0)
 ```bash
 $ wget https://repo1.maven.org/maven2/org/postgresql/postgresql/42.6.0/postgresql-42.6.0.jar
 ```
@@ -50,14 +50,14 @@ $ wget https://repo1.maven.org/maven2/org/postgresql/postgresql/42.6.0/postgresq
 
 ## Delta
 * Delta Spark:
-  + [`io.delta:delta-spark_2.12:3.0.0` package page](https://mvnrepository.com/artifact/io.delta/delta-spark_2.12/3.0.0)
-  + Download the JAR package:
+  * [`io.delta:delta-spark_2.12:3.0.0` package page](https://mvnrepository.com/artifact/io.delta/delta-spark_2.12/3.0.0)
+  * Download the JAR package:
 ```bash
 $ wget https://repo1.maven.org/maven2/io/delta/delta-spark_2.12/3.0.0/delta-spark_2.12-3.0.0.jar
 ```
 * Delta standalone:
-  + [`io.delta:delta-standalone_2.12:3.0.0` package page](https://mvnrepository.com/artifact/io.delta/delta-standalone_2.12/3.0.0)
-  + Download the JAR package:
+  * [`io.delta:delta-standalone_2.12:3.0.0` package page](https://mvnrepository.com/artifact/io.delta/delta-standalone_2.12/3.0.0)
+  * Download the JAR package:
 ```bash
 $ wget https://repo1.maven.org/maven2/io/delta/delta-standalone_2.12/3.0.0/delta-standalone_2.12-3.0.0.jar
 ```
