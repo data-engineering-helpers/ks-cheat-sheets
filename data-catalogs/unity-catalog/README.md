@@ -178,6 +178,8 @@ docker-compose up
 ```
 
 ## DuckDB
+* See also the
+  [DuckDB cheat sheet on this Git repository](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/README.md)
 
 ### MacOS
 * On MacOS, DuckDB may be installed with HomeBrew:
