@@ -1,6 +1,35 @@
 Knowledge sharing - Cheat sheets
 ================================
 
+# Table of Content (ToC)
+* [Overview](#overview)
+* [References](#references)
+* [Programming](#programming)
+  * [JavaScript (JS) development](#javascript-js-development)
+  * [Java development](#java-development)
+  * [JupyterLab with PySpark and DuckDB](#jupyterlab-with-pyspark-and-duckdb)
+* [Databases](#databases)
+  * [PostgreSQL](#postgresql)
+  * [Trino (formerly Presto)](#trino-formerly-presto)
+  * [DuckDB](#duckdb)
+* [Cloud services](#cloud-services)
+  * [Amazon web services (AWS)](#amazon-web-services-aws)
+  * [Azure cloud services](#azure-cloud-services)
+  * [Google Cloud Platform (GCP)](#google-cloud-platform-gcp)
+* [Data storage](#data-storage)
+  * [Minio](#minio)
+  * [LakeFS](#lakefs)
+* [Data processing](#data-processing)
+  * [DBT](#dbt)
+* [Data catalogs](#data-catalogs)
+  * [Hive Metastore](#hive-metastore)
+  * [Egeria](#egeria)
+* [Infrastructure](#infrastructure)
+  * [Docker](#docker)
+  * [Kubernetes (k8s)](#kubernetes-k8s)
+
+Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
+
 # Overview
 [This project](https://github.com/data-engineering-helpers/ks-cheat-sheets)
 aims at collecting cheat sheets about software and data engineering subjects,

@@ -1,6 +1,21 @@
 Cheat Sheets - Java and Scala
 =============================
 
+# Table of Content (ToC)
+* [Overview](#overview)
+* [References](#references)
+  * [Data Engineering helpers](#data-engineering-helpers)
+* [SDKMan](#sdkman)
+* [JAR packages on Maven Central](#jar-packages-on-maven-central)
+* [Specific JAR packages](#specific-jar-packages)
+  * [Hadoop](#hadoop)
+  * [Hive Metastore](#hive-metastore)
+  * [PostgreSQL JDBC drivers](#postgresql-jdbc-drivers)
+  * [Spark](#spark)
+  * [Delta](#delta)
+
+Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
+
 # Overview
 [This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/java-world/README.md)
 explains how to install and to maintain a few tools pertaining to
