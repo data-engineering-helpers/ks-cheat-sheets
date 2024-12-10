@@ -116,6 +116,7 @@ SELECT * from unity.default.numbers;
 
 ## Interact with the UI
 * Visit http://localhost:3000
+![Unity Catalog UI running locally](images/data-catalogs/uc-ui.png)
 
 # Installation
 * The Unity Catalog service may either be started in containers thanks to Docker Compose,
@@ -222,3 +223,4 @@ cd ui
 yarn install
 yarn start
 ```
+
