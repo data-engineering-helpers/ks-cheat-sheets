@@ -9,13 +9,16 @@ Cheat Sheet - Unity Catalog
 * [Getting started](#getting-started)
   * [Operate on Delta tables with the CLI](#operate-on-delta-tables-with-the-cli)
   * [Operate on Delta tables with DuckDB](#operate-on-delta-tables-with-duckdb)
+  * [Interact with the UI](#interact-with-the-ui)
 * [Installation](#installation)
   * [Clone the Unity Catalog Git repository](#clone-the-unity-catalog-git-repository)
-  * [Java 17](#java-17)
+  * [Launch the Unity Catalog server with Java 17](#launch-the-unity-catalog-server-with-java-17)
   * [Launch the Unity Catalog server with docker\-compose](#launch-the-unity-catalog-server-with-docker-compose)
   * [DuckDB](#duckdb)
     * [MacOS](#macos)
     * [Linux](#linux)
+  * [Launch the UI with JavaScript (JS)](#launch-the-ui-with-javascript-js)
+    * [Prerequisites](#prerequisites)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
