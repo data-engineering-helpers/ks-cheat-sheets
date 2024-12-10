@@ -36,6 +36,7 @@ on premises, _e.g._, on a laptop or on a virtual machine (VM).
 * [Data Engineering Helpers - Knowledge Sharing - Trino](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/trino/README.md)
 * [Data Engineering Helpers - Knowledge Sharing - DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/README.md)
 * [Data Engineering Helpers - Knowledge Sharing - Java world](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/java-world/README.md)
+* [Data Engineering Helpers - Knowledge Sharing - JavaScipt (JS) world](https://github.com/data-engineering-helpers/ks-cheat-sheets/tree/main/programming/js-world)
 
 ## Unity Catalog documentation
 * Home page: https://www.unitycatalog.io
@@ -110,9 +111,13 @@ SELECT * from unity.default.numbers;
 * To quit DuckDB, press Controll-D (if your platform supports it),
   press Control-C, or use the `.exit` command in the DuckDB shell
 
+## Interact with the UI
+* Visit http://localhost:3000
+
 # Installation
 * The Unity Catalog service may either be started in containers thanks to Docker Compose,
   or directly with the Java 17 JVM. The following two sections show either of the methods
+* The Unity Catalog UI relies on JavaScript (JS)/NodeJS
 
 ## Clone the Unity Catalog Git repository
 * If not already done so, clone the Git repository of Unity Catalog, and move to the corresponding directory:
@@ -135,7 +140,7 @@ alias unitycatalogstart='cd ~/dev/infra/unitycatalog; docker-compose up'
 * The Unity Catalog will then be started simply with the `unitycatalogstart` alias in
   a dedicated tab of the Shell terminal, and terminated with the Control-C key
 
-## Java 17
+## Launch the Unity Catalog server with Java 17
 * See the
   [Java cheat sheet on this Git repository](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/java-world/README.md)
   for how to install/maintain a Java 17 stack on various platforms with
@@ -202,3 +207,15 @@ chmod +x ~/bin/duckdb
 export PATH="$HOME/bin:$PATH"
 ```
 
+## Launch the UI with JavaScript (JS)
+
+### Prerequisites
+* NodeJS: https://nodejs.org/en/download/package-manager
+* Yarn: https://classic.yarnpkg.com/lang/en/docs/install
+
+* Start the UI through Yarn:
+```bash
+cd ui
+yarn install
+yarn start
+```
