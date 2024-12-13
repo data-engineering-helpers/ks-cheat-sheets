@@ -186,6 +186,30 @@ sudo apt-get update
   of the Linux distribution (_i.e._, `dnf install` for RPM-based distributions
   or `apt-get install` for Debian-based distributions)
 
+### Configure the BuildKit plugin
+* The engine coming with Rancher Desktop is named `rancher-desktop`
+
+* If there has been a previous installation of Docker Desktop, along with the BuildKit plugin,
+  BuildKit engines may have been created, whcih are no longer valid (they trigger errors).
+  For instance:
+```bash
+$ docker buildx ls
+NAME/NODE                    DRIVER/ENDPOINT       STATUS    BUILDKIT   PLATFORMS
+rancher-desktop*             docker
+ \_ rancher-desktop           \_ rancher-desktop   running   v0.13.2    linux/arm64
+cloud-someorg-default   cloud                 error
+default                                            error
+desktop-linux                                      error
+Cannot load builder cloud-someorg-default: failed to find driver "cloud"
+Cannot load builder desktop-linux: Cannot connect to the Docker daemon at unix://$HOME/.docker/run/docker.sock. Is the docker daemon running?
+```
+  * It will trigger error when attempting to build a container, either directly with `docker buildx`,
+    or indirectly with `docker compose up` for instance
+  * In that case, simply use an alternate working BuildKit engine:
+```bash
+$ docker buildx use rancher-desktop
+```
+
 ## Docker compose plugin
 
 ### MacOS
@@ -220,6 +244,24 @@ sudo dnf -y install docker-compose-plugin
 ```bash
 sudo apt-get update
 sudo apt-get -y install docker-compose-plugin
+```
+
+### Setup of the Docker Compose plugin
+* Note that Docker Compose will use the underlying BuildKit. Hence, that latter must work properly
+  for the Docker Compose plugin to work properly in turn.
+  Typically, if there is an error with `docker buildx`, it will pop up when launching the
+  `docker compose up` command, even though no context is given in the error message and it seems
+  that the error comes from Docker Compose itself.
+  * Example of an error:
+```bash
+$ docker compose up
+ERROR: failed to find driver "cloud"
+```
+  * In that case, list the BuildKit engines and use one working. For instance:
+```bash
+$ docker buildx ls
+  docker buildx use rancher-desktop
+  docker compose up
 ```
 
 ## SBOM plugin
