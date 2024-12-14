@@ -11,6 +11,7 @@ Cheat Sheet - PostgreSQL
   * [Create a database and associated user](#create-a-database-and-associated-user)
     * [Guest database and user](#guest-database-and-user)
     * [Unity Catalog database and user](#unity-catalog-database-and-user)
+    * [MinIO database and user](#minio-database-and-user)
     * [LakeFS database and user](#lakefs-database-and-user)
     * [Hive Metastore database and user](#hive-metastore-database-and-user)
     * [AWS RDS proxy and PostgreSQL database](#aws-rds-proxy-and-postgresql-database)
@@ -106,7 +107,7 @@ GRANT
 
 * Check that the access to the PostgreSQL database works:
 ```bash
-$ psql -h $PG_SVR -U lakefs -c "select 42 as nb;"
+$ psql -h $PG_SVR -U ucdba -d ucdb -c "select 42 as nb;"
  nb 
 ----
  42
@@ -127,7 +128,28 @@ GRANT
 
 * Check that the access to the PostgreSQL database works:
 ```bash
-$ psql -h $PG_SVR -U metastore -c "select 42 as nb;"
+$ psql -h $PG_SVR -U metastore -d metastore -c "select 42 as nb;"
+ nb 
+----
+ 42
+(1 row)
+```
+
+### MinIO database and user
+* Create on PostgreSQL a `minio` database and a `minio` user:
+```bash
+$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create database minio;"
+CREATE DATABASE
+$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create user minio with encrypted password '<minio-pass>'; grant all privileges on database minio to minio;"
+CREATE ROLE
+GRANT
+$ psql -h $PG_SVR -U $PG_ADM_USR -d minio -c "grant all on schema public to minio;"
+GRANT
+```
+
+* Check that the access to the PostgreSQL database works:
+```bash
+$ psql -h $PG_SVR -U minio -d minio -c "select 42 as nb;"
  nb 
 ----
  42
@@ -148,7 +170,7 @@ GRANT
 
 * Check that the access to the PostgreSQL database works:
 ```bash
-$ psql -h $PG_SVR -U lakefs -c "select 42 as nb;"
+$ psql -h $PG_SVR -U lakefs -d lakefs -c "select 42 as nb;"
  nb 
 ----
  42
