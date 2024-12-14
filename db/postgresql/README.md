@@ -10,6 +10,7 @@ Cheat Sheet - PostgreSQL
   * [Quick setup for the use cases](#quick-setup-for-the-use-cases)
   * [Create a database and associated user](#create-a-database-and-associated-user)
     * [Guest database and user](#guest-database-and-user)
+    * [Unity Catalog database and user](#utility-catalog-database-and-user)
     * [LakeFS database and user](#lakefs-database-and-user)
     * [Hive Metastore database and user](#hive-metastore-database-and-user)
     * [AWS RDS proxy and PostgreSQL database](#aws-rds-proxy-and-postgresql-database)
@@ -91,15 +92,15 @@ $ psql -h $PG_SVR -U guest -c "select 42 as nb;"
 (1 row)
 ```
 
-### LakeFS database and user
-* Create on PostgreSQL a `lakefs` database and a `lakefs` user:
+### Unity Catalog database and user
+* Create on PostgreSQL a `ucdb` database and a `ucdba` user:
 ```bash
-$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create database lakefs;"
+$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create database ucdb;"
 CREATE DATABASE
-$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create user lakefs with encrypted password '<lakefs-pass>'; grant all privileges on database lakefs to lakefs;"
+$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create user ucdba with encrypted password '<ucdba-pass>'; grant all privileges on database ucdba to ucdb;"
 CREATE ROLE
 GRANT
-$ psql -h $PG_SVR -U $PG_ADM_USR -d lakefs -c "grant all on schema public to lakefs;"
+$ psql -h $PG_SVR -U $PG_ADM_USR -d ucdb -c "grant all on schema public to ucdba;"
 GRANT
 ```
 
@@ -127,6 +128,27 @@ GRANT
 * Check that the access to the PostgreSQL database works:
 ```bash
 $ psql -h $PG_SVR -U metastore -c "select 42 as nb;"
+ nb 
+----
+ 42
+(1 row)
+```
+
+### LakeFS database and user
+* Create on PostgreSQL a `lakefs` database and a `lakefs` user:
+```bash
+$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create database lakefs;"
+CREATE DATABASE
+$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create user lakefs with encrypted password '<lakefs-pass>'; grant all privileges on database lakefs to lakefs;"
+CREATE ROLE
+GRANT
+$ psql -h $PG_SVR -U $PG_ADM_USR -d lakefs -c "grant all on schema public to lakefs;"
+GRANT
+```
+
+* Check that the access to the PostgreSQL database works:
+```bash
+$ psql -h $PG_SVR -U lakefs -c "select 42 as nb;"
  nb 
 ----
  42
