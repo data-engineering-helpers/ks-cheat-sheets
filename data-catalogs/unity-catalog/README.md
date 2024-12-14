@@ -31,6 +31,7 @@ on premises, _e.g._, on a laptop or on a virtual machine (VM).
 # References
 
 ## Data Engineering helpers
+* [Data Engineering Helpers - Knowledge Sharing - PostgreSQL](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/README.md#unity-catalog-database-and-user)
 * [Data Engineering Helpers - Knowledge Sharing - Hive Metastore](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/hive-metastore/README.md)
 * [Data Engineering Helpers - Knowledge Sharing - Egeria](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/egeria/README.md)
 * [Material for the Data platform - Modern Data Stack (MDS) in a box](https://github.com/data-engineering-helpers/mds-in-a-box/blob/main/README.md)
@@ -184,6 +185,67 @@ sbt package
 * Launch the Unity Catalog with Docker Compose:
 ```bash
 docker-compose up
+```
+
+## (Optional) Local PostgreSQL database
+* See also
+  [Data Engineering Helpers - Knowledge Sharing - PostgreSQL](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/README.md#unity-catalog-database-and-user)
+  on how to install a PostgreSQL database server locally and how to create the `ucdb` database and the `ucdba` database user.
+  * For convenience, the commands to create the `ucdb` database and `ucdba` user are reproduced in the remainder of this sub-section
+
+ * Create on PostgreSQL a `ucdb` database and a `ucdba` user:
+```bash
+$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create database ucdb;"
+CREATE DATABASE
+$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create user ucdba with encrypted password '<ucdba-pass>'; grant all privileges on database ucdb to ucdba;"
+CREATE ROLE
+GRANT
+$ psql -h $PG_SVR -U $PG_ADM_USR -d ucdb -c "grant all on schema public to ucdba;"
+GRANT
+```
+
+* Check that the access to the PostgreSQL database works:
+```bash
+$ psql -h $PG_SVR -U ucdba -d ucdb -c "select 42 as nb;"
+ nb 
+----
+ 42
+(1 row)
+```
+
+* Add the `ucdba` credentials to the local PostgreSQL configuration file:
+```bash
+echo "localhost:5432:ucdb:ucdba:<ucdba-pass-see-above>" >> ~/.pgpass
+chmod 600 ~/.pgpass
+```
+
+### Setup the PostgreSQL connection in the Hibernate property file
+* Specify the PostgreSQL database credentials as environment variables:
+```bash
+PG_UC_DB="ucdb"
+PG_UC_USR="ucdba"
+PG_UC_PWD="<ucdba-pass-see-above>"
+```
+
+* Replace, in the Hibernate property file, the H2 database by PostgreSQL details:
+```bash
+sed -i.bak1 -e 's/org.h2.Driver/org.postgresql.Driver/' etc/conf/hibernate.properties
+sed -i.bak2 -e 's|jdbc:h2:file:./etc/db/h2db;DB_CLOSE_DELAY=-1|jdbc:postgresql://localhost:5432/ucdb|' etc/conf/hibernate.properties
+cat >> etc/conf/hibernate.properties < _EOF
+hibernate.connection.user=ucdba
+hibernate.connection.password=ucdba1234
+_EOF
+```
+
+* Check the resulting Hibernate property file and compare it with
+  [the sample on Unity Catalog documentation](https://docs.unitycatalog.io/deployment/#example-postgresql-connection):
+```bash
+cat etc/conf/hibernate.properties
+```
+
+* If everything seems correct, delete the `.bak` files created by the SED commands:
+```bash
+rm -f etc/conf/hibernate.properties.bak?
 ```
 
 ## DuckDB
