@@ -248,6 +248,25 @@ cat etc/conf/hibernate.properties
 rm -f etc/conf/hibernate.properties.bak?
 ```
 
+### Create the catalog
+* With the default H2 database, the Git repository comes with a catalog pre-installed.
+  With PostgreSQL, the catalog has to be created and configured
+
+* Launch the Unity Catalog (UC) server in a dedicated terminal tab (reminder: type Control-C to stop the server):
+```bash
+./bin/start-uc-server
+```
+
+* (In a distinct terminal tab,) use the UC client to create a `unity` catalog:
+```bash
+./bin/uc catalog create --name unity
+```
+
+* Use the UC client to create a `default` schema for the `unity` catalog:
+```bash
+./bin/uc schema create --catalog unity --name default
+```
+
 ## DuckDB
 * See also the
   [DuckDB cheat sheet on this Git repository](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/README.md)
