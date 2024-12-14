@@ -14,6 +14,7 @@ Cheat Sheet - PostgreSQL
     * [Hive Metastore database and user](#hive-metastore-database-and-user)
     * [MinIO database and user](#minio-database-and-user)
     * [LakeFS database and user](#lakefs-database-and-user)
+    * [Airflow database and user](#airflow-database-and-user)
     * [AWS RDS proxy and PostgreSQL database](#aws-rds-proxy-and-postgresql-database)
   * [Import files, create and browse tables](#import-files-create-and-browse-tables)
 * [Installation](#installation)
@@ -171,6 +172,27 @@ GRANT
 * Check that the access to the PostgreSQL database works:
 ```bash
 $ psql -h $PG_SVR -U lakefs -d lakefs -c "select 42 as nb;"
+ nb 
+----
+ 42
+(1 row)
+```
+
+### Airflow database and user
+* Create on PostgreSQL a `airflow` database and a `airflow` user:
+```bash
+$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create database airflow;"
+CREATE DATABASE
+$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create user airflow with encrypted password '<airflow-pass>'; grant all privileges on database airflow to airflow;"
+CREATE ROLE
+GRANT
+$ psql -h $PG_SVR -U $PG_ADM_USR -d airflow -c "grant all on schema public to airflow;"
+GRANT
+```
+
+* Check that the access to the PostgreSQL database works:
+```bash
+$ psql -h $PG_SVR -U airflow -d airflow -c "select 42 as nb;"
  nb 
 ----
  42
