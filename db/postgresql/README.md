@@ -10,7 +10,7 @@ Cheat Sheet - PostgreSQL
   * [Quick setup for the use cases](#quick-setup-for-the-use-cases)
   * [Create a database and associated user](#create-a-database-and-associated-user)
     * [Guest database and user](#guest-database-and-user)
-    * [Unity Catalog database and user](#utility-catalog-database-and-user)
+    * [Unity Catalog database and user](#unity-catalog-database-and-user)
     * [LakeFS database and user](#lakefs-database-and-user)
     * [Hive Metastore database and user](#hive-metastore-database-and-user)
     * [AWS RDS proxy and PostgreSQL database](#aws-rds-proxy-and-postgresql-database)
