@@ -97,7 +97,7 @@ $ psql -h $PG_SVR -U guest -c "select 42 as nb;"
 ```bash
 $ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create database ucdb;"
 CREATE DATABASE
-$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create user ucdba with encrypted password '<ucdba-pass>'; grant all privileges on database ucdba to ucdb;"
+$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create user ucdba with encrypted password '<ucdba-pass>'; grant all privileges on database ucdb to ucdba;"
 CREATE ROLE
 GRANT
 $ psql -h $PG_SVR -U $PG_ADM_USR -d ucdb -c "grant all on schema public to ucdba;"
