@@ -8,7 +8,7 @@ Cheat Sheet - Unity Catalog
   * [Unity Catalog documentation](#unity-catalog-documentation)
 * [Getting started](#getting-started)
   * [Browse the content of the catalog with the CLI](#browse-the-content-of-the-catalog-with-the-cli)
-  * [Operate on Delta tables with DuckDB](#operate-on-delta-tables-with-duckdb)
+  * [Operate on the tables with DuckDB](#operate-on-the-tables-with-duckdb)
   * [Interact with the UI](#interact-with-the-ui)
 * [Installation](#installation)
   * [Clone the Unity Catalog Git repository](#clone-the-unity-catalog-git-repository)
@@ -106,7 +106,7 @@ bin/uc table get --full_name unity.default.numbers
 bin/uc table read --full_name unity.default.numbers
 ```
 
-## Operate on Delta tables with DuckDB
+## Operate on the tables with DuckDB
 For operating on tables with DuckDB, [it has to be installed](https://duckdb.org/docs/installation/).
 Let's start DuckDB and install a couple of extensions.
 
@@ -315,6 +315,16 @@ bin/uc table create --full_name unity.default.marksheet --columns "id int, name 
 * Use the UC client to create the `marksheet_uniform` table:
 ```bash
 bin/uc table create --full_name unity.default.marksheet_uniform --columns "id int, name string, marks int" --storage_location file:///tmp/marksheet_uniform --format DELTA --properties "{\"key1\": \"value1\", \"key2\": \"value2\"}"
+```
+
+* Use the UC client to create the `numbers` table:
+```bash
+bin/uc table create --full_name unity.default.numbers --columns "as_int int, as_double double, marks int" --storage_location file://$HOME/some/path/unitycatalog/etc/data/external/unity/default/tables/numbers/ --format DELTA --properties "{\"key1\": \"value1\", \"key2\": \"value2\"}"
+```
+
+* Use the UC client to create the `user_countries` table:
+```bash
+bin/uc table create --full_name unity.default.user_countries --columns "first_name string, age long, country string" --storage_location file://$HOME/dev/infra/unitycatalog/etc/data/external/unity/default/tables/user_countries/ --format DELTA --properties "{\"key1\": \"value1\", \"key2\": \"value2\"}"
 ```
 
 ## DuckDB
