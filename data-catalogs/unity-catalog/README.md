@@ -284,9 +284,13 @@ cat etc/conf/hibernate.properties
 rm -f etc/conf/hibernate.properties.bak?
 ```
 
-### Create the catalog
+### Create the content of the catalog
 * With the default H2 database, the Git repository comes with a catalog pre-installed.
   With PostgreSQL, the catalog has to be created and configured
+
+* In the remainder of this sub-section, the content comes from the catalog when configured
+  with the H2 database, exported into JSON. It is hence used here to recreate the content of
+  the catalog when configured with the (initially empty) PostgreSQL database
 
 * Launch the Unity Catalog (UC) server in a dedicated terminal tab (reminder: type Control-C to stop the server):
 ```bash
@@ -301,6 +305,16 @@ rm -f etc/conf/hibernate.properties.bak?
 * Use the UC client to create a `default` schema for the `unity` catalog:
 ```bash
 ./bin/uc schema create --catalog unity --name default
+```
+
+* Use the UC client to create the `marksheet` table:
+```bash
+bin/uc table create --full_name unity.default.marksheet --columns "id int, name string, marks int" --storage_location file://$HOME/some/path/unitycatalog/etc/data/managed/unity/default/tables/marksheet/ --format DELTA --properties "{\"key1\": \"value1\", \"key2\": \"value2\"}"
+```
+
+* Use the UC client to create the `marksheet_uniform` table:
+```bash
+bin/uc table create --full_name unity.default.marksheet_uniform --columns "id int, name string, marks int" --storage_location file:///tmp/marksheet_uniform --format DELTA --properties "{\"key1\": \"value1\", \"key2\": \"value2\"}"
 ```
 
 ## DuckDB
