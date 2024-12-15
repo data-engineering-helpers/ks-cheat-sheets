@@ -7,7 +7,7 @@ Cheat Sheet - Unity Catalog
   * [Data Engineering helpers](#data-engineering-helpers)
   * [Unity Catalog documentation](#unity-catalog-documentation)
 * [Getting started](#getting-started)
-  * [Operate on Delta tables with the CLI](#operate-on-delta-tables-with-the-cli)
+  * [Browse the content of the catalog with the CLI](#browse-the-content-of-the-catalog-with-the-cli)
   * [Operate on Delta tables with DuckDB](#operate-on-delta-tables-with-duckdb)
   * [Interact with the UI](#interact-with-the-ui)
 * [Installation](#installation)
@@ -48,24 +48,60 @@ on premises, _e.g._, on a laptop or on a virtual machine (VM).
 
 # Getting started
 
-## Operate on Delta tables with the CLI
-* List the tables:
+## Browse the content of the catalog with the CLI
+* List the catalogs:
 ```bash
-bin/uc table list --catalog unity --schema default
+bin/uc catalog list --output json
+```
+```json
+[{"name":"unity","comment":"Main catalog","properties":{},"owner":null,"created_at":1721230405334,"created_by":null,"updated_at":null,"updated_by":null,"id":"f029b870-9468-4f10-badd-630b41e5690d"}]
 ```
 
-It should show a few tables. Some details are truncated because of the nested nature of the data.
-To see all the content, you can add `--output jsonPretty` to any command.
+* List the schemas:
+```bash
+bin/uc schema list --catalog unity --output json
+```
+```json
+[{"name":"default","catalog_name":"unity","comment":"Default schema","properties":{},"full_name":"unity.default","owner":null,"created_at":1721234405571,"created_by":null,"updated_at":null,"updated_by":null,"schema_id":"b08dfd57-a939-46cf-b102-9b906b884fae"}]
+```
+
+* List the tables:
+```bash
+bin/uc table list --catalog unity --schema default --output jsonPretty
+```
+```json
+[ {
+  "name" : "marksheet",
+  "catalog_name" : "unity",
+  "schema_name" : "default",
+  "table_type" : "MANAGED",
+  "data_source_format" : "DELTA",
+  "columns" : [ {
+    "name" : "id",
+    "type_text" : "int",
+  ...
+  } ],
+  "storage_location" : "file://$HOME/some/path/unitycatalog/etc/data/external/unity/default/tables/user_countries/",
+  "comment" : "Partitioned table",
+  "properties" : { },
+  "owner" : null,
+  "table_id" : "26ed93b5-9a18-4726-8ae7-c89dfcfea069"
+} ]
+```
+
+* It should show a few tables. Some details are truncated because of the nested nature of the data.
+  To see all the content, you can add `--output jsonPretty` to any command.
 
 * Next, let's get the metadata of one of those tables:
 ```bash
 bin/uc table get --full_name unity.default.numbers
 ```
 
-You can see that it is a Delta table. Now, specifically for Delta tables,
-this CLI can print a snippet of the contents of a Delta table (powered by
-the [Delta Kernel Java project](https://delta.io/blog/delta-kernel/)).
-Let's try that:
+* You can see that it is a Delta table. Now, specifically for Delta tables,
+  this CLI can print a snippet of the content of a Delta table (powered by
+  the [Delta Kernel Java project](https://delta.io/blog/delta-kernel/)).
+
+* Let's try that:
 ```bash
 bin/uc table read --full_name unity.default.numbers
 ```
