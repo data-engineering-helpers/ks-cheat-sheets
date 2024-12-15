@@ -48,6 +48,13 @@ on premises, _e.g._, on a laptop or on a virtual machine (VM).
 ## Unity Catalog documentation
 * Home page: https://www.unitycatalog.io
 * GitHub page: https://github.com/unitycatalog/unitycatalog
+* [Unity Catalog docs](https://docs.unitycatalog.io/)
+  * [Unity Catalog docs - Quickstart](https://docs.unitycatalog.io/quickstart/)
+  * [Unity Catalog docs - Usage - CLI](https://docs.unitycatalog.io/usage/cli/)
+  * [Unity Catalog docs - Deployment - PostgreSQL connection](https://docs.unitycatalog.io/deployment/#example-postgresql-connection)
+  * [Unity Catalog docs - Integrations - Spark](https://docs.unitycatalog.io/integrations/unity-catalog-spark/)
+  * [Unity Catalog docs - Integrations - DuckDB](https://docs.unitycatalog.io/integrations/unity-catalog-duckdb/)
+  * [Unity Catalog docs - Integrations - XTable](https://docs.unitycatalog.io/integrations/unity-catalog-xtable/)
 
 # Getting started
 
@@ -58,6 +65,14 @@ bin/uc catalog list --output json
 ```
 ```json
 [{"name":"unity","comment":"Main catalog","properties":{},"owner":null,"created_at":1721230405334,"created_by":null,"updated_at":null,"updated_by":null,"id":"f029b870-9468-4f10-badd-630b41e5690d"}]
+```
+
+* Get the details of the `unity` catalog:
+```bash
+bin/uc catalog get --name unity --output json
+```
+```json
+{"name":"unity","comment":"Main catalog","properties":{},"owner":null,"created_at":1721234005334,"created_by":null,"updated_at":1734289209110,"updated_by":null,"id":"f029b870-9468-4f10-badd-630b41e5690d"}
 ```
 
 * List the schemas:
@@ -95,18 +110,96 @@ bin/uc table list --catalog unity --schema default --output jsonPretty
 * It should show a few tables. Some details are truncated because of the nested nature of the data.
   To see all the content, you can add `--output jsonPretty` to any command.
 
-* Next, let's get the metadata of one of those tables:
+* Browse the metadata of one of those tables:
 ```bash
-bin/uc table get --full_name unity.default.numbers
+bin/uc table get --full_name unity.default.numbers --output jsonPretty
+```
+```json
+{
+  "name" : "numbers",
+  "catalog_name" : "unity",
+  "schema_name" : "default",
+  "table_type" : "EXTERNAL",
+  "data_source_format" : "DELTA",
+  "columns" : [ {
+    "name" : "as_int",
+    "type_text" : "int",
+    ...
+  } ],
+  "storage_location" : "file://$HOME/some/path/unitycatalog/etc/data/external/unity/default/tables/numbers/",
+  "comment" : "External table",
+  "properties" : {
+    "key1" : "value1",
+    "key2" : "value2"
+  },
+  ...
+  "table_id" : "32025924-be53-4d67-ac39-501a86046c01"
+}
 ```
 
 * You can see that it is a Delta table. Now, specifically for Delta tables,
   this CLI can print a snippet of the content of a Delta table (powered by
   the [Delta Kernel Java project](https://delta.io/blog/delta-kernel/)).
 
-* Let's try that:
+* List the content of the `numbers` table:
 ```bash
-bin/uc table read --full_name unity.default.numbers
+bin/uc table read --full_name unity.default.numbers --output jsonPretty
+```
+
+* List the volumes:
+```bash
+bin/uc volume list --catalog unity --schema default --output jsonPretty
+```
+```json
+[ {
+  "catalog_name" : "unity",
+  "schema_name" : "default",
+  "name" : "json_files",
+  ...
+  "volume_type" : "EXTERNAL",
+  "storage_location" : "file://$HOME/some/path/unitycatalog/etc/data/external/unity/default/volumes/json_files/",
+  "full_name" : "unity.default.json_files"
+}, {
+  "catalog_name" : "unity",
+  "schema_name" : "default",
+  "name" : "txt_files",
+  ...
+  "volume_type" : "MANAGED",
+  "storage_location" : "file://$HOME/some/path/unitycatalog/etc/data/managed/unity/default/volumes/txt_files/",
+  "full_name" : "unity.default.txt_files"
+} ]
+```
+
+* Get the details of the (external) `json_files` volume:
+```bash
+bin/uc volume get --full_name unity.default.json_files --output jsonPretty
+```json
+```
+{
+  "catalog_name" : "unity",
+  "schema_name" : "default",
+  "name" : "json_files",
+  ...
+  "volume_type" : "EXTERNAL",
+  "storage_location" : "file://$HOME/some/path/unitycatalog/etc/data/external/unity/default/volumes/json_files/",
+  "full_name" : "unity.default.json_files"
+}
+```
+
+* Get the details of the (managed) `txt_files` volume:
+```bash
+bin/uc volume get --full_name unity.default.txt_files --output jsonPretty
+```json
+```
+{
+  "catalog_name" : "unity",
+  "schema_name" : "default",
+  "name" : "txt_files",
+  ...
+  "volume_type" : "MANAGED",
+  "storage_location" : "file://$HOME/some/pathinfra/unitycatalog/etc/data/managed/unity/default/volumes/txt_files/",
+  "full_name" : "unity.default.txt_files"
+}
 ```
 
 ## Operate on the tables with DuckDB
@@ -302,32 +395,42 @@ rm -f etc/conf/hibernate.properties.bak?
 
 * (In a distinct terminal tab,) use the UC client to create a `unity` catalog:
 ```bash
-./bin/uc catalog create --name unity
+./bin/uc catalog create --name unity --comment "Main catalog"
 ```
 
-* Use the UC client to create a `default` schema for the `unity` catalog:
+* Create a `default` schema for the `unity` catalog:
 ```bash
-./bin/uc schema create --catalog unity --name default
+./bin/uc schema create --catalog unity --name default --comment "Default schema"
 ```
 
-* Use the UC client to create the `marksheet` table:
+* Create the `marksheet` table:
 ```bash
-bin/uc table create --full_name unity.default.marksheet --columns "id int, name string, marks int" --storage_location file://$HOME/some/path/unitycatalog/etc/data/managed/unity/default/tables/marksheet/ --format DELTA --properties "{\"key1\": \"value1\", \"key2\": \"value2\"}"
+bin/uc table create --full_name unity.default.marksheet --columns "id int, name string, marks int" --storage_location file://$HOME/some/path/unitycatalog/etc/data/managed/unity/default/tables/marksheet/ --format DELTA --comment "Managed table" --properties "{\"key1\": \"value1\", \"key2\": \"value2\"}"
 ```
 
-* Use the UC client to create the `marksheet_uniform` table:
+* Create the `marksheet_uniform` table:
 ```bash
-bin/uc table create --full_name unity.default.marksheet_uniform --columns "id int, name string, marks int" --storage_location file:///tmp/marksheet_uniform --format DELTA --properties "{\"key1\": \"value1\", \"key2\": \"value2\"}"
+bin/uc table create --full_name unity.default.marksheet_uniform --columns "id int, name string, marks int" --storage_location file:///tmp/marksheet_uniform --format DELTA --comment "Uniform table" --properties "{\"key1\": \"value1\", \"key2\": \"value2\"}"
 ```
 
-* Use the UC client to create the `numbers` table:
+* Create the `numbers` table:
 ```bash
-bin/uc table create --full_name unity.default.numbers --columns "as_int int, as_double double, marks int" --storage_location file://$HOME/some/path/unitycatalog/etc/data/external/unity/default/tables/numbers/ --format DELTA --properties "{\"key1\": \"value1\", \"key2\": \"value2\"}"
+bin/uc table create --full_name unity.default.numbers --columns "as_int int, as_double double, marks int" --storage_location file://$HOME/some/path/unitycatalog/etc/data/external/unity/default/tables/numbers/ --format DELTA --comment "External table" --properties "{\"key1\": \"value1\", \"key2\": \"value2\"}"
 ```
 
-* Use the UC client to create the `user_countries` table:
+* Create the `user_countries` table:
 ```bash
-bin/uc table create --full_name unity.default.user_countries --columns "first_name string, age long, country string" --storage_location file://$HOME/dev/infra/unitycatalog/etc/data/external/unity/default/tables/user_countries/ --format DELTA --properties "{\"key1\": \"value1\", \"key2\": \"value2\"}"
+bin/uc table create --full_name unity.default.user_countries --columns "first_name string, age long, country string" --storage_location file://$HOME/dev/infra/unitycatalog/etc/data/external/unity/default/tables/user_countries/ --format DELTA --comment "Partitioned table" --properties "{\"key1\": \"value1\", \"key2\": \"value2\"}"
+```
+
+* Create the `json_files` volume:
+```bash
+bin/uc volume create --full_name unity.default.json_files --storage_location file://$HOME/some/path/unitycatalog/etc/data/external/unity/default/volumes/json_files/ --comment "External volume"
+```
+
+* Create the `txt_files` volume:
+```bash
+bin/uc volume create --full_name unity.default.txt_files --storage_location file://$HOME/some/path/unitycatalog/etc/data/managed/unity/default/volumes/txt_files/ --comment "Managed volume"
 ```
 
 ## DuckDB
