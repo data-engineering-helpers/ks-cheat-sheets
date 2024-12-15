@@ -63,7 +63,7 @@ on premises, _e.g._, on a laptop or on a virtual machine (VM).
 ```bash
 bin/uc catalog list --output json
 ```
-```JSON
+```json
 [{"name":"unity","comment":"Main catalog","properties":{},"owner":null,"created_at":1721230405334,"created_by":null,"updated_at":null,"updated_by":null,"id":"f029b870-9468-4f10-badd-630b41e5690d"}]
 ```
 
@@ -71,7 +71,7 @@ bin/uc catalog list --output json
 ```bash
 bin/uc catalog get --name unity --output json
 ```
-```JSON
+```Jjson
 {"name":"unity","comment":"Main catalog","properties":{},"owner":null,"created_at":1721234005334,"created_by":null,"updated_at":1734289209110,"updated_by":null,"id":"f029b870-9468-4f10-badd-630b41e5690d"}
 ```
 
@@ -79,7 +79,7 @@ bin/uc catalog get --name unity --output json
 ```bash
 bin/uc schema list --catalog unity --output json
 ```
-```JSON
+```json
 [{"name":"default","catalog_name":"unity","comment":"Default schema","properties":{},"full_name":"unity.default","owner":null,"created_at":1721234405571,"created_by":null,"updated_at":null,"updated_by":null,"schema_id":"b08dfd57-a939-46cf-b102-9b906b884fae"}]
 ```
 
@@ -87,7 +87,7 @@ bin/uc schema list --catalog unity --output json
 ```bash
 bin/uc table list --catalog unity --schema default --output jsonPretty
 ```
-```JSON
+```json
 [ {
   "name" : "marksheet",
   "catalog_name" : "unity",
@@ -114,7 +114,7 @@ bin/uc table list --catalog unity --schema default --output jsonPretty
 ```bash
 bin/uc table get --full_name unity.default.numbers --output jsonPretty
 ```
-```JSON
+```json
 {
   "name" : "numbers",
   "catalog_name" : "unity",
@@ -150,7 +150,7 @@ bin/uc table read --full_name unity.default.numbers --output jsonPretty
 ```bash
 bin/uc volume list --catalog unity --schema default --output jsonPretty
 ```
-```JSON
+```json
 [ {
   "catalog_name" : "unity",
   "schema_name" : "default",
@@ -173,8 +173,8 @@ bin/uc volume list --catalog unity --schema default --output jsonPretty
 * Get the details of the (external) `json_files` volume:
 ```bash
 bin/uc volume get --full_name unity.default.json_files --output jsonPretty
-```JSON
 ```
+```json
 {
   "catalog_name" : "unity",
   "schema_name" : "default",
@@ -189,8 +189,8 @@ bin/uc volume get --full_name unity.default.json_files --output jsonPretty
 * Browse the files on the `json_files` volume:
 ```bash
 bin/uc volume read --full_name unity.default.json_files
-```Text
 ```
+```text
 d.json [file]
 c.json [file]
 dir1 [directory]
@@ -199,8 +199,8 @@ dir1 [directory]
 * Browse the files on the `txt_files` volume:
 ```bash
 bin/uc volume read --full_name unity.default.txt_files
-```Text
 ```
+```text
 b.txt [file]
 a.txt [file]
 ```
@@ -208,8 +208,8 @@ a.txt [file]
 * Get the details of the (managed) `txt_files` volume:
 ```bash
 bin/uc volume get --full_name unity.default.txt_files --output jsonPretty
-```JSON
 ```
+```json
 {
   "catalog_name" : "unity",
   "schema_name" : "default",
