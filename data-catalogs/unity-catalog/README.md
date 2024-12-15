@@ -186,6 +186,25 @@ bin/uc volume get --full_name unity.default.json_files --output jsonPretty
 }
 ```
 
+* Browse the files on the `json_files` volume:
+```bash
+bin/uc volume read --full_name unity.default.json_files
+```txt
+```
+d.json [file]
+c.json [file]
+dir1 [directory]
+```
+
+* Browse the files on the `txt_files` volume:
+```bash
+bin/uc volume read --full_name unity.default.txt_files
+```txt
+```
+b.txt [file]
+a.txt [file]
+```
+
 * Get the details of the (managed) `txt_files` volume:
 ```bash
 bin/uc volume get --full_name unity.default.txt_files --output jsonPretty
