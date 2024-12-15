@@ -266,6 +266,60 @@ SELECT * from unity.default.numbers;
 * To quit DuckDB, press Controll-D (if your platform supports it),
   press Control-C, or use the `.exit` command in the DuckDB shell
 
+## Spark
+* Relevant documentation: https://docs.unitycatalog.io/integrations/unity-catalog-spark/
+
+* Launch PySpark:
+```bash
+pyspark --name "local-uc-test" \
+  --master "local[*]" \
+  --packages "io.delta:delta-spark_2.12:3.2.1,io.unitycatalog:unitycatalog-spark_2.12:0.2.0" \
+  --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
+  --conf "spark.sql.catalog.spark_catalog=io.unitycatalog.spark.UCSingleCatalog" \
+  --conf "spark.sql.catalog.unity=io.unitycatalog.spark.UCSingleCatalog" \
+  --conf "spark.sql.catalog.unity.uri=http://localhost:8080" \
+  --conf "spark.sql.catalog.unity.token=" \
+  --conf "spark.sql.defaultCatalog=unity"
+```
+
+* Browse the schemas:
+```python
+sql("SHOW SCHEMAS").show()
++---------+
+|namespace|
++---------+
+|  default|
++---------+
+```
+
+* List the tables:
+```python
+sql("SHOW TABLES IN default").show()
++---------+-----------------+-----------+
+|namespace|        tableName|isTemporary|
++---------+-----------------+-----------+
+|  default|        marksheet|      false|
+|  default|marksheet_uniform|      false|
+|  default|          numbers|      false|
+|  default|   user_countries|      false|
++---------+-----------------+-----------+
+```
+
+* Insert some values into the `numbers` table:
+```python
+sql("insert into default.numbers values (1, 0.0, 1);")
+```
+
+* Check the values in the `numbers` table:
+```python
+sql("SELECT * FROM default.numbers;").show()
++------+---------+-----+
+|as_int|as_double|marks|
++------+---------+-----+
+|     1|      0.0|    1|
++------+---------+-----+
+```
+
 ## Interact with the UI
 * Visit http://localhost:3000
 ![Unity Catalog UI running locally](/images/data-catalogs/uc-ui.png)
@@ -422,22 +476,23 @@ rm -f etc/conf/hibernate.properties.bak?
 ./bin/uc schema create --catalog unity --name default --comment "Default schema"
 ```
 
-* Create the `marksheet` table:
+* Create the `numbers` table (as the storage location is empty, that table is managed):
+```bash
+mkdir -p /tmp/unity/default/numbers
+bin/uc table create --full_name unity.default.numbers --columns "as_int int, as_double double, marks int" --storage_location file:///tmp/unity/default/numbers/ --format DELTA --comment "External table" --properties "{\"key1\": \"value1\", \"key2\": \"value2\"}"
+```
+
+* Create the `marksheet` table (as the storage location has some Parquet data files, it is an external table):
 ```bash
 bin/uc table create --full_name unity.default.marksheet --columns "id int, name string, marks int" --storage_location file://$HOME/some/path/unitycatalog/etc/data/managed/unity/default/tables/marksheet/ --format DELTA --comment "Managed table" --properties "{\"key1\": \"value1\", \"key2\": \"value2\"}"
 ```
 
-* Create the `marksheet_uniform` table:
+* Create the `marksheet_uniform` table (as the storage location has some Parquet data files, it is an external table):
 ```bash
 bin/uc table create --full_name unity.default.marksheet_uniform --columns "id int, name string, marks int" --storage_location file:///tmp/marksheet_uniform --format DELTA --comment "Uniform table" --properties "{\"key1\": \"value1\", \"key2\": \"value2\"}"
 ```
 
-* Create the `numbers` table:
-```bash
-bin/uc table create --full_name unity.default.numbers --columns "as_int int, as_double double, marks int" --storage_location file://$HOME/some/path/unitycatalog/etc/data/external/unity/default/tables/numbers/ --format DELTA --comment "External table" --properties "{\"key1\": \"value1\", \"key2\": \"value2\"}"
-```
-
-* Create the `user_countries` table:
+* Create the `user_countries` table (as the storage location has some Parquet data files, it is an external table):
 ```bash
 bin/uc table create --full_name unity.default.user_countries --columns "first_name string, age long, country string" --storage_location file://$HOME/dev/infra/unitycatalog/etc/data/external/unity/default/tables/user_countries/ --format DELTA --comment "Partitioned table" --properties "{\"key1\": \"value1\", \"key2\": \"value2\"}"
 ```
@@ -452,7 +507,40 @@ bin/uc volume create --full_name unity.default.json_files --storage_location fil
 bin/uc volume create --full_name unity.default.txt_files --storage_location file://$HOME/some/path/unitycatalog/etc/data/managed/unity/default/volumes/txt_files/ --comment "Managed volume"
 ```
 
+## Spark
+* Relevant documentation: https://docs.unitycatalog.io/integrations/unity-catalog-spark/
+
+* Launch PySpark:
+```bash
+pyspark --name "local-uc-test" \
+  --master "local[*]" \
+  --packages "io.delta:delta-spark_2.12:3.2.1,io.unitycatalog:unitycatalog-spark_2.12:0.2.0" \
+  --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
+  --conf "spark.sql.catalog.spark_catalog=io.unitycatalog.spark.UCSingleCatalog" \
+  --conf "spark.sql.catalog.unity=io.unitycatalog.spark.UCSingleCatalog" \
+  --conf "spark.sql.catalog.unity.uri=http://localhost:8080" \
+  --conf "spark.sql.catalog.unity.token=" \
+  --conf "spark.sql.defaultCatalog=unity"
+```
+
+* Insert some values into the `numbers` table:
+```python
+sql("insert into default.numbers values (1, 0.0, 1);")
+```
+
+* Check the values in the `numbers` table:
+```python
+sql("SELECT * FROM default.numbers;").show()
++------+---------+-----+
+|as_int|as_double|marks|
++------+---------+-----+
+|     1|      0.0|    1|
++------+---------+-----+
+```
+
 ## DuckDB
+* Relevant documentation: https://docs.unitycatalog.io/integrations/unity-catalog-duckdb/
+
 * See also the
   [DuckDB cheat sheet on this Git repository](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/README.md)
 
