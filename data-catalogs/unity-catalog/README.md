@@ -221,14 +221,53 @@ bin/uc volume get --full_name unity.default.txt_files --output jsonPretty
 }
 ```
 
-## Operate on the tables with DuckDB
-For operating on tables with DuckDB, [it has to be installed](https://duckdb.org/docs/installation/).
-Let's start DuckDB and install a couple of extensions.
+## Simple DuckDB
+* In this sub-section, DuckDB is simply used to create table pointing to the data files
+  of the tables. Here, DuckDB does not integrate with the Unity Catalog, it accesses
+  the content of the tables directly dealing with the content of the data files
 
-* To start DuckDB, run the command `duckdb` command in the terminal.
+* Launch DuckDB:
+```bash
+duckdb
+```
+
+* (if not already done so,) Install the Delta extension, and load it:
+```sql
+install delta;
+load delta;
+```
+
+* Create the `numbers` table in DuckDB, directly accessing the data files:
+```sql
+create table numbers as (select * from 'etc/data/external/unity/default/tables/numbers/*.parquet');
+select * from numbers;
+┌────────┬────────────────────┐
+│ as_int │     as_double      │
+│ int32  │       double       │
+├────────┼────────────────────┤
+│    564 │ 188.75535598441473 │
+   ...
+│    958 │  509.3712727285101 │
+├────────┴────────────────────┤
+│ 15 rows           2 columns │
+└─────────────────────────────┘
+```
+
+* To leave the DuckDB shell:
+```sql
+.quit
+```
+
+## DuckDB integrated with Unity Catalog
+* Relevant documentation: https://docs.unitycatalog.io/integrations/unity-catalog-duckdb/
+
+* Launch DuckDB:
+```bash
+duckdb
+```
 
 * Then, in the DuckDB shell, run the following commands:
-```bash
+```sql
 install uc_catalog from core_nightly;
 load uc_catalog;
 install delta;
@@ -236,7 +275,7 @@ load delta;
 ```
 
 * If you have installed these extensions before, you may have to run update extensions
-  and restart DuckDB for the following steps to work.
+  and restart DuckDB for the following steps to work
 
 * Now that we have DuckDB all set up, let's try connecting to UC by specifying a secret.
 ```sql
@@ -266,7 +305,50 @@ SELECT * from unity.default.numbers;
 * To quit DuckDB, press Controll-D (if your platform supports it),
   press Control-C, or use the `.exit` command in the DuckDB shell
 
-## Spark
+* To leave the DuckDB shell:
+```sql
+.quit
+```
+
+## Simple Spark
+* That section shows how to simply use Spark just to browse the `numbers` data files,
+  as those have been created by the Kernel engine, and most of the tools (like the
+  Parquet CLI on MacOS) are not able to read them
+
+* Check the Parquet/Delta data files of the `numbers` table:
+```bash
+ls -laFh etc/data/external/unity/default/tables/numbers/
+total 8
+drwxr-xr-x@ 4 $USER  staff   128B Dec  2 14:52 _delta_log/
+-rw-r--r--@ 1 $USER  staff   804B Dec  2 14:52 d1df15d1-33d8-45ab-ad77-465476e2d5cd-000.parquet
+```
+
+* Launch PySpark:
+```bash
+pyspark
+```
+
+* Within PySpark, create a DataFrame with the Parquet/Delta data files of the `numbers` table:
+```python
+df = spark.read.format("delta").parquet("etc/data/external/unity/default/tables/numbers/")
+df.count()
+15
+df.show()
++------+------------------+
+|as_int|         as_double|
++------+------------------+
+|   564|188.75535598441473|
+  ...
+|   958| 509.3712727285101|
++------+------------------+
+```
+
+* To leave the PySpark shell:
+```python
+quit()
+```
+
+## Spark integrated with Unity Catalog
 * Relevant documentation: https://docs.unitycatalog.io/integrations/unity-catalog-spark/
 
 * Launch PySpark:
@@ -318,6 +400,54 @@ sql("SELECT * FROM default.numbers;").show()
 +------+---------+-----+
 |     1|      0.0|    1|
 +------+---------+-----+
+```
+
+* To leave the PySpark shell:
+```python
+quit()
+```
+
+## Daft integrated with Unity Catalog
+* Relevant documentation: https://docs.unitycatalog.io/integrations/unity-catalog-daft/
+ 
+* As of end 2024, with the release of the [new UC Python client](https://pypi.org/project/unitycatalog-client/)
+  in the
+  [v0.2.1 release](https://github.com/unitycatalog/unitycatalog/releases/tag/v0.2.1),
+  Daft does not work anymore
+
+* Launch a Python interpreter, for instance iPython:
+```bash
+python -mpip install -U ipython
+ipython
+```
+
+* In the Python shell:
+```python
+import daft
+from daft.unity_catalog import UnityCatalog
+
+unity = UnityCatalog(
+    endpoint="http://127.0.0.1:8080",
+    token="not-used",
+)
+```
+
+* List the catalogs:
+```python
+print(unity.list_catalogs())
+['unity']
+```
+
+* List the schemas:
+```python
+print(unity.list_schemas("unity"))
+['unity.default']
+```
+
+* List the tables:
+```python
+print(unity.list_tables("unity.default"))
+['unity.default.numbers', 'unity.default.marksheet_uniform', 'unity.default.marksheet', 'unity.default.user_countries']
 ```
 
 ## Interact with the UI
@@ -476,23 +606,26 @@ rm -f etc/conf/hibernate.properties.bak?
 ./bin/uc schema create --catalog unity --name default --comment "Default schema"
 ```
 
-* Create the `numbers` table (as the storage location is empty, that table is managed):
+* Create the `numbers` table:
 ```bash
 mkdir -p /tmp/unity/default/numbers
-bin/uc table create --full_name unity.default.numbers --columns "as_int int, as_double double, marks int" --storage_location file:///tmp/unity/default/numbers/ --format DELTA --comment "External table" --properties "{\"key1\": \"value1\", \"key2\": \"value2\"}"
+bin/uc table create --full_name unity.default.numbers --columns "as_int int, as_double double, marks int" --storage_location file://$HOME/some/path/unitycatalog/etc/data/external/unity/default/tables/numbers/ --format DELTA --comment "External table" --properties "{\"key1\": \"value1\", \"key2\": \"value2\"}"
 ```
 
-* Create the `marksheet` table (as the storage location has some Parquet data files, it is an external table):
+* Create the `marksheet` table (as of end 2024, even though that table is supposed to be managed,
+  the UC CLI does not seem to accept table creation commands without the `storage_location` parameter, that is,
+  the UC CLI does not seem to accept to create managed tables: the `storage_location` parameter is required for external tables,
+  but should not be needed for managed tables; relevant documentation: https://docs.unitycatalog.io/usage/cli/#33-create-a-table):
 ```bash
 bin/uc table create --full_name unity.default.marksheet --columns "id int, name string, marks int" --storage_location file://$HOME/some/path/unitycatalog/etc/data/managed/unity/default/tables/marksheet/ --format DELTA --comment "Managed table" --properties "{\"key1\": \"value1\", \"key2\": \"value2\"}"
 ```
 
-* Create the `marksheet_uniform` table (as the storage location has some Parquet data files, it is an external table):
+* Create the `marksheet_uniform` table:
 ```bash
 bin/uc table create --full_name unity.default.marksheet_uniform --columns "id int, name string, marks int" --storage_location file:///tmp/marksheet_uniform --format DELTA --comment "Uniform table" --properties "{\"key1\": \"value1\", \"key2\": \"value2\"}"
 ```
 
-* Create the `user_countries` table (as the storage location has some Parquet data files, it is an external table):
+* Create the `user_countries` table:
 ```bash
 bin/uc table create --full_name unity.default.user_countries --columns "first_name string, age long, country string" --storage_location file://$HOME/dev/infra/unitycatalog/etc/data/external/unity/default/tables/user_countries/ --format DELTA --comment "Partitioned table" --properties "{\"key1\": \"value1\", \"key2\": \"value2\"}"
 ```
@@ -563,6 +696,12 @@ mkdir -p ~/bin
 mv duckdb ~/bin
 chmod +x ~/bin/duckdb
 export PATH="$HOME/bin:$PATH"
+```
+
+## Daft
+* Install Daft, with its integration with Delta and Unity Catalog:
+```bash
+python -mpip install -U "getdaft[unity,deltalake]"
 ```
 
 ## Launch the UI with JavaScript (JS)
