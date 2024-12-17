@@ -77,7 +77,7 @@ bin/uc catalog list --output json
 ```bash
 bin/uc catalog get --name unity --output json
 ```
-```Jjson
+```json
 {"name":"unity","comment":"Main catalog","properties":{},"owner":null,"created_at":1721234005334,"created_by":null,"updated_at":1734289209110,"updated_by":null,"id":"f029b870-9468-4f10-badd-630b41e5690d"}
 ```
 
@@ -357,11 +357,12 @@ quit()
 ## Spark integrated with Unity Catalog
 * Relevant documentation: https://docs.unitycatalog.io/integrations/unity-catalog-spark/
 
-* Launch PySpark:
+* Launch PySpark (for the Unity Catalog Spark connector JAR package, see in the installation
+  section how to generate it):
 ```bash
 pyspark --name "local-uc-test" \
   --master "local[*]" \
-  --packages "io.delta:delta-spark_2.12:3.2.1,io.unitycatalog:unitycatalog-spark_2.12:0.2.0" \
+  --packages "io.delta:delta-spark_2.12:3.2.1,io.unitycatalog:unitycatalog-spark_2.12:${UC_VERSION}" \
   --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
   --conf "spark.sql.catalog.spark_catalog=io.unitycatalog.spark.UCSingleCatalog" \
   --conf "spark.sql.catalog.unity=io.unitycatalog.spark.UCSingleCatalog" \
@@ -393,19 +394,37 @@ sql("SHOW TABLES IN default").show()
 +---------+-----------------+-----------+
 ```
 
-* Insert some values into the `numbers` table:
+* Create an external table:
 ```python
-sql("insert into default.numbers values (1, 0.0, 1);")
+sql("create table default.numbers2 (as_int int, as_double double) using delta location 'etc/data/external/tables/numbers2';")
 ```
 
-* Check the values in the `numbers` table:
+* Insert some values into the `numbers` table:
 ```python
-sql("SELECT * FROM default.numbers;").show()
+sql("insert into default.numbers2 values (1, 0.0);")
+```
+
+* Check the values in the `numbers2` table:
+```python
+sql("SELECT * FROM default.numbers2;").show()
 +------+---------+-----+
 |as_int|as_double|marks|
 +------+---------+-----+
 |     1|      0.0|    1|
 +------+---------+-----+
+```
+
+* Delete the `numbers2` table:
+```python
+sql("drop table default.numbers2;")
+```
+
+* As of end 2024 (version `0.3.0-SNAPSHOT`), it does not seem possible to create managed table
+  with the open source version of Unity Catalog. For instance, the DataFrame `saveAsTable()`
+  method triggers an exception (`io.unitycatalog.client.ApiException: Unity Catalog does not support managed table`):
+```python
+df = spark.createDataFrame([(1, "socks"), (2, "chips"), (3, "air conditioner"), (4, "tea"),], ["transaction_id", "item_name"])
+df.write.format("parquet").saveAsTable("default.transactions")
 ```
 
 * To leave the PySpark shell:
@@ -483,6 +502,13 @@ alias unitycatalogstart='cd ~/dev/infra/unitycatalog; ./bin/start-uc-server'
 alias unitycatalogstart='cd ~/dev/infra/unitycatalog; docker-compose up'
 ```
 
+* For convenience of documentation, the version (of Unity Catalog) is captured
+  in an environment variable, which will be re-used everywhere in place of
+  explicitly referring to the version:
+```bash
+UC_VERSION="$(cut -d\" -f2,2 version.sbt)"
+```
+
 * The Unity Catalog will then be started simply with the `unitycatalogstart` alias in
   a dedicated tab of the Shell terminal, and terminated with the Control-C key
 
@@ -510,6 +536,32 @@ sdk upgrade sbt
 * Build the JAR package with SBT:
 ```bash
 sbt package
+[info] welcome to sbt 1.9.9 (Amazon.com Inc. Java 17.0.13)
+...
+[info] Successfully generated code to $HOME/some/path/unitycatalog/target/clients/java
+Generated classpath file '$HOME/some/path/unitycatalog/clients/python/target/classpath'
+Generated classpath file '$HOME/some/path/unitycatalog/server/target/controlmodels/target/classpath'
+Generated classpath file '$HOME/some/path/unitycatalog/target/classpath'
+Generated classpath file '$HOME/some/path/unitycatalog/target/clients/java/target/classpath'
+Generated classpath file '$HOME/some/path/unitycatalog/server/target/models/target/classpath'
+Generated classpath file '$HOME/some/path/unitycatalog/target/control/java/target/classpath'
+Generated classpath file '$HOME/some/path/unitycatalog/connectors/spark/target/scala-2.12/classpath'
+Generated classpath file '$HOME/some/path/unitycatalog/server/target/classpath'
+Generated classpath file '$HOME/some/path/unitycatalog/examples/cli/target/classpath'
+[success] Total time: 9 s, completed Dec 17, 2024, 5:07:53 PM
+```
+
+* Publish the JAR packages locally (in the Ivy2/Maven local cache):
+```bash
+sbt publishLocal
+[info] :: delivering :: io.unitycatalog#unitycatalog-spark_2.12;${UC_VERSION} :: ${UC_VERSION} :: integration :: Tue Dec 17 17:04:18 CET 2024
+[info] 	delivering ivy file to $HOME/some/path/unitycatalog/connectors/spark/target/scala-2.12/ivy-${UC_VERSION}.xml
+[info] 	published unitycatalog-spark_2.12 to $HOME/.ivy2/local/io.unitycatalog/unitycatalog-spark_2.12/${UC_VERSION}/poms/unitycatalog-spark_2.12.pom
+[info] 	published unitycatalog-spark_2.12 to $HOME/.ivy2/local/io.unitycatalog/unitycatalog-spark_2.12/${UC_VERSION}/jars/unitycatalog-spark_2.12.jar
+[info] 	published unitycatalog-spark_2.12 to $HOME/.ivy2/local/io.unitycatalog/unitycatalog-spark_2.12/${UC_VERSION}/srcs/unitycatalog-spark_2.12-sources.jar
+[info] 	published unitycatalog-spark_2.12 to $HOME/.ivy2/local/io.unitycatalog/unitycatalog-spark_2.12/${UC_VERSION}/docs/unitycatalog-spark_2.12-javadoc.jar
+[info] 	published ivy to $HOME/.ivy2/local/io.unitycatalog/unitycatalog-spark_2.12/${UC_VERSION}/ivys/ivy.xml
+[success] Total time: 6 s, completed Dec 17, 2024, 5:04:18 PM
 ```
 
 * Launch the Unity Catalog (Control-C to quit terminate the service):
@@ -614,8 +666,7 @@ rm -f etc/conf/hibernate.properties.bak?
 
 * Create the `numbers` table:
 ```bash
-mkdir -p /tmp/unity/default/numbers
-bin/uc table create --full_name unity.default.numbers --columns "as_int int, as_double double, marks int" --storage_location file://$HOME/some/path/unitycatalog/etc/data/external/unity/default/tables/numbers/ --format DELTA --comment "External table" --properties "{\"key1\": \"value1\", \"key2\": \"value2\"}"
+bin/uc table create --full_name unity.default.numbers --columns "as_int int, as_double double" --storage_location "file://$HOME/some/path/unitycatalog/etc/data/external/unity/default/tables/numbers" --format DELTA --properties '{"key1": "value1", "key2": "value2"}'
 ```
 
 * Create the `marksheet` table (as of end 2024, even though that table is supposed to be managed,
@@ -623,17 +674,17 @@ bin/uc table create --full_name unity.default.numbers --columns "as_int int, as_
   the UC CLI does not seem to accept to create managed tables: the `storage_location` parameter is required for external tables,
   but should not be needed for managed tables; relevant documentation: https://docs.unitycatalog.io/usage/cli/#33-create-a-table):
 ```bash
-bin/uc table create --full_name unity.default.marksheet --columns "id int, name string, marks int" --storage_location file://$HOME/some/path/unitycatalog/etc/data/managed/unity/default/tables/marksheet/ --format DELTA --comment "Managed table" --properties "{\"key1\": \"value1\", \"key2\": \"value2\"}"
+bin/uc table create --full_name unity.default.marksheet --columns "id int, name string, marks int" --storage_location "file://$HOME/some/path/unitycatalog/etc/data/managed/unity/default/tables/marksheet" --format DELTA --properties '{"key1": "value1", "key2": "value2"}'
 ```
 
 * Create the `marksheet_uniform` table:
 ```bash
-bin/uc table create --full_name unity.default.marksheet_uniform --columns "id int, name string, marks int" --storage_location file:///tmp/marksheet_uniform --format DELTA --comment "Uniform table" --properties "{\"key1\": \"value1\", \"key2\": \"value2\"}"
+bin/uc table create --full_name unity.default.marksheet_uniform --columns "id int, name string, marks int" --storage_location "file://$HOME/some/path/unitycatalog/etc/data/external/unity/default/tables/marksheet_uniform" --format DELTA --properties '{"key1": "value1", "key2": "value2"}'
 ```
 
 * Create the `user_countries` table:
 ```bash
-bin/uc table create --full_name unity.default.user_countries --columns "first_name string, age long, country string" --storage_location file://$HOME/dev/infra/unitycatalog/etc/data/external/unity/default/tables/user_countries/ --format DELTA --comment "Partitioned table" --properties "{\"key1\": \"value1\", \"key2\": \"value2\"}"
+bin/uc table create --full_name unity.default.user_countries --columns "first_name string, age long, country string" --storage_location "file://$HOME/some/path/unitycatalog/etc/data/external/unity/default/tables/user_countries" --format DELTA --properties '{"key1": "value1", "key2": "value2"}'
 ```
 
 * Create the `json_files` volume:
@@ -649,11 +700,18 @@ bin/uc volume create --full_name unity.default.txt_files --storage_location file
 ## Spark
 * Relevant documentation: https://docs.unitycatalog.io/integrations/unity-catalog-spark/
 
+* For consistency reason, it is better, for the Unity Catalog connector, to use the JAR package
+  generated by SBT (and published locally in the local Ivy2/Maven cache)
+  * Check that the Unity Catalog Spark connector JAR package is in the local Ivy2/Maven cache:
+```bash
+ls -lFh ~/.ivy2/jars/io.unitycatalog*
+```
+
 * Launch PySpark:
 ```bash
 pyspark --name "local-uc-test" \
   --master "local[*]" \
-  --packages "io.delta:delta-spark_2.12:3.2.1,io.unitycatalog:unitycatalog-spark_2.12:0.2.0" \
+  --packages "io.delta:delta-spark_2.12:3.2.1,io.unitycatalog:unitycatalog-spark_2.12:${UC_VERSION}" \
   --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
   --conf "spark.sql.catalog.spark_catalog=io.unitycatalog.spark.UCSingleCatalog" \
   --conf "spark.sql.catalog.unity=io.unitycatalog.spark.UCSingleCatalog" \
@@ -664,17 +722,17 @@ pyspark --name "local-uc-test" \
 
 * Insert some values into the `numbers` table:
 ```python
-sql("insert into default.numbers values (1, 0.0, 1);")
+sql("insert into default.numbers values (1, 0.0);")
 ```
 
 * Check the values in the `numbers` table:
 ```python
 sql("SELECT * FROM default.numbers;").show()
-+------+---------+-----+
-|as_int|as_double|marks|
-+------+---------+-----+
-|     1|      0.0|    1|
-+------+---------+-----+
++------+---------+
+|as_int|as_double|
++------+---------+
+|     1|      0.0|
++------+---------+
 ```
 
 ## DuckDB
