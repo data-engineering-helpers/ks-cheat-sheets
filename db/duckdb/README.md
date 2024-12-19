@@ -9,6 +9,7 @@ Cheat Sheet - DuckDB
 * [Setup](#setup)
   * [DuckDB on the command\-line (CLI)](#duckdb-on-the-command-line-cli)
   * [DuckDB Python library](#duckdb-python-library)
+  * [Integration with S3](#integration-with-s3)
   * [Geonames data files](#geonames-data-files)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
@@ -134,6 +135,18 @@ D select * from 'programming/jupyter/jupyter-pyspark-duckdb/data/parquet/user-de
 │    1123 │ May      │ Safari  │ macOS   │
 └─────────┴──────────┴─────────┴─────────┘
 D .exit
+```
+
+## Integration with S3
+* In the DuckDB shell, create a secret with the AWS credential chain (typically works
+  with the `awsume` command/tool):
+```sql
+install https;
+load https;
+CREATE SECRET secret2 (
+    TYPE S3,
+    PROVIDER CREDENTIAL_CHAIN
+);
 ```
 
 ## Geonames data files
