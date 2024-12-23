@@ -371,9 +371,14 @@ pyspark --name "local-uc-test" \
   --conf "spark.sql.defaultCatalog=unity"
 ```
 
+* Browse the catalogs:
+```python
+sql("show catalogs").show()
+```
+
 * Browse the schemas:
 ```python
-sql("SHOW SCHEMAS").show()
+sql("show schemas").show()
 +---------+
 |namespace|
 +---------+
@@ -383,7 +388,7 @@ sql("SHOW SCHEMAS").show()
 
 * List the tables:
 ```python
-sql("SHOW TABLES IN default").show()
+sql("show tables in default;").show()
 +---------+-----------------+-----------+
 |namespace|        tableName|isTemporary|
 +---------+-----------------+-----------+
@@ -394,9 +399,44 @@ sql("SHOW TABLES IN default").show()
 +---------+-----------------+-----------+
 ```
 
+* Select a default schema:
+```python
+sql("use default;")
+```
+
+### Managed vs external tables
+* With Unity Catalog:
+  * When a location is specified for the storage, the table is said to be external.
+  It means that only the metadata of the tables is stored in the catalog, not the content
+  of the table itself. It also implies that when the table is deleted (dropped) from the
+  catalog, only the metadata is removed from the catalog, but the data itself is preserved.
+  * When no location is specified, the table is said to be managed (by Unity Catalog).
+  It means that both the metadata and the actual data are managed by the catalog.
+  As a consequence, when the table is dropped, so is the corresponding data.
+
+* The location may be specified either:
+  * In SQL, with the `location` parameter. For instance:
+```python
+sql("create table default.numbers (as_int int, as_double double) using delta location '/tmp/some/path/numbers';")
+```
+  * With the DataFrame API, with the `path` parameter. For instance:
+```python
+df.write.mode("overwrite").format("delta").option("path", "/tmp/some/path/numbers").saveAsTable("default.numbers")
+```
+
+* The location has to be expressed as an absolute path, either on the cloud or on the local file-system.
+  The rationale being that the location has to be understood without ambiguity by both the (Unity Catalog) server
+  and the client tool (_e.g._, Spark, DuckDB, Daft), and both of them may run in different places.
+
+### Create a table the SQL way
 * Create an external table:
 ```python
 sql("create table default.numbers2 (as_int int, as_double double) using delta location 'etc/data/external/tables/numbers2';")
+```
+
+* Show the table specification:
+```python
+sql("describe extended default.numbers2;").show()
 ```
 
 * Insert some values into the `numbers` table:
@@ -406,7 +446,7 @@ sql("insert into default.numbers2 values (1, 0.0);")
 
 * Check the values in the `numbers2` table:
 ```python
-sql("SELECT * FROM default.numbers2;").show()
+sql("select * FROM default.numbers2;").show()
 +------+---------+-----+
 |as_int|as_double|marks|
 +------+---------+-----+
@@ -414,17 +454,50 @@ sql("SELECT * FROM default.numbers2;").show()
 +------+---------+-----+
 ```
 
+* Show the history of the table:
+```python
+sql("describe history default.numbers2;").show()
+```
+
 * Delete the `numbers2` table:
 ```python
 sql("drop table default.numbers2;")
 ```
 
+### Create a table through the DataFrame API
+* Create a DataFrame and create an external table by dumping the content of the DataFrame in it:
+```python
+df = spark.createDataFrame([(1, "socks"), (2, "chips"), (3, "air conditioner"), (4, "tea"),], ["transaction_id", "item_name"])
+df.write.mode("overwrite").format("delta").option("path", "/tmp/some/path/numbers3").saveAsTable("default.transactions")
+```
+
+* Show the table specification:
+```python
+sql("describe extended default.transactions;").show()
+```
+
+* Show the history of the table:
+```python
+sql("describe history default.transactions;").show()
+```
+
+* Delete the `transactions` table:
+```python
+sql("drop table default.transactions;")
+```
+
+### Managed tables
 * As of end 2024 (version `0.3.0-SNAPSHOT`), it does not seem possible to create managed table
   with the open source version of Unity Catalog. For instance, the DataFrame `saveAsTable()`
-  method triggers an exception (`io.unitycatalog.client.ApiException: Unity Catalog does not support managed table`):
+  method triggers an exception (`io.unitycatalog.client.ApiException: Unity Catalog does not support managed table`)
+  * In SQL:
 ```python
 df = spark.createDataFrame([(1, "socks"), (2, "chips"), (3, "air conditioner"), (4, "tea"),], ["transaction_id", "item_name"])
 df.write.format("parquet").saveAsTable("default.transactions")
+```
+* With the DataFrame API:
+```python
+sql("create table default.transactions (transaction_id int, item_name string);")
 ```
 
 * To leave the PySpark shell:
