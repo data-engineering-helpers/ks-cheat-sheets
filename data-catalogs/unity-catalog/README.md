@@ -12,6 +12,10 @@ Cheat Sheet - Unity Catalog
   * [DuckDB integrated with Unity Catalog](#duckdb-integrated-with-unity-catalog)
   * [Simple Spark](#simple-spark)
   * [Spark integrated with Unity Catalog](#spark-integrated-with-unity-catalog)
+    * [Managed vs external tables](#managed-vs-external-tables)
+    * [Create a table the SQL way](#create-a-table-the-sql-way)
+    * [Create a table through the DataFrame API](#create-a-table-through-the-dataframe-api)
+    * [Managed tables](#managed-tables)
   * [Daft integrated with Unity Catalog](#daft-integrated-with-unity-catalog)
   * [Interact with the UI](#interact-with-the-ui)
 * [Installation](#installation)
@@ -61,6 +65,7 @@ on premises, _e.g._, on a laptop or on a virtual machine (VM).
   * [Unity Catalog docs - Integrations - Spark](https://docs.unitycatalog.io/integrations/unity-catalog-spark/)
   * [Unity Catalog docs - Integrations - DuckDB](https://docs.unitycatalog.io/integrations/unity-catalog-duckdb/)
   * [Unity Catalog docs - Integrations - XTable](https://docs.unitycatalog.io/integrations/unity-catalog-xtable/)
+* [Unity Catalog blog post - Integrating Spark with Unity Catalog via Open APIs](https://www.unitycatalog.io/blogs/integrating-apache-spark-with-unity-catalog-assets-via-open-apis)
 
 # Getting started
 
