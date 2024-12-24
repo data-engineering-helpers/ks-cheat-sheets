@@ -83,3 +83,43 @@ on a virtual machine (VM).
 # Quickstart
 
 # Installation
+
+## BlueSky data
+* That sub-section is the basis/data part of the
+  [article by David Jayatillake](https://davidsj.substack.com/p/sqlmesh-init-duckdb)
+
+* Clone the Git repository and move into it:
+```bash
+mkdir -p ~/dev/infra
+git clone https://github.com/djayatillake/bluesky-data ~/dev/infra/bluesky-data
+cd ~/dev/infra/bluesky-data
+```
+
+* Launch the DuckDb shell:
+```bash
+$ duckdb
+```
+
+* (In DuckDB,) attach to the BlueSky data catalog:
+```sql
+D attach 'https://hive.buz.dev/bluesky/catalog' as bluesky;
+```
+
+* Check that the BlueSky data is available:
+```sql
+D select count(*)/1e6 as nb_rows from bluesky.jetstream;
+┌─────────┐
+│ nb_rows │
+│ double  │
+├─────────┤
+│     1.0 │
+└─────────┘
+D select * from bluesky.jetstream limit 10;
+```
+
+* To leave the DuckDB shell, either type Control-D or the `.quit` command:
+```sql
+D .quit
+```
+
+
