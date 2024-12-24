@@ -1,7 +1,16 @@
-Cheat Sheet - LakeFS
-====================
+Cheat Sheet - dbt
+=================
 
 # Table of Content (ToC)
+* [Overview](#overview)
+* [References](#references)
+  * [Data Engineering helpers](#data-engineering-helpers)
+  * [DuckDB](#duckdb)
+  * [dbt](#dbt)
+  * [dbt\-duckdb](#dbt-duckdb)
+* [Quickstart](#quickstart)
+* [Installation](#installation)
+  * [Dependencies](#dependencies)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
@@ -26,6 +35,7 @@ on a virtual machine (VM).
 # References
 
 ## Data Engineering helpers
+* [Data Engineering Helpers - Knowledge Sharing - SQLMesh](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/dbt/README.md)
 * [Material for the Data platform - Modern Data Stack (MDS) in a box](https://github.com/data-engineering-helpers/mds-in-a-box/blob/main/README.md)
 * [Material for the Data platform - Data life cycle](https://github.com/data-engineering-helpers/data-life-cycle/blob/main/README.md)
 * [Data Engineering Helpers - Knowledge Sharing - Minio](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-storage/minio/README.md)
@@ -33,7 +43,7 @@ on a virtual machine (VM).
 
 ## DuckDB
 * Home page: https://duckdb.org/
-  + [DuckDB doc - HTTPFS extension](https://duckdb.org/docs/extensions/httpfs.html)
+  * [DuckDB doc - HTTPFS extension](https://duckdb.org/docs/extensions/httpfs.html)
 
 ## dbt
 * Home page: https://gitdbt.com
