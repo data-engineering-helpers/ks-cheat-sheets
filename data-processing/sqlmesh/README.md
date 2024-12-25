@@ -185,6 +185,34 @@ Successfully Ran 1 tests against duckdb
 No changes to plan: project files match the `prod` environment
 ```
 
+* Check the models with DuckDB
+  * Launch DuckDB on the just created/updated database (namely `db.db`)
+  (as a reminder, to quit the Duck shell, either type Control-D or
+  the `.quit` command):
+```bash
+duckdb db.db
+```
+  * List all the tables:
+```sql
+D show all tables;
+```
+  * List the items of the `seed_model` table:
+```sql
+D select * from sqlmesh_example.seed_model;
+```
+  * List the items of the `incremental_model` table:
+```sql
+D select * from sqlmesh_example.incremental_model;
+```
+  * List the items of the `full_model` table:
+```sql
+D select * from sqlmesh_example.full_model;
+```
+  * Quit DuckDB:
+```sql
+D .quit
+```
+
 ## Full end-to-end example
 * Reference:
   https://sqlmesh.readthedocs.io/en/stable/examples/incremental_time_full_walkthrough/
