@@ -46,13 +46,13 @@ on a virtual machine (VM).
 * Home page: https://duckdb.org/
   * [DuckDB doc - HTTPFS extension](https://duckdb.org/docs/extensions/httpfs.html)
 
-## Articles
+## Articles and Git knowledge sharing projects
 
 ### SQLMesh - Migrate
 * Overview: series of articles to explore SQLMesh and how it compares
   to dbt
 * Author: David Jayatillake
-  ([David Jayatillake on LinkedIn](https://www.linkedin.com/in/david-jayatillake/),
+([David Jayatillake on LinkedIn](https://www.linkedin.com/in/david-jayatillake/),
   [David Jayatillake on Substack](https://substack.com/@davidsj))
 * Date: Dec. 2024
 * Publisher: Substack
@@ -63,7 +63,8 @@ on a virtual machine (VM).
   * Models kind 1: https://davidsj.substack.com/p/sqlmesh-model-kinds-1
   * Models kind 2: https://davidsj.substack.com/p/sqlmesh-model-kinds-2
   * Plan: https://davidsj.substack.com/p/sqlmesh-plan
-  * Breaking and non-breaking changes: https://davidsj.substack.com/p/breaking-and-non-breaking-changes
+  * Breaking and non-breaking changes:
+  https://davidsj.substack.com/p/breaking-and-non-breaking-changes
   * Test: https://davidsj.substack.com/p/sqlmesh-test
   * Janitor: https://davidsj.substack.com/p/sqlmesh-janitor
   
@@ -94,13 +95,50 @@ on a virtual machine (VM).
   https://thedatatoolbox.substack.com/p/why-sqlmesh-might-be-the-best-dbt
 * Publisher: Substack
 
+
+###
+* GitHub repository: https://github.com/mattiasthalen/arcane-insight/tree/main
+* Title: Arcane insight
+* Overview: Arcane Insight is a data analytics project designed to harness
+  the power of SQLMesh and DuckDB to collect, transform, and analyze data from
+  [Blizzard's Hearthstone API](https://develop.battle.net/documentation/hearthstone).
+* Author: Mattias Thalén
+ ([Mattias Thalén on LinkedIn](https://www.linkedin.com/in/mattias-thal%C3%A9n/),
+  [Mattias Thalén on GitHub](https://github.com/mattiasthalen))
+* Date: End of 2024
+
 # Quickstart
+
+## SQLMesh with DuckDB
+* Reference:
+  https://sqlmesh.readthedocs.io/en/stable/quickstart/cli/#3-update-a-model
+
+* Change to the `simple-example` directory within the SQLMesh dedicated
+  directory:
+```bash
+cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/simple-example
+```
+
+
+
+## SQLMesh full end-to-end example
+* Reference:
+  https://sqlmesh.readthedocs.io/en/stable/examples/incremental_time_full_walkthrough/
+
+* Change to the `e2e-example` directory within the SQLMesh dedicated
+  directory:
+```bash
+cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/e2e-example
+```
+
 
 # Installation
 
 ## BlueSky data
 * That sub-section is the basis/data part of the
-  [article by David Jayatillake](https://davidsj.substack.com/p/sqlmesh-init-duckdb)
+  [article by David Jayatillake](https://davidsj.substack.com/p/sqlmesh-init-duckdb).
+  It will however not be used for now. Hence, its installation/cloning is
+  purely optional
 
 * Clone the Git repository and move into it:
 ```bash
@@ -136,4 +174,55 @@ D select * from bluesky.jetstream limit 10;
 D .quit
 ```
 
+## Clone this repository
+* Clone this
+  [Git repository](https://github.com/data-engineering-helpers/ks-cheat-sheets)
+  and move into its SQLMesh directory:
+```bash
+mkdir -p ~/dev/knowledge-sharing
+git clone https://github.com/data-engineering-helpers/ks-cheat-sheets ~/dev/knowledge-sharing/ks-cheat-sheets
+cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh
+```
 
+## SQLMesh
+* SQLMesh comes as a Python package, and may therefore installed simply with
+  the Python packager. For instance:
+```bash
+python -mpip install -U sqlmesh
+```
+
+* The SQLMesh package installs two executable scripts, namely `sqlmesh` and
+  `sqlmesh_cicd`, which are usually stored along side the other Python packages.
+  For instance, with PyEnv, it will end up as wrappers in `~/.pyenv/shims/`.
+
+* Usually, for the Shell (_e.g._, Bash or Zsh) to become aware of those newly
+  installed executables scripts, it has to be refreshed (with the `exec`
+  command)
+  * For the Bash Shell:
+```bash
+exec bash
+```
+  * For the Zsh Shell:
+```bash
+exec zsh
+```
+
+* Check the version of the just installed SQLMesh package:
+```bash
+sqlmesh --version
+0.141.1
+```
+
+* Note that most of the projetcs, to be found in Git repositories,
+  have already been initialized; they no longer need initializing.
+  
+* To create a new project from scratch, execute the `sqlmesh init` command,
+  specifying which
+  [SQL dialect](https://github.com/tobymao/sqlglot/blob/main/sqlglot/dialects/dialect.py)
+  to use (among, for instance, DataBricks, Drill, DuckDB, Hive, MySQL,
+  PostgreSQL, Presto, Redshift, Snowflake, Spark, SQLite, Tableau, Trino)
+  * The simple example, described in
+  https://sqlmesh.readthedocs.io/en/stable/quickstart/cli/#1-create-the-sqlmesh-project, has been created in the
+  [`simple-example` directory of this Git repository](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/simple-example),
+  with the `sqlmesh init duckdb` command. The resulting file structure
+  has been added and committed to the Git repository
