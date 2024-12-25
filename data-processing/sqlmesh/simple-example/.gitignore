@@ -1,0 +1,5 @@
+# SQLMesh
+/.cache/
+/db.db
+/logs/
+

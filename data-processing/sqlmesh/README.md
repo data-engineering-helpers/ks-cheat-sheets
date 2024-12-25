@@ -6,11 +6,16 @@ Cheat Sheet - SQLMesh
 * [References](#references)
   * [Data Engineering helpers](#data-engineering-helpers)
   * [DuckDB](#duckdb)
-  * [Articles](#articles)
+  * [Articles and Git knowledge sharing projects](#articles-and-git-knowledge-sharing-projects)
     * [SQLMesh \- Migrate](#sqlmesh---migrate)
-	* [SQLMesh as alternative to dbt](#sqlmesh-as-alternative-to-dbt)
+    * [SQLMesh as alternative to dbt](#sqlmesh-as-alternative-to-dbt)
 * [Quickstart](#quickstart)
+  * [Simple example with DuckDB](#simple-example-with-duckdb)
+  * [Full end\-to\-end example](#full-end-to-end-example)
 * [Installation](#installation)
+  * [BlueSky data](#bluesky-data)
+  * [Clone this repository](#clone-this-repository)
+  * [SQLMesh](#sqlmesh)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
@@ -109,7 +114,7 @@ on a virtual machine (VM).
 
 # Quickstart
 
-## SQLMesh with DuckDB
+## Simple example with DuckDB
 * Reference:
   https://sqlmesh.readthedocs.io/en/stable/quickstart/cli/#3-update-a-model
 
@@ -119,9 +124,68 @@ on a virtual machine (VM).
 cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/simple-example
 ```
 
+* Clean/remove results of potential earlier tries (those files are ignored
+  by Git):
+```bash
+rm -rf .cache logs db.db
+```
+
+* Launch the SQLMesh plan:
+```bash
+sqlmesh plan
+======================================================================
+Successfully Ran 1 tests against duckdb
+----------------------------------------------------------------------
+`prod` environment will be initialized
+
+Models:
+└── Added:
+    ├── sqlmesh_example.full_model
+    ├── sqlmesh_example.incremental_model
+    └── sqlmesh_example.seed_model
+Models needing backfill (missing dates):
+├── sqlmesh_example.full_model: 2024-12-24 - 2024-12-24
+├── sqlmesh_example.incremental_model: 2020-01-01 - 2024-12-24
+└── sqlmesh_example.seed_model: 2024-12-24 - 2024-12-24
+Apply - Backfill Tables [y/n]:
+```
+
+* Answer yes (`y`) to the prompted question ("backfill tables?"):
+```bash
+Creating physical tables ━━━━ ... ━━━━━ 100.0% • 3/3 • 0:00:00
+
+All model versions have been created successfully
+
+[1/1] sqlmesh_example.seed_model evaluated in 0.03s
+[1/1] sqlmesh_example.incremental_model evaluated in 0.01s
+[1/1] sqlmesh_example.full_model evaluated in 0.01s
+Evaluating models ━━━━━━ ... ━━━━━━━ 100.0% • 3/3 • 0:00:00
 
 
-## SQLMesh full end-to-end example
+All model batches have been executed successfully
+
+Virtually Updating 'prod' ━━━━━━━ ... ━━━━━━━━ 100.0% • 0:00:00
+
+The target environment has been updated successfully
+```
+
+* It will update the DuckDB database (`db.db`), which is ignored by Git
+
+* Logs are available in the `logs/` sub-directory (also ignored by Git)
+  and cache files are to be found in the `.cache/` sub-directory (also
+  ignored by Git)
+
+* If the SQLMesh plan is run again, this time, there will be no change
+  (the SQLMesh commands are idempotent):
+```bash
+sqlmesh plan
+======================================================================
+Successfully Ran 1 tests against duckdb
+----------------------------------------------------------------------
+No changes to plan: project files match the `prod` environment
+```
+
+## Full end-to-end example
 * Reference:
   https://sqlmesh.readthedocs.io/en/stable/examples/incremental_time_full_walkthrough/
 
@@ -215,14 +279,36 @@ sqlmesh --version
 
 * Note that most of the projetcs, to be found in Git repositories,
   have already been initialized; they no longer need initializing.
-  
+
+* Clean/remove results of potential earlier tries (those files are ignored
+  by Git):
+```bash
+rm -rf .cache logs db.db
+```
+
 * To create a new project from scratch, execute the `sqlmesh init` command,
   specifying which
   [SQL dialect](https://github.com/tobymao/sqlglot/blob/main/sqlglot/dialects/dialect.py)
   to use (among, for instance, DataBricks, Drill, DuckDB, Hive, MySQL,
   PostgreSQL, Presto, Redshift, Snowflake, Spark, SQLite, Tableau, Trino)
-  * The simple example, described in
-  https://sqlmesh.readthedocs.io/en/stable/quickstart/cli/#1-create-the-sqlmesh-project, has been created in the
+  * The simple example, described in the
+  [SQLMesh getting started page](https://sqlmesh.readthedocs.io/en/stable/quickstart/cli/#1-create-the-sqlmesh-project),
+  has been created in the
   [`simple-example` directory of this Git repository](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/simple-example),
   with the `sqlmesh init duckdb` command. The resulting file structure
-  has been added and committed to the Git repository
+  has been added and committed to the Git repository:
+  * [Configuration](https://sqlmesh.readthedocs.io/en/stable/guides/configuration/):
+  [`config.yaml` file](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/simple-example/config.yaml)
+  * [Models](https://sqlmesh.readthedocs.io/en/stable/concepts/models/overview/):
+  [`models/` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/tree/main/data-processing/sqlmesh/simple-example/models)
+  * [Seed files](https://sqlmesh.readthedocs.io/en/stable/concepts/models/seed_models/):
+  [`seeds/` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/tree/main/data-processing/sqlmesh/simple-example/seeds)
+  * Which contain a seed/example data set, namely
+  [`seed_data.csv`](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/simple-example/seeds/seed_data.csv)
+  * [Shared audit files](https://sqlmesh.readthedocs.io/en/stable/concepts/audits/):
+  [`audits/` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/tree/main/data-processing/sqlmesh/simple-example/audits)
+  * [Unit test files](https://sqlmesh.readthedocs.io/en/stable/concepts/tests/):
+  [`tests/` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/tree/main/data-processing/sqlmesh/simple-example/tests)
+  * [Macro files](https://sqlmesh.readthedocs.io/en/stable/concepts/macros/overview/):
+  [`macros/` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/tree/main/data-processing/sqlmesh/simple-example/macros)
+
