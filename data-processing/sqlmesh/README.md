@@ -303,7 +303,7 @@ rm -rf .cache logs db.db
   [`models/` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/tree/main/data-processing/sqlmesh/simple-example/models)
   * [Seed files](https://sqlmesh.readthedocs.io/en/stable/concepts/models/seed_models/):
   [`seeds/` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/tree/main/data-processing/sqlmesh/simple-example/seeds)
-  * Which contain a seed/example data set, namely
+    * Which contain a seed/example data set, namely
   [`seed_data.csv`](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/simple-example/seeds/seed_data.csv)
   * [Shared audit files](https://sqlmesh.readthedocs.io/en/stable/concepts/audits/):
   [`audits/` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/tree/main/data-processing/sqlmesh/simple-example/audits)
