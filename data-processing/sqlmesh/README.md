@@ -8,6 +8,7 @@ Cheat Sheet - SQLMesh
   * [DuckDB](#duckdb)
   * [Articles](#articles)
     * [SQLMesh \- Migrate](#sqlmesh---migrate)
+	* [SQLMesh as alternative to dbt](#sqlmesh-as-alternative-to-dbt)
 * [Quickstart](#quickstart)
 * [Installation](#installation)
 
@@ -51,7 +52,10 @@ on a virtual machine (VM).
 * Overview: series of articles to explore SQLMesh and how it compares
   to dbt
 * Author: David Jayatillake
+  ([David Jayatillake on LinkedIn](https://www.linkedin.com/in/david-jayatillake/),
+  [David Jayatillake on Substack](https://substack.com/@davidsj))
 * Date: Dec. 2024
+* Publisher: Substack
 * Link to the articles:
   * Migrate (the conclusion): https://substack.com/home/post/p-153375690
   * Init with dbt: https://davidsj.substack.com/p/sqlmesh-init-t-dbt
@@ -79,6 +83,16 @@ on a virtual machine (VM).
 
 > Then, when you have time, you can try the SQLMesh model kinds and
 > see that they are not so difficult or different to use.
+
+### SQLMesh as alternative to dbt
+* Title: Why SQLMesh Might be The Best dbt Alternative
+* Author: Yuki Kakegawa
+  ([Yuki Kakegawa on LinkedIn](https://www.linkedin.com/in/yukikakegawa/),
+  [Yuki Kakegawa on Substack](https://substack.com/@yuki1))
+* Date: Dec. 2024
+* Link to the article:
+  https://thedatatoolbox.substack.com/p/why-sqlmesh-might-be-the-best-dbt
+* Publisher: Substack
 
 # Quickstart
 
