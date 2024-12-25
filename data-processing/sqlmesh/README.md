@@ -11,11 +11,22 @@ Cheat Sheet - SQLMesh
     * [SQLMesh as alternative to dbt](#sqlmesh-as-alternative-to-dbt)
 * [Quickstart](#quickstart)
   * [Simple example with DuckDB](#simple-example-with-duckdb)
+    * [Some information about the project](#some-information-about-the-project)
+    * [Initial models](#initial-models)
+      * [Create a prod environment](#create-a-prod-environment)
+      * [Check the new state brought by the plan](#check-the-new-state-brought-by-the-plan)
+      * [Launch the tests](#launch-the-tests)
+    * [Introduce a change in the incremental model](#introduce-a-change-in-the-incremental-model)
+      * [Create a dev environment](#create-a-dev-environment)
+      * [Check the new state brought by the plan on dev](#check-the-new-state-brought-by-the-plan-on-dev)
+      * [Update the prod environment](#update-the-prod-environment)
+      * [Check the upddates in the prod environment](#check-the-upddates-in-the-prod-environment)
   * [Full end\-to\-end example](#full-end-to-end-example)
 * [Installation](#installation)
   * [BlueSky data](#bluesky-data)
   * [Clone this repository](#clone-this-repository)
   * [SQLMesh](#sqlmesh)
+    * [SQLMesh UI](#sqlmesh-ui)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
@@ -130,6 +141,25 @@ cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/simple-exampl
 rm -rf .cache logs db.db
 ```
 
+### Some information about the project
+* The `info` command gives a high level overview of the project:
+```bash
+sqlmesh info
+Models: 3
+Macros: 0
+Data warehouse connection succeeded
+```
+
+### Initial models
+* The datasets are materialized as tables in a (to be created) prod environment
+
+* The datasets are also called models. In the remainder of the documentation,
+  datasets, tables and models may be interchanged
+
+#### Create a prod environment
+* Reference:
+  https://sqlmesh.readthedocs.io/en/stable/quickstart/cli/#2-create-a-prod-environment
+
 * Launch the SQLMesh plan:
 ```bash
 sqlmesh plan
@@ -185,6 +215,23 @@ Successfully Ran 1 tests against duckdb
 No changes to plan: project files match the `prod` environment
 ```
 
+#### Check the new state brought by the plan
+* The `sqlmesh fetchdf` command is a proxy to the backend database, DuckDB in
+  this example. The content of the backend database may therefore be queries
+  either through the `sqlmesh fetchdf` command or directly with the backend
+  database.
+  
+* In the remaining of this sub-section, DuckDB is used directly.
+  All the SQL queries could also be executed thanks to
+  the `sqlmesh fetchdf` command, for instance:
+```bash
+sqlmesh fetchdf "select * from sqlmesh_example.incremental_model"
+   id  item_id event_date
+0   1        2 2020-01-01
+ ...
+6   7        1 2020-01-07
+```
+
 * Check the models with DuckDB
   * Launch DuckDB on the just created/updated database (namely `db.db`)
   (as a reminder, to quit the Duck shell, either type Control-D or
@@ -199,18 +246,215 @@ D show all tables;
   * List the items of the `seed_model` table:
 ```sql
 D select * from sqlmesh_example.seed_model;
+┌───────┬─────────┬────────────┐
+│  id   │ item_id │ event_date │
+│ int32 │  int32  │    date    │
+├───────┼─────────┼────────────┤
+│     1 │       2 │ 2020-01-01 │
+ ...
+│     7 │       1 │ 2020-01-07 │
+└───────┴─────────┴────────────┘
 ```
   * List the items of the `incremental_model` table:
 ```sql
 D select * from sqlmesh_example.incremental_model;
+┌───────┬─────────┬────────────┐
+│  id   │ item_id │ event_date │
+│ int32 │  int32  │    date    │
+├───────┼─────────┼────────────┤
+│     1 │       2 │ 2020-01-01 │
+ ...
+│     7 │       1 │ 2020-01-07 │
+└───────┴─────────┴────────────┘
 ```
   * List the items of the `full_model` table:
 ```sql
 D select * from sqlmesh_example.full_model;
+┌─────────┬────────────┐
+│ item_id │ num_orders │
+│  int32  │   int64    │
+├─────────┼────────────┤
+│       2 │          1 │
+│       1 │          5 │
+│       3 │          1 │
+└─────────┴────────────┘
 ```
   * Quit DuckDB:
 ```sql
 D .quit
+```
+
+#### Launch the tests
+* Launch the tests:
+```bash
+sqlmesh test
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.021s
+
+OK
+```
+
+### Introduce a change in the incremental model
+* Reference:
+  https://sqlmesh.readthedocs.io/en/stable/quickstart/cli/#3-update-a-model
+
+#### Create a dev environment
+* Reference:
+  https://sqlmesh.readthedocs.io/en/stable/quickstart/cli/#4-work-with-a-development-environment
+  
+* Launch the plan command, specifying the dev environment (which does not exist
+  yet):
+```bash
+sqlmesh plan dev
+======================================================================
+Successfully Ran 1 tests against duckdb
+----------------------------------------------------------------------
+New environment `dev` will be created from `prod`
+
+Differences from the `prod` environment:
+
+Models:
+├── Directly Modified:
+│   └── sqlmesh_example__dev.incremental_model
+└── Indirectly Modified:
+    └── sqlmesh_example__dev.full_model
+...
+Directly Modified: sqlmesh_example__dev.incremental_model (Non-breaking)
+└── Indirectly Modified Children:
+    └── sqlmesh_example__dev.full_model (Indirect Non-breaking)
+Models needing backfill (missing dates):
+└── sqlmesh_example__dev.incremental_model: 2020-01-01 - 2024-12-24
+Enter the backfill start date (eg. '1 year', '2020-01-01') or blank to backfill from the beginning of history:
+Enter the backfill end date (eg. '1 month ago', '2020-01-01') or blank to backfill up until '2024-12-25 00:00:00':
+Apply - Backfill Tables [y/n]:
+```
+  * Answer yes when prompted about applying the change:
+```bash
+Apply - Backfill Tables [y/n]: y
+Creating physical tables ━━━━━ ... ━━━━━ 100.0% • 3/3 • 0:00:00
+
+All model versions have been created successfully
+
+[1/1] sqlmesh_example__dev.incremental_model evaluated in 0.04s
+Evaluating models ━━━━━ ... ━━━━━━ 100.0% • 1/1 • 0:00:00
+
+
+All model batches have been executed successfully
+
+Virtually Updating 'dev' ━━━━━ ... ━━━━━ 100.0% • 0:00:00
+
+The target environment has been updated successfully
+```
+
+#### Check the new state brought by the plan on dev
+* Check the content of the updated table in the dev environment:
+```bash
+sqlmesh fetchdf "select * from sqlmesh_example__dev.incremental_model"
+   id  item_id new_column event_date
+0   1        2          z 2020-01-01
+ ...
+6   7        1          z 2020-01-07
+```
+
+* Even though there is a new `full_model` table in the dev environment,
+  its content is the same as the same table on the prod environment
+  (as this table does not use the new column yet):
+```bash
+sqlmesh fetchdf "select * from sqlmesh_example__dev.full_model"
+   item_id  num_orders
+0        2           1
+1        1           5
+2        3           1
+```
+
+* There is a command, namely `table_diff`, to display the differences
+  between two environment for a given table:
+```bash
+sqlmesh table_diff prod:dev sqlmesh_example.incremental_model
+
+Schema Diff Between 'PROD' and 'DEV' environments for model 'sqlmesh_example.incremental_model':
+└── Added Columns:
+    └── new_column (TEXT)
+
+Row Counts:
+└──  FULL MATCH: 7 rows (100.0%)
+
+COMMON ROWS column comparison stats:
+         pct_match
+item_id      100.0
+```
+
+#### Update the prod environment
+* Reference:
+  https://sqlmesh.readthedocs.io/en/stable/quickstart/cli/#51-apply-updates-to-prod
+  
+* Launch the plan command, and when not specifying any environment, the prod
+  environment is assumed:
+
+```bash
+sqlmesh plan # prod
+======================================================================
+Successfully Ran 1 tests against duckdb
+----------------------------------------------------------------------
+Differences from the `prod` environment:
+
+Models:
+├── Directly Modified:
+│   └── sqlmesh_example.incremental_model
+└── Indirectly Modified:
+    └── sqlmesh_example.full_model
+...
+Directly Modified: sqlmesh_example.incremental_model (Non-breaking)
+└── Indirectly Modified Children:
+    └── sqlmesh_example.full_model (Indirect Non-breaking)
+Apply - Virtual Update [y/n]:
+```
+
+  * Answer yes when prompted about applying the change:
+```bash
+Apply - Backfill Tables [y/n]: y
+Creating physical tables ━━━━ ... ━━━━━ 100.0% • 3/3 • 0:00:00
+
+All model versions have been created successfully
+
+Virtually Updating 'prod' ━━━━ ... ━━━━━ 100.0% • 0:00:00
+
+The target environment has been updated successfully
+
+
+Virtual Update executed successfully
+```
+
+#### Check the upddates in the prod environment
+* Reference:
+  https://sqlmesh.readthedocs.io/en/stable/quickstart/cli/#5.2-validate-updates-in-prod
+
+* Check that the prod table has been updated with the new column:
+```bash
+sqlmesh fetchdf "select * from sqlmesh_example.incremental_model"
+   id  item_id new_column event_date
+0   1        2          z 2020-01-01
+ ...
+6   7        1          z 2020-01-07
+```
+
+* The `table_diff` command now reports that the tables are the same in both the
+  dev and prod environments:
+```bash
+sqlmesh table_diff prod:dev sqlmesh_example.incremental_model
+
+Schema Diff Between 'PROD' and 'DEV' environments for model 'sqlmesh_example.incremental_model':
+└── Schemas match
+
+
+Row Counts:
+└──  FULL MATCH: 7 rows (100.0%)
+
+COMMON ROWS column comparison stats:
+            pct_match
+item_id         100.0
+new_column      100.0
 ```
 
 ## Full end-to-end example
@@ -280,7 +524,7 @@ cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh
 * SQLMesh comes as a Python package, and may therefore installed simply with
   the Python packager. For instance:
 ```bash
-python -mpip install -U sqlmesh
+python -mpip install -U "sqlmesh[web]"
 ```
 
 * The SQLMesh package installs two executable scripts, namely `sqlmesh` and
@@ -339,4 +583,19 @@ rm -rf .cache logs db.db
   [`tests/` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/tree/main/data-processing/sqlmesh/simple-example/tests)
   * [Macro files](https://sqlmesh.readthedocs.io/en/stable/concepts/macros/overview/):
   [`macros/` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/tree/main/data-processing/sqlmesh/simple-example/macros)
+
+### SQLMesh UI
+* In a separate terminal tab, as the default local port (`8000`) may already
+  be taken by other processes (_e.g._,
+  [LakeFS](https://github.com/treeverse/lakeFS) is running on the `8000` port
+  by default), launch the SQLMesh UI by specifying a port not already in use:
+```bash
+sqlmesh ui --port 9090
+INFO:     Started server process [7586]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:9090 (Press CTRL+C to quit)
+```
+
+* With a web browser, open http://localhost:9090
 
