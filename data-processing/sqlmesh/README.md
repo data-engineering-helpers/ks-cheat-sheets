@@ -12,7 +12,7 @@ Cheat Sheet - SQLMesh
     * [SQLMesh \- Migrate](#sqlmesh---migrate)
     * [SQLMesh as alternative to dbt](#sqlmesh-as-alternative-to-dbt)
     * [Arcane insight](#arcane-insight)
-    * [SQL \+ DataOps \= SQLMesh](#sql---dataops---sqlmesh)
+    * [SQL \+ DataOps \= SQLMesh](#sql--dataops--sqlmesh)
     * [Time To Move From dbt to SQLMesh](#time-to-move-from-dbt-to-sqlmesh)
 * [Quickstart](#quickstart)
   * [Simple example with DuckDB](#simple-example-with-duckdb)
