@@ -12,7 +12,7 @@ Cheat Sheet - SQLMesh
     * [SQLMesh \- Migrate](#sqlmesh---migrate)
     * [SQLMesh as alternative to dbt](#sqlmesh-as-alternative-to-dbt)
     * [Arcane insight](#arcane-insight)
-    * [SQL \+ DataOps \= SQLMesh](#sql--dataops--sqlmesh)
+    * [SQL \+ DataOps = SQLMesh](#sql--dataops--sqlmesh)
     * [Time To Move From dbt to SQLMesh](#time-to-move-from-dbt-to-sqlmesh)
 * [Quickstart](#quickstart)
   * [Simple example with DuckDB](#simple-example-with-duckdb)
@@ -28,7 +28,7 @@ Cheat Sheet - SQLMesh
       * [Check the upddates in the prod environment](#check-the-upddates-in-the-prod-environment)
   * [Full end\-to\-end example](#full-end-to-end-example)
 * [Installation](#installation)
-  * [BlueSky data](#bluesky-data)
+  * [Public data sets on DuckDB](#public-data-sets-on-duckdb)
   * [Clone this repository](#clone-this-repository)
   * [SQLMesh](#sqlmesh-1)
     * [SQLMesh UI](#sqlmesh-ui)
@@ -106,7 +106,7 @@ For production-ready deployments, other database backends, like PostgreSQL, may 
 * Date: Dec. 2024
 * Publisher: Substack
 * Link to the articles:
-  * Migrate (the conclusion): https://substack.com/home/post/p-153375690
+  * Migrate (the conclusion): https://davidsj.substack.com/p/sqlmesh-migrate
   * Init with dbt: https://davidsj.substack.com/p/sqlmesh-init-t-dbt
   * Init with DuckDB: https://davidsj.substack.com/p/sqlmesh-init-duckdb
   * Models kind 1: https://davidsj.substack.com/p/sqlmesh-model-kinds-1
@@ -519,25 +519,20 @@ cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/e2e-example
 
 # Installation
 
-## BlueSky data
-* That sub-section is the basis/data part of the
-  [article by David Jayatillake](https://davidsj.substack.com/p/sqlmesh-init-duckdb).
-  It will however not be used for now. Hence, its installation/cloning is
-  purely optional
+## Public data sets on DuckDB
+* This sub-section is just for reference. It is not used for most of
+  the examples explored in the
+  [Quickstart section](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/README.md#quickstart)
 
-* Clone the Git repository and move into it:
-```bash
-mkdir -p ~/dev/infra
-git clone https://github.com/djayatillake/bluesky-data ~/dev/infra/bluesky-data
-cd ~/dev/infra/bluesky-data
-```
+* See also
+  [GitHub - Data Engineering Helpers - KS - DuckDB - Public catalogs](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/README.md#public-catalogs)
 
-* Launch the DuckDb shell:
+* Launch the DuckDB shell:
 ```bash
 $ duckdb
 ```
 
-* (In DuckDB,) attach to the BlueSky data catalog:
+* (In DuckDB,) attach to a public catalog, for instance the BlueSky catalog:
 ```sql
 D attach 'https://hive.buz.dev/bluesky/catalog' as bluesky;
 ```

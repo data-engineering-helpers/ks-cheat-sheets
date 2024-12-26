@@ -108,7 +108,8 @@ D select distinct ac.geonameid,
 ```sql
 .shell curl https://catalog.boringdata.io/start
 ```
-  * Follow the instructions given as a result (the secret/credentials step is not reproduced here):
+  * Follow the instructions given as a result (the secret/credentials step
+  is not reproduced here):
 ```sql
 load iceberg;
 attach 'https://catalog.boringdata.io/catalog' as boringdata;
@@ -120,8 +121,8 @@ show all tables;
 ```
 
 ## Buz Hive
-* Overview: Buz Hive is a collection of DuckDB-compatible data catalogs with public data sets,
-  stored in public buckets on CloudFare
+* Overview: Buz Hive is a collection of DuckDB-compatible data catalogs
+  with public data sets, stored in public R2 buckets on CloudFare
 * Home page: https://catalog.buz.dev/
 * Author?: Jake Thomas
   ([Jake Thomas on LinkedIn](https://www.linkedin.com/in/jake-thomas/),
@@ -130,9 +131,11 @@ show all tables;
 
 ### BlueSky data
 * Home page: https://catalog.buz.dev/datasets/bluesky/jetstream
-* Overview: The Bluesky dataset consists of the last 1M records from Bluesky's Jetstream
+* Overview: The Bluesky dataset consists of the last 1M records
+  from Bluesky's Jetstream
 * Getting started:
-  * In the DuckDB shell, bind to the BlueSky data catalog (there is no need for credentials here):
+  * In the DuckDB shell, bind to the BlueSky data catalog (there is no need
+  for credentials here):
 ```sql
 attach 'https://hive.buz.dev/bluesky/catalog' as bluesky;
 ```
@@ -143,12 +146,30 @@ select count(*)/1e6 as nb_rows from bluesky.jetstream;
 select * from bluesky.jetstream limit 10;
 ```
 
+* David Jayatillake
+  ([David Jayatillake on LinkedIn](https://www.linkedin.com/in/david-jayatillake/),
+  [David Jayatillake on Substack](https://substack.com/@davidsj)),
+  as part of
+  [his exploration of SQLMesh as an alternative to dbt](https://davidsj.substack.com/p/sqlmesh-migrate),
+  has setup a Git repository to expose BlueSky data
+  * Article by David Jayatillake:
+    https://davidsj.substack.com/p/sqlmesh-init-duckdb
+  * See also
+    [GitHub - Data Engineering Helpers - KS - SQLMesh - Migrate](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/README.md#sqlmesh---migrate)
+  * Clone the Git repository and move into it:
+```bash
+mkdir -p ~/dev/infra
+git clone https://github.com/djayatillake/bluesky-data ~/dev/infra/bluesky-data
+cd ~/dev/infra/bluesky-data
+```
+
 ### Foursquare data
 * Home page: https://catalog.buz.dev/datasets/foursquare/places
 * Overview: OSS Foursquare Places database
   * 100 millions of rows for the `places` table
 * Getting started:
-  * In the DuckDB shell, bind to the Foursquare data catalog (there is no need for credentials here):
+  * In the DuckDB shell, bind to the Foursquare data catalog (there is no need
+  for credentials here):
 ```sql
 attach 'https://hive.buz.dev/foursquare' as foursquare;
 ```
