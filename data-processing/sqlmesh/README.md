@@ -37,7 +37,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 explains how to install and to use [SQLMesh](https://sqlmesh.readthedocs.io/en/stable/),
 _e.g._, on a laptop or on a virtual machine (VM).
 
-> [SQLMesh](https://sqlmesh.readthedocs.io/en/stable/) SQLMesh is
+> [SQLMesh](https://sqlmesh.readthedocs.io/en/stable/) is
 > a next-generation data transformation framework designed to ship
 > data quickly, efficiently, and without error. Data teams can efficiently
 > run and deploy data transformations written in SQL or Python with
