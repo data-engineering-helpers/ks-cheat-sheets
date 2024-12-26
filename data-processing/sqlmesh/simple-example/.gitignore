@@ -1,6 +1,7 @@
 # SQLMesh
 /.cache/
 /db.db
+/dbwost.db
 /logs/
 /config.yaml
 

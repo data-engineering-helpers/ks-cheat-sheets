@@ -531,6 +531,27 @@ item_id         100.0
 new_column      100.0
 ```
 
+### Cleanup
+* As DuckDB stores both the state and the datasets, cleaning up is as
+  straightforward as deleting the DuckDB data file, namely `db.db`:
+```bash
+rm -f db.db
+```
+
+* Delete also the log and the cache directories:
+```bash
+rm -rf .cache logs
+```
+
+* Comment the clause for the `z` column in the `incremental_model` model:
+```bash
+grep "z" models/incremental_model.sql
+    --'z' AS new_column, -- Added column
+```
+
+* The project is now ready to start afresh, with no memory nor any change
+  when compared to the Git repository
+
 ## Full end-to-end example
 * Reference:
   https://sqlmesh.readthedocs.io/en/stable/examples/incremental_time_full_walkthrough/
@@ -608,7 +629,8 @@ D .quit
   [Data Engineering Helpers - Knowledge Sharing - PostgreSQL guide](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/README.md#sqlmesh-database-and-user),
   there is a section detailing how to create a `sqlmesh` database, a `sqlmesh`
   schema and the `sqlmesh` user on a local PostgreSQL database
-  
+
+### Setup of the configuration for the local PostgreSQL to store the state
 * As the `config.yaml` configuration files contain credentials for the
   PostgreSQL database (even though those credentials are just some samples
   for local services, some security scanners may bump onto them in GitHub
@@ -616,20 +638,122 @@ D .quit
   * Git stores only a sample version of the `config.yaml` configuration file,
     namely `config.yaml.sample`
   * The `config.yaml` configuration file, that SQLMesh is expecting,
-    has to be copied from the `config.yaml.sample` file and the password
-	has to be adjusted in it
+    has to be copied from the `config.yaml.sample` file and:
+	* The password has to be adjusted in it
+	* The default gateway has to changed for the new `local_w_pg` setup
   * That `config.yaml` configuration file is ignored by Git (so that
     the credentials do not appear in clear in the Git repository)
   * The sequence is therefore as the following:
 ```bash
 cp config.yaml.sample config.yaml
 sed -i.bak -e 's/<sqlmesh-pass>/sqlmesh/' config.yaml && rm -f config.yaml.bak
+sed -i.bak -e 's/default_gateway: local/default_gateway: local_w_pg/' config.yaml && rm -f config.yaml.bak
 ```
   * Check that the content of the `config.yaml` configuration file
-    seems correct:
+    seems correct
+	* Setup of the default gateway (that avoids to have to pass the
+	`--gateway local_w_pg` parameter at every subsequent `sqlmesh` command):
 ```bash
 cat config.yaml | yq -r '.gateways.local_w_pg.state_connection'
 ```
+```yaml
+type: postgres
+host: localhost
+port: 5432
+database: sqlmesh
+user: sqlmesh
+password: <sqlmesh-pass>
+```
+	* Default gateway:
+```bash
+cat config.yaml | yq -r '.default_gateway'
+```
+```text
+local_w_pg
+```
+
+* SQLMesh is now ready to run with:
+  * DuckDB as the execution engine
+  * Local PostgreSQL database server to store the state
+
+### SQLMesh with PostgreSQL to store the state
+* Follow the
+  [same steps as in the pure DuckDB example](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/README.md#initial-models)
+  * The behaviour of SQLMesh should be exactly the same, except that the state
+  is now stored in the local PostgreSQL database, as can be checked with
+  the state-related tables in the PostgreSQL database. See the remainder of
+  this sub-section for the details
+
+* After `sqlmesh plan`
+  * The datasets are in the DuckDB database, namely the `dbwost.db` file.
+  The content may still be queried with the `sqlmesh fetchdf` command, _e.g._:
+```bash
+sqlmesh fetchdf "select * from sqlmesh_example.full_model"
+```
+  * The state is stored in the PostgreSQL database. For instance:
+    * List the state-related tables:
+```bash
+psql -h localhost -U sqlmesh -d sqlmesh -c "\dt"
+```
+```sql
+               List of relations
+ Schema  |        Name        | Type  |  Owner
+---------+--------------------+-------+---------
+ sqlmesh | _auto_restatements | table | sqlmesh
+ sqlmesh | _environments      | table | sqlmesh
+ sqlmesh | _intervals         | table | sqlmesh
+ sqlmesh | _plan_dags         | table | sqlmesh
+ sqlmesh | _snapshots         | table | sqlmesh
+ sqlmesh | _versions          | table | sqlmesh
+(6 rows)
+```
+    * List the (virtual data) environments:
+```bash
+psql -h localhost -U sqlmesh -d sqlmesh -c "select * from _environments;"
+```
+    * List the intervals:
+```bash
+psql -h localhost -U sqlmesh -d sqlmesh -c "select * from _intervals;"
+```
+```sql
+                id                |  created_ts   |                      name                      | identifier |  version   |   start_ts    |    end_ts     | is_dev | is_removed | is_compacted | is_pending_restatement
+----------------------------------+---------------+------------------------------------------------+------------+------------+---------------+---------------+--------+------------+--------------+------------------------
+ e913483746c94b929a275a03d1e95fbc | 1735232865201 | "dbwost"."sqlmesh_example"."seed_model"        | 372700188  | 2185867172 | 1734998400000 | 1735171200000 | f      | f          | f            | f
+ dc53edbe63024c6da382ff31b875dcf6 | 1735232865211 | "dbwost"."sqlmesh_example"."incremental_model" | 2904108954 | 3086720608 | 1577836800000 | 1735171200000 | f      | f          | f            | f
+ 9f049d8893f149ba97dfdcdd223ec825 | 1735232865223 | "dbwost"."sqlmesh_example"."full_model"        | 3005597694 | 2692944088 | 1734998400000 | 1735171200000 | f      | f          | f            | f
+(3 rows)
+```
+
+### Cleanup when a local PostgreSQL database stores the state
+* For the datasets in DuckDB, that is still as straightforward as deleting
+  the DuckDB data file, namely `dbwost.db`:
+```bash
+rm -f dbwost.db
+```
+
+* Delete the log and the cache directories:
+```bash
+rm -rf .cache logs
+```
+
+* Specify the list of the state-related tables in a Shell array variable:
+```bash
+table_list=(_auto_restatements _environments _intervals _plan_dags _snapshots _versions)
+```
+
+* Clean/drop the state-related tables in PostgreSQL:
+```bash
+for table in "${table_list[@]}"; do echo "Dropping ${table} table..."; psql -h localhost -U sqlmesh -d sqlmesh -c "drop table if exists ${table};"; echo "... ${table} table dropped"; done
+```
+
+* Comment the clause for the `z` column in the `incremental_model` model:
+```bash
+grep "z" models/incremental_model.sql
+    --'z' AS new_column, -- Added column
+```
+
+* The project is now ready to start afresh, with no memory nor any change
+  when compared to the Git repository
 
 ## Local Airflow service
 * See also
