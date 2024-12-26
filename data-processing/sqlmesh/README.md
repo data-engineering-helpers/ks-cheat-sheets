@@ -11,6 +11,8 @@ Cheat Sheet - SQLMesh
     * [Reddit thread](#reddit-thread)
     * [SQLMesh \- Migrate](#sqlmesh---migrate)
     * [SQLMesh as alternative to dbt](#sqlmesh-as-alternative-to-dbt)
+    * [Arcane insight](#arcane-insight)
+    * [Is It Time To Move From dbt to SQLMesh?](#is-it-time-to-move-from-dbt-to-sqlmesh?)
 * [Quickstart](#quickstart)
   * [Simple example with DuckDB](#simple-example-with-duckdb)
     * [Some information about the project](#some-information-about-the-project)
@@ -141,8 +143,7 @@ For production-ready deployments, other database backends, like PostgreSQL, may 
   https://thedatatoolbox.substack.com/p/why-sqlmesh-might-be-the-best-dbt
 * Publisher: Substack
 
-
-###
+### Arcane insight
 * GitHub repository: https://github.com/mattiasthalen/arcane-insight/tree/main
 * Title: Arcane insight
 * Overview: Arcane Insight is a data analytics project designed to harness
@@ -152,6 +153,14 @@ For production-ready deployments, other database backends, like PostgreSQL, may 
  ([Mattias Thalén on LinkedIn](https://www.linkedin.com/in/mattias-thal%C3%A9n/),
   [Mattias Thalén on GitHub](https://github.com/mattiasthalen))
 * Date: End of 2024
+
+### Is It Time To Move From dbt to SQLMesh?
+* Title: Is It Time To Move From dbt to SQLMesh?
+* Date: Feb. 2024
+* Author: Benoit Pimpaud
+  ([Benoit Pimpaud on LinkedIn](https://www.linkedin.com/in/pimpaudben/))
+* Link to the article: https://kestra.io/blogs/2024-02-28-dbt-or-sqlmesh
+* Publisher: Kestra blog
 
 # Quickstart
 
