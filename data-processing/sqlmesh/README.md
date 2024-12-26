@@ -65,11 +65,21 @@ For production-ready deployments, other database backends, like PostgreSQL, may 
 ## SQLMesh
 * GitHub page: https://github.com/TobikoData/sqlmesh
 * Home page: https://sqlmesh.com/
-* Company behind it: Tobiko
-* Initial author and CEO of Tobyko: Tobias Mao, aka Toby
+* Company behind it: [Tobiko Data](https://www.linkedin.com/company/tobikodata)
+* Some significant contributors:
+  * CEO of Tobyko: Tobias Mao, aka Toby
   ([Toby Mao on LinkedIn](https://www.linkedin.com/in/toby-mao/),
   [Toby Mao on GitHub](https://github.com/tobymao),
+  [Toby Mao on Tobiko blog site](https://tobikodata.com/author/toby-mao.html),
   [Toby Mao home page](https://tobymao.com/))
+  * Co-founder of Tobiko: Iaroslav Zeigerman
+  ([Iaroslav Zeigerman on LinkedIn](https://www.linkedin.com/in/izeigerman/),
+  [Iaroslav Zeigerman on GitHub](https://github.com/izeigerman),
+  [Iaroslav Zeigerman on the Tobiko blog site](https://tobikodata.com/author/iaroslav-zeigerman.html))
+  * Founding engineer: Ryan Eakman
+  ([Ryan Eakman on LinkedIn](https://www.linkedin.com/in/ryan-eakman-65469988/),
+  [Ryan Eakman on GitHub](https://github.com/eakmanrq),
+  [Ryan Eakman on Tobiko blog site](https://tobikodata.com/author/ryan-eakman.html))
 * Related project:
   * SQLGlot: https://github.com/tobymao/sqlglot (and [SQLGlot home page](https://sqlglot.com))
 * Blog: https://tobikodata.com/blog
