@@ -13,6 +13,7 @@ Cheat Sheet - SQLMesh
     * [SQLMesh as alternative to dbt](#sqlmesh-as-alternative-to-dbt)
     * [Arcane insight](#arcane-insight)
 	* [Multi-engine Stacks](#multi-engine-stacks)
+	* [The rise of the analytics pretendgineer](#the-rise-of-the-analytics-pretendgineer)
     * [SQL \+ DataOps = SQLMesh](#sql--dataops--sqlmesh)
     * [Time To Move From dbt to SQLMesh](#time-to-move-from-dbt-to-sqlmesh)
 * [Quickstart](#quickstart)
@@ -169,6 +170,15 @@ For production-ready deployments, other database backends, like PostgreSQL, may 
 * Link to the article:
   https://juhache.substack.com/p/multi-engine-stacks-deserve-to-be
 * Publisher: Substack
+
+### The rise of the analytics pretendgineer
+* Title: The rise of the analytics pretendgineer
+* Date: May 2024
+* Author: Benn Stancil
+  ([Benn Stancil on LinkedIn](https://www.linkedin.com/in/benn-stancil/),
+  [Benn Stancil on Substack](https://benn.substack.com/))
+* Link to the article:
+  https://benn.substack.com/p/the-rise-of-the-analytics-pretendgineer
 
 ### SQL + DataOps = SQLMesh
 * Title: SQL + DataOps = SQLMesh?
