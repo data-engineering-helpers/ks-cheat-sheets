@@ -32,15 +32,8 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
 # Overview
 [This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/README.md)
-explains how to install and to use
-[SQLMesh](https://sqlmesh.readthedocs.io/en/stable/) with
-[DuckDB](https://duckdb.org/) on premises, _e.g._, on a laptop or
-on a virtual machine (VM).
-
-> [DuckDB](https://duckdb.org/) is an embedded database, similar to SQLite,
-> but designed for OLAP-style analytics. It is crazy fast and allows you
-> to read and write data stored in CSV, JSON, and Parquet files directly,
-> without requiring you to load them into the database first.
+explains how to install and to use [SQLMesh](https://sqlmesh.readthedocs.io/en/stable/),
+_e.g._, on a laptop or on a virtual machine (VM).
 
 > [SQLMesh](https://sqlmesh.readthedocs.io/en/stable/) SQLMesh is
 > a next-generation data transformation framework designed to ship
@@ -49,20 +42,45 @@ on a virtual machine (VM).
 > visibility and control at any size.
 > It is more than just a dbt alternative.
 
+SQLMesh requires some database to store its state. DuckDB [DuckDB](https://duckdb.org/) is the database by default,
+as it is small and efficient enough to be available virtually everywhere:
+> [DuckDB](https://duckdb.org/) is an embedded database, similar to SQLite,
+> but designed for OLAP-style analytics. It is crazy fast and allows you
+> to read and write data stored in CSV, JSON, and Parquet files directly,
+> without requiring you to load them into the database first.
+
+For production-ready deployments, other database backends, like PostgreSQL, may be advised.
+
 # References
 
 ## Data Engineering helpers
-* [Data Engineering Helpers - Knowledge Sharing - dbt](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/dbt/README.md)
-* [Material for the Data platform - Modern Data Stack (MDS) in a box](https://github.com/data-engineering-helpers/mds-in-a-box/blob/main/README.md)
-* [Material for the Data platform - Data life cycle](https://github.com/data-engineering-helpers/data-life-cycle/blob/main/README.md)
-* [Data Engineering Helpers - Knowledge Sharing - Minio](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-storage/minio/README.md)
-* [Data Engineering Helpers - Knowledge Sharing - DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/README.md)
+* [Data Engineering Helpers - Knowledge Sharing - DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/)
+* [Data Engineering Helpers - Knowledge Sharing - PostgreSQL](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/)
+* [Data Engineering Helpers - Knowledge Sharing - dbt](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/dbt/)
+* [Material for the Data platform - Data life cycle](https://github.com/data-engineering-helpers/data-life-cycle)
+* [Material for the Data platform - Modern Data Stack (MDS) in a box](https://github.com/data-engineering-helpers/mds-in-a-box)
+
+## SQLMesh
+* GitHub page: https://github.com/TobikoData/sqlmesh
+* Home page: https://sqlmesh.com/
+* Company behind it: Tobiko
+* Initial author and CEO of Tobyko: Tobias Mao, aka Toby
+  ([Toby Mao on LinkedIn](https://www.linkedin.com/in/toby-mao/),
+  [Toby Mao on GitHub](https://github.com/tobymao),
+  [Toby Mao home page](https://tobymao.com/))
+* Related project:
+  * SQLGlot: https://github.com/tobymao/sqlglot (and [SQLGlot home page](https://sqlglot.com))
+* Blog: https://tobikodata.com/blog
 
 ## DuckDB
 * Home page: https://duckdb.org/
   * [DuckDB doc - HTTPFS extension](https://duckdb.org/docs/extensions/httpfs.html)
 
 ## Articles and Git knowledge sharing projects
+
+### Reddit thread
+* Triggered by Tobias Mao, aka Toby:
+  https://www.reddit.com/r/dataengineering/comments/124tspm/sqlmesh_the_future_of_dataops/
 
 ### SQLMesh - Migrate
 * Overview: series of articles to explore SQLMesh and how it compares
