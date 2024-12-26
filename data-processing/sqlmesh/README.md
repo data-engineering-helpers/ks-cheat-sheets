@@ -12,6 +12,7 @@ Cheat Sheet - SQLMesh
     * [SQLMesh \- Migrate](#sqlmesh---migrate)
     * [SQLMesh as alternative to dbt](#sqlmesh-as-alternative-to-dbt)
     * [Arcane insight](#arcane-insight)
+    * [SQL \+ DataOps \= SQLMesh](#sql---dataops---sqlmesh)
     * [Time To Move From dbt to SQLMesh](#time-to-move-from-dbt-to-sqlmesh)
 * [Quickstart](#quickstart)
   * [Simple example with DuckDB](#simple-example-with-duckdb)
@@ -153,6 +154,15 @@ For production-ready deployments, other database backends, like PostgreSQL, may 
  ([Mattias Thalén on LinkedIn](https://www.linkedin.com/in/mattias-thal%C3%A9n/),
   [Mattias Thalén on GitHub](https://github.com/mattiasthalen))
 * Date: End of 2024
+
+### SQL + DataOps = SQLMesh
+* Title: SQL + DataOps = SQLMesh?
+* Date: March 2024
+* Author: Marti Sec
+  ([Marti Sec on blog page](https://8vi.cat/author/marti/))
+* Link to the article:
+  https://8vi.cat/sqlmesh-quick-overview/
+* Publisher: [63 orders of magnitude blog site](https://8vi.cat/)
 
 ### Time To Move From dbt to SQLMesh
 * Title: Is It Time To Move From dbt to SQLMesh?
