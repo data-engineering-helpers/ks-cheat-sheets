@@ -44,7 +44,7 @@ _e.g._, on a laptop or on a virtual machine (VM).
 > visibility and control at any size.
 > It is more than just a [dbt alternative](https://tobikodata.com/reduce_costs_with_cron_and_partitions.html).
 
-SQLMesh requires some database to store its state. DuckDB [DuckDB](https://duckdb.org/) is the database by default,
+SQLMesh requires some database to store its state. [DuckDB](https://duckdb.org/) is the database by default,
 as it is small and efficient enough to be available virtually everywhere:
 > [DuckDB](https://duckdb.org/) is an embedded database, similar to SQLite,
 > but designed for OLAP-style analytics. It is crazy fast and allows you
