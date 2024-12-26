@@ -11,6 +11,8 @@ Cheat Sheet - DuckDB
   * [Buz Hive](#buz-hive)
     * [BlueSky data](#blueSky-data)
     * [Foursquare data](#foursquare-data)
+    * [GeoIP](#geoip)
+    * [NYC taxis](#nyc-taxis)
 * [Setup](#setup)
   * [DuckDB on the command\-line (CLI)](#duckdb-on-the-command-line-cli)
   * [DuckDB Python library](#duckdb-python-library)
@@ -144,8 +146,9 @@ select * from bluesky.jetstream limit 10;
 ### Foursquare data
 * Home page: https://catalog.buz.dev/datasets/foursquare/places
 * Overview: OSS Foursquare Places database
+  * 100 millions of rows for the `places` table
 * Getting started:
-  * In the DuckDB shell, bind to the BlueSky data catalog (there is no need for credentials here):
+  * In the DuckDB shell, bind to the Foursquare data catalog (there is no need for credentials here):
 ```sql
 attach 'https://hive.buz.dev/foursquare' as foursquare;
 ```
@@ -155,6 +158,38 @@ show all tables;
 select count(*)/1e6 as nb_rows from foursquare.places;
 select * from foursquare.categories limit 10;
 select * from foursquare.places limit 10;
+```
+
+### GeoIP
+* Home page: https://catalog.buz.dev/datasets/ipinfo/geoip
+* Overview: Geoip database from ipinfo.io
+  * 2 millions of rows for the `country` table
+* Getting started:
+  * In the DuckDB shell, bind to the GeoIP data catalog (there is no need for credentials here):
+```sql
+attach 'https://hive.buz.dev/ipinfo' as geoip;
+```
+  * Start exploring data:
+```sql
+show all tables;
+select count(*)/1e6 as nb_rows from geoip.country;
+select * from bluesky.jetstream limit 10;
+```
+
+### NYC taxis
+* Home page: https://catalog.buz.dev/datasets/nyc.gov/taxi
+* Overview: The NYC taxi rides dataset consists of all taxi rides for the month of October 2024
+  * 30 millions of rows for the `yellow_trips` table
+* Getting started:
+  * In the DuckDB shell, bind to the GeoIP data catalog (there is no need for credentials here):
+```sql
+attach 'https://hive.buz.dev/nyc_taxi' as taxi;
+```
+  * Start exploring data:
+```sql
+show all tables;
+select count(*)/1e6 as nb_rows from taxi.yellow_trips;
+select * from taxi.yellow_trips limit 10;
 ```
 
 # Setup
