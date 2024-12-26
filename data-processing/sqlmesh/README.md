@@ -12,6 +12,7 @@ Cheat Sheet - SQLMesh
     * [SQLMesh \- Migrate](#sqlmesh---migrate)
     * [SQLMesh as alternative to dbt](#sqlmesh-as-alternative-to-dbt)
     * [Arcane insight](#arcane-insight)
+	* [Multi-engine Stacks](#multi-engine-stacks)
     * [SQL \+ DataOps = SQLMesh](#sql--dataops--sqlmesh)
     * [Time To Move From dbt to SQLMesh](#time-to-move-from-dbt-to-sqlmesh)
 * [Quickstart](#quickstart)
@@ -28,7 +29,10 @@ Cheat Sheet - SQLMesh
       * [Check the upddates in the prod environment](#check-the-upddates-in-the-prod-environment)
   * [Full end\-to\-end example](#full-end-to-end-example)
 * [Installation](#installation)
-  * [Public data sets on DuckDB](#public-data-sets-on-duckdb)
+  * [DuckDB](#duckdb)
+    * [Public data sets on DuckDB](#public-data-sets-on-duckdb)
+  * [Local PostgreSQL server](#local-postgresql-server)
+  * [Local Airflow service](#local-airflow-service)
   * [Clone this repository](#clone-this-repository)
   * [SQLMesh](#sqlmesh-1)
     * [SQLMesh UI](#sqlmesh-ui)
@@ -62,6 +66,7 @@ For production-ready deployments, other database backends, like PostgreSQL, may 
 * [Data Engineering Helpers - Knowledge Sharing - DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/)
 * [Data Engineering Helpers - Knowledge Sharing - PostgreSQL](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/)
 * [Data Engineering Helpers - Knowledge Sharing - dbt](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/dbt/)
+* [Data Engineering Helpers - Knowledge Sharing - Airflow](https://github.com/data-engineering-helpers/ks-cheat-sheets/tree/main/orchestrators/airflow)
 * [Material for the Data platform - Data life cycle](https://github.com/data-engineering-helpers/data-life-cycle)
 * [Material for the Data platform - Modern Data Stack (MDS) in a box](https://github.com/data-engineering-helpers/mds-in-a-box)
 
@@ -154,6 +159,16 @@ For production-ready deployments, other database backends, like PostgreSQL, may 
  ([Mattias Thalén on LinkedIn](https://www.linkedin.com/in/mattias-thal%C3%A9n/),
   [Mattias Thalén on GitHub](https://github.com/mattiasthalen))
 * Date: End of 2024
+
+### Multi-engine Stacks
+* Title: Multi-engine Stacks Deserve to be First Class
+* Author: Julien Hurault
+  ([Julien Hurault on LinkedIn](https://www.linkedin.com/in/julienhuraultanalytics/),
+  [Julien Hurault on Substack](https://substack.com/@juhache))
+* Date: July 2024
+* Link to the article:
+  https://juhache.substack.com/p/multi-engine-stacks-deserve-to-be
+* Publisher: Substack
 
 ### SQL + DataOps = SQLMesh
 * Title: SQL + DataOps = SQLMesh?
@@ -519,7 +534,17 @@ cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/e2e-example
 
 # Installation
 
-## Public data sets on DuckDB
+## DuckDB
+* See also
+  [Data Engineering Helpers - Knowledge Sharing - DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/)
+  for more details on how to install DuckDB
+
+* DuckDB may be installed through the native packaging utility, when available
+  (for instance, on MacOS, `brew install duckdb`), through binary artifacts
+  (on Linux) or through one of the programming stack utilities (for instance,
+  for the Python stack, `pip install -U duckdb`)
+
+### Public data sets on DuckDB
 * This sub-section is just for reference. It is not used for most of
   the examples explored in the
   [Quickstart section](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/README.md#quickstart)
@@ -554,6 +579,52 @@ D select * from bluesky.jetstream limit 10;
 D .quit
 ```
 
+## Local PostgreSQL server
+* See also:
+  * [Data Engineering Helpers - Knowledge Sharing - PostgreSQL](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/README.md#sqlmesh-database-and-user)
+  * [SQLMesh docs - Connections guide](https://sqlmesh.readthedocs.io/en/stable/guides/connections/)
+  * [SQLMesh docs - Scheduling guide](https://sqlmesh.readthedocs.io/en/stable/guides/scheduling/)
+
+* When SQLMesh is used with the built-in scheduler
+  * DuckDB is used by default to store the state permanently (by default,
+    in the `db.db` DuckDB database file)
+  * Another database may be used to store the state, for instance PostgreSQL
+
+* When SQLMesh is used with external schedulers (for instance, Airflow),
+  the state is stored on the backend database of the external scheduler
+  (in the case of Airflow, that is often a PostgreSQL database)
+
+* In the
+  [Data Engineering Helpers - Knowledge Sharing - PostgreSQL guide](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/README.md#sqlmesh-database-and-user),
+  there is a section detailing how to create a `sqlmesh` database, a `sqlmesh`
+  schema and the `sqlmesh` user on a local PostgreSQL database
+  
+* As the `config.yaml` configuration files contain credentials for the
+  PostgreSQL database (even though those credentials are just some samples
+  for local services, some security scanners may bump onto them in GitHub
+  repositories and report them as false positives)
+  * Git stores only a sample version of the `config.yaml` configuration file,
+    namely `config.yaml.sample`
+  * The `config.yaml` configuration file, that SQLMesh is expecting,
+    has to be copied from the `config.yaml.sample` file and the password
+	has to be adjusted in it
+  * That `config.yaml` configuration file is ignored by Git (so that
+    the credentials do not appear in clear in the Git repository)
+  * The sequence is therefore as the following:
+```bash
+cp config.yaml.sample config.yaml
+sed -i.bak -e 's/<sqlmesh-pass>/sqlmesh/' config.yaml && rm -f config.yaml.bak
+```
+  * Check that the content of the `config.yaml` configuration file
+    seems correct:
+```bash
+cat config.yaml | yq -r '.gateways.local_w_pg.state_connection'
+```
+
+## Local Airflow service
+* See also
+  [Data Engineering Helpers - Knowledge Sharing - Airflow](https://github.com/data-engineering-helpers/ks-cheat-sheets/tree/main/orchestrators/airflow)
+  
 ## Clone this repository
 * Clone this
   [Git repository](https://github.com/data-engineering-helpers/ks-cheat-sheets)

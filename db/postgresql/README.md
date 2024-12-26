@@ -10,6 +10,7 @@ Cheat Sheet - PostgreSQL
   * [Quick setup for the use cases](#quick-setup-for-the-use-cases)
   * [Create a database and associated user](#create-a-database-and-associated-user)
     * [Guest database and user](#guest-database-and-user)
+    * [SQLMesh database and user](#sqlmesh-database-and-user)
     * [Unity Catalog database and user](#unity-catalog-database-and-user)
     * [Hive Metastore database and user](#hive-metastore-database-and-user)
     * [MinIO database and user](#minio-database-and-user)
@@ -88,6 +89,27 @@ GRANT
 * Check that the access to the PostgreSQL database works:
 ```bash
 $ psql -h $PG_SVR -U guest -c "select 42 as nb;"
+ nb 
+----
+ 42
+(1 row)
+```
+
+### SQLMesh database and user
+* Create on PostgreSQL a `sqlmesh` database and a `sqlmesh` user:
+```bash
+$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create database sqlmesh;"
+CREATE DATABASE
+$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create user sqlmesh with encrypted password '<sqlmesh-pass>'; grant all privileges on database sqlmesh to sqlmesh;"
+CREATE ROLE
+GRANT
+$ psql -h $PG_SVR -U $PG_ADM_USR -d sqlmesh -c "grant all on schema public to sqlmesh;"
+GRANT
+```
+
+* Check that the access to the PostgreSQL database works:
+```bash
+$ psql -h $PG_SVR -U sqlmesh -d sqlmesh -c "select 42 as nb;"
  nb 
 ----
  42

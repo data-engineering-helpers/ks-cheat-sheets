@@ -14,7 +14,10 @@ Cheat Sheet - DuckDB
     * [GeoIP](#geoip)
     * [NYC taxis](#nyc-taxis)
 * [Setup](#setup)
+  * [Clone this Git repository](#clone-this-git-repository)
   * [DuckDB on the command\-line (CLI)](#duckdb-on-the-command-line-cli)
+    * [MacOS](#macos)
+    * [Linux](#linux)
   * [DuckDB Python library](#duckdb-python-library)
   * [Integration with S3](#integration-with-s3)
   * [Geonames data files](#geonames-data-files)
@@ -214,7 +217,19 @@ select * from taxi.yellow_trips limit 10;
 ```
 
 # Setup
-* If not already done so, clone
+* See also https://duckdb.org/docs/installation
+
+* DuckDB may be installed through the native packaging utility (for instance,
+  on MacOS, HomeBrew) or through one of the programming stack utilities
+  (for instance, Pip for the Python stack)
+  * Most of these methods produce a all-in-one binary artifact,
+    named `duckdb`, which may be used directly and which does not rely
+	on any other dependency (that is, they are all-in-one)
+  * All those binary artifacts are independent from one another
+    and have to be updated independently
+
+## Clone this Git repository
+* (Optionally,) If not already done so, clone
   [this Git repository](https://github.com/data-engineering-helpers/ks-cheat-sheets):
 ```bash
 mkdir -p ~/dev/ks && \
@@ -223,9 +238,30 @@ mkdir -p ~/dev/ks && \
 ```
 
 ## DuckDB on the command-line (CLI)
-* On MacOS:
+
+### MacOS
+* Use HomeBrew to install DuckDB:
 ```bash
 brew install duckdb
+```
+
+### Linux
+* Install the executable corresponding to the CPU architecture directly:
+```bash
+mkdir -p ~/bin
+architecture="$(uname -m|sed 's/arm/aarch/')"
+DUCK_VER="$(curl -Ls https://api.github.com/repos/duckdb/duckdb/releases/latest | grep 'tag_name' | cut -d'v' -f2,2 | cut -d'"' -f1,1)"
+curl -L https://github.com/duckdb/duckdb/releases/download/v$DUCK_VER/duckdb_cli-linux-$architecture.zip -o duckdb_cli.zip && \
+  unzip duckdb_cli.zip && rm -f unzip duckdb_cli.zip && \
+  chmod +x duckdb && mv duckdb ~/bin/
+```
+
+* If the local binary directory is not in the `PATH` environment variable,
+  just add something like the following lines in your Shell setup script
+  (_e.g._, `~/.bashrc` or `~/.zshrc`):
+```bash
+# DuckDB - See also https://duckdb.org/docs/installation
+PATH="$HOME/bin:$PATH"; export PATH
 ```
 
 ## DuckDB Python library

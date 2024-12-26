@@ -2,4 +2,5 @@
 /.cache/
 /db.db
 /logs/
+/config.yaml
 
