@@ -42,7 +42,7 @@ _e.g._, on a laptop or on a virtual machine (VM).
 > data quickly, efficiently, and without error. Data teams can efficiently
 > run and deploy data transformations written in SQL or Python with
 > visibility and control at any size.
-> It is more than just a dbt alternative.
+> It is more than just a [dbt alternative](https://tobikodata.com/reduce_costs_with_cron_and_partitions.html).
 
 SQLMesh requires some database to store its state. DuckDB [DuckDB](https://duckdb.org/) is the database by default,
 as it is small and efficient enough to be available virtually everywhere:
