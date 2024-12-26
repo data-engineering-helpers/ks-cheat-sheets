@@ -6,6 +6,11 @@ Cheat Sheet - DuckDB
   * [References](#references)
     * [DuckDB in Jupyter](#duckdb-in-jupyter)
 * [Use cases](#use-cases)
+* [Public catalogs](#public-catalogs)
+  * [Boring panda](#boring-panda)
+  * [Buz Hive](#buz-hive)
+    * [BlueSky data](#blueSky-data)
+    * [Foursquare data](#foursquare-data)
 * [Setup](#setup)
   * [DuckDB on the command\-line (CLI)](#duckdb-on-the-command-line-cli)
   * [DuckDB Python library](#duckdb-python-library)
@@ -86,6 +91,70 @@ D select distinct ac.geonameid,
 │   6299418 │ {'geonameid': 6299…  │ icao|LFMN=iata|NCE=en|Nice Côte d'Azur International Airport=es|Niza Aeropuerto=link|https://en.wikipedia.org/wiki/Nice_C%C3%B4te_d%27Azur_Airport=fr|Aéroport de Nice Côte d'Azur=en|Nice …  │
 │   2990440 │ {'geonameid': 2990…  │ en|Nice=es|Niza=ar|نيس==ca|Niça=da|Nice=eo|Nico=et|Nice=fi|Nizza=fr|Nice=he|ניס=id|Nice=it|Nizza=ja|ニース=la|Nicaea=lad|Nisa=lb|Nice=lt|Nica=nb|Nice=nl|Nice=no|Nice=oc|Niça=pl|Nicea=pt|N…  │
 └───────────┴──────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+# Public catalogs
+
+## Boring panda
+* Home page: https://catalog.boringdata.io/dashboard/
+* Article:
+  * Link to the article: https://juhache.substack.com/p/0-data-distribution
+  * Date: Dec. 2024
+  * Author: Julien Hurault
+* [Getting started](https://catalog.boringdata.io/dashboard/get_started/duckdb/)
+  * In the DuckDB shell:
+```sql
+.shell curl https://catalog.boringdata.io/start
+```
+  * Follow the instructions given as a result (the secret/credentials step is not reproduced here):
+```sql
+load iceberg;
+attach 'https://catalog.boringdata.io/catalog' as boringdata;
+```
+  * Start exploring data:
+```sql
+select * from boringdata.metadata.catalog;
+show all tables;
+```
+
+## Buz Hive
+* Overview: Buz Hive is a collection of DuckDB-compatible data catalogs with public data sets,
+  stored in public buckets on CloudFare
+* Home page: https://catalog.buz.dev/
+* Author?: Jake Thomas
+  ([Jake Thomas on LinkedIn](https://www.linkedin.com/in/jake-thomas/),
+  [Jake Thomas on BlueSky](https://bsky.app/profile/jakthom.bsky.social),
+  [Jake Thomas on GitHub](https://github.com/jakthom))
+
+### BlueSky data
+* Home page: https://catalog.buz.dev/datasets/bluesky/jetstream
+* Overview: The Bluesky dataset consists of the last 1M records from Bluesky's Jetstream
+* Getting started:
+  * In the DuckDB shell, bind to the BlueSky data catalog (there is no need for credentials here):
+```sql
+attach 'https://hive.buz.dev/bluesky/catalog' as bluesky;
+```
+  * Start exploring data:
+```sql
+show all tables;
+select count(*)/1e6 as nb_rows from bluesky.jetstream;
+select * from bluesky.jetstream limit 10;
+```
+
+### Foursquare data
+* Home page: https://catalog.buz.dev/datasets/foursquare/places
+* Overview: OSS Foursquare Places database
+* Getting started:
+  * In the DuckDB shell, bind to the BlueSky data catalog (there is no need for credentials here):
+```sql
+attach 'https://hive.buz.dev/foursquare' as foursquare;
+```
+  * Start exploring data:
+```sql
+show all tables;
+select count(*)/1e6 as nb_rows from foursquare.places;
+select * from foursquare.categories limit 10;
+select * from foursquare.places limit 10;
 ```
 
 # Setup
