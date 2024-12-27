@@ -30,18 +30,18 @@ Cheat Sheet - SQLMesh
     * [SQL \+ DataOps = SQLMesh](#sql--dataops--sqlmesh)
     * [Time To Move From dbt to SQLMesh](#time-to-move-from-dbt-to-sqlmesh)
 * [Quickstart](#quickstart)
-  * [Simple example with DuckDB](#simple-example-with-duckdb)
-    * [Some information about the project](#some-information-about-the-project)
-    * [Initial models](#initial-models)
-      * [Create a prod environment](#create-a-prod-environment)
-      * [Check the new state brought by the plan](#check-the-new-state-brought-by-the-plan)
-      * [Launch the tests](#launch-the-tests)
-    * [Introduce a change in the incremental model](#introduce-a-change-in-the-incremental-model)
-      * [Create a dev environment](#create-a-dev-environment)
-      * [Check the new state brought by the plan on dev](#check-the-new-state-brought-by-the-plan-on-dev)
-      * [Update the prod environment](#update-the-prod-environment)
-      * [Check the upddates in the prod environment](#check-the-upddates-in-the-prod-environment)
-    * [Cleanup](#cleanup)
+  * [Some information about the project](#some-information-about-the-project)
+  * [Initial models](#initial-models)
+    * [Create a prod environment](#create-a-prod-environment)
+    * [Check the new state brought by the plan](#check-the-new-state-brought-by-the-plan)
+    * [Launch the tests](#launch-the-tests)
+  * [Introduce a change in the incremental model](#introduce-a-change-in-the-incremental-model)
+    * [Create a dev environment](#create-a-dev-environment)
+    * [Check the new state brought by the plan on dev](#check-the-new-state-brought-by-the-plan-on-dev)
+    * [Update the prod environment](#update-the-prod-environment)
+    * [Check the upddates in the prod environment](#check-the-upddates-in-the-prod-environment)
+  * [Cleanup](#cleanup)
+* [More advanced examples](#more-advanced-examples)
   * [Full example with Python models](#full-example-with-python-models)
     * [SQLMesh plan with Python models](#sqlmesh-plan-with-python-models)
     * [Check the created tables](#check-the-created-tables)
@@ -50,7 +50,7 @@ Cheat Sheet - SQLMesh
     * [SQLMesh plan with Python models](#sqlmesh-plan-with-python-models-1)
   * [PySpark example](#pyspark-example)
     * [SQLMesh plan](#sqlmesh-plan)
-  * [Full end\-to\-end example](#full-end-to-end-example)
+* [Full end\-to\-end example](#full-end-to-end-example)
 * [Installation](#installation)
   * [DuckDB](#duckdb-1)
     * [Public data sets on DuckDB](#public-data-sets-on-duckdb)
@@ -332,13 +332,18 @@ may be advised.
 * Publisher: Kestra blog
 
 # Quickstart
+* This sesction is a reproduction, step by step and with the full source code,
+  of the
+  [quickstart guide on the SQLMesh documentation](https://sqlmesh.readthedocs.io/en/stable/quickstart/cli/)
 
-## Simple example with DuckDB
-* Reference:
-  https://sqlmesh.readthedocs.io/en/stable/quickstart/cli/#3-update-a-model
+* It features a simple example with DuckDB, both as the execution engine
+  and to store the SQLMesh state, in a local data file (namely `db.db`)
+  ignored by Git (so that the example may be reproduced without interfering
+  with this Git repository)
 
-* Change to the `examples/001-simple` directory within the SQLMesh dedicated
-  directory:
+* Change to the
+  [`examples/001-simple` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/001-simple/)
+  within the SQLMesh dedicated directory:
 ```bash
 cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/examples/001-simple
 ```
@@ -349,7 +354,7 @@ cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/examples/001-
 rm -rf .cache logs db.db
 ```
 
-### Some information about the project
+## Some information about the project
 * The `info` command gives a high level overview of the project:
 ```bash
 sqlmesh info
@@ -358,13 +363,13 @@ Macros: 0
 Data warehouse connection succeeded
 ```
 
-### Initial models
+## Initial models
 * The datasets are materialized as tables in a (to be created) prod environment
 
 * The datasets are also called models. In the remainder of the documentation,
   datasets, tables and models may be interchanged
 
-#### Create a prod environment
+### Create a prod environment
 * Reference:
   https://sqlmesh.readthedocs.io/en/stable/quickstart/cli/#2-create-a-prod-environment
 
@@ -423,7 +428,7 @@ Successfully Ran 1 tests against duckdb
 No changes to plan: project files match the `prod` environment
 ```
 
-#### Check the new state brought by the plan
+### Check the new state brought by the plan
 * The `sqlmesh fetchdf` command is a proxy to the backend database, DuckDB in
   this example. The content of the backend database may therefore be queries
   either through the `sqlmesh fetchdf` command or directly with the backend
@@ -492,7 +497,7 @@ D select * from sqlmesh_example.full_model;
 D .quit
 ```
 
-#### Launch the tests
+### Launch the tests
 * Launch the tests:
 ```bash
 sqlmesh test
@@ -503,11 +508,11 @@ Ran 1 test in 0.021s
 OK
 ```
 
-### Introduce a change in the incremental model
+## Introduce a change in the incremental model
 * Reference:
   https://sqlmesh.readthedocs.io/en/stable/quickstart/cli/#3-update-a-model
 
-#### Create a dev environment
+### Create a dev environment
 * Reference:
   https://sqlmesh.readthedocs.io/en/stable/quickstart/cli/#4-work-with-a-development-environment
   
@@ -555,7 +560,7 @@ Virtually Updating 'dev' ━━━━━ ... ━━━━━ 100.0% • 0:00:00
 The target environment has been updated successfully
 ```
 
-#### Check the new state brought by the plan on dev
+### Check the new state brought by the plan on dev
 * Check the content of the updated table in the dev environment:
 ```bash
 sqlmesh fetchdf "select * from sqlmesh_example__dev.incremental_model"
@@ -593,7 +598,7 @@ COMMON ROWS column comparison stats:
 item_id      100.0
 ```
 
-#### Update the prod environment
+### Update the prod environment
 * Reference:
   https://sqlmesh.readthedocs.io/en/stable/quickstart/cli/#51-apply-updates-to-prod
   
@@ -634,7 +639,7 @@ The target environment has been updated successfully
 Virtual Update executed successfully
 ```
 
-#### Check the upddates in the prod environment
+### Check the upddates in the prod environment
 * Reference:
   https://sqlmesh.readthedocs.io/en/stable/quickstart/cli/#5.2-validate-updates-in-prod
 
@@ -665,7 +670,7 @@ item_id         100.0
 new_column      100.0
 ```
 
-### Cleanup
+## Cleanup
 * As DuckDB stores both the state and the datasets, cleaning up is as
   straightforward as deleting the DuckDB data file, namely `db.db`:
 ```bash
@@ -686,6 +691,8 @@ grep "z" models/incremental_model.sql
 * The project is now ready to start afresh, with no memory nor any change
   when compared to the Git repository
 
+# More advanced examples
+
 ## Full example with Python models
 * References:
   * Python models:
@@ -697,8 +704,9 @@ grep "z" models/incremental_model.sql
   * The Ibis framework:
   https://github.com/ibis-project/ibis 
 
-* Change to the `examples/002-python-ibis` directory within the SQLMesh dedicated
-  directory:
+* Change to the
+  [`examples/002-python-ibis` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/002-python-ibis/)
+  within the SQLMesh dedicated directory:
 ```bash
 cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/examples/002-python-ibis
 ```
@@ -829,8 +837,9 @@ Done.
   * Python models:
   https://sqlmesh.readthedocs.io/en/stable/concepts/models/python_models/
 
-* Change to the `examples/003-python-simple` directory within the SQLMesh dedicated
-  directory:
+* Change to the
+  [`examples/003-python-simple`](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/003-python-simple/)
+  directory within the SQLMesh dedicated directory:
 ```bash
 cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/examples/003-python-simple
 ```
@@ -859,10 +868,11 @@ sqlmesh plan
   * PySpark models:
   https://sqlmesh.readthedocs.io/en/stable/concepts/models/python_models/#pyspark
 
-* Change to the `examples/pyspark-simple` directory within the SQLMesh
-  dedicated directory:
+* Change to the
+  [`examples/004-pyspark-simple` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/004-pyspark-simple/)
+  within the SQLMesh dedicated directory:
 ```bash
-cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/examples/pyspark-simple
+cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/examples/004-pyspark-simple
 ```
 
 * The project has been initialized with the `sqlmesh init spark` command
@@ -897,18 +907,18 @@ All model versions have been created successfully
 
 ```
 
-## Full end-to-end example
+# Full end-to-end example
 * Example still to be created and documented
 
 * Reference:
   https://sqlmesh.readthedocs.io/en/stable/examples/incremental_time_full_walkthrough/
 
-* Change to the `examples/006-e2e` directory within the SQLMesh dedicated
-  directory:
+* Change to the
+  [`examples/006-e2e` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/006-e2e/)
+  within the SQLMesh dedicated directory:
 ```bash
 cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/examples/006-e2e
 ```
-
 
 # Installation
 
