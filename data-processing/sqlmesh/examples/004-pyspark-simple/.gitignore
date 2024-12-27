@@ -1,7 +1,11 @@
 # SQLMesh
 /.cache/
 /db.db
-/dbwost.db
+/db.db.wal
 /logs/
 /config.yaml
+# Spark
+derby.log
+metastore_db/
+spark-warehouse/
 

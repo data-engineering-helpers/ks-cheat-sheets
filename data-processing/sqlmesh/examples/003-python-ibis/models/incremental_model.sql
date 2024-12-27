@@ -11,6 +11,7 @@ MODEL (
 SELECT
     id,
     item_id,
+    --'z' AS new_column, -- Added column
     event_date,
 FROM
     ibis.seed_model

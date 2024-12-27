@@ -29,6 +29,7 @@ Cheat Sheet - SQLMesh
     * [The rise of the analytics pretendgineer](#the-rise-of-the-analytics-pretendgineer)
     * [SQL \+ DataOps = SQLMesh](#sql--dataops--sqlmesh)
     * [Time To Move From dbt to SQLMesh](#time-to-move-from-dbt-to-sqlmesh)
+* [Introdutcion to the examples in this Git repository](#introdutcion-to-the-examples-in-this-git-repository)
 * [Quickstart](#quickstart)
   * [Some information about the project](#some-information-about-the-project)
   * [Initial models](#initial-models)
@@ -335,6 +336,58 @@ may be advised.
 * Link to the article: https://kestra.io/blogs/2024-02-28-dbt-or-sqlmesh
 * Publisher: Kestra blog
 
+# Introdutcion to the examples in this Git repository
+* [Examples in this Git repository](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/):
+  * [`examples/001-simple` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/001-simple/) --
+  Simple example, also named "quickstart". There are two possible configurations:
+    * DuckDB is used both for the executing engine and to store the state
+    * DuckDB is used for the executing engine and a local PostgreSQL database
+	to store the state
+  * [`examples/002-python-simple`](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/002-python-simple/) --
+  Example including a simple Python model
+    * DuckDB is used both for the executing engine and to store the state
+	* The Python model is also executed by DuckDB
+  * [`examples/003-python-ibis` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/003-python-ibis/) --
+  Example featuring the Python Ibis framework (translating Python dataframes
+  from one executing engine to another, that is, like SQLGlot but for Python)
+    * DuckDB is used both for the executing engine and to store the state
+	* The Python models are also executed by DuckDB
+  * [`examples/004-pyspark-simple` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/004-pyspark-simple/) --
+  Simple example featuring a Python model and Spark as the executing engine
+    * DuckDB is used to store the state
+	* Note that Spark cannot store the state (as per the
+	[official SQLMesh documentation about Spark](https://sqlmesh.readthedocs.io/en/stable/integrations/engines/spark/))
+  * [`examples/006-e2e` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/006-e2e/) --
+  End-to-end full example
+    * Still needs to be documented
+
+* In most of the
+  [example directories]((https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/)),
+  there is a `Makefile` with the most used commands as targets, for instance:
+  * Clean the project from potential previous experiments: `make clean`
+  * Create the prod environment: `make plan-prod`
+  * List the tables in prod: `make list-tables-prod`
+  * Browse the content of the main table in prod: `make check-data-prod`
+  * Suggest what to do next in order to introduce a change: `make hint-change`
+  * Create a dev environment: `make plan-dev`
+  * List the tables in dev: `make list-tables-dev`
+  * Browse the content of the main table in dev: `make check-data-dev`
+  * List the differences for the main table between dev and prod: `make diff`
+
+* A typical sequence is:
+```bash
+make clean
+make plan-prod
+make list-tables-prod
+make check-data-prod
+make hint-change
+# Make a change on the model suggested above => vi models/some_model.{sql,py}
+make plan-dev
+make list-tables-dev
+make check-data-dev
+make diff
+```
+
 # Quickstart
 * This sesction is a reproduction, step by step and with the full source code,
   of the
@@ -344,6 +397,11 @@ may be advised.
   and to store the SQLMesh state, in a local data file (namely `db.db`)
   ignored by Git (so that the example may be reproduced without interfering
   with this Git repository)
+
+* In addition, the configuration also supports the storage of the state within
+  a local PostgreSQL database. Either the `local_w_pg` gateway has to be
+  specified on every SQLMesh command, or the default gateway may be changed
+  in the `config.yaml` configuration file
 
 * Change to the
   [`examples/001-simple` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/001-simple/)
@@ -979,10 +1037,12 @@ Done.
 
 ## PySpark example
 * References:
+  * Spark engine:
+  https://sqlmesh.readthedocs.io/en/stable/integrations/engines/spark/
   * Python models:
   https://sqlmesh.readthedocs.io/en/stable/concepts/models/python_models/
-  * PySpark models:
-  https://sqlmesh.readthedocs.io/en/stable/concepts/models/python_models/#pyspark
+    * PySpark models:
+    https://sqlmesh.readthedocs.io/en/stable/concepts/models/python_models/#pyspark
 
 * Change to the
   [`examples/004-pyspark-simple` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/004-pyspark-simple/)
@@ -1120,7 +1180,7 @@ D .quit
 ```bash
 cp config.yaml.sample config.yaml
 sed -i.bak -e 's/<sqlmesh-pass>/sqlmesh/' config.yaml && rm -f config.yaml.bak
-sed -i.bak -e 's/default_gateway: local/default_gateway: local_w_pg/' config.yaml && rm -f config.yaml.bak
+sed -i.bak -e 's/default_gateway: \(.\)*/default_gateway: local_w_pg/' config.yaml && rm -f config.yaml.bak
 ```
   * Check that the content of the `config.yaml` configuration file
     seems correct

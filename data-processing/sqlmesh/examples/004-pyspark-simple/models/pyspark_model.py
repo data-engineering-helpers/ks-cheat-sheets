@@ -7,7 +7,7 @@ from pyspark.sql import DataFrame, functions
 from sqlmesh import ExecutionContext, model
 
 @model(
-    "docs_example.pyspark",
+    "sqlmesh_example.pyspark",
     columns={
         "id": "int",
         "name": "text",
@@ -22,7 +22,7 @@ def execute(
     **kwargs: t.Any,
 ) -> DataFrame:
     # get the upstream model's name and register it as a dependency
-    table = context.resolve_table("upstream_model")
+    table = context.resolve_table("sqlmesh_example.full_model_python")
 
     # use the spark DataFrame api to add the country column
     df = context.spark.table(table).withColumn("country", functions.lit("USA"))

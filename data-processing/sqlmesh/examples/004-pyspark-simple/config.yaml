@@ -1,6 +1,8 @@
 gateways:
   local:
     connection:
+      type: spark
+    state_connection:
       type: duckdb
       database: db.db
 
