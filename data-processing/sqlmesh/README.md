@@ -46,6 +46,8 @@ Cheat Sheet - SQLMesh
     * [SQLMesh plan with Python models](#sqlmesh-plan-with-python-models)
     * [Check the created tables](#check-the-created-tables)
     * [Execution, tests and audits](#execution-tests-and-audits)
+  * [Simple Python example](#simple-python-example)
+    * [SQLMesh plan with Python models](#sqlmesh-plan-with-python-models-1)
   * [PySpark example](#pyspark-example)
     * [SQLMesh plan](#sqlmesh-plan)
   * [Full end\-to\-end example](#full-end-to-end-example)
@@ -335,10 +337,10 @@ may be advised.
 * Reference:
   https://sqlmesh.readthedocs.io/en/stable/quickstart/cli/#3-update-a-model
 
-* Change to the `simple-example` directory within the SQLMesh dedicated
+* Change to the `examples/001-simple` directory within the SQLMesh dedicated
   directory:
 ```bash
-cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/simple-example
+cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/examples/001-simple
 ```
 
 * Clean/remove results of potential earlier tries (those files are ignored
@@ -695,10 +697,10 @@ grep "z" models/incremental_model.sql
   * The Ibis framework:
   https://github.com/ibis-project/ibis 
 
-* Change to the `python-ibis` directory within the SQLMesh dedicated
+* Change to the `examples/002-python-ibis` directory within the SQLMesh dedicated
   directory:
 ```bash
-cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/python-ibis
+cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/examples/002-python-ibis
 ```
 
 * As when a project is initialized with the `sqlmesh init python` command,
@@ -707,7 +709,7 @@ cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/python-ibis
   [SQLMesh example Git repository](https://github.com/TobikoData/sqlmesh-examples/tree/main/002_ibis)
   (with `git clone git@github.com:TobikoData/sqlmesh-examples.git` into a
   temporary directory, and then `rsync -av` from that temporary directory unto
-  [this current `python-ibis` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/python-ibis/))
+  [this current `python-ibis` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/002-python-ibis/))
   
 ### SQLMesh plan with Python models
 * Launch the SQLMesh plan:
@@ -773,7 +775,7 @@ sqlmesh fetchdf "show all tables"
     * Note that, as specified within the `config.yaml` configuration file,
 	the DuckDB data file is `data/local.duckdb`
 	* As may be seen in the
-	[various models](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/python-ibis/models),
+	[various models](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/002-python-ibis/models),
 	the schema is `ibis`
     * In order to quit the DuckDB shell, type Control-D or the `.quit` command
 ```bash
@@ -822,6 +824,34 @@ Finished with 0 audit errors and 0 audits skipped.
 Done.
 ```
 
+## Simple Python example
+* References:
+  * Python models:
+  https://sqlmesh.readthedocs.io/en/stable/concepts/models/python_models/
+
+* Change to the `examples/003-python-simple` directory within the SQLMesh dedicated
+  directory:
+```bash
+cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/examples/003-python-simple
+```
+
+* When a project is initialized with the `sqlmesh init python` command,
+  it does not seem to work out of the box: the `sqlmesh plan` commad fails
+  right away on the just created project skeleton
+
+* Therefore, in addition to the project skeleton, created by the
+  `sqlmesh init python` command, a few files have been added,
+  taking inspiration from the
+  [Python Ibis example](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/002-python-ibis/)
+  (that is why that Python Ibis example comes first in
+  [the examples of this Git repository](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/))
+  
+### SQLMesh plan with Python models
+* Launch the SQLMesh plan:
+```bash
+sqlmesh plan
+```
+
 ## PySpark example
 * References:
   * Python models:
@@ -829,10 +859,10 @@ Done.
   * PySpark models:
   https://sqlmesh.readthedocs.io/en/stable/concepts/models/python_models/#pyspark
 
-* Change to the `pyspark-example` directory within the SQLMesh dedicated
-  directory:
+* Change to the `examples/pyspark-simple` directory within the SQLMesh
+  dedicated directory:
 ```bash
-cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/pyspark-example
+cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/examples/pyspark-simple
 ```
 
 * The project has been initialized with the `sqlmesh init spark` command
@@ -867,15 +897,16 @@ All model versions have been created successfully
 
 ```
 
-
 ## Full end-to-end example
+* Example still to be created and documented
+
 * Reference:
   https://sqlmesh.readthedocs.io/en/stable/examples/incremental_time_full_walkthrough/
 
-* Change to the `e2e-example` directory within the SQLMesh dedicated
+* Change to the `examples/006-e2e` directory within the SQLMesh dedicated
   directory:
 ```bash
-cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/e2e-example
+cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/examples/006-e2e
 ```
 
 
