@@ -7,5 +7,6 @@ gateways:
 default_gateway: local
 
 model_defaults:
-  dialect: python
+  dialect: duckdb
   start: 2024-12-26
+

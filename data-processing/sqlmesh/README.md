@@ -42,12 +42,16 @@ Cheat Sheet - SQLMesh
     * [Check the upddates in the prod environment](#check-the-upddates-in-the-prod-environment)
   * [Cleanup](#cleanup)
 * [More advanced examples](#more-advanced-examples)
-  * [Full example with Python models](#full-example-with-python-models)
+  * [Simple Python example](#simple-python-example)
     * [SQLMesh plan with Python models](#sqlmesh-plan-with-python-models)
+    * [Check the content of the tables with Python models](#check-the-content-of-the-tables-with-python-models)
+    * [Audit with Python models](#audit-with-python-models)
+    * [Test with Python models](#test-with-python-models)
+    * [Cleanup](#cleanup-1)
+  * [Full example with Python models](#full-example-with-python-models)
+    * [SQLMesh plan with Python models](#sqlmesh-plan-with-python-models-1)
     * [Check the created tables](#check-the-created-tables)
     * [Execution, tests and audits](#execution-tests-and-audits)
-  * [Simple Python example](#simple-python-example)
-    * [SQLMesh plan with Python models](#sqlmesh-plan-with-python-models-1)
   * [PySpark example](#pyspark-example)
     * [SQLMesh plan](#sqlmesh-plan)
 * [Full end\-to\-end example](#full-end-to-end-example)
@@ -693,6 +697,137 @@ grep "z" models/incremental_model.sql
 
 # More advanced examples
 
+## Simple Python example
+* References:
+  * Python models:
+  https://sqlmesh.readthedocs.io/en/stable/concepts/models/python_models/
+
+* Change to the
+  [`examples/002-python-simple`](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/002-python-simple/)
+  directory within the SQLMesh dedicated directory:
+```bash
+cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/examples/002-python-simple
+```
+
+* To create a project skeleton with Python models, simply use the
+  `sqlmesh init` command, that is, using the default dialect (being DuckDB),
+  like for SQL models. So, there are no difference, at that stage, between
+  a project for SQL models and a project for Python models
+
+* Note that the `sqlmesh init` command has already been performed and the
+  resulting project skeleton is part of this Git repository
+
+* Note that the `sqlmesh init` command accepts `python` as a dialect.
+  * But if a project skeleton is created that way (_i.e._, with the
+  `sqlmesh init python` command), the resulting project skeleton looks similar
+  to a regular SQL-model project, with the important difference that the dialect
+  in the `config.yaml` configuration file will be `python` rather than `duckdb`.
+  * And then, when launching the SQLMesh plan (with the `sqlmesh plan` command),
+  the underlying SQLGlot engine will fail with some cryptic error:
+```bash
+sqlmesh plan
+Error: Required keyword: 'this' missing for <class 'sqlglot.expressions.Between'>. Line 1, Col: 239.
+  odel WHERE BETWEEN(scope[None][event_date], DATESTRTODATE('1970-01-01'), DATESTRTODATE('1970-01-01'))
+```
+
+### SQLMesh plan with Python models
+* Launch the SQLMesh plan:
+```bash
+sqlmesh plan
+======================================================================
+Successfully Ran 1 tests against duckdb
+----------------------------------------------------------------------
+`prod` environment will be initialized
+
+Requirements:
++ pandas==2.2.3
+Models:
+└── Added:
+    ├── sqlmesh_example.full_model
+    ├── sqlmesh_example.incremental_model
+    ├── sqlmesh_example.seed_model
+    └── sqlmesh_example.full_model_python
+Models needing backfill (missing dates):
+├── sqlmesh_example.full_model: 2024-12-26 - 2024-12-26
+├── sqlmesh_example.incremental_model: 2020-01-01 - 2024-12-26
+├── sqlmesh_example.seed_model: 2024-12-26 - 2024-12-26
+└── sqlmesh_example.full_model_python: 2024-12-26 - 2024-12-26
+```
+
+* Accept the suggestions at the prompt:
+```text
+Apply - Backfill Tables [y/n]: y
+Creating physical tables ━━━━ ... ━━━━ 100.0% • 4/4 • 0:00:00
+
+All model versions have been created successfully
+
+[1/1] sqlmesh_example.seed_model evaluated in 0.03s
+[1/1] sqlmesh_example.full_model_python evaluated in 0.01s
+[1/1] sqlmesh_example.incremental_model evaluated in 0.01s
+[1/1] sqlmesh_example.full_model evaluated in 0.01s
+Evaluating models ━━━━ ... ━━━━ 100.0% • 4/4 • 0:00:00
+
+
+All model batches have been executed successfully
+
+Virtually Updating 'prod' ━━━━━ ... ━━━━━ 100.0% • 0:00:00
+
+The target environment has been updated successfully
+```
+
+### Check the content of the tables with Python models
+* Use the `fetchdf` command to browse the content of the
+  [Python model](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/002-python-simple/full_model_python.py)
+  table (that is, the `sqlmesh_example.full_model_python` table):
+```bash
+sqlmesh fetchdf "use sqlmesh_example; select * from full_model_python"
+   id   name
+0   1  Laura
+1   2   John
+2   3  Lucie
+```
+
+### Audit with Python models
+* Launch the `audit` command:
+```bash
+sqlmesh audit
+Found 2 audit(s).
+assert_positive_order_ids on model sqlmesh_example.full_model ✅ PASS.
+not_null on model sqlmesh_example.full_model_python ✅ PASS.
+
+Finished with 0 audit errors and 0 audits skipped.
+Done.
+```
+
+### Test with Python models
+* Launch the `test` command:
+```bash
+sqlmesh test
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.016s
+
+OK
+```
+
+### Cleanup
+* As DuckDB stores both the state and the datasets, cleaning up is as
+  straightforward as deleting the DuckDB data file, namely `db.db`:
+```bash
+rm -f db.db
+```
+
+* Delete also the log and the cache directories:
+```bash
+rm -rf .cache logs
+```
+
+* Comment the clause for the `z` column in the `incremental_model` model:
+```bash
+grep "z" models/incremental_model.sql
+    --'z' AS new_column, -- Added column
+```
+
 ## Full example with Python models
 * References:
   * Python models:
@@ -705,20 +840,23 @@ grep "z" models/incremental_model.sql
   https://github.com/ibis-project/ibis 
 
 * Change to the
-  [`examples/002-python-ibis` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/002-python-ibis/)
+  [`examples/003-python-ibis` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/003-python-ibis/)
   within the SQLMesh dedicated directory:
 ```bash
-cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/examples/002-python-ibis
+cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/examples/003-python-ibis
 ```
 
-* As when a project is initialized with the `sqlmesh init python` command,
-  it does not seem to work out of the box, this example has been fully imported
-  from the
+* This example has not been generated with the `sqlmesh init` command, but
+  it has rather been fully imported from the
   [SQLMesh example Git repository](https://github.com/TobikoData/sqlmesh-examples/tree/main/002_ibis)
   (with `git clone git@github.com:TobikoData/sqlmesh-examples.git` into a
   temporary directory, and then `rsync -av` from that temporary directory unto
-  [this current `python-ibis` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/002-python-ibis/))
-  
+  [this current `python-ibis` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/003-python-ibis/))
+
+* It features the [Ibis framework](https://github.com/ibis-project/ibis),
+  a Python library to translate dataframes from one dialect to another
+  (it is similar to SQLGlot, but for Python instead of for SQL)
+
 ### SQLMesh plan with Python models
 * Launch the SQLMesh plan:
 ```bash
@@ -764,28 +902,30 @@ The target environment has been updated successfully
 
 ### Check the created tables
 * Note that the result of the `sqlmesh fetchdf "show all tables"` command
-  may be truncated (_i.e._, the names of the tables do not appear):
+  may be truncated (_i.e._, the names of the tables do not appear).
+  It is therefore advised to use a specific schema (_e.g._, `ibis` here):
 ```bash
-sqlmesh fetchdf "show all tables"
+sqlmesh fetchdf "use ibis; show tables"
 ```
 ```text
-   database         schema  ...                                       column_types temporary
-0     local           ibis  ...                                  [INTEGER, BIGINT]     False
- ...
-19    local  sqlmesh__ibis  ...                           [INTEGER, INTEGER, DATE]     False
-
-[20 rows x 6 columns]
+                     name
+0              full_model
+1  ibis_full_model_python
+2     ibis_full_model_sql
+3       incremental_model
+4              seed_model
 ```
 
-* In that case, or anyway, DuckDB may be used to explore the tables
-  and the content
-  * Launch the DuckDB shell
-    * Note that, as specified within the `config.yaml` configuration file,
-	the DuckDB data file is `data/local.duckdb`
-	* As may be seen in the
-	[various models](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/002-python-ibis/models),
-	the schema is `ibis`
-    * In order to quit the DuckDB shell, type Control-D or the `.quit` command
+* Anyway, DuckDB may also be used to explore the tables and the content.
+  In the remainder of this sub-section, DuckDB will be used to explore the data
+
+* Launch the DuckDB shell
+  * Note that, as specified within the `config.yaml` configuration file,
+  the DuckDB data file is `data/local.duckdb`
+  * As may be seen in the
+  [various models](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/003-python-ibis/models),
+  the schema is `ibis`
+  * In order to quit the DuckDB shell, type Control-D or the `.quit` command
 ```bash
 duckdb data/local.duckdb
 ```
@@ -802,6 +942,11 @@ D show tables;
 │ incremental_model      │
 │ seed_model             │
 └────────────────────────┘
+```
+
+* Leave the DuckDB shell:
+```sql
+D .quit
 ```
 
 ### Execution, tests and audits
@@ -830,35 +975,6 @@ assert_positive_order_ids on model ibis.ibis_full_model_sql ✅ PASS.
 
 Finished with 0 audit errors and 0 audits skipped.
 Done.
-```
-
-## Simple Python example
-* References:
-  * Python models:
-  https://sqlmesh.readthedocs.io/en/stable/concepts/models/python_models/
-
-* Change to the
-  [`examples/003-python-simple`](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/003-python-simple/)
-  directory within the SQLMesh dedicated directory:
-```bash
-cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/examples/003-python-simple
-```
-
-* When a project is initialized with the `sqlmesh init python` command,
-  it does not seem to work out of the box: the `sqlmesh plan` commad fails
-  right away on the just created project skeleton
-
-* Therefore, in addition to the project skeleton, created by the
-  `sqlmesh init python` command, a few files have been added,
-  taking inspiration from the
-  [Python Ibis example](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/002-python-ibis/)
-  (that is why that Python Ibis example comes first in
-  [the examples of this Git repository](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/))
-  
-### SQLMesh plan with Python models
-* Launch the SQLMesh plan:
-```bash
-sqlmesh plan
 ```
 
 ## PySpark example

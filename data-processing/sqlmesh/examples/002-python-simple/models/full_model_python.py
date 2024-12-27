@@ -2,11 +2,15 @@ import typing as t
 from datetime import datetime
 
 import pandas as pd
+#from sqlglot import exp
+
 from sqlmesh import ExecutionContext, model
+from sqlmesh.core.model import ModelKindName
+
 
 @model(
-    "docs_example.basic",
-    owner="janet",
+    "sqlmesh_example.full_model_python",
+    kind=dict(name=ModelKindName.FULL),
     cron="@daily",
     columns={
         "id": "int",
@@ -19,6 +23,7 @@ from sqlmesh import ExecutionContext, model
     audits=[
         ("not_null", {"columns": ["id"]}),
     ],
+    description="Simple Python model",
 )
 def execute(
     context: ExecutionContext,
@@ -28,7 +33,11 @@ def execute(
     **kwargs: t.Any,
 ) -> pd.DataFrame:
 
-    return pd.DataFrame([
-        {"id": 1, "name": "name"}
+    df = pd.DataFrame([
+        {"id": 1, "name": "Laura"},
+        {"id": 2, "name": "John"},
+        {"id": 3, "name": "Lucie"}
     ])
+    
+    return df
 
