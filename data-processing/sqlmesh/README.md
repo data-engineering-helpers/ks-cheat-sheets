@@ -6,14 +6,24 @@ Cheat Sheet - SQLMesh
 * [References](#references)
   * [Data Engineering helpers](#data-engineering-helpers)
   * [SQLMesh](#sqlmesh)
+    * [Documentation reference for SQLMesh](#documentation-reference-for-sqlmesh)
+      * [Concepts](#concepts)
+      * [Development](#development)
+      * [Models](#models)
+      * [Macros](#macros)
+      * [Metrics](#metrics)
+      * [Architecture](#architecture)
+      * [Integrations](#integrations)
+        * [Integration with tools](#integration-with-tools)
+        * [Integration with execution engines](#integration-with-execution-engines)
   * [DuckDB](#duckdb)
   * [Articles and Git knowledge sharing projects](#articles-and-git-knowledge-sharing-projects)
     * [Reddit thread](#reddit-thread)
     * [SQLMesh \- Migrate](#sqlmesh---migrate)
     * [SQLMesh as alternative to dbt](#sqlmesh-as-alternative-to-dbt)
     * [Arcane insight](#arcane-insight)
-	* [Multi-engine Stacks](#multi-engine-stacks)
-	* [The rise of the analytics pretendgineer](#the-rise-of-the-analytics-pretendgineer)
+    * [Multi\-engine Stacks](#multi-engine-stacks)
+    * [The rise of the analytics pretendgineer](#the-rise-of-the-analytics-pretendgineer)
     * [SQL \+ DataOps = SQLMesh](#sql--dataops--sqlmesh)
     * [Time To Move From dbt to SQLMesh](#time-to-move-from-dbt-to-sqlmesh)
 * [Quickstart](#quickstart)
@@ -28,11 +38,15 @@ Cheat Sheet - SQLMesh
       * [Check the new state brought by the plan on dev](#check-the-new-state-brought-by-the-plan-on-dev)
       * [Update the prod environment](#update-the-prod-environment)
       * [Check the upddates in the prod environment](#check-the-upddates-in-the-prod-environment)
+    * [Cleanup](#cleanup)
   * [Full end\-to\-end example](#full-end-to-end-example)
 * [Installation](#installation)
-  * [DuckDB](#duckdb)
+  * [DuckDB](#duckdb-1)
     * [Public data sets on DuckDB](#public-data-sets-on-duckdb)
   * [Local PostgreSQL server](#local-postgresql-server)
+    * [Setup of the configuration for the local PostgreSQL to store the state](#setup-of-the-configuration-for-the-local-postgresql-to-store-the-state)
+    * [SQLMesh with PostgreSQL to store the state](#sqlmesh-with-postgresql-to-store-the-state)
+    * [Cleanup when a local PostgreSQL database stores the state](#cleanup-when-a-local-postgresql-database-stores-the-state)
   * [Local Airflow service](#local-airflow-service)
   * [Clone this repository](#clone-this-repository)
   * [SQLMesh](#sqlmesh-1)
@@ -42,24 +56,27 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
 # Overview
 [This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/README.md)
-explains how to install and to use [SQLMesh](https://sqlmesh.readthedocs.io/en/stable/),
-_e.g._, on a laptop or on a virtual machine (VM).
+explains how to install and to use
+[SQLMesh](https://sqlmesh.readthedocs.io/en/stable/), _e.g._,
+on a laptop or on a virtual machine (VM).
 
 > [SQLMesh](https://sqlmesh.readthedocs.io/en/stable/) is
 > a next-generation data transformation framework designed to ship
 > data quickly, efficiently, and without error. Data teams can efficiently
 > run and deploy data transformations written in SQL or Python with
-> visibility and control at any size.
-> It is more than just a [dbt alternative](https://tobikodata.com/reduce_costs_with_cron_and_partitions.html).
+> visibility and control at any size. It is more than just a
+> [dbt alternative](https://tobikodata.com/reduce_costs_with_cron_and_partitions.html).
 
-SQLMesh requires some database to store its state. [DuckDB](https://duckdb.org/) is the database by default,
+SQLMesh requires some database to store its state.
+[DuckDB](https://duckdb.org/) is the database by default,
 as it is small and efficient enough to be available virtually everywhere:
 > [DuckDB](https://duckdb.org/) is an embedded database, similar to SQLite,
 > but designed for OLAP-style analytics. It is crazy fast and allows you
 > to read and write data stored in CSV, JSON, and Parquet files directly,
 > without requiring you to load them into the database first.
 
-For production-ready deployments, other database backends, like PostgreSQL, may be advised.
+For production-ready deployments, other database backends, like PostgreSQL,
+may be advised.
 
 # References
 
@@ -90,8 +107,92 @@ For production-ready deployments, other database backends, like PostgreSQL, may 
   [Ryan Eakman on GitHub](https://github.com/eakmanrq),
   [Ryan Eakman on Tobiko blog site](https://tobikodata.com/author/ryan-eakman.html))
 * Related project:
-  * SQLGlot: https://github.com/tobymao/sqlglot (and [SQLGlot home page](https://sqlglot.com))
+  * SQLGlot: https://github.com/tobymao/sqlglot (and
+  [SQLGlot home page](https://sqlglot.com))
 * Blog: https://tobikodata.com/blog
+
+### Documentation reference for SQLMesh
+* Quickstart guide: https://sqlmesh.readthedocs.io/en/stable/quick_start/
+* Walkthrough example:
+  https://sqlmesh.readthedocs.io/en/stable/examples/incremental_time_full_walkthrough/
+
+#### Concepts
+* Overview:
+  https://sqlmesh.readthedocs.io/en/stable/concepts/overview/
+* Glossary: https://sqlmesh.readthedocs.io/en/stable/concepts/glossary/
+
+#### Development
+* Plans:
+  https://sqlmesh.readthedocs.io/en/stable/concepts/plans/
+* Environments:
+  https://sqlmesh.readthedocs.io/en/stable/concepts/environments/
+* Testing:
+  https://sqlmesh.readthedocs.io/en/stable/concepts/tests/
+* Auditing:
+  https://sqlmesh.readthedocs.io/en/stable/concepts/audits/
+
+#### Models
+* Overview:
+  https://sqlmesh.readthedocs.io/en/stable/concepts/models/overview/
+* Model kinds:
+  https://sqlmesh.readthedocs.io/en/stable/concepts/models/model_kinds/
+* SQL models:
+  https://sqlmesh.readthedocs.io/en/stable/concepts/models/sql_models/
+* Python models:
+  https://sqlmesh.readthedocs.io/en/stable/concepts/models/python_models/
+* Seed models:
+  https://sqlmesh.readthedocs.io/en/stable/concepts/models/seed_models/
+* External models:
+  https://sqlmesh.readthedocs.io/en/stable/concepts/models/external_models/
+* Managed models:
+  https://sqlmesh.readthedocs.io/en/stable/concepts/models/managed_models/
+
+#### Macros
+* Overview:
+  https://sqlmesh.readthedocs.io/en/stable/concepts/macros/overview/
+* Macro variables:
+  https://sqlmesh.readthedocs.io/en/stable/concepts/macros/macro_variables/
+* SQLMesh variables:
+  https://sqlmesh.readthedocs.io/en/stable/concepts/macros/sqlmesh_macros/
+* Jinja macros:
+  https://sqlmesh.readthedocs.io/en/stable/concepts/macros/jinja_macros/
+
+#### Metrics
+* Overview: https://sqlmesh.readthedocs.io/en/stable/concepts/metrics/overview/
+* Definition:
+  https://sqlmesh.readthedocs.io/en/stable/concepts/metrics/definition/
+
+#### Architecture
+* Snapshots:
+  https://sqlmesh.readthedocs.io/en/stable/concepts/architecture/snapshots/
+* Serialization:
+  https://sqlmesh.readthedocs.io/en/stable/concepts/architecture/serialization/
+
+#### Integrations
+* Overview:
+  https://sqlmesh.readthedocs.io/en/stable/integrations/overview/
+  
+##### Integration with tools
+* Integration with Airflow:
+  https://sqlmesh.readthedocs.io/en/stable/integrations/airflow/
+* Integration with GitHub Actions CI/CD bot:
+  https://sqlmesh.readthedocs.io/en/stable/integrations/github/
+* Integration with dbt:
+  https://sqlmesh.readthedocs.io/en/stable/integrations/dbt/
+* Integration with dlt:
+  https://sqlmesh.readthedocs.io/en/stable/integrations/dlt/
+
+##### Integration with execution engines
+* Integration with Spark:
+  https://sqlmesh.readthedocs.io/en/stable/integrations/engines/spark/
+* Integration with DataBricks:
+  https://sqlmesh.readthedocs.io/en/stable/integrations/engines/databricks/
+* Integration with Athena:
+  https://sqlmesh.readthedocs.io/en/stable/integrations/engines/athena/
+* Integration with DuckDB:
+  https://sqlmesh.readthedocs.io/en/stable/integrations/engines/duckdb/
+* Integration with PostgreSQL:
+  https://sqlmesh.readthedocs.io/en/stable/integrations/engines/postgres/
 
 ## DuckDB
 * Home page: https://duckdb.org/
