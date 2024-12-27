@@ -16,6 +16,9 @@ Cheat Sheet - SQLMesh
       * [Integrations](#integrations)
         * [Integration with tools](#integration-with-tools)
         * [Integration with execution engines](#integration-with-execution-engines)
+    * [Git repository with SQLMesh examples](#git-repository-with-sqlmesh-examples)
+      * [Sushi project](#sushi-project)
+      * [Ibis project](#ibis-project)
   * [DuckDB](#duckdb)
   * [Articles and Git knowledge sharing projects](#articles-and-git-knowledge-sharing-projects)
     * [Reddit thread](#reddit-thread)
@@ -39,6 +42,12 @@ Cheat Sheet - SQLMesh
       * [Update the prod environment](#update-the-prod-environment)
       * [Check the upddates in the prod environment](#check-the-upddates-in-the-prod-environment)
     * [Cleanup](#cleanup)
+  * [Full example with Python models](#full-example-with-python-models)
+    * [SQLMesh plan with Python models](#sqlmesh-plan-with-python-models)
+    * [Check the created tables](#check-the-created-tables)
+    * [Execution, tests and audits](#execution-tests-and-audits)
+  * [PySpark example](#pyspark-example)
+    * [SQLMesh plan](#sqlmesh-plan)
   * [Full end\-to\-end example](#full-end-to-end-example)
 * [Installation](#installation)
   * [DuckDB](#duckdb-1)
@@ -185,6 +194,8 @@ may be advised.
 ##### Integration with execution engines
 * Integration with Spark:
   https://sqlmesh.readthedocs.io/en/stable/integrations/engines/spark/
+  * PySpark models:
+  https://sqlmesh.readthedocs.io/en/stable/concepts/models/python_models/#pyspark
 * Integration with DataBricks:
   https://sqlmesh.readthedocs.io/en/stable/integrations/engines/databricks/
 * Integration with Athena:
@@ -193,6 +204,26 @@ may be advised.
   https://sqlmesh.readthedocs.io/en/stable/integrations/engines/duckdb/
 * Integration with PostgreSQL:
   https://sqlmesh.readthedocs.io/en/stable/integrations/engines/postgres/
+
+### Git repository with SQLMesh examples
+* Git repository: https://github.com/TobikoData/sqlmesh-examples
+
+#### Sushi project
+* Jupyter notebook about the Sushi project:
+  https://github.com/TobikoData/sqlmesh-examples/blob/main/001_sushi/sushi-overview.ipynb
+  * Simple part:
+  https://github.com/TobikoData/sqlmesh-examples/tree/main/001_sushi/1_simple
+  * Moderate part:
+  https://github.com/TobikoData/sqlmesh-examples/tree/main/001_sushi/2_moderate
+
+#### Ibis project
+* Ibis SQLMesh project directory:
+  https://github.com/TobikoData/sqlmesh-examples/tree/main/002_ibis
+* The Ibis SQLMesh project features:
+  * Python models:
+  https://github.com/TobikoData/sqlmesh-examples/tree/main/002_ibis/models
+  * The Ibis framework:
+  https://github.com/ibis-project/ibis
 
 ## DuckDB
 * Home page: https://duckdb.org/
@@ -653,6 +684,190 @@ grep "z" models/incremental_model.sql
 * The project is now ready to start afresh, with no memory nor any change
   when compared to the Git repository
 
+## Full example with Python models
+* References:
+  * Python models:
+  https://sqlmesh.readthedocs.io/en/stable/concepts/models/python_models/
+  * PySpark models:
+  https://sqlmesh.readthedocs.io/en/stable/concepts/models/python_models/#pyspark
+  * Ibis SQLMesh project:
+  https://github.com/TobikoData/sqlmesh-examples/tree/main/002_ibis
+  * The Ibis framework:
+  https://github.com/ibis-project/ibis 
+
+* Change to the `python-ibis` directory within the SQLMesh dedicated
+  directory:
+```bash
+cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/python-ibis
+```
+
+* As when a project is initialized with the `sqlmesh init python` command,
+  it does not seem to work out of the box, this example has been fully imported
+  from the
+  [SQLMesh example Git repository](https://github.com/TobikoData/sqlmesh-examples/tree/main/002_ibis)
+  (with `git clone git@github.com:TobikoData/sqlmesh-examples.git` into a
+  temporary directory, and then `rsync -av` from that temporary directory unto
+  [this current `python-ibis` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/python-ibis/))
+  
+### SQLMesh plan with Python models
+* Launch the SQLMesh plan:
+```bash
+sqlmesh plan
+New environment `prod` will be created from `prod`
+Summary of differences against `prod`:
+Models:
+└── Added:
+    ├── ibis.full_model
+    ├── ibis.ibis_full_model_python
+    ├── ibis.ibis_full_model_sql
+    ├── ibis.incremental_model
+    └── ibis.seed_model
+Models needing backfill (missing dates):
+├── ibis.full_model: 2020-01-01 - 2024-12-26
+├── ibis.ibis_full_model_python: 2020-01-01 - 2024-12-26
+├── ibis.ibis_full_model_sql: 2020-01-01 - 2024-12-26
+├── ibis.incremental_model: 2020-01-01 - 2024-12-26
+└── ibis.seed_model: 2024-12-26 - 2024-12-26
+```
+
+* Answer yes to the prompt asking whether to apply and backfill the models:
+```bash
+Apply - Backfill Tables [y/n]: y
+Creating physical table ━━━━ ... ━━━━ 100.0% • 5/5 • 0:00:00
+
+All model versions have been created successfully
+
+[1/1] ibis.seed_model evaluated in 0.00s
+[1/1] ibis.incremental_model evaluated in 0.01s
+[1/1] ibis.full_model evaluated in 0.01s
+[1/1] ibis.ibis_full_model_python evaluated in 0.06s
+[1/1] ibis.ibis_full_model_sql evaluated in 0.03s
+Evaluating models ━━━ ... ━━━━ 100.0% • 5/5 • 0:00:00
+
+
+All model batches have been executed successfully
+
+Virtually Updating 'prod' ━━━ ... ━━━━ 100.0% • 0:00:00
+
+The target environment has been updated successfully
+```
+
+### Check the created tables
+* Note that the result of the `sqlmesh fetchdf "show all tables"` command
+  may be truncated (_i.e._, the names of the tables do not appear):
+```bash
+sqlmesh fetchdf "show all tables"
+```
+```text
+   database         schema  ...                                       column_types temporary
+0     local           ibis  ...                                  [INTEGER, BIGINT]     False
+ ...
+19    local  sqlmesh__ibis  ...                           [INTEGER, INTEGER, DATE]     False
+
+[20 rows x 6 columns]
+```
+
+* In that case, or anyway, DuckDB may be used to explore the tables
+  and the content
+  * Launch the DuckDB shell
+    * Note that, as specified within the `config.yaml` configuration file,
+	the DuckDB data file is `data/local.duckdb`
+	* As may be seen in the
+	[various models](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/python-ibis/models),
+	the schema is `ibis`
+    * In order to quit the DuckDB shell, type Control-D or the `.quit` command
+```bash
+duckdb data/local.duckdb
+```
+```sql
+D use ibis;
+D show tables;
+┌────────────────────────┐
+│          name          │
+│        varchar         │
+├────────────────────────┤
+│ full_model             │
+│ ibis_full_model_python │
+│ ibis_full_model_sql    │
+│ incremental_model      │
+│ seed_model             │
+└────────────────────────┘
+```
+
+### Execution, tests and audits
+* Run the project (as there have been no change yet, running the project
+  does not do anything):
+```bash
+sqlmesh run
+Run finished for environment 'prod'
+```
+* Launch the tests:
+```bash
+sqlmesh test
+
+----------------------------------------------------------------------
+Ran 0 tests in 0.000s
+
+OK
+```
+* Launch the audit:
+```bash
+sqlmesh audit
+Found 3 audit(s).
+assert_positive_order_ids on model ibis.full_model ✅ PASS.
+assert_positive_order_ids on model ibis.ibis_full_model_python ✅ PASS.
+assert_positive_order_ids on model ibis.ibis_full_model_sql ✅ PASS.
+
+Finished with 0 audit errors and 0 audits skipped.
+Done.
+```
+
+## PySpark example
+* References:
+  * Python models:
+  https://sqlmesh.readthedocs.io/en/stable/concepts/models/python_models/
+  * PySpark models:
+  https://sqlmesh.readthedocs.io/en/stable/concepts/models/python_models/#pyspark
+
+* Change to the `pyspark-example` directory within the SQLMesh dedicated
+  directory:
+```bash
+cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/pyspark-example
+```
+
+* The project has been initialized with the `sqlmesh init spark` command
+
+### SQLMesh plan
+* Launch the SQLMesh plan:
+```bash
+sqlmesh plan
+======================================================================
+Successfully Ran 1 tests against duckdb
+----------------------------------------------------------------------
+`prod` environment will be initialized
+
+Requirements:
++ pyspark==3.5.4
+Models:
+└── Added:
+    ├── docs_example.pyspark
+    ├── sqlmesh_example.full_model
+    ├── sqlmesh_example.incremental_model
+    └── sqlmesh_example.seed_model
+Models needing backfill (missing dates):
+└── docs_example.pyspark: 2024-12-26 - 2024-12-26
+```
+
+* Answer yes to the prompt:
+```text
+Apply - Backfill Tables [y/n]: y
+Creating physical tables ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100.0% • 4/4 • 0:00:00
+
+All model versions have been created successfully
+
+```
+
+
 ## Full end-to-end example
 * Reference:
   https://sqlmesh.readthedocs.io/en/stable/examples/incremental_time_full_walkthrough/
@@ -912,7 +1127,9 @@ rm -rf .cache logs db.db
   specifying which
   [SQL dialect](https://github.com/tobymao/sqlglot/blob/main/sqlglot/dialects/dialect.py)
   to use (among, for instance, DataBricks, Drill, DuckDB, Hive, MySQL,
-  PostgreSQL, Presto, Redshift, Snowflake, Spark, SQLite, Tableau, Trino)
+  PostgreSQL, Presto, Redshift, Snowflake, Spark, SQLite, Tableau, Trino).
+  * Note that `python` is also available as a dialect: `sqlmesh init python`
+  will create a project skeleton populated for Python as a dialect
   * The simple example, described in the
   [SQLMesh getting started page](https://sqlmesh.readthedocs.io/en/stable/quickstart/cli/#1-create-the-sqlmesh-project),
   has been created in the
