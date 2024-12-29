@@ -1,5 +1,5 @@
 #
-# File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/001-simple/Makefile
+# File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/002-postgresql-state/Makefile
 #
 
 clean-cache: ## Clean the SQLMesh cache directory
@@ -11,7 +11,14 @@ clean-logs: ## Clean the SQLMesh logs
 clean-wh: ## Clean the SQLMesh warehouse (DuckDB)
 	rm -f db.db
 
-clean: clean-cache clean-logs clean-wh ## Clean potential previous states and logs
+clean-pg: ## Clean the SQLMesh state in the local PostgreSQL database
+	@../../tools/clean-pg-state.sh
+
+clean: clean-cache clean-logs clean-wh clean-pg ## Clean potential previous states and logs
+
+init: ## Initialize the project with PostgreSQL to store the state
+	cp -f config.yaml.sample config.yaml
+	sed -i.bak -e 's/<sqlmesh-pass>/sqlmesh/' config.yaml && rm -f config.yaml.bak
 
 hint-change: ## Hint for the changes to be made
 	@echo "Edit the incremental_model.sql file and uncomment the z column"

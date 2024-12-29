@@ -27,6 +27,7 @@ Cheat Sheet - SQLMesh
     * [Arcane insight](#arcane-insight)
     * [Multi\-engine Stacks](#multi-engine-stacks)
     * [The rise of the analytics pretendgineer](#the-rise-of-the-analytics-pretendgineer)
+    * [Unlocking data insights with Ibis and SQLMesh](#unlocking-data-insights-with-ibis-and-sqlmesh)
     * [SQL \+ DataOps = SQLMesh](#sql--dataops--sqlmesh)
     * [Time To Move From dbt to SQLMesh](#time-to-move-from-dbt-to-sqlmesh)
 * [Introdutcion to the examples in this Git repository](#introdutcion-to-the-examples-in-this-git-repository)
@@ -43,6 +44,7 @@ Cheat Sheet - SQLMesh
     * [Check the upddates in the prod environment](#check-the-upddates-in-the-prod-environment)
   * [Cleanup](#cleanup)
 * [More advanced examples](#more-advanced-examples)
+  * [Local PostgreSQL to store the state](#local-postgresql-to-store-the-state)
   * [Simple Python example](#simple-python-example)
     * [SQLMesh plan with Python models](#sqlmesh-plan-with-python-models)
     * [Check the content of the tables with Python models](#check-the-content-of-the-tables-with-python-models)
@@ -63,6 +65,7 @@ Cheat Sheet - SQLMesh
     * [Setup of the configuration for the local PostgreSQL to store the state](#setup-of-the-configuration-for-the-local-postgresql-to-store-the-state)
     * [SQLMesh with PostgreSQL to store the state](#sqlmesh-with-postgresql-to-store-the-state)
     * [Cleanup when a local PostgreSQL database stores the state](#cleanup-when-a-local-postgresql-database-stores-the-state)
+    * [Cleanup the changes when a local PostgreSQL database stores the state](#cleanup-the-changes-when-a-local-postgresql-database-stores-the-state)
   * [Local Airflow service](#local-airflow-service)
   * [Clone this repository](#clone-this-repository)
   * [SQLMesh](#sqlmesh-1)
@@ -319,6 +322,19 @@ may be advised.
 * Link to the article:
   https://benn.substack.com/p/the-rise-of-the-analytics-pretendgineer
 
+### Unlocking data insights with Ibis and SQLMesh
+* Title: Unlocking data insights with Ibis and SQLMesh
+* Date: May 2024
+* Authors:
+  * Marisa Smith
+  ([Marisa Smith on LinkedIn](https://www.linkedin.com/in/marisa-smith-datanerd/),
+  [Marisa Smith on Tobiko blog](https://tobikodata.com/author/marisa-smith.html))
+  * Andrew Shannon
+  ([Andrew Shannon on LinkedIn](https://www.linkedin.com/in/ashannon01/),
+  [Andrew Shannon on Tobiko blog](https://tobikodata.com/author/andrew-shannon.html))
+* Link to the article:
+  https://tobikodata.com/ibis-sqlmesh-unlocking-data-insights.html
+
 ### SQL + DataOps = SQLMesh
 * Title: SQL + DataOps = SQLMesh?
 * Date: March 2024
@@ -339,20 +355,22 @@ may be advised.
 # Introdutcion to the examples in this Git repository
 * [Examples in this Git repository](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/):
   * [`examples/001-simple` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/001-simple/) --
-  Simple example, also named "quickstart". There are two possible configurations:
+  Simple example, also named "quickstart".
     * DuckDB is used both for the executing engine and to store the state
+  * [`examples/002-postgresql-state` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/002-postgresql-state/) --
+  The same simple example as above (`examples/001-simple`), except that:
     * DuckDB is used for the executing engine and a local PostgreSQL database
 	to store the state
-  * [`examples/002-python-simple`](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/002-python-simple/) --
+  * [`examples/003-python-simple`](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/003-python-simple/) --
   Example including a simple Python model
     * DuckDB is used both for the executing engine and to store the state
 	* The Python model is also executed by DuckDB
-  * [`examples/003-python-ibis` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/003-python-ibis/) --
+  * [`examples/004-python-ibis` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/004-python-ibis/) --
   Example featuring the Python Ibis framework (translating Python dataframes
   from one executing engine to another, that is, like SQLGlot but for Python)
     * DuckDB is used both for the executing engine and to store the state
 	* The Python models are also executed by DuckDB
-  * [`examples/004-pyspark-simple` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/004-pyspark-simple/) --
+  * [`examples/005-pyspark-simple` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/005-pyspark-simple/) --
   Simple example featuring a Python model and Spark as the executing engine
     * DuckDB is used to store the state
 	* Note that Spark cannot store the state (as per the
@@ -398,11 +416,6 @@ make diff
   ignored by Git (so that the example may be reproduced without interfering
   with this Git repository)
 
-* In addition, the configuration also supports the storage of the state within
-  a local PostgreSQL database. Either the `local_w_pg` gateway has to be
-  specified on every SQLMesh command, or the default gateway may be changed
-  in the `config.yaml` configuration file
-
 * Change to the
   [`examples/001-simple` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/001-simple/)
   within the SQLMesh dedicated directory:
@@ -413,6 +426,7 @@ cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/examples/001-
 * Clean/remove results of potential earlier tries (those files are ignored
   by Git):
 ```bash
+make clean # equivalent of:
 rm -rf .cache logs db.db
 ```
 
@@ -733,19 +747,26 @@ new_column      100.0
 ```
 
 ## Cleanup
-* As DuckDB stores both the state and the datasets, cleaning up is as
+* For convenience, all the clean commands are featured in a single Makefile
+  target:
+```bash
+make clean
+```
+  * For reference, the following cleaning operations are performed
+  * As DuckDB stores both the state and the datasets, cleaning up is as
   straightforward as deleting the DuckDB data file, namely `db.db`:
 ```bash
 rm -f db.db
 ```
-
-* Delete also the log and the cache directories:
+  * Delete also the log and the cache directories:
 ```bash
+make clean # equivalent of:
 rm -rf .cache logs
 ```
 
 * Comment the clause for the `z` column in the `incremental_model` model:
 ```bash
+make hint-change
 grep "z" models/incremental_model.sql
     --'z' AS new_column, -- Added column
 ```
@@ -755,16 +776,42 @@ grep "z" models/incremental_model.sql
 
 # More advanced examples
 
+## Local PostgreSQL to store the state
+* DuckDB is still the execution engine
+
+* The state is stored within a local PostgreSQL database. See the
+  [Local PostgreSQL server section](#local-postgresql-server) on how to install
+  and setup such a local PostgreSQL database
+
+* Change to the
+  [`examples/002-postgresql-state` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/002-postgresql-state/)
+  within the SQLMesh dedicated directory:
+```bash
+cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/examples/002-postgresql-state
+```
+
+* Clean/remove results of potential earlier tries (those files are ignored
+  by Git):
+```bash
+make clean # equivalent of:
+rm -rf .cache logs db.db db.db.wal
+```
+
+* The other steps (_i.e._, SQLMesh plan, introduce a change, SQLMesh dev
+  environment, check the updates, SQLMesh plan to merge the updates on prod,
+  cleanup the project) are the same as in the quickstart example. The Makefile
+  has been adapted to take PostgreSQL into account
+
 ## Simple Python example
 * References:
   * Python models:
   https://sqlmesh.readthedocs.io/en/stable/concepts/models/python_models/
 
 * Change to the
-  [`examples/002-python-simple`](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/002-python-simple/)
+  [`examples/003-python-simple`](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/003-python-simple/)
   directory within the SQLMesh dedicated directory:
 ```bash
-cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/examples/002-python-simple
+cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/examples/003-python-simple
 ```
 
 * To create a project skeleton with Python models, simply use the
@@ -783,6 +830,7 @@ cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/examples/002-
   * And then, when launching the SQLMesh plan (with the `sqlmesh plan` command),
   the underlying SQLGlot engine will fail with some cryptic error:
 ```bash
+make plan-prod # equivalent of:
 sqlmesh plan
 Error: Required keyword: 'this' missing for <class 'sqlglot.expressions.Between'>. Line 1, Col: 239.
   odel WHERE BETWEEN(scope[None][event_date], DATESTRTODATE('1970-01-01'), DATESTRTODATE('1970-01-01'))
@@ -834,10 +882,22 @@ The target environment has been updated successfully
 ```
 
 ### Check the content of the tables with Python models
-* Use the `fetchdf` command to browse the content of the
-  [Python model](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/002-python-simple/full_model_python.py)
+* Use the `fetchdf` command:
+  * To list the tables:
+```bash
+make list-tables-prod # equivalent of
+sqlmesh fetchdf "use sqlmesh_example; show tables"
+                name
+0         full_model
+1  full_model_python
+2  incremental_model
+3         seed_model
+```
+  * To browse the content of the
+  [Python model](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/003-python-simple/full_model_python.py)
   table (that is, the `sqlmesh_example.full_model_python` table):
 ```bash
+make check-data-prod # equivalent of:
 sqlmesh fetchdf "use sqlmesh_example; select * from full_model_python"
    id   name
 0   1  Laura
@@ -848,7 +908,7 @@ sqlmesh fetchdf "use sqlmesh_example; select * from full_model_python"
 ### Audit with Python models
 * Launch the `audit` command:
 ```bash
-sqlmesh audit
+sqlmesh audit # equivalent of
 Found 2 audit(s).
 assert_positive_order_ids on model sqlmesh_example.full_model ✅ PASS.
 not_null on model sqlmesh_example.full_model_python ✅ PASS.
@@ -860,6 +920,7 @@ Done.
 ### Test with Python models
 * Launch the `test` command:
 ```bash
+sqlmesh test # equivalent of
 sqlmesh test
 .
 ----------------------------------------------------------------------
@@ -869,25 +930,24 @@ OK
 ```
 
 ### Cleanup
-* As DuckDB stores both the state and the datasets, cleaning up is as
-  straightforward as deleting the DuckDB data file, namely `db.db`:
+* Clean/remove results of potential earlier tries (those files are ignored
+  by Git):
 ```bash
-rm -f db.db
-```
-
-* Delete also the log and the cache directories:
-```bash
-rm -rf .cache logs
+make clean # equivalent of:
+rm -rf .cache logs db.db
 ```
 
 * Comment the clause for the `z` column in the `incremental_model` model:
 ```bash
+make hint-change # equivalent of:
 grep "z" models/incremental_model.sql
     --'z' AS new_column, -- Added column
 ```
 
 ## Full example with Python models
 * References:
+  * Article on Tobiko blog site:
+  https://tobikodata.com/ibis-sqlmesh-unlocking-data-insights.html
   * Python models:
   https://sqlmesh.readthedocs.io/en/stable/concepts/models/python_models/
   * PySpark models:
@@ -898,10 +958,10 @@ grep "z" models/incremental_model.sql
   https://github.com/ibis-project/ibis 
 
 * Change to the
-  [`examples/003-python-ibis` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/003-python-ibis/)
+  [`examples/004-python-ibis` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/004-python-ibis/)
   within the SQLMesh dedicated directory:
 ```bash
-cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/examples/003-python-ibis
+cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/examples/004-python-ibis
 ```
 
 * This example has not been generated with the `sqlmesh init` command, but
@@ -909,7 +969,7 @@ cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/examples/003-
   [SQLMesh example Git repository](https://github.com/TobikoData/sqlmesh-examples/tree/main/002_ibis)
   (with `git clone git@github.com:TobikoData/sqlmesh-examples.git` into a
   temporary directory, and then `rsync -av` from that temporary directory unto
-  [this current `python-ibis` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/003-python-ibis/))
+  [this current `python-ibis` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/004-python-ibis/))
 
 * It features the [Ibis framework](https://github.com/ibis-project/ibis),
   a Python library to translate dataframes from one dialect to another
@@ -918,6 +978,7 @@ cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/examples/003-
 ### SQLMesh plan with Python models
 * Launch the SQLMesh plan:
 ```bash
+make plan-prod # equivalent of
 sqlmesh plan
 New environment `prod` will be created from `prod`
 Summary of differences against `prod`:
@@ -963,6 +1024,7 @@ The target environment has been updated successfully
   may be truncated (_i.e._, the names of the tables do not appear).
   It is therefore advised to use a specific schema (_e.g._, `ibis` here):
 ```bash
+make list-tables-prod # equivalent of
 sqlmesh fetchdf "use ibis; show tables"
 ```
 ```text
@@ -974,6 +1036,22 @@ sqlmesh fetchdf "use ibis; show tables"
 4              seed_model
 ```
 
+* Browse the content of the incremental model/table:
+```bash
+make check-data-prod # equivalent of
+sqlmesh fetchdf "select * from ibis.incremental_model"
+```
+```text
+   id  item_id event_date
+0   1        2 2020-01-01
+1   2        1 2020-01-01
+2   3        3 2020-01-03
+3   4        1 2020-01-04
+4   5        1 2020-01-05
+5   6        1 2020-01-06
+6   7        1 2020-01-07
+```
+
 * Anyway, DuckDB may also be used to explore the tables and the content.
   In the remainder of this sub-section, DuckDB will be used to explore the data
 
@@ -981,7 +1059,7 @@ sqlmesh fetchdf "use ibis; show tables"
   * Note that, as specified within the `config.yaml` configuration file,
   the DuckDB data file is `data/local.duckdb`
   * As may be seen in the
-  [various models](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/003-python-ibis/models),
+  [various models](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/004-python-ibis/models),
   the schema is `ibis`
   * In order to quit the DuckDB shell, type Control-D or the `.quit` command
 ```bash
@@ -1045,10 +1123,10 @@ Done.
     https://sqlmesh.readthedocs.io/en/stable/concepts/models/python_models/#pyspark
 
 * Change to the
-  [`examples/004-pyspark-simple` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/004-pyspark-simple/)
+  [`examples/005-pyspark-simple` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/005-pyspark-simple/)
   within the SQLMesh dedicated directory:
 ```bash
-cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/examples/004-pyspark-simple
+cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/examples/005-pyspark-simple
 ```
 
 * The project has been initialized with the `sqlmesh init spark` command
@@ -1056,6 +1134,7 @@ cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/examples/004-
 ### SQLMesh plan
 * Launch the SQLMesh plan:
 ```bash
+make plan-prod # equivalent of:
 sqlmesh plan
 ======================================================================
 Successfully Ran 1 tests against duckdb
@@ -1162,8 +1241,17 @@ D .quit
   [Data Engineering Helpers - Knowledge Sharing - PostgreSQL guide](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/README.md#sqlmesh-database-and-user),
   there is a section detailing how to create a `sqlmesh` database, a `sqlmesh`
   schema and the `sqlmesh` user on a local PostgreSQL database
-
+  
 ### Setup of the configuration for the local PostgreSQL to store the state
+* See https://sqlmesh.readthedocs.io/en/stable/guides/configuration/#overrides
+  on the relevant SQLMesh configuration options
+  * In particular, the password of the PostgreSQL database user may be specified
+  within an environment variable, for instance
+  `SQLMESH__GATEWAYS__LOCAL__STATE_CONNECTION__PASSWORD`
+  * However, within that documentation, another method (not to expose the
+  password in the Git repository) has been chosen; see the next bullet point
+  for that alternative method
+
 * As the `config.yaml` configuration files contain credentials for the
   PostgreSQL database (even though those credentials are just some samples
   for local services, some security scanners may bump onto them in GitHub
@@ -1173,21 +1261,17 @@ D .quit
   * The `config.yaml` configuration file, that SQLMesh is expecting,
     has to be copied from the `config.yaml.sample` file and:
 	* The password has to be adjusted in it
-	* The default gateway has to changed for the new `local_w_pg` setup
   * That `config.yaml` configuration file is ignored by Git (so that
     the credentials do not appear in clear in the Git repository)
   * The sequence is therefore as the following:
 ```bash
 cp config.yaml.sample config.yaml
-sed -i.bak -e 's/<sqlmesh-pass>/sqlmesh/' config.yaml && rm -f config.yaml.bak
-sed -i.bak -e 's/default_gateway: \(.\)*/default_gateway: local_w_pg/' config.yaml && rm -f config.yaml.bak
+sed -i.bak -e 's/<sqlmesh-pass>/<REPLACE-HERE-BY-THE-POSTGRESQL-USER-PASSWORD>/' config.yaml && rm -f config.yaml.bak
 ```
   * Check that the content of the `config.yaml` configuration file
     seems correct
-	* Setup of the default gateway (that avoids to have to pass the
-	`--gateway local_w_pg` parameter at every subsequent `sqlmesh` command):
 ```bash
-cat config.yaml | yq -r '.gateways.local_w_pg.state_connection'
+cat config.yaml | yq -r '.gateways.local.state_connection'
 ```
 ```yaml
 type: postgres
@@ -1195,19 +1279,17 @@ host: localhost
 port: 5432
 database: sqlmesh
 user: sqlmesh
-password: <sqlmesh-pass>
-```
-	* Default gateway:
-```bash
-cat config.yaml | yq -r '.default_gateway'
-```
-```text
-local_w_pg
+password: <REPLACE-HERE-BY-THE-POSTGRESQL-USER-PASSWORD>
 ```
 
 * SQLMesh is now ready to run with:
   * DuckDB as the execution engine
   * Local PostgreSQL database server to store the state
+  * See
+  [Local PostgreSQL to store the state](#local-postgresql-to-store-the-state)
+  for the walkthrough
+  * The next sub-sections detail a few specifities of having PostgreSQL
+  to store the SQLMesh state
 
 ### SQLMesh with PostgreSQL to store the state
 * Follow the
@@ -1224,54 +1306,56 @@ local_w_pg
 sqlmesh fetchdf "select * from sqlmesh_example.full_model"
 ```
   * The state is stored in the PostgreSQL database. For instance:
-    * List the state-related tables:
+    * List the state-related tables (the `-t` option is to display tuples only,
+	that is, turn off the header, footer and comments):
 ```bash
-psql -h localhost -U sqlmesh -d sqlmesh -c "\dt"
+# psql -h localhost -U sqlmesh -d sqlmesh -t -c "\dt"
+psql -h localhost -U sqlmesh -d sqlmesh -t -c "select table_name from information_schema.tables where table_schema = 'sqlmesh'"
 ```
 ```sql
-               List of relations
- Schema  |        Name        | Type  |  Owner
----------+--------------------+-------+---------
- sqlmesh | _auto_restatements | table | sqlmesh
- sqlmesh | _environments      | table | sqlmesh
- sqlmesh | _intervals         | table | sqlmesh
- sqlmesh | _plan_dags         | table | sqlmesh
- sqlmesh | _snapshots         | table | sqlmesh
- sqlmesh | _versions          | table | sqlmesh
-(6 rows)
+ _snapshots
+ _environments
+ _auto_restatements
+ _intervals
+ _plan_dags
+ _versions
 ```
     * List the (virtual data) environments:
 ```bash
-psql -h localhost -U sqlmesh -d sqlmesh -c "select * from _environments;"
+psql -h localhost -U sqlmesh -d sqlmesh -t -c "select * from _environments;"
 ```
     * List the intervals:
 ```bash
-psql -h localhost -U sqlmesh -d sqlmesh -c "select * from _intervals;"
+psql -h localhost -U sqlmesh -d sqlmesh -t -c "select * from _intervals;"
 ```
 ```sql
-                id                |  created_ts   |                      name                      | identifier |  version   |   start_ts    |    end_ts     | is_dev | is_removed | is_compacted | is_pending_restatement
-----------------------------------+---------------+------------------------------------------------+------------+------------+---------------+---------------+--------+------------+--------------+------------------------
- e913483746c94b929a275a03d1e95fbc | 1735232865201 | "dbwost"."sqlmesh_example"."seed_model"        | 372700188  | 2185867172 | 1734998400000 | 1735171200000 | f      | f          | f            | f
- dc53edbe63024c6da382ff31b875dcf6 | 1735232865211 | "dbwost"."sqlmesh_example"."incremental_model" | 2904108954 | 3086720608 | 1577836800000 | 1735171200000 | f      | f          | f            | f
- 9f049d8893f149ba97dfdcdd223ec825 | 1735232865223 | "dbwost"."sqlmesh_example"."full_model"        | 3005597694 | 2692944088 | 1734998400000 | 1735171200000 | f      | f          | f            | f
-(3 rows)
+ 36c6a51271164c7687215c2d6927c252 | 1735489690863 | "db"."sqlmesh_example"."seed_model"        | 372700188  | 2185867172 | 1734998400000 | 1735430400000 | f      | f          | f            | f
+ 1aae0371a4664f51925bd0101984be12 | 1735489690871 | "db"."sqlmesh_example"."incremental_model" | 1463271556 | 1880815781 | 1577836800000 | 1735430400000 | f      | f          | f            | f
+ 15be8abdaf62493c8ebfab91f72a9099 | 1735489690881 | "db"."sqlmesh_example"."full_model"        | 3906121019 | 2278521865 | 1734998400000 | 1735430400000 | f      | f          | f            | f
 ```
 
 ### Cleanup when a local PostgreSQL database stores the state
-* For the datasets in DuckDB, that is still as straightforward as deleting
-  the DuckDB data file, namely `dbwost.db`:
+* Delete the datasets in DuckDB, the logs and the cache directories:
 ```bash
-rm -f dbwost.db
+make clean # equivalent of:
+rm -rf db.db .cache logs
 ```
 
-* Delete the log and the cache directories:
-```bash
-rm -rf .cache logs
-```
+* In order to clean the SQLMesh state in the local PostgreSQL database,
+  there is a
+  [Bash script, namely `tools/clean-pg-state.sh` in this Git repository](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/tools/clean-pg-state.sh)
+  * That Bash script features a few sanity checks (for instance, that the
+  `psql` command exists and works)
+  * If the PostgreSQL parameters are different from the default ones,
+  they can be altered in
+  [that `tools/clean-pg-state.sh` Bash script]((https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/tools/clean-pg-state.sh))
+  at its top
+  * The remainded of this sub-section still details on how to clean the SQLMesh
+  state from the local PostgreSQL database manually 
 
 * Specify the list of the state-related tables in a Shell array variable:
 ```bash
-table_list=(_auto_restatements _environments _intervals _plan_dags _snapshots _versions)
+table_list=($(psql -h localhost -U sqlmesh -d sqlmesh -t -c "select table_name from information_schema.tables where table_schema = 'sqlmesh'"))
 ```
 
 * Clean/drop the state-related tables in PostgreSQL:
@@ -1279,7 +1363,11 @@ table_list=(_auto_restatements _environments _intervals _plan_dags _snapshots _v
 for table in "${table_list[@]}"; do echo "Dropping ${table} table..."; psql -h localhost -U sqlmesh -d sqlmesh -c "drop table if exists ${table};"; echo "... ${table} table dropped"; done
 ```
 
-* Comment the clause for the `z` column in the `incremental_model` model:
+### Cleanup the changes when a local PostgreSQL database stores the state
+* If needed, comment the clause for the `z` column in the `incremental_model`
+  model (_e.g._, in the
+  [`examples/002-postgresql-state/models/incremental_model.sql` model file](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/002-postgresql-state/models/incremental_model.sql))
+  * It should read something like:
 ```bash
 grep "z" models/incremental_model.sql
     --'z' AS new_column, -- Added column
@@ -1337,6 +1425,7 @@ sqlmesh --version
 * Clean/remove results of potential earlier tries (those files are ignored
   by Git):
 ```bash
+make clean # equivalent of:
 rm -rf .cache logs db.db
 ```
 

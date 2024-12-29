@@ -1,8 +1,20 @@
+#
+# File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/005-pyspark-simple/Makefile
+#
 
+clean-cache: ## Clean the SQLMesh cache directory
+	rm -rf .cache
 
-clean: ## Clean potential previous states and logs
-	rm -rf db.db db.db.wal logs .cache
+clean-logs: ## Clean the SQLMesh logs
+	rm -rf logs
+
+clean-state: ## Clean the SQLMesh state (DuckDB)
+	rm -f db.db db.db.wal
+
+clean-spark: ## Clean the warehouse (Spark metastore and warehouse)
 	rm -rf derby.log metastore_db spark-warehouse
+
+clean: clean-cache clean-logs clean-state clean-spark ## Clean potential previous states and logs
 
 hint-change: ## Hint for the changes to be made
 	@echo "Edit the full_model_python.py file and uncomment the country column"
@@ -13,6 +25,12 @@ plan-prod: ## Plan, backfill and apply changes
 
 plan-dev: ## Plan, backfill and apply changes in dev
 	sqlmesh plan dev --include-unmodified
+
+audit: ## Audit
+	sqlmesh audit
+
+test: ## Tests
+	sqlmesh test
 
 list-tables-prod: ## List the tables in prod
 	sqlmesh fetchdf "show tables in spark_catalog.sqlmesh_example"

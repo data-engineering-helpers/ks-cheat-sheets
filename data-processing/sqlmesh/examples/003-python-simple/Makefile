@@ -1,7 +1,17 @@
+#
+# File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/003-python-simple/Makefile
+#
 
+clean-cache: ## Clean the SQLMesh cache directory
+	rm -rf .cache
 
-clean: ## Clean potential previous states and logs
-	rm -rf db.db logs .cache
+clean-logs: ## Clean the SQLMesh logs
+	rm -rf logs
+
+clean-wh: ## Clean the SQLMesh warehouse (DuckDB)
+	rm -f db.db
+
+clean: clean-cache clean-logs clean-wh ## Clean potential previous states and logs
 
 hint-change: ## Hint for the changes to be made
 	@echo "Edit the full_model_python.py file and uncomment the country column"
@@ -12,6 +22,12 @@ plan-prod: ## Plan, backfill and apply changes
 
 plan-dev: ## Plan, backfill and apply changes in dev
 	sqlmesh plan dev --include-unmodified
+
+audit: ## Audit
+	sqlmesh audit
+
+test: ## Tests
+	sqlmesh test
 
 list-tables-prod: ## List the tables in prod
 	sqlmesh fetchdf "use sqlmesh_example; show tables"

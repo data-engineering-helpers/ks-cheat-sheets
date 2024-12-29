@@ -1,0 +1,14 @@
+gateways:
+  local:
+    # DuckDb is used both as the execution engine (connection)
+    # and to store the state (state_connection)
+    connection:
+      type: duckdb
+      database: db.db
+
+default_gateway: local
+
+model_defaults:
+  dialect: duckdb
+  start: 2024-12-24
+
