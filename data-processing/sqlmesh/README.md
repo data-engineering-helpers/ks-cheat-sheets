@@ -102,6 +102,7 @@ may be advised.
 ## Data Engineering helpers
 * [Data Engineering Helpers - Knowledge Sharing - DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/)
 * [Data Engineering Helpers - Knowledge Sharing - PostgreSQL](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/)
+* [Data Engineering Helpers - Knowledge Sharing - Unity Catalog (UC)](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/unity-catalog/)
 * [Data Engineering Helpers - Knowledge Sharing - dbt](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/dbt/)
 * [Data Engineering Helpers - Knowledge Sharing - Airflow](https://github.com/data-engineering-helpers/ks-cheat-sheets/tree/main/orchestrators/airflow)
 * [Material for the Data platform - Data life cycle](https://github.com/data-engineering-helpers/data-life-cycle)
@@ -238,6 +239,19 @@ may be advised.
 ## DuckDB
 * Home page: https://duckdb.org/
   * [DuckDB doc - HTTPFS extension](https://duckdb.org/docs/extensions/httpfs.html)
+
+## Unity Catalog (UC)
+* Home page: https://www.unitycatalog.io
+* GitHub page: https://github.com/unitycatalog/unitycatalog
+* [Unity Catalog docs](https://docs.unitycatalog.io/)
+  * [Unity Catalog docs - Quickstart](https://docs.unitycatalog.io/quickstart/)
+  * [Unity Catalog docs - Usage - CLI](https://docs.unitycatalog.io/usage/cli/)
+  * [Unity Catalog docs - Deployment - PostgreSQL connection](https://docs.unitycatalog.io/deployment/#example-postgresql-connection)
+  * [Unity Catalog docs - Integrations - Spark](https://docs.unitycatalog.io/integrations/unity-catalog-spark/)
+  * [Unity Catalog docs - Integrations - DuckDB](https://docs.unitycatalog.io/integrations/unity-catalog-duckdb/)
+  * [Unity Catalog docs - Integrations - XTable](https://docs.unitycatalog.io/integrations/unity-catalog-xtable/)
+* [Unity Catalog blog post - Integrating Spark with Unity Catalog via Open APIs](https://www.unitycatalog.io/blogs/integrating-apache-spark-with-unity-catalog-assets-via-open-apis)
+
 
 ## Articles and Git knowledge sharing projects
 
@@ -378,6 +392,12 @@ may be advised.
   * [`examples/006-e2e` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/006-e2e/) --
   End-to-end full example
     * Still needs to be documented
+  * [`examples/007-unitycatalog-simple` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/007-unitycatalog-simple/) --
+  Simple example featuring integration with UnityCatalog,
+  thanks to Spark as the executing engine
+    * DuckDB is used to store the state
+	* Note that Spark cannot store the state (as per the
+	[official SQLMesh documentation about Spark](https://sqlmesh.readthedocs.io/en/stable/integrations/engines/spark/))
 
 * In most of the
   [example directories]((https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/)),
@@ -1113,7 +1133,7 @@ Finished with 0 audit errors and 0 audits skipped.
 Done.
 ```
 
-## PySpark example
+## Simple PySpark example
 * References:
   * Spark engine:
   https://sqlmesh.readthedocs.io/en/stable/integrations/engines/spark/
@@ -1159,7 +1179,6 @@ Apply - Backfill Tables [y/n]: y
 Creating physical tables ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100.0% • 4/4 • 0:00:00
 
 All model versions have been created successfully
-
 ```
 
 # Full end-to-end example
@@ -1173,6 +1192,54 @@ All model versions have been created successfully
   within the SQLMesh dedicated directory:
 ```bash
 cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/examples/006-e2e
+```
+
+## Simple Unity Catalog (UC) example
+* References:
+  * Spark engine:
+  https://sqlmesh.readthedocs.io/en/stable/integrations/engines/spark/
+  * Python models:
+  https://sqlmesh.readthedocs.io/en/stable/concepts/models/python_models/
+    * PySpark models:
+    https://sqlmesh.readthedocs.io/en/stable/concepts/models/python_models/#pyspark
+
+* Change to the
+  [`examples/005-pyspark-simple` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/005-pyspark-simple/)
+  within the SQLMesh dedicated directory:
+```bash
+cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/examples/005-pyspark-simple
+```
+
+* The project has been initialized with the `sqlmesh init spark` command
+
+### SQLMesh plan
+* Launch the SQLMesh plan:
+```bash
+make plan-prod # equivalent of:
+sqlmesh plan
+======================================================================
+Successfully Ran 1 tests against duckdb
+----------------------------------------------------------------------
+`prod` environment will be initialized
+
+Requirements:
++ pyspark==3.5.4
+Models:
+└── Added:
+    ├── docs_example.pyspark
+    ├── sqlmesh_example.full_model
+    ├── sqlmesh_example.incremental_model
+    └── sqlmesh_example.seed_model
+Models needing backfill (missing dates):
+└── docs_example.pyspark: 2024-12-26 - 2024-12-26
+```
+
+* Answer yes to the prompt:
+```text
+Apply - Backfill Tables [y/n]: y
+Creating physical tables ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100.0% • 4/4 • 0:00:00
+
+All model versions have been created successfully
 ```
 
 # Installation
@@ -1221,6 +1288,207 @@ D select * from bluesky.jetstream limit 10;
 ```sql
 D .quit
 ```
+
+## Unity Catalog (UC)
+* See
+  [Data Engineering Helpers - Knowledge Sharing - Unity Catalog (UC)](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/unity-catalog/)
+ (in this same Git repository) for details on how to install and use
+ Unity Catalog (UC)
+
+* For just some trial of Unity Catalog, it is generally easier to use
+  Docker compose (`docker compose up`)
+  
+* For the seasoned data engineer, it makes however more sense to know what
+  is under the hood and to maintain Unity Catalog (UC) natively with a
+  Java Virtual Machine (JVM) and with a local PostgreSQL database to store
+  the catalog (it can be the same PostgreSQL service storing some SQLMesh
+  states, but with different databse, schema and user).
+  * Building the UC JARs and publishing them goes something like:
+```bash
+cd ~/dev/infra/unitycatalog
+git pull
+sbt package publishLocal
+```
+
+* In a dedicated tab of the terminal window, launch the Unity Catalog
+  (Control-C to terminate the service)
+  * With the default port (`8080`):
+```bash
+./bin/start-uc-server
+```
+  * With an alternative port (_e.g._, `9090`):
+```bash
+./bin/start-uc-server -p 9090
+```
+
+* (Optionally,) To start the UC UI, in another dedicated tab of
+  the terminal window:
+* Start the UI through Yarn (Control-C to terminate the service):
+```bash
+cd ui
+yarn install
+yarn start
+```
+
+* To interact with the UC
+  * When the UC server has been started on the default port (entities: `schema`,
+  `volume`, `model_version`, `metastore`, `auth`, `catalog`, `function`,
+  `permission`, `registered_model`, `user`, `table`):
+```bash
+bin/uc <entity> <operation>
+```
+  * When the UC server has been started on an alternative port (say `9090`),
+  specify the `--server` parameter before the entity:
+```bash
+bin/uc --server http://localhost:9090 <entity> <operation>
+```
+  * List the catalogs (the default one is usually called `unity`):
+```bash
+bin/uc catalog list
+```
+  * List the schemas (the default one is usually called `default`):
+```bash
+bin/uc schema list --catalog unity
+```
+  * List the tables:
+```bash
+bin/uc table list --catalog unity --schema default
+```
+  * Browse the records of a given table (`numbers` is a sample usually
+  provided with UC at the installation):
+```bash
+bin/uc table read --full_name unity.default.numbers
+```
+
+## Spark
+* Relevant documentation when using Spark with Unity Catalog (UC):
+  https://docs.unitycatalog.io/integrations/unity-catalog-spark/
+
+* For consistency reason, it is better, for the Unity Catalog (UC) connector,
+  to use the JAR package generated by SBT (and published locally in the local
+  Ivy2/Maven cache)
+  * Check that the Unity Catalog Spark connector JAR package is
+  in the local Ivy2/Maven cache:
+```bash
+ls -lFh ~/.ivy2/jars/io.unitycatalog*
+```
+
+* Launch PySpark
+  * With support for local Unity Catalog (UC) service:
+```bash
+UC_VERSION=0.3.0-SNAPSHOT
+pyspark --name "local-uc" --master "local[*]" \
+  --packages "io.delta:delta-spark_2.12:3.2.1,io.unitycatalog:unitycatalog-spark_2.12:${UC_VERSION}" \
+  --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
+  --conf "spark.sql.catalog.spark_catalog=io.unitycatalog.spark.UCSingleCatalog" \
+  --conf "spark.sql.catalog.unity=io.unitycatalog.spark.UCSingleCatalog" \
+  --conf "spark.sql.catalog.unity.uri=http://localhost:8080" \
+  --conf "spark.sql.catalog.unity.token=" \
+  --conf "spark.sql.defaultCatalog=unity"
+```
+  * Only with support for Delta:
+```bash
+pyspark --name "local" --master "local[*]" \
+  --packages "io.delta:delta-spark_2.12:3.2.1" \
+  --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
+```
+
+* Insert some values into the `numbers` table:
+```python
+sql("insert into default.numbers values (1, 0.0);")
+```
+
+* Check the values in the `numbers` table:
+```python
+sql("SELECT * FROM default.numbers;").show()
++------+---------+
+|as_int|as_double|
++------+---------+
+|     1|      0.0|
++------+---------+
+```
+
+## SQLMesh
+* SQLMesh comes as a Python package, and may therefore installed simply with
+  the Python packager. For instance:
+```bash
+python -mpip install -U "sqlmesh[web]"
+```
+
+* The SQLMesh package installs two executable scripts, namely `sqlmesh` and
+  `sqlmesh_cicd`, which are usually stored along side the other Python packages.
+  For instance, with PyEnv, it will end up as wrappers in `~/.pyenv/shims/`.
+
+* Usually, for the Shell (_e.g._, Bash or Zsh) to become aware of those newly
+  installed executables scripts, it has to be refreshed (with the `exec`
+  command)
+  * For the Bash Shell:
+```bash
+exec bash
+```
+  * For the Zsh Shell:
+```bash
+exec zsh
+```
+
+* Check the version of the just installed SQLMesh package:
+```bash
+sqlmesh --version
+0.141.1
+```
+
+* Note that most of the projetcs, to be found in Git repositories,
+  have already been initialized; they no longer need initializing.
+
+* Clean/remove results of potential earlier tries (those files are ignored
+  by Git):
+```bash
+make clean # equivalent of:
+rm -rf .cache logs db.db
+```
+
+* To create a new project from scratch, execute the `sqlmesh init` command,
+  specifying which
+  [SQL dialect](https://github.com/tobymao/sqlglot/blob/main/sqlglot/dialects/dialect.py)
+  to use (among, for instance, DataBricks, Drill, DuckDB, Hive, MySQL,
+  PostgreSQL, Presto, Redshift, Snowflake, Spark, SQLite, Tableau, Trino).
+  * Note that `python` is also available as a dialect: `sqlmesh init python`
+  will create a project skeleton populated for Python as a dialect
+  * The simple example, described in the
+  [SQLMesh getting started page](https://sqlmesh.readthedocs.io/en/stable/quickstart/cli/#1-create-the-sqlmesh-project),
+  has been created in the
+  [`simple-example` directory of this Git repository](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/simple-example),
+  with the `sqlmesh init duckdb` command. The resulting file structure
+  has been added and committed to the Git repository:
+  * [Configuration](https://sqlmesh.readthedocs.io/en/stable/guides/configuration/):
+  [`config.yaml` file](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/simple-example/config.yaml)
+  * [Models](https://sqlmesh.readthedocs.io/en/stable/concepts/models/overview/):
+  [`models/` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/tree/main/data-processing/sqlmesh/simple-example/models)
+  * [Seed files](https://sqlmesh.readthedocs.io/en/stable/concepts/models/seed_models/):
+  [`seeds/` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/tree/main/data-processing/sqlmesh/simple-example/seeds)
+    * Which contain a seed/example data set, namely
+  [`seed_data.csv`](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/simple-example/seeds/seed_data.csv)
+  * [Shared audit files](https://sqlmesh.readthedocs.io/en/stable/concepts/audits/):
+  [`audits/` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/tree/main/data-processing/sqlmesh/simple-example/audits)
+  * [Unit test files](https://sqlmesh.readthedocs.io/en/stable/concepts/tests/):
+  [`tests/` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/tree/main/data-processing/sqlmesh/simple-example/tests)
+  * [Macro files](https://sqlmesh.readthedocs.io/en/stable/concepts/macros/overview/):
+  [`macros/` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/tree/main/data-processing/sqlmesh/simple-example/macros)
+
+### SQLMesh UI
+* In a separate terminal tab, as the default local port (`8000`) may already
+  be taken by other processes (_e.g._,
+  [LakeFS](https://github.com/treeverse/lakeFS) is running on the `8000` port
+  by default), launch the SQLMesh UI by specifying a port not already in use:
+```bash
+sqlmesh ui --port 9090
+INFO:     Started server process [7586]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:9090 (Press CTRL+C to quit)
+```
+
+* With a web browser, open http://localhost:9090
 
 ## Local PostgreSQL server
 * See also:
@@ -1389,86 +1657,4 @@ mkdir -p ~/dev/knowledge-sharing
 git clone https://github.com/data-engineering-helpers/ks-cheat-sheets ~/dev/knowledge-sharing/ks-cheat-sheets
 cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh
 ```
-
-## SQLMesh
-* SQLMesh comes as a Python package, and may therefore installed simply with
-  the Python packager. For instance:
-```bash
-python -mpip install -U "sqlmesh[web]"
-```
-
-* The SQLMesh package installs two executable scripts, namely `sqlmesh` and
-  `sqlmesh_cicd`, which are usually stored along side the other Python packages.
-  For instance, with PyEnv, it will end up as wrappers in `~/.pyenv/shims/`.
-
-* Usually, for the Shell (_e.g._, Bash or Zsh) to become aware of those newly
-  installed executables scripts, it has to be refreshed (with the `exec`
-  command)
-  * For the Bash Shell:
-```bash
-exec bash
-```
-  * For the Zsh Shell:
-```bash
-exec zsh
-```
-
-* Check the version of the just installed SQLMesh package:
-```bash
-sqlmesh --version
-0.141.1
-```
-
-* Note that most of the projetcs, to be found in Git repositories,
-  have already been initialized; they no longer need initializing.
-
-* Clean/remove results of potential earlier tries (those files are ignored
-  by Git):
-```bash
-make clean # equivalent of:
-rm -rf .cache logs db.db
-```
-
-* To create a new project from scratch, execute the `sqlmesh init` command,
-  specifying which
-  [SQL dialect](https://github.com/tobymao/sqlglot/blob/main/sqlglot/dialects/dialect.py)
-  to use (among, for instance, DataBricks, Drill, DuckDB, Hive, MySQL,
-  PostgreSQL, Presto, Redshift, Snowflake, Spark, SQLite, Tableau, Trino).
-  * Note that `python` is also available as a dialect: `sqlmesh init python`
-  will create a project skeleton populated for Python as a dialect
-  * The simple example, described in the
-  [SQLMesh getting started page](https://sqlmesh.readthedocs.io/en/stable/quickstart/cli/#1-create-the-sqlmesh-project),
-  has been created in the
-  [`simple-example` directory of this Git repository](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/simple-example),
-  with the `sqlmesh init duckdb` command. The resulting file structure
-  has been added and committed to the Git repository:
-  * [Configuration](https://sqlmesh.readthedocs.io/en/stable/guides/configuration/):
-  [`config.yaml` file](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/simple-example/config.yaml)
-  * [Models](https://sqlmesh.readthedocs.io/en/stable/concepts/models/overview/):
-  [`models/` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/tree/main/data-processing/sqlmesh/simple-example/models)
-  * [Seed files](https://sqlmesh.readthedocs.io/en/stable/concepts/models/seed_models/):
-  [`seeds/` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/tree/main/data-processing/sqlmesh/simple-example/seeds)
-    * Which contain a seed/example data set, namely
-  [`seed_data.csv`](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/simple-example/seeds/seed_data.csv)
-  * [Shared audit files](https://sqlmesh.readthedocs.io/en/stable/concepts/audits/):
-  [`audits/` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/tree/main/data-processing/sqlmesh/simple-example/audits)
-  * [Unit test files](https://sqlmesh.readthedocs.io/en/stable/concepts/tests/):
-  [`tests/` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/tree/main/data-processing/sqlmesh/simple-example/tests)
-  * [Macro files](https://sqlmesh.readthedocs.io/en/stable/concepts/macros/overview/):
-  [`macros/` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/tree/main/data-processing/sqlmesh/simple-example/macros)
-
-### SQLMesh UI
-* In a separate terminal tab, as the default local port (`8000`) may already
-  be taken by other processes (_e.g._,
-  [LakeFS](https://github.com/treeverse/lakeFS) is running on the `8000` port
-  by default), launch the SQLMesh UI by specifying a port not already in use:
-```bash
-sqlmesh ui --port 9090
-INFO:     Started server process [7586]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-INFO:     Uvicorn running on http://127.0.0.1:9090 (Press CTRL+C to quit)
-```
-
-* With a web browser, open http://localhost:9090
 
