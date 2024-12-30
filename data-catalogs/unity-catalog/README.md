@@ -68,6 +68,18 @@ on premises, _e.g._, on a laptop or on a virtual machine (VM).
 * [Unity Catalog blog post - Integrating Spark with Unity Catalog via Open APIs](https://www.unitycatalog.io/blogs/integrating-apache-spark-with-unity-catalog-assets-via-open-apis)
 
 # Getting started
+* To interact with the UC
+  * When the UC server has been started on the default port (entities: `schema`,
+  `volume`, `model_version`, `metastore`, `auth`, `catalog`, `function`,
+  `permission`, `registered_model`, `user`, `table`):
+```bash
+bin/uc <entity> <operation>
+```
+  * When the UC server has been started on an alternative port (say `9090`),
+  specify the `--server` parameter before the entity:
+```bash
+bin/uc --server http://localhost:9090 <entity> <operation>
+```
 
 ## Browse the content of the catalog with the CLI
 * List the catalogs:
@@ -118,8 +130,9 @@ bin/uc table list --catalog unity --schema default --output jsonPretty
 } ]
 ```
 
-* It should show a few tables. Some details are truncated because of the nested nature of the data.
-  To see all the content, you can add `--output jsonPretty` to any command.
+* It should show a few tables. Some details are truncated because of
+  the nested nature of the data.
+  * To see all the content, you can add `--output jsonPretty` to any command.
 
 * Browse the metadata of one of those tables:
 ```bash
@@ -233,9 +246,10 @@ bin/uc volume get --full_name unity.default.txt_files --output jsonPretty
 ```
 
 ## Simple DuckDB
-* In this sub-section, DuckDB is simply used to create table pointing to the data files
-  of the tables. Here, DuckDB does not integrate with the Unity Catalog, it accesses
-  the content of the tables directly dealing with the content of the data files
+* In this sub-section, DuckDB is simply used to create table pointing to
+  the data files of the tables. Here, DuckDB does not integrate with the
+  Unity Catalog, it accesses the content of the tables directly dealing
+  with the content of the data files
 
 * Launch DuckDB:
 ```bash
@@ -285,10 +299,11 @@ install delta;
 load delta;
 ```
 
-* If you have installed these extensions before, you may have to run update extensions
-  and restart DuckDB for the following steps to work
+* If you have installed these extensions before, you may have to run
+  update extensions and restart DuckDB for the following steps to work
 
-* Now that we have DuckDB all set up, let's try connecting to UC by specifying a secret.
+* Now that we have DuckDB all set up, let's try connecting to UC
+  by specifying a secret.
 ```sql
 CREATE SECRET (
       TYPE UC,
@@ -311,7 +326,8 @@ SHOW ALL TABLES;
 SELECT * from unity.default.numbers;
 ```
 
-* You should see the tables listed and the contents of the numbers table printed.
+* You should see the tables listed and the contents of the `numbers` table
+  printed
 
 * To quit DuckDB, press Controll-D (if your platform supports it),
   press Control-C, or use the `.exit` command in the DuckDB shell
@@ -322,9 +338,9 @@ SELECT * from unity.default.numbers;
 ```
 
 ## Simple Spark
-* That section shows how to simply use Spark just to browse the `numbers` data files,
-  as those have been created by the Kernel engine, and most of the tools (like the
-  Parquet CLI on MacOS) are not able to read them
+* That section shows how to simply use Spark just to browse the `numbers` data
+  files, as those have been created by the Kernel engine, and most of
+  the tools (like the Parquet CLI on MacOS) are not able to read them
 
 * Check the Parquet/Delta data files of the `numbers` table:
 ```bash
@@ -339,7 +355,8 @@ drwxr-xr-x@ 4 $USER  staff   128B Dec  2 14:52 _delta_log/
 pyspark
 ```
 
-* Within PySpark, create a DataFrame with the Parquet/Delta data files of the `numbers` table:
+* Within PySpark, create a DataFrame with the Parquet/Delta data files of
+  the `numbers` table:
 ```python
 df = spark.read.format("delta").parquet("etc/data/external/unity/default/tables/numbers/")
 df.count()
@@ -362,8 +379,8 @@ quit()
 ## Spark integrated with Unity Catalog
 * Relevant documentation: https://docs.unitycatalog.io/integrations/unity-catalog-spark/
 
-* Launch PySpark (for the Unity Catalog Spark connector JAR package, see in the installation
-  section how to generate it):
+* Launch PySpark (for the Unity Catalog Spark connector JAR package,
+  see in the installation section how to generate it):
 ```bash
 pyspark --name "local-uc-test" \
   --master "local[*]" \
@@ -379,6 +396,12 @@ pyspark --name "local-uc-test" \
 * Browse the catalogs:
 ```python
 sql("show catalogs").show()
++-------------+
+|      catalog|
++-------------+
+|spark_catalog|
+|        unity|
++-------------+
 ```
 
 * Browse the schemas:
@@ -411,13 +434,17 @@ sql("use default;")
 
 ### Managed vs external tables
 * With Unity Catalog:
-  * When a location is specified for the storage, the table is said to be external.
-  It means that only the metadata of the tables is stored in the catalog, not the content
-  of the table itself. It also implies that when the table is deleted (dropped) from the
-  catalog, only the metadata is removed from the catalog, but the data itself is preserved.
-  * When no location is specified, the table is said to be managed (by Unity Catalog).
-  It means that both the metadata and the actual data are managed by the catalog.
-  As a consequence, when the table is dropped, so is the corresponding data.
+  * When a location is specified for the storage, the table is said to be
+  external.
+  * It means that only the metadata of the tables is stored in the catalog,
+  not the content of the table itself. It also implies that when the table
+  is deleted (dropped) from the catalog, only the metadata is removed from
+  the catalog, but the data itself is preserved.
+  * When no location is specified, the table is said to be managed (by
+  Unity Catalog).
+  * It means that both the metadata and the actual data are managed
+  by the catalog. As a consequence, when the table is dropped,
+  so is the corresponding data.
 
 * The location may be specified either:
   * In SQL, with the `location` parameter. For instance:
@@ -429,9 +456,11 @@ sql("create table default.numbers (as_int int, as_double double) using delta loc
 df.write.mode("overwrite").format("delta").option("path", "/tmp/some/path/numbers").saveAsTable("default.numbers")
 ```
 
-* The location has to be expressed as an absolute path, either on the cloud or on the local file-system.
-  The rationale being that the location has to be understood without ambiguity by both the (Unity Catalog) server
-  and the client tool (_e.g._, Spark, DuckDB, Daft), and both of them may run in different places.
+* The location has to be expressed as an absolute path, either on the cloud
+  or on the local file-system.
+  * The rationale being that the location has to be understood without
+  ambiguity by both the (Unity Catalog) server and the client tool (_e.g._,
+  Spark, DuckDB, Daft), and both of them may run in different places.
 
 ### Create a table the SQL way
 * Create an external table:
@@ -470,7 +499,8 @@ sql("drop table default.numbers2;")
 ```
 
 ### Create a table through the DataFrame API
-* Create a DataFrame and create an external table by dumping the content of the DataFrame in it:
+* Create a DataFrame and create an external table by dumping the content of
+  the DataFrame in it:
 ```python
 df = spark.createDataFrame([(1, "socks"), (2, "chips"), (3, "air conditioner"), (4, "tea"),], ["transaction_id", "item_name"])
 df.write.mode("overwrite").format("delta").option("path", "/tmp/some/path/numbers3").saveAsTable("default.transactions")
@@ -492,9 +522,10 @@ sql("drop table default.transactions;")
 ```
 
 ### Managed tables
-* As of end 2024 (version `0.3.0-SNAPSHOT`), it does not seem possible to create managed table
-  with the open source version of Unity Catalog. For instance, the DataFrame `saveAsTable()`
-  method triggers an exception (`io.unitycatalog.client.ApiException: Unity Catalog does not support managed table`)
+* As of end 2024 (version `0.3.0-SNAPSHOT`), it does not seem possible
+  to create managed table with the open source version of Unity Catalog.
+  * For instance, the DataFrame `saveAsTable()` method triggers an exception
+  (`io.unitycatalog.client.ApiException: Unity Catalog does not support managed table`)
   * In SQL:
 ```python
 df = spark.createDataFrame([(1, "socks"), (2, "chips"), (3, "air conditioner"), (4, "tea"),], ["transaction_id", "item_name"])
@@ -513,8 +544,8 @@ quit()
 ## Daft integrated with Unity Catalog
 * Relevant documentation: https://docs.unitycatalog.io/integrations/unity-catalog-daft/
  
-* As of end 2024, with the release of the [new UC Python client](https://pypi.org/project/unitycatalog-client/)
-  in the
+* As of end 2024, with the release of the
+  [new UC Python client](https://pypi.org/project/unitycatalog-client/) in the
   [v0.2.1 release](https://github.com/unitycatalog/unitycatalog/releases/tag/v0.2.1),
   Daft does not work anymore
 
@@ -558,12 +589,14 @@ print(unity.list_tables("unity.default"))
 ![Unity Catalog UI running locally](/images/data-catalogs/uc-ui.png)
 
 # Installation
-* The Unity Catalog service may either be started in containers thanks to Docker Compose,
-  or directly with the Java 17 JVM. The following two sections show either of the methods
+* The Unity Catalog service may either be started in containers thanks to
+  Docker Compose, or directly with the Java 17 JVM. The following two sections
+  show either of the methods
 * The Unity Catalog UI relies on JavaScript (JS)/NodeJS
 
 ## Clone the Unity Catalog Git repository
-* If not already done so, clone the Git repository of Unity Catalog, and move to the corresponding directory:
+* If not already done so, clone the Git repository of Unity Catalog,
+  and move to the corresponding directory:
 ```bash
 mkdir -p dev/infra
 git clone git@github.com:unitycatalog/unitycatalog.git ~/dev/infra/unitycatalog
@@ -587,8 +620,9 @@ alias unitycatalogstart='cd ~/dev/infra/unitycatalog; docker-compose up'
 UC_VERSION="$(cut -d\" -f2,2 version.sbt)"
 ```
 
-* The Unity Catalog will then be started simply with the `unitycatalogstart` alias in
-  a dedicated tab of the Shell terminal, and terminated with the Control-C key
+* The Unity Catalog will then be started simply with the `unitycatalogstart`
+  alias in a dedicated tab of the Shell terminal, and terminated with the
+  Control-C key
 
 ## Launch the Unity Catalog server with Java 17
 * See the
@@ -642,9 +676,14 @@ sbt publishLocal
 [success] Total time: 6 s, completed Dec 17, 2024, 5:04:18 PM
 ```
 
-* Launch the Unity Catalog (Control-C to quit terminate the service):
+* Launch the Unity Catalog (Control-C to terminate the service)
+  * With the default port (`8080`):
 ```bash
 ./bin/start-uc-server
+```
+  * With an alternative port (_e.g._, `9090`):
+```bash
+./bin/start-uc-server -p 9090
 ```
 
 ## Launch the Unity Catalog server with `docker-compose`
@@ -655,14 +694,16 @@ sbt publishLocal
 
 * Launch the Unity Catalog with Docker Compose:
 ```bash
-docker-compose up
+docker compose up
 ```
 
 ## (Optional) Local PostgreSQL database
 * See also
   [Data Engineering Helpers - Knowledge Sharing - PostgreSQL](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/README.md#unity-catalog-database-and-user)
-  on how to install a PostgreSQL database server locally and how to create the `ucdb` database and the `ucdba` database user.
-  * For convenience, the commands to create the `ucdb` database and `ucdba` user are reproduced in the remainder of this sub-section
+  on how to install a PostgreSQL database server locally and how to create
+  the `ucdb` database and the `ucdba` database user.
+  * For convenience, the commands to create the `ucdb` database and
+  `ucdba` user are reproduced in the remainder of this sub-section
 
  * Create on PostgreSQL a `ucdb` database and a `ucdba` user:
 ```bash
@@ -714,22 +755,31 @@ _EOF
 cat etc/conf/hibernate.properties
 ```
 
-* If everything seems correct, delete the `.bak` files created by the SED commands:
+* If everything seems correct, delete the `.bak` files created by
+  the SED commands:
 ```bash
 rm -f etc/conf/hibernate.properties.bak?
 ```
 
 ### Create the content of the catalog
-* With the default H2 database, the Git repository comes with a catalog pre-installed.
-  With PostgreSQL, the catalog has to be created and configured
+* With the default H2 database, the Git repository comes with a catalog
+  pre-installed.
+  * With PostgreSQL, the catalog has to be created and configured
 
-* In the remainder of this sub-section, the content comes from the catalog when configured
-  with the H2 database, exported into JSON. It is hence used here to recreate the content of
-  the catalog when configured with the (initially empty) PostgreSQL database
+* In the remainder of this sub-section, the content comes from the catalog
+  when configured with the H2 database, exported into JSON. It is hence used
+  here to recreate the content of the catalog when configured with the
+  (initially empty) PostgreSQL database
 
-* Launch the Unity Catalog (UC) server in a dedicated terminal tab (reminder: type Control-C to stop the server):
+* Launch the Unity Catalog (UC) server in a dedicated terminal tab
+  (reminder: type Control-C to stop the server)
+  * With the default port (`8080`):
 ```bash
 ./bin/start-uc-server
+```
+  * With an alternative port (_e.g._, `9090`):
+```bash
+./bin/start-uc-server -p 9090
 ```
 
 * (In a distinct terminal tab,) use the UC client to create a `unity` catalog:
@@ -747,10 +797,13 @@ rm -f etc/conf/hibernate.properties.bak?
 bin/uc table create --full_name unity.default.numbers --columns "as_int int, as_double double" --storage_location "file://$HOME/some/path/unitycatalog/etc/data/external/unity/default/tables/numbers" --format DELTA --properties '{"key1": "value1", "key2": "value2"}'
 ```
 
-* Create the `marksheet` table (as of end 2024, even though that table is supposed to be managed,
-  the UC CLI does not seem to accept table creation commands without the `storage_location` parameter, that is,
-  the UC CLI does not seem to accept to create managed tables: the `storage_location` parameter is required for external tables,
-  but should not be needed for managed tables; relevant documentation: https://docs.unitycatalog.io/usage/cli/#33-create-a-table):
+* Create the `marksheet` table (as of end 2024, even though that table is
+  supposed to be managed, the UC CLI does not seem to accept table creation
+  commands without the `storage_location` parameter, that is,
+  the UC CLI does not seem to accept to create managed tables:
+  * The `storage_location` parameter is required for external tables,
+  but should not be needed for managed tables; relevant documentation:
+  https://docs.unitycatalog.io/usage/cli/#33-create-a-table):
 ```bash
 bin/uc table create --full_name unity.default.marksheet --columns "id int, name string, marks int" --storage_location "file://$HOME/some/path/unitycatalog/etc/data/managed/unity/default/tables/marksheet" --format DELTA --properties '{"key1": "value1", "key2": "value2"}'
 ```
@@ -776,11 +829,14 @@ bin/uc volume create --full_name unity.default.txt_files --storage_location file
 ```
 
 ## Spark
-* Relevant documentation: https://docs.unitycatalog.io/integrations/unity-catalog-spark/
+* Relevant documentation:
+  https://docs.unitycatalog.io/integrations/unity-catalog-spark/
 
-* For consistency reason, it is better, for the Unity Catalog connector, to use the JAR package
-  generated by SBT (and published locally in the local Ivy2/Maven cache)
-  * Check that the Unity Catalog Spark connector JAR package is in the local Ivy2/Maven cache:
+* For consistency reason, it is better, for the Unity Catalog connector,
+  to use the JAR package generated by SBT (and published locally in the local
+  Ivy2/Maven cache)
+  * Check that the Unity Catalog Spark connector JAR package is
+  in the local Ivy2/Maven cache:
 ```bash
 ls -lFh ~/.ivy2/jars/io.unitycatalog*
 ```
