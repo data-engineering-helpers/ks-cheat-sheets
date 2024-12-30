@@ -709,9 +709,9 @@ sudo apt-get install git
 git clone web_URL
 ```  
 * Navigate into the project you just cloned using cd command and make sure the following versions are installed correctly:  
-  * JDK 17 (Check with java -version and javac -version.).  
-  * sbt 1.9.9 (Check both sbt version in this project and sbt script version → Verify with sbt -version).  
-  * Scala 2.13.15 (This may vary, but it must be compatible with JDK 17 and sbt 1.9.9 → Verify with scala -version).  
+  * JDK 17 (check with java -version and javac -version.).  
+  * sbt 1.9.9 (check both sbt version in this project and sbt script version → verify with sbt -version).  
+  * Scala 2.13.15 (this may vary, but it must be compatible with JDK 17 and sbt 1.9.9 → verify with scala -version).  
 * To start the UI correctly, you need also to install node.js and yarn.  
 * From within the project you just cloned, we can now compile the project using:
 ```
