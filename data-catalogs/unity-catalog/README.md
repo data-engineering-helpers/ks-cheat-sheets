@@ -22,6 +22,7 @@ Cheat Sheet - Unity Catalog
   * [Clone the Unity Catalog Git repository](#clone-the-unity-catalog-git-repository)
   * [Launch the Unity Catalog server with Java 17](#launch-the-unity-catalog-server-with-java-17)
   * [Launch the Unity Catalog server with docker\-compose](#launch-the-unity-catalog-server-with-docker-compose)
+  * [WSL](#wsl)
   * [(Optional) Local PostgreSQL database](#optional-local-postgresql-database)
     * [Setup the PostgreSQL connection in the Hibernate property file](#setup-the-postgresql-connection-in-the-hibernate-property-file)
     * [Create the content of the catalog](#create-the-content-of-the-catalog)
@@ -696,6 +697,44 @@ sbt publishLocal
 ```bash
 docker compose up
 ```
+## WSL
+* On Windows, open CMD and type wsl.  
+* Install Git:  
+```
+sudo apt-get install git 
+``` 
+* Navigate to the directory where you want to clone the repository.  
+* Clone the repository by doing: 
+```
+git clone web_URL
+```  
+* Navigate into the project you just cloned using cd command and make sure the following versions are installed correctly:  
+  * JDK 17 (Check with java -version and javac -version.).  
+  * sbt 1.9.9 (Check both sbt version in this project and sbt script version → Verify with sbt -version).  
+  * Scala 2.13.15 (This may vary, but it must be compatible with JDK 17 and sbt 1.9.9 → Verify with scala -version).  
+* To start the UI correctly, you need also to install node.js and yarn.  
+* From within the project you just cloned, we can now compile the project using:
+```
+build/sbt package
+``` 
+* Now start the UC server:
+```
+bin/start-uc-server 
+```
+
+* Open a new CMD, type wsl, and navigate to your project directory. 
+From here, you should already be able to list Delta tables using the CLI: 
+```
+bin/uc table list --catalog unity --schema default  
+```
+
+* To start the UI at http://localhost:3000/, since we already started the server, just run:  
+```
+cd /ui  
+yarn install  
+yarn start
+```  
+At this point, a browser tab will automatically open.  
 
 ## (Optional) Local PostgreSQL database
 * See also
