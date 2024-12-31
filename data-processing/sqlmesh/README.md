@@ -63,14 +63,14 @@ Cheat Sheet - SQLMesh
     * [Instantiate files depending on env vars](#instantiate-files-depending-on-env-vars)
     * [SQLMesh plan](#sqlmesh-plan-1)
   * [Simple Unity Catalog (UC) example](#simple-unity-catalog-uc-example)
-    * [Instantiate files depending on env vars](#instantiate-files-depending-on-env-vars-1)
+    * [Spark Connect server](#spark-connect-server)
     * [SQLMesh plan](#sqlmesh-plan-2)
 * [Installation](#installation)
   * [Clone this repository](#clone-this-repository)
   * [DuckDB](#duckdb-1)
     * [Public data sets on DuckDB](#public-data-sets-on-duckdb)
   * [Unity Catalog (UC)](#unity-catalog-uc-1)
-  * [Spark](#spark)
+  * [Spark Connect](#spark-connect)
   * [SQLMesh](#sqlmesh-1)
     * [SQLMesh UI](#sqlmesh-ui)
   * [Local PostgreSQL server](#local-postgresql-server)
@@ -112,6 +112,7 @@ may be advised.
 * [Data Engineering Helpers - Knowledge Sharing - DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/)
 * [Data Engineering Helpers - Knowledge Sharing - PostgreSQL](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/)
 * [Data Engineering Helpers - Knowledge Sharing - Unity Catalog (UC)](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/unity-catalog/)
+* [Data Engineering Helpers - Knowledge Sharing - Spark](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/)
 * [Data Engineering Helpers - Knowledge Sharing - dbt](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/dbt/)
 * [Data Engineering Helpers - Knowledge Sharing - Airflow](https://github.com/data-engineering-helpers/ks-cheat-sheets/tree/main/orchestrators/airflow)
 * [Material for the Data platform - Data life cycle](https://github.com/data-engineering-helpers/data-life-cycle)
@@ -1305,31 +1306,19 @@ cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/examples/008-
 
 * The project has been initialized with the `sqlmesh init spark` command
 
-### Instantiate files depending on env vars
-* First, specify the following environment variables (for instance, in the
-  `~/.bashrc` or `~/.zshrc` Shell configuration file):
-  * `DBS_SVR_HST` - DataBricks host, _e.g._,
-  `<some-workspace>.cloud.databricks.com`
-  * `DBS_HTTP_PATH` - DataBricks HTTP path, _e.g._,
-  `sql/protocolv1/o/<wksp-id>/<cluster-id>`
-  * `DBS_PAT` - DataBricks Personal Access Token (PAT)
-  * `DBS_SCH` - DataBricks schema/database, on which the DataBricks cluster
-  should have the right to write. That schema is the one used by the SQLMesh
-  models
+### Spark Connect server
+* See
+  [Data Engineering Helpers - Knowledge Sharing - Spark](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/)
+  on how to install and use the Spark Connect server and client
 
-* Create the `.env` environment file, by substituting the environment
-  variables in the `.env.sample` file:
+* (If not already done so,) Launch the Spark Connect server:
 ```bash
-envsubst < .env.sample > .env
+sparkconnectstart
 ```
-  * That `.env` file is handled in a different way from all the `.in` files,
-  as it is imported by the `Makefile`. That `Makefile` can therefore not
-  alter the `.env` file itself, otherwise there will be a catch 22 situation
 
-* Execute the `init-files` target in order to substitute the environment
-  variables into the model files, the test files and the configuration file:
+* (At the end of the work session,) Shutdown the Spark Connect server:
 ```bash
-make init-files
+sparkconnectstop
 ```
 
 ### SQLMesh plan
@@ -1490,8 +1479,12 @@ bin/uc table list --catalog unity --schema default
 bin/uc table read --full_name unity.default.numbers
 ```
 
-## Spark
-* Relevant documentation when using Spark with Unity Catalog (UC):
+## Spark Connect
+* See
+  [Data Engineering Helpers - Knowledge Sharing - Spark](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/)
+  on how to install and use the Spark Connect server and client
+
+* See also the relevant documentation when using Spark with Unity Catalog (UC):
   https://docs.unitycatalog.io/integrations/unity-catalog-spark/
 
 * For consistency reason, it is better, for the Unity Catalog (UC) connector,
@@ -1503,46 +1496,21 @@ bin/uc table read --full_name unity.default.numbers
 ls -lFh ~/.ivy2/jars/io.unitycatalog*
 ```
 
-* Launch PySpark
-  * With support for local Unity Catalog (UC) service:
+* (If not already done so,) Launch the Spark Connect server:
 ```bash
-UC_VERSION=0.3.0-SNAPSHOT
-pyspark --name "local-uc" --master "local[*]" \
-  --packages "io.delta:delta-spark_2.12:3.2.1,io.unitycatalog:unitycatalog-spark_2.12:${UC_VERSION}" \
-  --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
-  --conf "spark.sql.catalog.spark_catalog=io.unitycatalog.spark.UCSingleCatalog" \
-  --conf "spark.sql.catalog.unity=io.unitycatalog.spark.UCSingleCatalog" \
-  --conf "spark.sql.catalog.unity.uri=http://localhost:8080" \
-  --conf "spark.sql.catalog.unity.token=" \
-  --conf "spark.sql.defaultCatalog=unity"
-```
-  * Only with support for Delta:
-```bash
-pyspark --name "local" --master "local[*]" \
-  --packages "io.delta:delta-spark_2.12:3.2.1" \
-  --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
+sparkconnectstart
 ```
 
-* Insert some values into the `numbers` table:
-```python
-sql("insert into default.numbers values (1, 0.0);")
-```
-
-* Check the values in the `numbers` table:
-```python
-sql("SELECT * FROM default.numbers;").show()
-+------+---------+
-|as_int|as_double|
-+------+---------+
-|     1|      0.0|
-+------+---------+
+* (At the end of the work session,) Shutdown the Spark Connect server:
+```bash
+sparkconnectstop
 ```
 
 ## SQLMesh
 * SQLMesh comes as a Python package, and may therefore installed simply with
   the Python packager. For instance:
 ```bash
-python -mpip install -U "sqlmesh[web]"
+python -mpip install -U "sqlmesh[web,databricks]"
 ```
 
 * The SQLMesh package installs two executable scripts, namely `sqlmesh` and
