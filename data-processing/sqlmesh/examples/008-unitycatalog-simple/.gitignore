@@ -1,0 +1,13 @@
+# SQLMesh
+/.cache/
+/db.db
+/db.db.wal
+/logs/
+/config.yaml
+# Spark
+derby.log
+metastore_db/
+spark-warehouse/
+# Env
+/.env
+

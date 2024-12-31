@@ -1,5 +1,5 @@
 MODEL (
-    name sqlmesh_example.incremental_model,
+    name ${DBS_SCH}.incremental_model,
     kind INCREMENTAL_BY_TIME_RANGE (
       time_column event_date
     ),
@@ -14,7 +14,7 @@ MODEL (
     --'z' AS new_column, -- Added column
     event_date,
   FROM
-    sqlmesh_example.seed_model
+    ${DBS_SCH}.seed_model
   WHERE
     event_date BETWEEN @start_date AND @end_date
   

@@ -58,9 +58,13 @@ Cheat Sheet - SQLMesh
     * [Execution, tests and audits](#execution-tests-and-audits)
   * [Simple PySpark example](#simple-pyspark-example)
     * [SQLMesh plan](#sqlmesh-plan)
-* [Full end\-to\-end example](#full-end-to-end-example)
-  * [Simple Unity Catalog (UC) example](#simple-unity-catalog-uc-example)
+  * [Full end\-to\-end example](#full-end-to-end-example)
+  * [Simple DataBricks example](#simple-databricks-example)
+    * [Instantiate files depending on env vars](#instantiate-files-depending-on-env-vars)
     * [SQLMesh plan](#sqlmesh-plan-1)
+  * [Simple Unity Catalog (UC) example](#simple-unity-catalog-uc-example)
+    * [Instantiate files depending on env vars](#instantiate-files-depending-on-env-vars-1)
+    * [SQLMesh plan](#sqlmesh-plan-2)
 * [Installation](#installation)
   * [DuckDB](#duckdb-1)
     * [Public data sets on DuckDB](#public-data-sets-on-duckdb)
@@ -253,6 +257,7 @@ may be advised.
   * [Unity Catalog docs - Usage - CLI](https://docs.unitycatalog.io/usage/cli/)
   * [Unity Catalog docs - Deployment - PostgreSQL connection](https://docs.unitycatalog.io/deployment/#example-postgresql-connection)
   * [Unity Catalog docs - Integrations - Spark](https://docs.unitycatalog.io/integrations/unity-catalog-spark/)
+  * [Unity Catalog docs - Integrations - DataBricks](https://sqlmesh.readthedocs.io/en/stable/integrations/engines/databricks/)
   * [Unity Catalog docs - Integrations - DuckDB](https://docs.unitycatalog.io/integrations/unity-catalog-duckdb/)
   * [Unity Catalog docs - Integrations - XTable](https://docs.unitycatalog.io/integrations/unity-catalog-xtable/)
 * [Unity Catalog blog post - Integrating Spark with Unity Catalog via Open APIs](https://www.unitycatalog.io/blogs/integrating-apache-spark-with-unity-catalog-assets-via-open-apis)
@@ -1181,12 +1186,12 @@ Models needing backfill (missing dates):
 * Answer yes to the prompt:
 ```text
 Apply - Backfill Tables [y/n]: y
-Creating physical tables ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100.0% • 4/4 • 0:00:00
+Creating physical tables ━━━━ ... ━━━━━ 100.0% • 4/4 • 0:00:00
 
 All model versions have been created successfully
 ```
 
-# Full end-to-end example
+## Full end-to-end example
 * Example still to be created and documented
 
 * Reference:
@@ -1199,23 +1204,52 @@ All model versions have been created successfully
 cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/examples/006-e2e
 ```
 
-## Simple Unity Catalog (UC) example
+## Simple DataBricks example
 * References:
+  * DataBricks engine:
+  https://sqlmesh.readthedocs.io/en/stable/integrations/engines/databricks/
   * Spark engine:
   https://sqlmesh.readthedocs.io/en/stable/integrations/engines/spark/
   * Python models:
   https://sqlmesh.readthedocs.io/en/stable/concepts/models/python_models/
-    * PySpark models:
-    https://sqlmesh.readthedocs.io/en/stable/concepts/models/python_models/#pyspark
+  * PySpark models:
+  https://sqlmesh.readthedocs.io/en/stable/concepts/models/python_models/#pyspark
 
 * Change to the
-  [`examples/005-pyspark-simple` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/005-pyspark-simple/)
+  [`examples/007-databricks-simple` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/007-databricks-simple/)
   within the SQLMesh dedicated directory:
 ```bash
-cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/examples/005-pyspark-simple
+cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/examples/007-databricks-simple
 ```
 
 * The project has been initialized with the `sqlmesh init spark` command
+
+### Instantiate files depending on env vars
+* First, specify the following environment variables (for instance, in the
+  `~/.bashrc` or `~/.zshrc` Shell configuration file):
+  * `DBS_SVR_HST` - DataBricks host, _e.g._,
+  `<some-workspace>.cloud.databricks.com`
+  * `DBS_HTTP_PATH` - DataBricks HTTP path, _e.g._,
+  `sql/protocolv1/o/<wksp-id>/<cluster-id>`
+  * `DBS_PAT` - DataBricks Personal Access Token (PAT)
+  * `DBS_SCH` - DataBricks schema/database, on which the DataBricks cluster
+  should have the right to write. That schema is the one used by the SQLMesh
+  models
+
+* Create the `.env` environment file, by substituting the environment
+  variables in the `.env.sample` file:
+```bash
+envsubst < .env.sample > .env
+```
+  * That `.env` file is handled in a different way from all the `.in` files,
+  as it is imported by the `Makefile`. That `Makefile` can therefore not
+  alter the `.env` file itself, otherwise there will be a catch 22 situation
+
+* Execute the `init-files` target in order to substitute the environment
+  variables into the model files, the test files and the configuration file:
+```bash
+make init-files
+```
 
 ### SQLMesh plan
 * Launch the SQLMesh plan:
@@ -1242,7 +1276,88 @@ Models needing backfill (missing dates):
 * Answer yes to the prompt:
 ```text
 Apply - Backfill Tables [y/n]: y
-Creating physical tables ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100.0% • 4/4 • 0:00:00
+Creating physical tables ━━━━ ... ━━━━━ 100.0% • 4/4 • 0:00:00
+
+All model versions have been created successfully
+```
+
+## Simple Unity Catalog (UC) example
+* References:
+  * DataBricks engine:
+  https://sqlmesh.readthedocs.io/en/stable/integrations/engines/databricks/
+  * Spark engine:
+  https://sqlmesh.readthedocs.io/en/stable/integrations/engines/spark/
+  * Python models:
+  https://sqlmesh.readthedocs.io/en/stable/concepts/models/python_models/
+  * PySpark models:
+  https://sqlmesh.readthedocs.io/en/stable/concepts/models/python_models/#pyspark
+  * [Unity Catalog docs](https://docs.unitycatalog.io/)
+    * [Unity Catalog docs - Integrations - Spark](https://docs.unitycatalog.io/integrations/unity-catalog-spark/)
+	* [Unity Catalog docs - Integrations - DataBricks](https://sqlmesh.readthedocs.io/en/stable/integrations/engines/databricks/)
+    * [Unity Catalog blog post - Integrating Spark with Unity Catalog via Open APIs](https://www.unitycatalog.io/blogs/integrating-apache-spark-with-unity-catalog-assets-via-open-apis)
+
+* Change to the
+  [`examples/008-unitycatalog-simple` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/008-unitycatalog-simple/)
+  within the SQLMesh dedicated directory:
+```bash
+cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh/examples/008-unitycatalog-simple
+```
+
+* The project has been initialized with the `sqlmesh init spark` command
+
+### Instantiate files depending on env vars
+* First, specify the following environment variables (for instance, in the
+  `~/.bashrc` or `~/.zshrc` Shell configuration file):
+  * `DBS_SVR_HST` - DataBricks host, _e.g._,
+  `<some-workspace>.cloud.databricks.com`
+  * `DBS_HTTP_PATH` - DataBricks HTTP path, _e.g._,
+  `sql/protocolv1/o/<wksp-id>/<cluster-id>`
+  * `DBS_PAT` - DataBricks Personal Access Token (PAT)
+  * `DBS_SCH` - DataBricks schema/database, on which the DataBricks cluster
+  should have the right to write. That schema is the one used by the SQLMesh
+  models
+
+* Create the `.env` environment file, by substituting the environment
+  variables in the `.env.sample` file:
+```bash
+envsubst < .env.sample > .env
+```
+  * That `.env` file is handled in a different way from all the `.in` files,
+  as it is imported by the `Makefile`. That `Makefile` can therefore not
+  alter the `.env` file itself, otherwise there will be a catch 22 situation
+
+* Execute the `init-files` target in order to substitute the environment
+  variables into the model files, the test files and the configuration file:
+```bash
+make init-files
+```
+
+### SQLMesh plan
+* Launch the SQLMesh plan:
+```bash
+make plan-prod # equivalent of:
+sqlmesh plan
+======================================================================
+Successfully Ran 1 tests against duckdb
+----------------------------------------------------------------------
+`prod` environment will be initialized
+
+Requirements:
++ pyspark==3.5.4
+Models:
+└── Added:
+    ├── docs_example.pyspark
+    ├── sqlmesh_example.full_model
+    ├── sqlmesh_example.incremental_model
+    └── sqlmesh_example.seed_model
+Models needing backfill (missing dates):
+└── docs_example.pyspark: 2024-12-26 - 2024-12-26
+```
+
+* Answer yes to the prompt:
+```text
+Apply - Backfill Tables [y/n]: y
+Creating physical tables ━━━━ ... ━━━━━ 100.0% • 4/4 • 0:00:00
 
 All model versions have been created successfully
 ```
