@@ -31,8 +31,9 @@ Together, these open source tools offer kind of a so-called
 Modern Data Stack (MDS) in a box, _i.e._, one can analyze and
 process data all in local from Jupyter notebooks.
 
-See also the
-[dedicated cheat sheet for DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/README.md).
+See also the:
+* [Dedicated cheat sheet for DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/)
+* [Dedicated cheat sheet for Spark](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/)
 
 ## References
 
@@ -60,21 +61,25 @@ cd ~/dev/ks/ks-cheat-sheets
 
 ## Start JupyterLab with a PySpark-Delta kernel
 > **Note**
-For the sake of reference, there are two options described
-in this cheat sheet:
-* An independent Spark cluster may be started, and the PySpark kernel
-   may use that cluster with Spark Connect
-* The PySpark kernel may be autonomous (it does not need to connect to any
-   independent cluster)
-The option with independent Spark cluster (and using Spark Connect)
-makes sense for at least the following use cases:
-* Several programming stacks are used (_e_g_, Python, Scala, R or SQL).
-  When only PySpark (Python) is used, an independent Spark server.
-  Note that SQL may be used in PySpark too (the queries are then
-  regular Python strings); it is not ideal for seasonal SQL users, but
-  it works well.
-* Several users, or teams, need to use Spark on the same machine,
+* For the sake of reference, there are two options described
+  in this cheat sheet:
+  * An independent Spark cluster may be started, and the PySpark kernel
+  may use that cluster with Spark Connect
+  * The PySpark kernel may be autonomous (it does not need to connect to any
+  independent cluster)
+* The option with independent Spark cluster (and using Spark Connect)
+  makes sense for at least the following use cases:
+  * Several programming stacks are used (_e_g_, Python, Scala, R or SQL).
+    * When only PySpark (Python) is used, an independent Spark server.
+    * Note that SQL may be used in PySpark too (the queries are then
+    regular Python strings); it is not ideal for seasonal SQL users, but
+    it works well.
+  * Several users, or teams, need to use Spark on the same machine,
   for instance on a remote virtual machine (VM).
+  * The Spark cluster requires some extra packages, like for instance
+  [Delta](https://delta.io) or [Unity Catalog](https://unitycatalog.io),
+  and the client process (_e.g._, Airflow, SQLMesh) may not be designed
+  to pass those extra packages
 	 
 
 * If using an independent Spark cluster, from a dedicated terminal window/tab,

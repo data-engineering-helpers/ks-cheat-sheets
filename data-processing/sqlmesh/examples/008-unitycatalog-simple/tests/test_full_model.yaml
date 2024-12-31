@@ -1,7 +1,7 @@
 test_example_full_model:
-    model: sqlmesh_example.full_model
+    model: default.full_model
     inputs:
-      sqlmesh_example.incremental_model:
+      default.incremental_model:
         rows:
         - id: 1
           item_id: 1

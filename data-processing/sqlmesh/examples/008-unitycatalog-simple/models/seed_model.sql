@@ -1,5 +1,5 @@
 MODEL (
-    name sqlmesh_example.seed_model,
+    name default.seed_model,
     kind SEED (
       path '../seeds/seed_data.csv'
     ),

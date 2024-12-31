@@ -2,9 +2,6 @@
 # File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/005-pyspark-simple/Makefile
 #
 
-# DBS_ environment variables
-include .env
-
 clean-cache: ## Clean the SQLMesh cache directory
 	rm -rf .cache
 

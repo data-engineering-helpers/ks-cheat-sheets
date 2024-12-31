@@ -66,6 +66,7 @@ Cheat Sheet - SQLMesh
     * [Instantiate files depending on env vars](#instantiate-files-depending-on-env-vars-1)
     * [SQLMesh plan](#sqlmesh-plan-2)
 * [Installation](#installation)
+  * [Clone this repository](#clone-this-repository)
   * [DuckDB](#duckdb-1)
     * [Public data sets on DuckDB](#public-data-sets-on-duckdb)
   * [Unity Catalog (UC)](#unity-catalog-uc-1)
@@ -78,7 +79,6 @@ Cheat Sheet - SQLMesh
     * [Cleanup when a local PostgreSQL database stores the state](#cleanup-when-a-local-postgresql-database-stores-the-state)
     * [Cleanup the changes when a local PostgreSQL database stores the state](#cleanup-the-changes-when-a-local-postgresql-database-stores-the-state)
   * [Local Airflow service](#local-airflow-service)
-  * [Clone this repository](#clone-this-repository)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
@@ -1364,6 +1364,16 @@ All model versions have been created successfully
 
 # Installation
 
+## Clone this repository
+* Clone this
+  [Git repository](https://github.com/data-engineering-helpers/ks-cheat-sheets)
+  and move into its SQLMesh directory:
+```bash
+mkdir -p ~/dev/knowledge-sharing
+git clone https://github.com/data-engineering-helpers/ks-cheat-sheets ~/dev/knowledge-sharing/ks-cheat-sheets
+cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh
+```
+
 ## DuckDB
 * See also
   [Data Engineering Helpers - Knowledge Sharing - DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/)
@@ -1768,13 +1778,3 @@ grep "z" models/incremental_model.sql
 * See also
   [Data Engineering Helpers - Knowledge Sharing - Airflow](https://github.com/data-engineering-helpers/ks-cheat-sheets/tree/main/orchestrators/airflow)
   
-## Clone this repository
-* Clone this
-  [Git repository](https://github.com/data-engineering-helpers/ks-cheat-sheets)
-  and move into its SQLMesh directory:
-```bash
-mkdir -p ~/dev/knowledge-sharing
-git clone https://github.com/data-engineering-helpers/ks-cheat-sheets ~/dev/knowledge-sharing/ks-cheat-sheets
-cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/sqlmesh
-```
-
