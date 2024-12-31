@@ -1284,6 +1284,7 @@ All model versions have been created successfully
 
 ## Simple Unity Catalog (UC) example
 * References:
+  * [Data Engineering Helpers - Knowledge Sharing - Unity Catalog (UC)](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/unity-catalog/)
   * DataBricks engine:
   https://sqlmesh.readthedocs.io/en/stable/integrations/engines/databricks/
   * Spark engine:
