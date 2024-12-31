@@ -1,6 +1,7 @@
 # SQLMesh
 /.cache/
 /db.db
+/db.db.wal
 local.duckdb
 /logs/
 /config.yaml

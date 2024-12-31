@@ -51,3 +51,7 @@ check-data-dev: ## Check the data in dev
 diff: ## Differences between dev and prod
 	sqlmesh table_diff prod:dev sqlmesh_example.incremental_model
 
+ui: ## Launch the UI
+	sqlmesh ui --port 10000
+
+

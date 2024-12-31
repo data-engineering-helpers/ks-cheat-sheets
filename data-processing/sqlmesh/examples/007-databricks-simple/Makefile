@@ -61,3 +61,7 @@ check-data-dev: ## Check the data in dev
 diff: ## Differences between dev and prod
 	sqlmesh table_diff --temp-schema $(DBS_SCH) prod:dev $(DBS_SCH).incremental_model
 
+ui: ## Launch the UI
+	sqlmesh ui --port 10000
+
+
