@@ -3,7 +3,6 @@ gateways:
     connection:
       type: spark
       catalog: unity
-      config: {"packages": "io.delta:delta-spark_2.12:3.2.1,io.unitycatalog:unitycatalog-spark_2.12:0.3.0-SNAPSHOT", "spark.sql.extensions": "io.delta.sql.DeltaSparkSessionExtension", "spark.sql.catalog.spark_catalog": "io.unitycatalog.spark.UCSingleCatalog", "spark.sql.catalog.unity": "io.unitycatalog.spark.UCSingleCatalog", "spark.sql.catalog.unity.uri": "http://localhost:8080", "spark.sql.catalog.unity.token": "", "spark.sql.defaultCatalog": "unity"}
     state_connection:
       type: duckdb
       database: db.db
