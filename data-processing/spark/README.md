@@ -156,6 +156,184 @@ bin/uc table read --full_name unity.default.numbers
 * Relevant documentation when using Spark with Unity Catalog (UC):
   https://docs.unitycatalog.io/integrations/unity-catalog-spark/
 
+* As per the official
+  [Apache Spark documentation](https://spark.apache.org/docs/latest/api/python/getting_started/install.html),
+  PyPi-installed PySpark (`pip install pyspark[connect]`) comes with
+  Spark Connect from Spark version 3.4 or later.
+  * However, as of Spark version up to 3.4.1, the PySpark installation
+  lacks the two new administration scripts allowing to start and
+  to stop the Spark Connect server.
+  * For convenience, these two scripts have therefore been copied into this
+  Git repository, in the
+  [`tools/` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/tree/main/tools).
+  They may then be simply copied in the PySpark `sbin` directory,
+  once PySpark has been installed with `pip`
+  * The Delta Lake version has to be compatible with Spark. See
+  https://docs.delta.io/latest/releases.html for the compatibility table
+  (_e.g._, PySpark `3.5.x` is compatible with Delta Lake `3.2.x`)
+    * Spark releases: https://spark.apache.org/releases/
+	* Delta Lake releases: https://github.com/delta-io/delta/releases/
+
+* Install PySpark, with the Spark Connect extension, from PyPi:
+```bash
+python -mpip install "pyspark[connect,sql,pandas_on_spark]==3.5.4"
+```
+
+* Install Delta Lake:
+```bash
+python -mpip install delta-lake==3.2.1
+```
+
+### PostgreSQL JDBC connector
+* The Spark JDBC PostgreSQL connector allows to read from and write to
+  tables on PostgreSQL database server
+
+* Spark - JDBC to other databases (with example of Spark source code):
+  https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html
+  * Example on how to launch the Spark shell:
+```bash
+spark-shell --driver-class-path postgresql-9.4.1207.jar --jars postgresql-9.4.1207.jar
+```
+
+* PostgreSQL JDBC connector download page: https://jdbc.postgresql.org/download/
+
+* Download pages:
+  * Releases: https://repo1.maven.org/maven2/org/postgresql/postgresql/
+  * Snapshots:
+  https://oss.sonatype.org/content/repositories/snapshots/org/postgresql/postgresql/
+
+* Latest JARs, as of beginning of 2025
+  * General:
+  https://jdbc.postgresql.org/download/postgresql-9.4.1212.jar
+  * For Java 8+ and PostgreSQL 9.1+:
+  https://jdbc.postgresql.org/download/postgresql-42.7.4.jar
+
+### Spark Connect
+* Launch the Spark Connect cluster from a dedicated terminal window/tab
+  (Control-C to terminate it)
+* Note that the `SPARK_REMOTE` environment variable should not be set at this
+  stage, otherwise the Spark Connect server will try to connect to itself
+  (catch 22) and will therefore not start
+  * The
+  [Shell aliases given in this cheat sheet](#shell-environment-and-aliases)
+  first unset that environment variable before launching the Spark Connect
+  server (if you use those aliases, all is good)
+```bash
+sparkconnectstart
+```
+
+## Shell environment and aliases
+* Add the following in the Bash/Zsh init script:
+```bash
+$ cat >> ~/.bashrc << _EOF
+
+# Spark
+PY_LIBDIR="$(python -mpip show pyspark|grep "^Location:"|cut -d' ' -f2,2)"
+export SPARK_VERSION="\$(python -mpip show pyspark|grep "^Version:"|cut -d' ' -f2,2)"
+export SPARK_HOME="\$PY_LIBDIR/pyspark"
+export PATH="\$SPARK_HOME/sbin:\$PATH"
+export PYSPARK_PYTHON="\$(which python3)"
+export PYSPARK_DRIVER_PYTHON="\$(which python3)"
+
+# Delta Lake
+DL_VERSION="\$(python -mpip show delta-spark | grep "^Version" | cut -d" " -f2,2)"
+
+# Unity Catalog
+UC_JAR="\$(ls ~/.ivy2/cache/io.unitycatalog/unitycatalog-spark_2.12/jars/*.jar | xargs basename | sort -r | head -1)"
+UC_VERSION="\$(basename "\$(echo ${UC_JAR} | cut -d"-" -f3-)" .jar)"
+
+_EOF
+```
+
+* Re-read the Shell init scripts
+  * Bash:
+```
+$ exec bash
+```
+  * Zsh:
+```
+$ exec zsh
+```
+
+* Copy the two Spark connect administrative scripts into the PySpark
+  installation:
+```bash
+$ cp tools/st*-connect*.sh $SPARK_HOME/sbin/
+```
+
+* Check that the scripts are installed correctly:
+```bash
+$ ls -lFh $SPARK_HOME/sbin/*connect*.sh
+-rwxr-xr-x  1 user staff 1.5K Jun 28 16:54 $PY_LIBDIR/pyspark/sbin/start-connect-server.sh*
+-rwxr-xr-x  1 user staff 1.0K Jun 28 16:54 $PY_LIBDIR/pyspark/sbin/stop-connect-server.sh*
+```
+
+* Add the following Shell aliases to start and stop Spark, Spark Connect server
+  and JupyterLab:
+```bash
+$ cat >> ~/.bash_aliases << _EOF
+
+# Spark Connect
+alias sparkconnectset='export SPARK_REMOTE="sc://localhost:15002"'
+alias sparkconnectunset='unset SPARK_REMOTE'
+alias sparkconnectstart='sparkconnectunset; start-connect-server.sh --packages org.apache.spark:spark-connect_2.12:\$SPARK_VERSION,io.delta:delta-spark_2.12:\$DL_VERSION,io.unitycatalog:unitycatalog-spark_2.12:\$UC_VERSION,org.postgresql:postgresql:9.4.1212 --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" --conf "spark.sql.catalog.spark_catalog=io.unitycatalog.spark.UCSingleCatalog" --conf "spark.sql.catalog.unity=io.unitycatalog.spark.UCSingleCatalog" --conf "spark.sql.catalog.unity.uri=http://localhost:8080" --conf "spark.sql.catalog.unity.token=" --conf "spark.sql.defaultCatalog=unity"'
+alias sparkconnectstop='stop-connect-server.sh'
+
+# PySpark and/or PySpark kernel within JupyterLab
+alias pysparkdelta='pyspark --packages org.apache.spark:spark-connect_2.12:\$SPARK_VERSION,io.delta:delta-spark_2.12:\$DL_VERSION,io.unitycatalog:unitycatalog-spark_2.12:\$UC_VERSION,org.postgresql:postgresql:9.4.1212 --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" --conf "spark.sql.catalog.spark_catalog=io.unitycatalog.spark.UCSingleCatalog" --conf "spark.sql.catalog.unity=io.unitycatalog.spark.UCSingleCatalog" --conf "spark.sql.catalog.unity.uri=http://localhost:8080" --conf "spark.sql.catalog.unity.token=" --conf "spark.sql.defaultCatalog=unity"'
+alias pysparkdeltawconnect='sparkconnectset; pysparkdelta'
+alias pysparkdeltawoconnect='sparkconnectunset; pysparkdelta'
+
+_EOF
+```
+
+* Re-read the Shell aliases:
+```bash
+. ~/.bash_aliases
+```
+
+## Install native Spark manually
+* That section is kept for reference only. It is normally not needed
+
+* Install Spark/PySpark manually, _e.g._ with Spark 3.4.1:
+```bash
+$ export SPARK_VERSION="3.4.1"
+  wget https://dlcdn.apache.org/spark/spark-$SPARK_VERSION/spark-$SPARK_VERSION-bin-hadoop3.tgz
+  tar zxf spark-$SPARK_VERSION-bin-hadoop3.tgz && \
+  mv spark-$SPARK_VERSION-bin-hadoop3 ~/ && \
+  rm -f spark-$SPARK_VERSION-bin-hadoop3.tgz
+```
+
+* Add the following in the Bash/Zsh init script:
+```bash
+$ cat >> ~/.bashrc << _EOF
+
+# Spark
+export SPARK_VERSION="${SPARK_VERSION}"
+export SPARK_HOME="\$HOME/spark-\$SPARK_VERSION-bin-hadoop3"
+export PATH="\$SPARK_HOME/bin:\$SPARK_HOME/sbin:\${PATH}"
+export PYTHONPATH=\$(ZIPS=("\$SPARK_HOME"/python/lib/*.zip); IFS=:; echo "\${ZIPS[*]}"):\$PYTHONPATH
+export PYSPARK_PYTHON="\$(which python3)"
+export PYSPARK_DRIVER_PYTHON='jupyter'
+export PYSPARK_DRIVER_PYTHON_OPTS='lab --no-browser --port=8889'
+
+_EOF
+exec bash
+```
+
+* Add the following Shell aliases to start and stop Spark Connect server:
+```bash
+$ cat >> ~/.bash_aliases << _EOF
+
+# Spark Connect
+alias sparkconnectstart='start-connect-server.sh --packages org.apache.spark:spark-connect_2.12:${SPARK_VERSION}'
+alias sparkconnectstop='stop-connect-server.sh'
+
+_EOF
+. ~/.bash_aliases
+```
+
+### All-in-one Spark engine
 * For consistency reason, it is better, for the Unity Catalog (UC) connector,
   to use the JAR package generated by SBT (and published locally in the local
   Ivy2/Maven cache)

@@ -3,23 +3,21 @@ Cheat Sheet - Jupyter with PySpark and DuckDB
 
 # Table of Content (ToC)
 * [Overview](#overview)
-  * [References](#references)
-    * [Jupyter](#jupyter)
-    * [Spark](#spark)
-      * [Spark Connect](#spark-connect)
-    * [DuckDB](#duckdb)
+* [References](#references)
+  * [Jupyter](#jupyter)
+  * [Spark](#spark)
+    * [Spark Connect](#spark-connect)
+  * [DuckDB](#duckdb)
 * [Quick start](#quick-start)
   * [Start JupyterLab with a PySpark\-Delta kernel](#start-jupyterlab-with-a-pyspark-delta-kernel)
   * [Simple PySpark notebook](#simple-pyspark-notebook)
+  * [Spark](#spark-1)
 * [Use cases](#use-cases)
 * [Initial setup](#initial-setup)
   * [Python libraries](#python-libraries)
   * [DuckDB on the command\-line (CLI)](#duckdb-on-the-command-line-cli)
   * [DuckDB Python library](#duckdb-python-library)
-  * [PySpark and Spark Connect](#pyspark-and-spark-connect)
   * [JupyterLab](#jupyterlab)
-  * [Shell environment and aliases](#shell-environment-and-aliases)
-  * [Install native Spark manually](#install-native-spark-manually)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
@@ -35,21 +33,22 @@ See also the:
 * [Dedicated cheat sheet for DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/)
 * [Dedicated cheat sheet for Spark](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/)
 
-## References
+# References
 
-### Jupyter
+## Jupyter
 * [BMC - Integrate PySpark with Jupyter](https://www.bmc.com/blogs/jupyter-notebooks-apache-spark/)
 
-### Spark
-* [Apache Spark - Download Spark manually](https://spark.apache.org/docs/latest/api/python/getting_started/install.html#manually-downloading)
-* [Apache Spark - Doc - Getting started / Installation](https://spark.apache.org/docs/latest/api/python/getting_started/install.html)
+## Spark
+* [GitHub - Data Engineering Helpers - Cheat sheet for Spark](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/)
+  * [Apache Spark - Download Spark manually](https://spark.apache.org/docs/latest/api/python/getting_started/install.html#manually-downloading)
+  * [Apache Spark - Doc - Getting started / Installation](https://spark.apache.org/docs/latest/api/python/getting_started/install.html)
 
-#### Spark Connect
+### Spark Connect
 * [Apache Spark - Doc - Spark Connect - Overview](https://spark.apache.org/docs/latest/spark-connect-overview.html)
 * [Apache Spark - Doc - Spark Connect - Quick start](https://spark.apache.org/docs/latest/api/python/getting_started/quickstart_connect.html)
 
-### DuckDB
-* [GitHub - Data Engineering Helpers - Cheat sheet for DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/README.md)
+## DuckDB
+* [GitHub - Data Engineering Helpers - Cheat sheet for DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/)
 
 # Quick start
 * Go into the directory dedicated to that cheat sheet (see the
@@ -87,17 +86,19 @@ cd ~/dev/ks/ks-cheat-sheets
   Note that the `SPARK_REMOTE` environment variable should not be set at this
   stage, otherwise the Spark Connect server will try to connect to the
   corresponding Spark Connect server and will therefore not start.
-  The [Shell aliases given in this cheat sheet](#shell-environment-and-aliases)
+  * The
+  [Shell aliases given in the Spark-dedicated cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/README.md#shell-environment-and-aliases)
   first unset that environment variable before launching the Spark Connect
   server (if you use those aliases, all is good)
 ```bash
 $ sparkconnectstart
 ```
+* [GitHub - Data Engineering Helpers - Cheat sheet for Spark](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/)
 
 * Note that JupyterLab will be available locally from a web browser on
   a port, which may be configured thanks to the `PYSPARK_DRIVER_PYTHON_OPTS`
   environment variable (see the
-  [Shell environment and aliases section](#shell-environment-and-aliases)
+  [Shell aliases given in the Spark-dedicated cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/README.md#shell-environment-and-aliases)
   for further details). By default, that port is specified to be `8889`
   in this cheat sheet; the local web browser URL is therefore
   http://localhost:8889/lab
@@ -140,7 +141,7 @@ $ open ~/Library/Jupyter/runtime/jpserver-*-open.html
 
 * Open a notebook, for instance
   [`ipython-notebooks/simple-connect.ipynb`](https://github.com/data-engineering-helpers/databricks-examples/blob/main/ipython-notebooks/simple-connect.ipynb)
-  + Run the cells. The third cell should give a result like:
+  * Run the cells. The third cell should give a result like:
 ```txt
 +-------+--------+-------+-------+
 |User ID|Username|Browser|     OS|
@@ -155,9 +156,18 @@ $ open ~/Library/Jupyter/runtime/jpserver-*-open.html
 
 ## Simple PySpark notebook
 * Source:
-  + [Local web browser - `simple-spark-pandas.ipynb` notebook](http://localhost:8889/lab/tree/ipython-notebooks/simple-spark-pandas.ipynb)
-  + [Local file-system - `simple-spark-pandas.ipynb` notebook](ipython-notebooks/simple-spark-pandas.ipynb)
-  + [On GitHub - `simple-spark-pandas.ipynb` notebook](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/jupyter/jupyter-pyspark-duckdb/ipython-notebooks/simple-spark-pandas.ipynb)
+  * [Local web browser - `simple-spark-pandas.ipynb` notebook](http://localhost:8889/lab/tree/ipython-notebooks/simple-spark-pandas.ipynb)
+  * [Local file-system - `simple-spark-pandas.ipynb` notebook](ipython-notebooks/simple-spark-pandas.ipynb)
+  * [On GitHub - `simple-spark-pandas.ipynb` notebook](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/jupyter/jupyter-pyspark-duckdb/ipython-notebooks/simple-spark-pandas.ipynb)
+
+## Spark
+* See
+  [GitHub - Data Engineering Helpers - Cheat sheet for Spark](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/)
+  * For the details on how to launch a Spark Connect cluster and/or
+  a standalone Spark engine
+  * For the
+  [Shell aliases given in the Spark-dedicated cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/README.md#shell-environment-and-aliases)
+  used in this cheat sheet
 
 # Use cases
 
@@ -173,7 +183,7 @@ mkdir -p ~/dev/ks && \
 ## Python libraries
 * Install a few Python libraries from PyPi:
 ```bash
-$ pip install -U pip plotly folium cloudpathlib pyvis matplotlib seaborn
+$ python -mpip install -U pip plotly folium cloudpathlib pyvis matplotlib seaborn
 ```
 
 ## DuckDB on the command-line (CLI)
@@ -188,127 +198,9 @@ brew install duckdb
 $ python -mpip install -U duckdb
 ```
 
-## PySpark and Spark Connect
-* As per the official
-  [Apache Spark documentation](https://spark.apache.org/docs/latest/api/python/getting_started/install.html),
-  PyPi-installed PySpark (`pip install pyspark[connect]`) comes with
-  Spark Connect from Spark version 3.4 or later.
-  + However, as of Spark version up to 3.4.1, the PySpark installation
-    lacks the two new administration scripts allowing to start and
-	to stop the Spark Connect server.
-  + For convenience, these two scripts have therefore been copied into this
-    Git repository, in the
-    [`tools/` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/tree/main/tools). They may then be simply copied in the PySpark
-	`sbin` directory, once PySpark has been installed with `pip`
-
-* Install PySpark, with the Spark Connect extension, from PyPi:
-```bash
-$ pip install -U pyspark[connect,sql,pandas_on_spark]
-```
-
 ## JupyterLab
 * Install JupyterLab from PyPi:
 ```bash
-$ pip install -U jupyterlab
-```
-
-## Shell environment and aliases
-* Add the following in the Bash/Zsh init script:
-```bash
-$ cat >> ~/.bashrc << _EOF
-
-# Spark
-PY_LIBDIR="$(python -mpip show pyspark|grep "^Location:"|cut -d' ' -f2,2)"
-export SPARK_VERSION="\$(python -mpip show pyspark|grep "^Version:"|cut -d' ' -f2,2)"
-export SPARK_HOME="\$PY_LIBDIR/pyspark"
-export PATH="\$SPARK_HOME/sbin:\$PATH"
-export PYSPARK_PYTHON="\$(which python3)"
-export PYSPARK_DRIVER_PYTHON='jupyter'
-export PYSPARK_DRIVER_PYTHON_OPTS='lab --no-browser --port=8889'
-
-_EOF
-```
-
-* Re-read the Shell init scripts:
-```
-$ exec bash
-```
-
-* Copy the two Spark connect administrative scripts into the PySpark
-  installation:
-```bash
-$ cp tools/st*-connect*.sh $SPARK_HOME/sbin/
-```
-
-* Check that the scripts are installed correctly:
-```bash
-$ ls -lFh $SPARK_HOME/sbin/*connect*.sh
--rwxr-xr-x  1 user  staff   1.5K Jun 28 16:54 $PY_LIBDIR/pyspark/sbin/start-connect-server.sh*
--rwxr-xr-x  1 user  staff   1.0K Jun 28 16:54 $PY_LIBDIR/pyspark/sbin/stop-connect-server.sh*
-```
-
-* Add the following Shell aliases to start and stop Spark, Spark Connect server
-  and JupyterLab:
-```bash
-$ cat >> ~/.bash_aliases << _EOF
-
-# Spark Connect
-alias sparkconnectset='export SPARK_REMOTE="sc://localhost:15002"'
-alias sparkconnectunset='unset SPARK_REMOTE'
-alias sparkconnectstart='sparkconnectunset; start-connect-server.sh --packages org.apache.spark:spark-connect_2.12:\$SPARK_VERSION,io.delta:delta-core_2.12:2.4.0 --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" --conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog"'
-alias sparkconnectstop='stop-connect-server.sh'
-
-# PySpark and/or PySpark kernel within JupyterLab
-alias pysparkdelta='pyspark --packages io.delta:delta-core_2.12:2.4.0,org.postgresql:postgresql:42.6.0 --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" --conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog"'
-alias pysparkdeltawconnect='sparkconnectset; pysparkdelta'
-alias pysparkdeltawoconnect='sparkconnectunset; pysparkdelta'
-
-_EOF
-```
-
-* Re-read the Shell aliases:
-```bash
-. ~/.bash_aliases
-```
-
-## Install native Spark manually
-* That section is kept for reference only. It is normally not needed
-
-* Install Spark/PySpark manually, _e.g._ with Spark 3.4.1:
-```bash
-$ export SPARK_VERSION="3.4.1"
-  wget https://dlcdn.apache.org/spark/spark-$SPARK_VERSION/spark-$SPARK_VERSION-bin-hadoop3.tgz
-  tar zxf spark-$SPARK_VERSION-bin-hadoop3.tgz && \
-  mv spark-$SPARK_VERSION-bin-hadoop3 ~/ && \
-  rm -f spark-$SPARK_VERSION-bin-hadoop3.tgz
-```
-
-* Add the following in the Bash/Zsh init script:
-```bash
-$ cat >> ~/.bashrc << _EOF
-
-# Spark
-export SPARK_VERSION="${SPARK_VERSION}"
-export SPARK_HOME="\$HOME/spark-\$SPARK_VERSION-bin-hadoop3"
-export PATH="\$SPARK_HOME/bin:\$SPARK_HOME/sbin:\${PATH}"
-export PYTHONPATH=\$(ZIPS=("\$SPARK_HOME"/python/lib/*.zip); IFS=:; echo "\${ZIPS[*]}"):\$PYTHONPATH
-export PYSPARK_PYTHON="\$(which python3)"
-export PYSPARK_DRIVER_PYTHON='jupyter'
-export PYSPARK_DRIVER_PYTHON_OPTS='lab --no-browser --port=8889'
-
-_EOF
-exec bash
-```
-
-* Add the following Shell aliases to start and stop Spark Connect server:
-```bash
-$ cat >> ~/.bash_aliases << _EOF
-
-# Spark Connect
-alias sparkconnectstart='start-connect-server.sh --packages org.apache.spark:spark-connect_2.12:${SPARK_VERSION}'
-alias sparkconnectstop='stop-connect-server.sh'
-
-_EOF
-. ~/.bash_aliases
+$ python -mpip install -U jupyterlab
 ```
 
