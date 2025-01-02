@@ -31,7 +31,7 @@ Cheat Sheet - SQLMesh
     * [Unlocking data insights with Ibis and SQLMesh](#unlocking-data-insights-with-ibis-and-sqlmesh)
     * [SQL \+ DataOps = SQLMesh](#sql--dataops--sqlmesh)
     * [Time To Move From dbt to SQLMesh](#time-to-move-from-dbt-to-sqlmesh)
-* [Introdutcion to the examples in this Git repository](#introdutcion-to-the-examples-in-this-git-repository)
+* [Introduction to the examples in this Git repository](#introduction-to-the-examples-in-this-git-repository)
 * [Quickstart](#quickstart)
   * [Some information about the project](#some-information-about-the-project)
   * [Initial models](#initial-models)
@@ -377,7 +377,7 @@ may be advised.
 * Link to the article: https://kestra.io/blogs/2024-02-28-dbt-or-sqlmesh
 * Publisher: Kestra blog
 
-# Introdutcion to the examples in this Git repository
+# Introduction to the examples in this Git repository
 * [Examples in this Git repository](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/):
   * [`examples/001-simple` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/examples/001-simple/) --
   Simple example, also named "quickstart".
