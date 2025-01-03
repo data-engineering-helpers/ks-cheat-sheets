@@ -165,7 +165,9 @@ may be advised.
 * Overview:
   https://sqlmesh.readthedocs.io/en/stable/concepts/models/overview/
 * Model kinds:
-  https://sqlmesh.readthedocs.io/en/stable/concepts/models/model_kinds/
+  * SQLMesh doc: https://sqlmesh.readthedocs.io/en/stable/concepts/models/model_kinds/
+  * Wikipedia on Slow Changing Dimension (SCD) models:
+    https://en.wikipedia.org/wiki/Slowly_changing_dimension
 * SQL models:
   https://sqlmesh.readthedocs.io/en/stable/concepts/models/sql_models/
 * Python models:
