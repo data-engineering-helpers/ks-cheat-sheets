@@ -170,7 +170,7 @@ bin/uc table read --full_name unity.default.numbers
   once PySpark has been installed with `pip`
   * The Delta Lake version has to be compatible with Spark. See
   https://docs.delta.io/latest/releases.html for the compatibility table
-  (_e.g._, PySpark `3.5.x` is compatible with Delta Lake `3.2.x`)
+  (_e.g._, PySpark `3.5.x` is compatible with Delta Lake `3.3.x`)
     * Spark releases: https://spark.apache.org/releases/
 	* Delta Lake releases: https://github.com/delta-io/delta/releases/
 
@@ -181,7 +181,7 @@ python -mpip install "pyspark[connect,sql,pandas_on_spark]==3.5.4"
 
 * Install Delta Lake:
 ```bash
-python -mpip install delta-lake==3.2.1
+python -mpip install delta-lake==3.3.0
 ```
 
 ### PostgreSQL JDBC connector
