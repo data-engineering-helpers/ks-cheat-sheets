@@ -192,7 +192,7 @@ python -mpip install delta-lake==3.2.1
   https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html
   * Example on how to launch the Spark shell:
 ```bash
-spark-shell --driver-class-path postgresql-9.4.1207.jar --jars postgresql-9.4.1207.jar
+spark-shell --driver-class-path postgresql-42.7.5.jar --jars postgresql-42.7.5.jar
 ```
 
 * PostgreSQL JDBC connector download page: https://jdbc.postgresql.org/download/
@@ -204,9 +204,9 @@ spark-shell --driver-class-path postgresql-9.4.1207.jar --jars postgresql-9.4.12
 
 * Latest JARs, as of beginning of 2025
   * General:
-  https://jdbc.postgresql.org/download/postgresql-9.4.1212.jar
+  https://jdbc.postgresql.org/download/postgresql-9.4.1213.jar
   * For Java 8+ and PostgreSQL 9.1+:
-  https://jdbc.postgresql.org/download/postgresql-42.7.4.jar
+  https://jdbc.postgresql.org/download/postgresql-42.7.5.jar
 
 ### Spark Connect
 * Launch the Spark Connect cluster from a dedicated terminal window/tab
@@ -295,9 +295,9 @@ _EOF
 ## Install native Spark manually
 * That section is kept for reference only. It is normally not needed
 
-* Install Spark/PySpark manually, _e.g._ with Spark 3.4.1:
+* Install Spark/PySpark manually, _e.g._ with Spark 3.5.4:
 ```bash
-$ export SPARK_VERSION="3.4.1"
+$ export SPARK_VERSION="3.5.4"
   wget https://dlcdn.apache.org/spark/spark-$SPARK_VERSION/spark-$SPARK_VERSION-bin-hadoop3.tgz
   tar zxf spark-$SPARK_VERSION-bin-hadoop3.tgz && \
   mv spark-$SPARK_VERSION-bin-hadoop3 ~/ && \
@@ -346,9 +346,10 @@ ls -lFh ~/.ivy2/jars/io.unitycatalog*
 * Launch PySpark
   * With support for local Unity Catalog (UC) service:
 ```bash
+DL_VERSION=3.3.0
 UC_VERSION=0.3.0-SNAPSHOT
 pyspark --name "local-uc" --master "local[*]" \
-  --packages "io.delta:delta-spark_2.12:3.2.1,io.unitycatalog:unitycatalog-spark_2.12:${UC_VERSION}" \
+  --packages "io.delta:delta-spark_2.12:${DL_VERSION},io.unitycatalog:unitycatalog-spark_2.12:${UC_VERSION}" \
   --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
   --conf "spark.sql.catalog.spark_catalog=io.unitycatalog.spark.UCSingleCatalog" \
   --conf "spark.sql.catalog.unity=io.unitycatalog.spark.UCSingleCatalog" \
@@ -359,7 +360,7 @@ pyspark --name "local-uc" --master "local[*]" \
   * Only with support for Delta:
 ```bash
 pyspark --name "local" --master "local[*]" \
-  --packages "io.delta:delta-spark_2.12:3.2.1" \
+  --packages "io.delta:delta-spark_2.12:${DL_VERSION}" \
   --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
 ```
 
