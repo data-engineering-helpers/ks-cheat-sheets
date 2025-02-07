@@ -314,8 +314,7 @@ export SPARK_HOME="\$HOME/spark-\$SPARK_VERSION-bin-hadoop3"
 export PATH="\$SPARK_HOME/bin:\$SPARK_HOME/sbin:\${PATH}"
 export PYTHONPATH=\$(ZIPS=("\$SPARK_HOME"/python/lib/*.zip); IFS=:; echo "\${ZIPS[*]}"):\$PYTHONPATH
 export PYSPARK_PYTHON="\$(which python3)"
-export PYSPARK_DRIVER_PYTHON='jupyter'
-export PYSPARK_DRIVER_PYTHON_OPTS='lab --no-browser --port=8889'
+export PYSPARK_DRIVER_PYTHON="$(which python3)"
 
 _EOF
 exec bash
