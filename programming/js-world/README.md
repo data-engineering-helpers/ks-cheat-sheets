@@ -1,6 +1,19 @@
 Cheat Sheets - JavaScript (JS)
 ==============================
 
+# Table of Content (ToC)
+* [Overview](#overview)
+* [Quick start](#quick-start)
+  * [NVM \- Parallel installable NodeJS](#nvm---parallel-installable-nodejs)
+  * [NodeJS](#nodejs)
+  * [Node modules](#node-modules)
+    * [npx](#npx)
+    * [Yarn](#yarn)
+    * [TypeScript (TS)](#typescript-ts)
+* [Update / upgrade](#update--upgrade)
+
+Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
+
 # Overview
 [This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/js-world/README.md)
 explains how to install and to maintain a few tools pertaining to
@@ -52,31 +65,88 @@ $ nvm ls-remote
 
 * Install some specific version of NodeJS:
 ```bash
-$ nvm install 22.11.0
-Downloading and installing node v22.11.0...
+$ nvm install 22.13.1
+Downloading and installing node v22.13.1...
 ...
-Now using node v22.11.0 (npm v10.9.0)
+Now using node v22.13.1 (npm v10.9.2)
 ```
 
 * Have a specific NodeJS version as global default:
 ```bash
-$ nvm use 22.11.0
-Now using node v22.11.0 (npm v10.9.0)
+$ nvm use 22.13.1
+Now using node v22.13.1 (npm v10.9.2)
 ```
 
 * Uninstall some older version of NodeJS:
 ```bash
-$ nvm uninstall 20.15.1
-Uninstalled node v20.15.1
+$ nvm uninstall 22.12.0
+Uninstalled node v22.12.0
 ```
 
 * Set default Node version on the Shell:
 ```bash
-$ nvm alias default 22.11.0
-default -> 22.11.0 (-> v22.11.0)
+$ nvm alias default 22.13.1
+default -> 22.13.1 (-> v22.13.1)
 ```
 
 ## Node modules
+* npm (node package manager) is the dependency/package manager that
+  we get out of the box when we install Node.js (see above).
+  It provides a way for developers to install packages both globally
+  and locally
+  * First and foremost, it is an online repository for the publishing
+  of open-source Node.js projects
+  * Second, it is a CLI tool that aids you install those packages
+  and manage their versions and dependencies. There are hundreds of thousands
+  of Node.js libraries and applications on npm and many more are added
+  every day
+
+* npm by itself does not run any packages. If we want to run a package
+  using npm, we must specify that package in the `package.json` file.
+
+* When executables are installed via npm packages, npm creates links to them:
+  * local installs have links created at the `./node_modules/.bin/` directory
+  * global installs have links created from the global `bin/` directory
+  (for example, `/usr/local/bin` on Linux or at `%AppData%/npm` on MS Windows)
+
+* To execute a package with npm we either have to type the local path,
+  like this:
+```bash
+$ ./node_modules/.bin/your-package
+```
+
+* Or we can run a locally installed package by adding it into
+  the `package.json` file in the scripts section, like this:
+```json
+{
+  "name": "your-application",
+  "version": "1.0.0",
+  "scripts": {
+    "your-package": "your-package"
+  }
+}
+```
+
+* Then the script may be run using `npm run`:
+```bash
+npm run your-package
+```
+
+* We can see that running a package with plain npm requires quite a bit
+  of ceremony. Fortunately, this is where npx comes in handy:
+  * Sometimes we might want to take a look at a specific package
+  and try out some commands. But we cannot do that without installing
+  the dependencies in our local `node_modules` folder
+
+### npx
+* References:
+  * npx command in the command-line (CLI):
+  https://docs.npmjs.com/cli/v8/commands/npx
+  * npx package, now part of npm: https://www.npmjs.com/package/npx
+
+* The `npx` command allows to run an arbitrary command from an npm package
+  (either one installed locally, or fetched remotely), in a similar context
+  as running it via `npm run`.
 
 ### Yarn
 * Reference: https://classic.yarnpkg.com/en/docs/install#mac-stable

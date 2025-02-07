@@ -20,6 +20,7 @@ or on a virtual machine (VM).
 # References
 
 ## Data Engineering helpers
+* [Data Engineering Helpers - Knowledge Sharing - JavaScript / NodeJS](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/js-world/README.md)
 * [Material for the Data platform - Modern Data Stack (MDS) in a box](https://github.com/data-engineering-helpers/mds-in-a-box/blob/main/README.md)
 * [Data Engineering Helpers - Knowledge Sharing - Airflow](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/orchestrators/airflow/README.md)
 
