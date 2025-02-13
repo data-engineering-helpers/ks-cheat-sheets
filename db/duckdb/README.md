@@ -5,6 +5,9 @@ Cheat Sheet - DuckDB
 * [Overview](#overview)
   * [References](#references)
     * [DuckDB in Jupyter](#duckdb-in-jupyter)
+  * [A few DuckDB extra features](#a-few-duckdb-extra-features)
+    * [Windowing with DuckDB](#windowing-with-duckdb)
+
 * [Use cases](#use-cases)
 * [Public catalogs](#public-catalogs)
   * [Boring panda](#boring-panda)
@@ -55,6 +58,14 @@ The following is an excerpt from https://duckdb.org/why_duckdb .
 
 ### Orchestrating DuckDB with dbt
 * [GitHub - dbt-duckdb](https://github.com/jwills/dbt-duckdb)
+
+### A few DuckDB extra features
+
+#### Windowing with DuckDB
+* Gettaing started with Windowing: https://duckdb.org/2021/10/13/windowing.html
+* Reference documentation: https://duckdb.org/docs/sql/functions/window_functions.html
+* Catching up with Windowing (in Feb. 2025): https://duckdb.org/2025/02/10/window-catchup.html
+* Fast moving holistic aggregates: https://duckdb.org/2021/11/12/moving-holistic.html
 
 # Use cases
 * Denormalize Geonames tables
