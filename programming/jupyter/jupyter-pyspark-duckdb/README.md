@@ -4,9 +4,10 @@ Cheat Sheet - Jupyter with PySpark and DuckDB
 # Table of Content (ToC)
 * [Overview](#overview)
 * [References](#references)
-  * [Jupyter](#jupyter)
+  * [Data Engineering helpers](#data-engineering-helpers)
   * [Spark](#spark)
     * [Spark Connect](#spark-connect)
+  * [Jupyter](#jupyter)
   * [DuckDB](#duckdb)
 * [Quick start](#quick-start)
   * [Start JupyterLab with a PySpark\-Delta kernel](#start-jupyterlab-with-a-pyspark-delta-kernel)
@@ -17,6 +18,9 @@ Cheat Sheet - Jupyter with PySpark and DuckDB
   * [Python libraries](#python-libraries)
   * [DuckDB on the command\-line (CLI)](#duckdb-on-the-command-line-cli)
   * [DuckDB Python library](#duckdb-python-library)
+  * [Unity Catalog](#unity-catalog)
+  * [Spark Delta](#spark-delta)
+  * [Spark Connect](#spark-connect-1)
   * [JupyterLab](#jupyterlab)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
@@ -61,6 +65,12 @@ See also the:
   on how to clone this Git repository):
 ```bash
 cd ~/dev/ks/ks-cheat-sheets
+```
+
+* To launch Jupyter Lab, just execute the `jupyterstart` Shell alias
+  (see at below how to set up that alias and others):
+```bash
+$ jupyterstart
 ```
 
 ## Start JupyterLab with a PySpark-Delta kernel
@@ -203,9 +213,63 @@ brew install duckdb
 $ python -mpip install -U duckdb
 ```
 
+## Unity Catalog
+* Add some Shell configuration:
+```bash
+$ cat >> ~/.bashrc << _EOF
+
+## Unity Catalog
+export UC_JAR="$(ls ~/.ivy2/cache/io.unitycatalog/unitycatalog-spark_2.12/jars/*.jar | xargs basename | sort -r | head -1)"
+export UC_VERSION="$(basename "$(echo ${UC_JAR} | cut -d"-" -f3-)" .jar)"
+
+_EOF
+$ . ~/.bashrc
+```
+
+## Spark Delta
+* Add some Shell configuration:
+```bash
+$ cat >> ~/.bashrc << _EOF
+
+# Spark Delta
+export DL_VERSION="$(python -mpip show delta-spark | grep "^Version" | cut -d" " -f2,2)"
+
+_EOF
+$ . ~/.bashrc
+```
+
+## Spark Connect
+* Add a few Shell aliases:
+```bash
+$ cat >> ~/.bash_aliases << _EOF
+
+# Spark
+alias sparkconnectset='export SPARK_REMOTE="sc://localhost:15002"'
+alias sparkconnectunset='unset SPARK_REMOTE'
+alias pysparkdelta='pyspark --packages io.delta:delta-spark_2.12:${DL_VERSION},io.unitycatalog:unitycatalog-spark_2.12:${UC_VERSION},org.postgresql:postgresql:9.4.1212 --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" --conf "spark.sql.catalog.spark_catalog=io.unitycatalog.spark.UCSingleCatalog" --conf "spark.sql.catalog.unity=io.unitycatalog.spark.UCSingleCatalog" --conf "spark.sql.catalog.unity.uri=http://localhost:8080" --conf "spark.sql.catalog.unity.token=" --conf "spark.sql.defaultCatalog=unity"'
+alias pysparkdeltawconnect='sparkconnectset; pyspark'
+alias pysparkdeltawoconnect='sparkconnectunset; pysparkdelta'
+alias sparkconnectstart='sparkconnectunset; start-connect-server.sh --packages org.apache.spark:spark-connect_2.12:${SPARK_VERSION},io.delta:delta-spark_2.12:${DL_VERSION},io.unitycatalog:unitycatalog-spark_2.12:${UC_VERSION},org.postgresql:postgresql:9.4.1212 --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" --conf "spark.sql.catalog.spark_catalog=io.unitycatalog.spark.UCSingleCatalog" --conf "spark.sql.catalog.unity=io.unitycatalog.spark.UCSingleCatalog" --conf "spark.sql.catalog.unity.uri=http://localhost:8080" --conf "spark.sql.catalog.unity.token=" --conf "spark.sql.defaultCatalog=unity"'
+alias sparkconnectstop='stop-connect-server.sh'
+
+_EOF
+$ . ~/.bash_aliases
+```
+
 ## JupyterLab
 * Install JupyterLab from PyPi:
 ```bash
 $ python -mpip install -U jupyterlab
+```
+
+* Add a few Shell aliases:
+```bash
+$ cat >> ~/.bash_aliases << _EOF
+
+# Jupyter
+alias jupyterstart='jupyter lab --port 8889 --allow-root --no-browser --ip 0.0.0.0 --IdendityProvider.token='
+
+_EOF
+$ . ~/.bash_aliases
 ```
 
