@@ -23,8 +23,8 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
 # Overview
 [This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/jupyter/jupyter-pyspark-duckdb/README.md)
-explains how to install and to use JupyterLab with a PySpark kernel
-and a DuckDB database.
+explains how to install and to use Jupyter Lab so that other tools,
+like for instance PySpark and DuckDB, may be used.
 Together, these open source tools offer kind of a so-called
 Modern Data Stack (MDS) in a box, _i.e._, one can analyze and
 process data all in local from Jupyter notebooks.
@@ -35,8 +35,10 @@ See also the:
 
 # References
 
-## Jupyter
-* [BMC - Integrate PySpark with Jupyter](https://www.bmc.com/blogs/jupyter-notebooks-apache-spark/)
+## Data Engineering helpers
+* [Data Engineering Helpers - Knowledge Sharing - Python](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/python/)
+* [Data Engineering Helpers - Knowledge Sharing - DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/)
+* [Material for the Data platform - Modern Data Stack (MDS) in a box](https://github.com/data-engineering-helpers/mds-in-a-box)
 
 ## Spark
 * [GitHub - Data Engineering Helpers - Cheat sheet for Spark](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/)
@@ -46,6 +48,9 @@ See also the:
 ### Spark Connect
 * [Apache Spark - Doc - Spark Connect - Overview](https://spark.apache.org/docs/latest/spark-connect-overview.html)
 * [Apache Spark - Doc - Spark Connect - Quick start](https://spark.apache.org/docs/latest/api/python/getting_started/quickstart_connect.html)
+
+## Jupyter
+* [BMC - Integrate PySpark with Jupyter](https://www.bmc.com/blogs/jupyter-notebooks-apache-spark/)
 
 ## DuckDB
 * [GitHub - Data Engineering Helpers - Cheat sheet for DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/)
