@@ -38,11 +38,26 @@ Cheat Sheet - Python
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
 # Overview
-[This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/python/README.md)
-explains how to install and to use Python, and associated tools and utilities.
-Python is a cornerstone of the so-called Modern Data Stack (MDS) in a box.
-Python powers other data-related tools, such as PySpark, Jupyter Lab,
-DuckDB, SQLMesh/SQLGlot, Polars, Daft, FastAPI/Flask.
+* [This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/python/README.md)
+  explains how to install and to use Python, and associated tools and utilities.
+  Python is a cornerstone of the so-called Modern Data Stack (MDS) in a box.
+  Python powers other data-related tools, such as PySpark, Jupyter Lab,
+  DuckDB, SQLMesh/SQLGlot, Polars, Daft, FastAPI/Flask.
+
+* There are several ways to install and use Python and the ecosystem built
+  upon Python.
+  * [PyEnv](https://github.com/pyenv/pyenv) has been available
+  for a while and is now mature enough to be widely used by the majority of
+  users. PyEnv is the solution be default used in
+  [these cheat sheets](https://github.com/data-engineering-helpers/ks-cheat-sheets)
+  * [uv](https://github.com/astral-sh/uv) is the new, shiny, kid on the block,
+  and may appeal to those seeking to be on the edge of technological trends.
+  There is at least a very specific use case where uv proves useful, it is
+  to power standalone Python scripts: it is enough to add the magic
+  `#!/usr/bin/env -S uv` command as the first line of any Python script,
+  and that latter becomes standalone, self-served on any platform, any where,
+  whithout requiring the users to install anything like dependencies (apart
+  uv itself, obviously)
 
 ## Data Engineering helpers
 * [Data Engineering Helpers - Knowledge Sharing - Jupyter, PySpark and DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/jupyter/jupyter-pyspark-duckdb/)
