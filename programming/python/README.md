@@ -1,5 +1,5 @@
-Cheat Sheet - Jupyter with PySpark and DuckDB
-=============================================
+Cheat Sheet - Python
+====================
 
 # Table of Content (ToC)
 * [Overview](#overview)
@@ -38,19 +38,17 @@ Cheat Sheet - Jupyter with PySpark and DuckDB
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
 # Overview
-[This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/jupyter/jupyter-pyspark-duckdb/README.md)
-explains how to install and to use Jupyter Lab so that other tools,
-like for instance PySpark and DuckDB, may be used.
-Together, these open source tools offer kind of a so-called
-Modern Data Stack (MDS) in a box, _i.e._, one can analyze and
-process data all in local from Jupyter notebooks.
-
-See also the:
-* [Dedicated cheat sheet for DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/)
-* [Dedicated cheat sheet for Spark](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/)
+[This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/python/README.md)
+explains how to install and to use Python, and associated tools and utilities.
+Python is a cornerstone of the so-called Modern Data Stack (MDS) in a box.
+Python powers other data-related tools, such as PySpark, Jupyter Lab,
+DuckDB, SQLMesh/SQLGlot, Polars, Daft, FastAPI/Flask.
 
 ## Data Engineering helpers
 * [Data Engineering Helpers - Knowledge Sharing - Jupyter, PySpark and DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/jupyter/jupyter-pyspark-duckdb/)
+* [Data Engineering Helpers - Knowledge Sharing - Spark](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/)
+* [Data Engineering Helpers - Knowledge Sharing - SQLMesh](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/)
+* [Data Engineering Helpers - Knowledge Sharing - DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/)
 * [Material for the Data platform - Modern Data Stack (MDS) in a box](https://github.com/data-engineering-helpers/mds-in-a-box)
 
 ## Machine Learning helpers
