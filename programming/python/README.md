@@ -222,6 +222,24 @@ Installed 5 packages in 12ms
 <Response [200]>
 ```
 
+* Even better, by adding the `#!/usr/bin/env -S uv run` magic at the beginning
+  of the script, and making it executable (with `chmod +x`), that latter
+  becomes standalone and may be executed everywhere (where `uv` is available),
+  on any platform
+  * Add the magic header to the `example.py` script:
+```bash
+echo "#!/usr/bin/env -S uv run" > magic.hdr
+cp example.py example2.py
+cat magic.hdr example2.py > example.py
+rm -f magic.hdr example2.py
+chmod +x example.py
+```
+  * Execute the `example.py` script, anywhere where `uv` is available:
+```bash
+./example.py
+<Response [200]>
+```
+
 * See the [uv scripts documentation](https://docs.astral.sh/uv/guides/scripts/)
 to get started.
 
