@@ -6,6 +6,7 @@ Cheat Sheet - Unity Catalog
 * [References](#references)
   * [Data Engineering helpers](#data-engineering-helpers)
   * [Unity Catalog documentation](#unity-catalog-documentation)
+  * [Iceberg REST API](#iceberg-rest-api)
 * [Getting started](#getting-started)
   * [Browse the content of the catalog with the CLI](#browse-the-content-of-the-catalog-with-the-cli)
   * [Simple DuckDB](#simple-duckdb)
@@ -67,6 +68,10 @@ on premises, _e.g._, on a laptop or on a virtual machine (VM).
   * [Unity Catalog docs - Integrations - DuckDB](https://docs.unitycatalog.io/integrations/unity-catalog-duckdb/)
   * [Unity Catalog docs - Integrations - XTable](https://docs.unitycatalog.io/integrations/unity-catalog-xtable/)
 * [Unity Catalog blog post - Integrating Spark with Unity Catalog via Open APIs](https://www.unitycatalog.io/blogs/integrating-apache-spark-with-unity-catalog-assets-via-open-apis)
+
+## Iceberg REST API
+* Specification in GitHub: https://github.com/apache/iceberg/blob/main/open-api/rest-catalog-open-api.yaml
+* Article on Substack by Alex Merced, Feb. 2025: https://amdatalakehouse.substack.com/p/iceberg-rest-catalog-overview-1-introduction
 
 # Getting started
 * To interact with the UC
