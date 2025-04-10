@@ -119,6 +119,17 @@ may be advised.
 * [Material for the Data platform - Data life cycle](https://github.com/data-engineering-helpers/data-life-cycle)
 * [Material for the Data platform - Modern Data Stack (MDS) in a box](https://github.com/data-engineering-helpers/mds-in-a-box)
 
+## Slowly Changing Dimension (SCD)
+
+### How to create an SCD2 Table using MERGE INTO with Spark & Iceberg
+* Title: How to create an SCD2 Table using MERGE INTO with Spark & Iceberg
+* Date: Apr. 2025
+* Link to the article:
+  https://www.startdataengineering.com/post/create-scd2-table-with-merge-into-with-spark-iceberg/
+
+### Wikipedia article
+* Wikipedia article: https://en.wikipedia.org/wiki/Slowly_changing_dimension
+
 ## SQLMesh
 * GitHub page: https://github.com/TobikoData/sqlmesh
 * Home page: https://sqlmesh.com/
