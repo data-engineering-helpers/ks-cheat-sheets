@@ -12,11 +12,12 @@ Cheat Sheet - Unity Catalog
   * [Simple DuckDB](#simple-duckdb)
   * [DuckDB integrated with Unity Catalog](#duckdb-integrated-with-unity-catalog)
   * [Simple Spark](#simple-spark)
-  * [Spark integrated with Unity Catalog](#spark-integrated-with-unity-catalog)
+  * [Spark integrated with OSS Unity Catalog](#spark-integrated-with-oss-unity-catalog)
     * [Managed vs external tables](#managed-vs-external-tables)
     * [Create a table the SQL way](#create-a-table-the-sql-way)
     * [Create a table through the DataFrame API](#create-a-table-through-the-dataframe-api)
     * [Managed tables](#managed-tables)
+  * [Spark integrated with Databricks Unity Catalog](#spark-integrated-with-databricks-unity-catalog)
   * [Daft integrated with Unity Catalog](#daft-integrated-with-unity-catalog)
   * [Interact with the UI](#interact-with-the-ui)
 * [Installation](#installation)
@@ -382,7 +383,7 @@ df.show()
 quit()
 ```
 
-## Spark integrated with Unity Catalog
+## Spark integrated with OSS Unity Catalog
 * Relevant documentation: https://docs.unitycatalog.io/integrations/unity-catalog-spark/
 
 * Launch PySpark (for the Unity Catalog Spark connector JAR package,
@@ -545,6 +546,79 @@ sql("create table default.transactions (transaction_id int, item_name string);")
 * To leave the PySpark shell:
 ```python
 quit()
+```
+
+## Spark integrated with Databricks Unity Catalog
+* Relevant documentation:
+  * Spark integration for Unity Catalog: https://docs.unitycatalog.io/integrations/unity-catalog-spark/
+  * Integrating Apache Spark™ with Databricks Unity Catalog Assets via Open APIs:
+  https://community.databricks.com/t5/technical-blog/integrating-apache-spark-with-databricks-unity-catalog-assets/ba-p/97533
+  * How to use Databricks Unity Catalog as metastore for a local Spark session:
+  https://community.databricks.com/t5/data-engineering/how-to-use-databricks-unity-catalog-as-metastore-for-a-local/td-p/101176
+  * Allowing external access: https://learn.microsoft.com/en-us/azure/databricks/external-access/admin
+
+* Launch PySpark (for the Unity Catalog Spark connector JAR package,
+  see in the installation section how to generate it):
+```bash
+DBS_DOM="<<Databricks-domain-name>>"
+DBS_PAT="<<Databricks-personal-access-token>>"
+UC_CAT="<<Default-Unity-Catalog-catalog>>"
+pyspark --name "s3-uc-test" \
+  --packages "org.apache.hadoop:hadoop-aws:3.3.2,io.delta:delta-spark_2.12:3.2.1,io.unitycatalog:unitycatalog-spark_2.12:0.2.1" \
+  --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
+  --conf "spark.sql.catalog.spark_catalog=io.unitycatalog.spark.UCSingleCatalog" \
+  --conf "spark.hadoop.fs.s3.impl=org.apache.hadoop.fs.s3a.S3AFileSystem" \
+  --conf "spark.sql.catalog.$UC_CAT=io.unitycatalog.spark.UCSingleCatalog" \
+  --conf "spark.sql.catalog.$UC_CAT.uri=https://$DBS_DOM.cloud.databricks.com/api/2.1/unity-catalog" \
+  --conf "spark.sql.catalog.$UC_CAT.token=$DBS_PAT" \
+  --conf "spark.sql.defaultCatalog=$UC_CAT"
+```
+
+* Browse the catalogs:
+```python
+sql("show catalogs").show()
++-------------+
+|      catalog|
++-------------+
+|spark_catalog|
+|      samples|
++-------------+
+```
+
+* Browse the schemas:
+```python
+>>> sql("show schemas").show()
++------------------+
+|         namespace|
++------------------+
+|information_schema|
+|           nyctaxi|
++------------------+
+```
+
+* List the tables:
+```python
+sql("show tables in nyctaxi;").show()
++---------+---------+-----------+
+|namespace|tableName|isTemporary|
++---------+---------+-----------+
+|  nyctaxi|    trips|      false|
++---------+---------+-----------+
+```
+
+* Select a default schema:
+```python
+sql("use nyctaxi;")
+```
+
+* Browse a few records of a specific table:
+```python
+>>> sql("select * from samples.nyctaxi.trips;").show()
+```
+
+* Quit PySpark:
+```python
+>>> quit()
 ```
 
 ## Daft integrated with Unity Catalog
