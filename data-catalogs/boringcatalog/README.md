@@ -1,5 +1,5 @@
-Cheat Sheet - BoringCatalog
-===========================
+Cheat Sheet - Boring Catalog
+============================
 
 # Table of Content (ToC)
 * [Overview](#overview)
@@ -13,7 +13,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 # Overview
 [This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/boringcatalog/README.md)
 explains how to install and to use
-[BoringCatalog](https://github.com/boringdata/boring-catalog)
+[Boring Catalog](https://github.com/boringdata/boring-catalog)
 on premises, _e.g._, on a laptop or on a virtual machine (VM).
 
 # References
@@ -24,6 +24,8 @@ on premises, _e.g._, on a laptop or on a virtual machine (VM).
 
 ## BoringData documentation
 * GitHub page: https://github.com/boringdata/boring-catalog
+* Article on Substack by Julien Hurault (the author of Boring Catalog):
+  https://juhache.substack.com/p/boring-iceberg-catalog
 * Showcase video by Daniel Beach, May 2025, Substack:
   https://substack.com/home/post/p-164251337
   * Companion article: https://substack.com/home/post/p-163944714
@@ -40,7 +42,7 @@ brew intall uv
 uv venv
 ```
 
-* Install the BoringCatalog Python module (as well as a few other utilities)
+* Install the Boring-Catalog Python module (as well as a few other utilities)
   * With a standard Python environment:
 ```bash
 pip install -U pyiceberg duckdb polars boringcatalog
@@ -93,7 +95,7 @@ ice duck
 ```sql
 .schema
 ```
-  * Set the BoringCatalog as the default schema:
+  * Set the Boring-Catalog as the default schema:
 ```sql
 use ice_default;
 ```
