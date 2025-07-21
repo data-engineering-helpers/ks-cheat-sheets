@@ -4,3 +4,6 @@ metastore_db/
 spark-warehouse/
 dim_customer/
 
+# Logs
+/logs/
+
