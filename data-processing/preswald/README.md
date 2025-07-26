@@ -6,7 +6,7 @@ Cheat Sheet - Preswald
 # Overview
 [This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/preswald/README.md)
 explains how to install and to use
-[Preswald](https://https://github.com/StructuredLabs/preswald), _e.g._,
+[Preswald](https://github.com/StructuredLabs/preswald), _e.g._,
 on a laptop or on a virtual machine (VM).
 
 # References:
