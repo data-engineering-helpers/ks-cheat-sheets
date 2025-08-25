@@ -69,6 +69,18 @@ def row_lineage(*dataframes: DataFrame):
             df = df.drop(columns=[row_ids_column(df)])
 
 
+def blame(df: DataFrame, *traced_dataframes: DataFrame) -> T.Tuple[DataFrame]:
+    df = df.withColumn(row_ids_column(df), F.explode(df[row_ids_column(df)])).persist()
+    return (
+        traced_df.join(
+            df,
+            on=row_ids_column(traced_df),
+            how="leftsemi"
+        )
+        for traced_df in traced_dataframes
+    )
+
+
 def pyspark_monkey_patch(*row_ids_columns: str):
     #################################
     # Aggregations
