@@ -15,21 +15,41 @@ gives a few hints about housekeeping with Debian-based Linux distributions.
 
 # Use cases
 
-## Package Management
-* Add a multimedia-oriented repository
-  * In `/etc/apt/sources.list`, add:
-```bash
-$ deb http://www.debian-multimedia.org/ stable main
-```
-
+## Package management
 * Display the list of installed packages:
 ```bash
 $ dpkg --list | grep expat
+ii  libexpat1:amd64             2.7.1-2                              amd64        XML parsing C library - runtime library
 ```
 
 * Display the files of a given package:
 ```bash
 $ dpkg -L libexpat1
+...
+/usr/lib/x86_64-linux-gnu/libexpat.so.1.10.2
+/usr/lib/x86_64-linux-gnu/libexpatw.so.1.10.2
+/usr/lib/x86_64-linux-gnu/libexpat.so.1
+```
+
+* Display the dependencies of a given package:
+```bash
+$ apt-cache depends libexpat1
+libexpat1
+  PreDepends: libc6
+```
+
+* Display which packages depend on a given package:
+```bash
+$ apt-cache rdepends libexpat1
+libexpat1
+Reverse Depends:
+  libpython3.13
+```
+
+## Distribution maintenance
+* Add a multimedia-oriented repository:
+```bash
+$ echo "deb http://www.debian-multimedia.org/ stable main" > /etc/apt/sources.list.d/multimedia.list
 ```
 
 * Build an up-to-date package list
