@@ -15,6 +15,53 @@ gives a few hints about housekeeping with Debian-based Linux distributions.
 
 # Use cases
 
+## Package Management
+* Add a multimedia-oriented repository
+  * In `/etc/apt/sources.list`, add:
+```bash
+$ deb http://www.debian-multimedia.org/ stable main
+```
+
+* Display the list of installed packages:
+```bash
+$ dpkg --list | grep expat
+```
+
+* Display the files of a given package:
+```bash
+$ dpkg -L libexpat1
+```
+
+* Build an up-to-date package list
+```bash
+$ apt-get update
+```
+
+* Update the packages
+```bash
+$ apt-get upgrade
+```
+
+* Search for a package
+```bash
+$ apt-cache search mediawiki
+```
+
+* Install a package
+```bash
+$ apt-get install mediawiki
+```
+
+* Un-install a package, keeping the configuration files
+```bash
+$ apt-get remove mediawiki
+```
+
+* Un-install a package, with all the configuration files (do a back-up before!)
+```bash
+$ apt-get purge mediawiki
+```
+
 ## Identify leaves
 * Identify leaves with:
 ```bash
