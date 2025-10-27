@@ -196,9 +196,31 @@ python -mpip install delta-lake==3.3.0
 * See
   [Data Engineering Helpers - Knowledge Sharing - PostgreSQL - JDBC connector sub-section](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/README.md#postgresql-jdbc-connector)
 
-* Example on how to launch a Spark shell:
+* Note that, as of end 2025, at least on MacOS, Java still needs to be in version 8
+  * For instance, install the Corretto JDK8 with SDKMan:
 ```bash
-spark-shell --driver-class-path postgresql-42.7.8.jar --jars postgresql-42.7.8.jar
+$ sdk install java 8.0.472-amzn
+$ sdk default java 8.0.472-amzn
+$ java -version
+openjdk version "1.8.0_472"
+OpenJDK Runtime Environment Corretto-8.472.08.1 (build 1.8.0_472-b08)
+OpenJDK 64-Bit Server VM Corretto-8.472.08.1 (build 25.472-b08, mixed mode)
+```
+
+* Example on how to launch a Spark REPL
+  * Spark Shell (in Scala):
+```bash
+$ spark-shell --driver-class-path postgresql-42.7.8.jar --jars postgresql-42.7.8.jar
+```
+```scala
+scala> :quit
+```
+  * PySpark (in Python):
+```bash
+$ pyspark --driver-class-path postgresql-42.7.8.jar --jars postgresql-42.7.8.jar
+```
+```python
+>>> quit()
 ```
 
 ### Spark Connect
