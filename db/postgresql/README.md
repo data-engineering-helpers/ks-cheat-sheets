@@ -5,6 +5,7 @@ Cheat Sheet - PostgreSQL
 * [Overview](#overview)
 * [References](#references)
   * [PostgreSQL](#postgresql)
+    * [PostgreSQL JDBC connector](#postgresql-jdbc-connector)
   * [Linux](#linux)
 * [Use cases](#use-cases)
   * [Quick setup for the use cases](#quick-setup-for-the-use-cases)
@@ -18,6 +19,7 @@ Cheat Sheet - PostgreSQL
     * [Airflow database and user](#airflow-database-and-user)
     * [AWS RDS proxy and PostgreSQL database](#aws-rds-proxy-and-postgresql-database)
   * [Import files, create and browse tables](#import-files-create-and-browse-tables)
+  * [Export Parquet datasets into a PostgreSQL database](#export-parquet-datasets-into-a-postgresql-database)
 * [Installation](#installation)
   * [Python](#python)
   * [PySpark](#pyspark)
@@ -34,6 +36,7 @@ Cheat Sheet - PostgreSQL
   * [PostgreSQL as a managed service with AWS RDS](#postgresql-as-a-managed-service-with-aws-rds)
     * [AWS RDS PostgreSQL database](#aws-rds-postgresql-database)
     * [AWS RDS proxy](#aws-rds-proxy)
+  * [PostgreSQL JDBC connector](#postgresql-jdbc-connector-1)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
@@ -45,6 +48,20 @@ explains how to install and to use PostgreSQL server.
 
 ## PostgreSQL
 * PostgreSQL home page: https://www.postgresql.org
+
+### PostgreSQL JDBC connector
+* The Spark JDBC PostgreSQL connector allows to read from and write to
+  tables on PostgreSQL database server
+* Spark - JDBC to other databases (with example of Spark source code):
+  https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html
+* PostgreSQL JDBC connector:
+  * Home page: https://jdbc.postgresql.org/
+  * Download page: https://jdbc.postgresql.org/download/
+* Maven repositories:
+  * Maven overview page for PostgreSQL JDBC connector:
+  https://mvnrepository.com/artifact/org.postgresql/postgresql
+  * Direct download page on Maven release:
+  https://repo1.maven.org/maven2/org/postgresql/postgresql/
 
 ## Linux
 * Examples of recent RedHat-based distributions:
@@ -58,15 +75,15 @@ explains how to install and to use PostgreSQL server.
 
 ## Quick setup for the use cases
 * Specify a few environment variables
-  + For local PostgreSQL server on MacOS:
+  * For local PostgreSQL server on MacOS:
 ```bash
 $ PG_SVR="localhost"; PG_ADM_USR="$USER"
 ```
-  + For local PostgreSQL server on Linux:
+  * For local PostgreSQL server on Linux:
 ```bash
 $ PG_SVR="localhost"; PG_ADM_USR="postgres"
 ```
-  + For AWS RDS PostgreSQL service (set the proxy endpoint to
+  * For AWS RDS PostgreSQL service (set the proxy endpoint to
     the AWS RDS proxy one):
 ```bash
 $ PG_SVR="project-proxy.proxy-someid.us-east-1.rds.amazonaws.com"; PG_ADM_USR="postgres"
@@ -280,6 +297,9 @@ $ psql -h $PG_SVR -U guest -c "\copy country_info(iso_alpha2, iso_alpha3, iso_nu
 $ psql -h $PG_SVR -U guest -c "select iso_alpha2, iso_alpha3, name, capital, continent, currency_code, languages from country_info;"
 ```
 
+## Export Parquet datasets into a PostgreSQL database
+
+
 # Installation
 
 ## Python
@@ -361,15 +381,15 @@ psql (PostgreSQL) 15.0
 
 ### General
 * Specify a few environment variables
-  + For local PostgreSQL server on MacOS:
+  * For local PostgreSQL server on MacOS:
 ```bash
 $ PG_SVR="localhost"; PG_ADM_USR="$USER"
 ```
-  + For local PostgreSQL server on Linux:
+  * For local PostgreSQL server on Linux:
 ```bash
 $ PG_SVR="localhost"; PG_ADM_USR="postgres"
 ```
-  + For AWS RDS PostgreSQL service (set the proxy endpoint to
+  * For AWS RDS PostgreSQL service (set the proxy endpoint to
     the AWS RDS proxy one):
 ```bash
 $ PG_SVR="project-proxy.proxy-someid.us-east-1.rds.amazonaws.com"; PG_ADM_USR="postgres"
@@ -596,3 +616,11 @@ $ sudo journalctl -xeu nginx.service
 * IAM role:
   `arn:aws:iam::1234567890:role/service-role/rds-proxy-role-1234567890`
 
+## PostgreSQL JDBC connector
+* See the
+  [PostgreSQL JDBC connector sub-section in the reference section above](#postgresql-jdbc-connector)
+
+* Example on how to launch a Spark shell:
+```bash
+spark-shell --driver-class-path postgresql-42.7.8.jar --jars postgresql-42.7.8.jar
+```

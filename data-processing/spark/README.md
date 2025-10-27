@@ -12,6 +12,13 @@ Cheat Sheet - Spark
   * [Clone this repository](#clone-this-repository)
   * [Unity Catalog (UC)](#unity-catalog-uc-1)
   * [Spark](#spark-1)
+    * [PostgreSQL JDBC connector](#postgresql-jdbc-connector)
+    * [Spark Connect](#spark-connect-1)
+  * [Shell environment and aliases](#shell-environment-and-aliases)
+  * [Install native Spark manually](#install-native-spark-manually)
+    * [All\-in\-one Spark engine](#all-in-one-spark-engine)
+
+Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
 # Overview
 [This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/README.md)
@@ -186,28 +193,13 @@ python -mpip install delta-lake==3.3.0
 ```
 
 ### PostgreSQL JDBC connector
-* The Spark JDBC PostgreSQL connector allows to read from and write to
-  tables on PostgreSQL database server
+* See
+  [Data Engineering Helpers - Knowledge Sharing - PostgreSQL - JDBC connector sub-section](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/README.md#postgresql-jdbc-connector)
 
-* Spark - JDBC to other databases (with example of Spark source code):
-  https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html
-  * Example on how to launch the Spark shell:
+* Example on how to launch a Spark shell:
 ```bash
-spark-shell --driver-class-path postgresql-42.7.5.jar --jars postgresql-42.7.5.jar
+spark-shell --driver-class-path postgresql-42.7.8.jar --jars postgresql-42.7.8.jar
 ```
-
-* PostgreSQL JDBC connector download page: https://jdbc.postgresql.org/download/
-
-* Download pages:
-  * Releases: https://repo1.maven.org/maven2/org/postgresql/postgresql/
-  * Snapshots:
-  https://oss.sonatype.org/content/repositories/snapshots/org/postgresql/postgresql/
-
-* Latest JARs, as of beginning of 2025
-  * General:
-  https://jdbc.postgresql.org/download/postgresql-9.4.1213.jar
-  * For Java 8+ and PostgreSQL 9.1+:
-  https://jdbc.postgresql.org/download/postgresql-42.7.5.jar
 
 ### Spark Connect
 * Launch the Spark Connect cluster from a dedicated terminal window/tab
