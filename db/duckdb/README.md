@@ -1,5 +1,5 @@
-Cheat Sheet - DuckDB
-====================
+Cheat Sheet - Databases - DuckDB
+================================
 
 # Table of Content (ToC)
 * [Overview](#overview)
