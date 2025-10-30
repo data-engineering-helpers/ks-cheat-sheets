@@ -1,5 +1,5 @@
-Knowledge Sharing (KS) - Cheat Sheet - DuckLake
-===============================================
+Cheat Sheet - Lake-houses - DuckLake
+====================================
 
 # Overview
 [This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-storage/ducklake/README.md)
