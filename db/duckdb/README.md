@@ -43,25 +43,36 @@ The following is an excerpt from https://duckdb.org/why_duckdb .
 > To start with, DuckDB is a [relational (table-oriented) DBMS](https://en.wikipedia.org/wiki/Relational_database)
 > that supports the [Structured Query Language (SQL)](https://en.wikipedia.org/wiki/SQL).
 
-## References
+# References
 * DuckDB home page: https://duckdb.org/
-   + Why DuckDB: https://duckdb.org/why_duckdb
+   * Why DuckDB: https://duckdb.org/why_duckdb
 * DuckDB project on GitHub: https://github.com/duckdb/duckdb
 * DuckDQ - Embeddable Data Quality (DQ) validation:
   https://github.com/tdoehmen/duckdq
 * [DuckDB - Modern Data Stack (MDS) in a box](https://duckdb.org/2022/10/12/modern-data-stack-in-a-box.html)
 * Connectivity with Arrow: https://duckdb.org/2023/08/04/adbc.html
 
-### DuckDB in Jupyter
+## Data Engineering helpers
+* [Data Engineering Helpers - Knowledge Sharing - DuckLake](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-storage/ducklake/README.md)
+* [Material for the Data platform - Modern Data Stack (MDS) in a box](https://github.com/data-engineering-helpers/mds-in-a-box/blob/main/README.md)
+* [Data Engineering Helpers - Knowledge Sharing - PostgreSQL](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/README.md)
+* [Data Engineering Helpers - Knowledge Sharing - Minio](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-storage/minio/README.md)
+* [Data Engineering Helpers - Knowledge Sharing - LakeFS](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-storage/lakefs/README.md)
+* [Data Engineering Helpers - Knowledge Sharing - Hive Metastore](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/hive-metastore/README.md)
+* [Data Engineering Helpers - Knowledge Sharing - Trino](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/trino/README.md)
+* [Data Engineering Helpers - Knowledge Sharing - Java world](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/java-world/README.md)
+* [Material for the Data platform - Data life cycle](https://github.com/data-engineering-helpers/data-life-cycle/blob/main/README.md)
+
+## DuckDB in Jupyter
 * [GitHub - Data Engineering Helpers - Cheat Sheet - Jupyter with PySpark and DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/jupyter/jupyter-pyspark-duckdb/)
 * [DuckDB docs - DuckDB in Jupyter](https://duckdb.org/docs/guides/python/jupyter.html)
 
-### Orchestrating DuckDB with dbt
+## Orchestrating DuckDB with dbt
 * [GitHub - dbt-duckdb](https://github.com/jwills/dbt-duckdb)
 
 ### A few DuckDB extra features
 
-#### Windowing with DuckDB
+### Windowing with DuckDB
 * Gettaing started with Windowing: https://duckdb.org/2021/10/13/windowing.html
 * Reference documentation: https://duckdb.org/docs/sql/functions/window_functions.html
 * Catching up with Windowing (in Feb. 2025): https://duckdb.org/2025/02/10/window-catchup.html
