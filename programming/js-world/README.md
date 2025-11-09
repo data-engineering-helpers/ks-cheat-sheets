@@ -27,6 +27,13 @@ programming with JavaScript.
 * Releases: https://github.com/nvm-sh/nvm/releases
   + Tags: https://github.com/nvm-sh/nvm/tags
 
+### MacOS
+* Install [NVM with HomeBrew](https://formulae.brew.sh/formula/nvm):
+```bash
+brew install nvm
+```
+
+### Generic
 * Install, or update, NVM (for parallel installation of Node) into `~/.nvm`:
 ```bash
 $ NVM_VER=$(curl -Ls https://api.github.com/repos/nvm-sh/nvm/releases/latest | grep 'tag_name' | cut -d'v' -f2 | cut -d'"' -f1)
@@ -37,14 +44,16 @@ $ NVM_VER=$(curl -Ls https://api.github.com/repos/nvm-sh/nvm/releases/latest | g
 ```bash
 $ pushd ~/.nvm && git pull && popd
 ```
-  * Reset the terminal:
+
+### Post-installation
+* Reset the terminal:
 ```bash
 $ exec bash
 ```
   * Check the version of NVM:
 ```bash
 $ nvm --version
-0.40.1
+0.40.3
 ```
 
 ## NodeJS
@@ -65,28 +74,28 @@ $ nvm ls-remote
 
 * Install some specific version of NodeJS:
 ```bash
-$ nvm install 22.13.1
-Downloading and installing node v22.13.1...
+$ nvm install 25.1.0
+Downloading and installing node v25.1.0...
 ...
-Now using node v22.13.1 (npm v10.9.2)
+Now using node v25.1.0 (npm v11.6.2)
 ```
 
 * Have a specific NodeJS version as global default:
 ```bash
-$ nvm use 22.13.1
-Now using node v22.13.1 (npm v10.9.2)
+$ nvm use 25.1.0
+Now using node v25.1.0 (npm v11.6.2)
 ```
 
 * Uninstall some older version of NodeJS:
 ```bash
-$ nvm uninstall 22.12.0
-Uninstalled node v22.12.0
+$ nvm uninstall v22.19.0
+Uninstalled node v22.19.0
 ```
 
 * Set default Node version on the Shell:
 ```bash
-$ nvm alias default 22.13.1
-default -> 22.13.1 (-> v22.13.1)
+$ nvm alias default 25.1.0
+default -> 25.1.0 (-> v25.1.0)
 ```
 
 ## Node modules
@@ -155,6 +164,12 @@ npm run your-package
 ```bash
 $ npm install -g yarn
 added 1 package in 883ms
+```
+
+* Check the version of Yarn:
+```bash
+$ yarn --version
+1.22.22
 ```
 
 ### TypeScript (TS)
