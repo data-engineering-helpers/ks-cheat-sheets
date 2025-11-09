@@ -22,10 +22,11 @@ programming with JavaScript.
 # Quick start
 
 ## NVM - Parallel installable NodeJS
-* Reference: https://github.com/nvm-sh/nvm#install--update-script
+* NVM stands for NodeJS Version Manager
+* Reference: https://github.com/nvm-sh/nvm
 
 * Releases: https://github.com/nvm-sh/nvm/releases
-  + Tags: https://github.com/nvm-sh/nvm/tags
+  * Tags: https://github.com/nvm-sh/nvm/tags
 
 ### MacOS
 * Install [NVM with HomeBrew](https://formulae.brew.sh/formula/nvm):
@@ -57,7 +58,9 @@ $ nvm --version
 ```
 
 ## NodeJS
-* Reference: https://nodejs.org/en/blog/release
+* Reference: https://nodejs.org/
+
+* NodeJS releases: https://nodejs.org/en/blog/release
 
 * List the installed versions of NodeJS:
 ```bash
@@ -158,7 +161,9 @@ npm run your-package
   as running it via `npm run`.
 
 ### Yarn
-* Reference: https://classic.yarnpkg.com/en/docs/install#mac-stable
+* Reference: https://yarnpkg.com/
+
+* How to install: https://classic.yarnpkg.com/en/docs/install
 
 * Install Yarn:
 ```bash

@@ -76,6 +76,10 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 ### PyEnv
 * GitHub repository: https://github.com/pyenv/pyenv
 
+### Uvicorn
+* Home page: https://uvicorn.dev/
+* GitHub repository: https://www.github.com/Kludex/uvicorn
+
 ## uv
 * GitHub repository: https://github.com/astral-sh/uv
 * Documentation: https://docs.astral.sh/uv/guides/projects/
