@@ -154,6 +154,27 @@ $ psql -h $PG_SVR -U ucdba -d ucdb -c "select 42 as nb;"
 (1 row)
 ```
 
+### Onpos database and user
+* Create on PostgreSQL a `onpos` database and a `onpos` user:
+```bash
+$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create database onpos;"
+CREATE DATABASE
+$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create user onpos with encrypted password '<onpos-pass>'; grant all privileges on database onpos to onpos;"
+CREATE ROLE
+GRANT
+$ psql -h $PG_SVR -U $PG_ADM_USR -d onpos -c "grant all on schema public to onpos;"
+GRANT
+```
+
+* Check that the access to the PostgreSQL database works:
+```bash
+$ psql -h $PG_SVR -U onpos -d onpos -c "select 42 as nb;"
+ nb 
+----
+ 42
+(1 row)
+```
+
 ### Hive Metastore database and user
 * Create on PostgreSQL a `metastore` database and a `metastore` user:
 ```bash
