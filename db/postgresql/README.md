@@ -112,6 +112,27 @@ $ psql -h $PG_SVR -U guest -c "select 42 as nb;"
 (1 row)
 ```
 
+### Tech Ref database and user
+* Create on PostgreSQL a `tech_ref` database and a `tech_ref` user:
+```bash
+$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create database tech_ref;"
+CREATE DATABASE
+$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create user tech_ref with encrypted password '<tech_ref-pass>'; grant all privileges on database tech_ref to tech_ref;"
+CREATE ROLE
+GRANT
+$ psql -h $PG_SVR -U $PG_ADM_USR -d tech_ref -c "grant all on schema public to tech_ref;"
+GRANT
+```
+
+* Check that the access to the PostgreSQL database works:
+```bash
+$ psql -h $PG_SVR -U tech_ref -d tech_ref -c "select 42 as nb;"
+ nb 
+----
+ 42
+(1 row)
+```
+
 ### SQLMesh database and user
 * Create on PostgreSQL a `sqlmesh` database and a `sqlmesh` user:
 ```bash
@@ -154,21 +175,21 @@ $ psql -h $PG_SVR -U ucdba -d ucdb -c "select 42 as nb;"
 (1 row)
 ```
 
-### Onpos database and user
-* Create on PostgreSQL a `onpos` database and a `onpos` user:
+### Ontos database and user
+* Create on PostgreSQL a `ontos` database and a `ontos` user:
 ```bash
-$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create database onpos;"
+$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create database ontos;"
 CREATE DATABASE
-$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create user onpos with encrypted password '<onpos-pass>'; grant all privileges on database onpos to onpos;"
+$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create user ontos with encrypted password '<ontos-pass>'; grant all privileges on database ontos to ontos;"
 CREATE ROLE
 GRANT
-$ psql -h $PG_SVR -U $PG_ADM_USR -d onpos -c "grant all on schema public to onpos;"
+$ psql -h $PG_SVR -U $PG_ADM_USR -d ontos -c "grant all on schema public to ontos;"
 GRANT
 ```
 
 * Check that the access to the PostgreSQL database works:
 ```bash
-$ psql -h $PG_SVR -U onpos -d onpos -c "select 42 as nb;"
+$ psql -h $PG_SVR -U ontos -d ontos -c "select 42 as nb;"
  nb 
 ----
  42
