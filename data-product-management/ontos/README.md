@@ -45,34 +45,61 @@ explains how to install and to use
 
 # Getting started
 
+## Python
+* Check that the minor version of Python is 3.10:
+```bash
+$ python -V
+Python 3.10.19
+```
+
+* If not in 3.10 version, it may be changed easily with, say PyEnv:
+```bash
+$ pyenv local 3.10
+```
+
+* If not already done so, update `pip`, the Python package manager:
+```bash
+$ python -mpip install -U pip
+```
+
+* If not already done so, install the Python virtual environment module:
+```bash
+$ python -mpip install -U virtualenv
+```
+
 ## Backend (Python and FastAPI)
 * Change directory to `src/backend`:
 ```bash
 $ cd src/backend
 ```
 
-* Create a Python virtual environment, _e.g._, with Python 3.12,
-  and activate it
+* Create a Python virtual environment, with Python 3.10, and activate it:
 ```bash
-$ virtualenv .venv --python 3.12
+$ python -mvirtualenv .venv --python 3.10
 $ source .venv/bin/activate
 ```
 
 * Install the Python dependencies:
 ```bash
-$ python -mpip install -U pip
 $ python -mpip install -r requirements.txt
 ```
 
-* Build the static part (there is a dependency on JavaScript tools, and in particular
-  Yarn and Vite)
+* Build the static part (there is a dependency on JavaScript tools,
+  and in particular Yarn and Vite):
 ```bash
-yarn build
+$ pushd .. && yarn build static && popd
+```
+
+* Setup the environment variable for the port of the backend (by default,
+  it is set to `8000`, but that port may already be taken by other
+  applications):
+```bash
+$ ONTOS_BCK_PORT="8000"
 ```
 
 * Launch the backend, for instance with [Uvicorn](https://uvicorn.dev/):
 ```bash
-$ uvicorn src.app:app --reload --host 0.0.0.0 --port 8060
+$ uvicorn src.app:app --reload --host 0.0.0.0 --port $ONTOS_BCK_PORT
 ```
 
 ## Frontend (React and TypeScript)
@@ -81,9 +108,9 @@ $ uvicorn src.app:app --reload --host 0.0.0.0 --port 8060
 $ cd src/frontend
 ```
 
-* Setup the port of the backend:
+* (Optionally,) Setup the port of the backend:
 ```bash
-$ sed -i.bak -e 's/8000/8060/g' vite.config.ts
+$ sed -i.bak -e 's/8000/$ONTOS_BCK_PORT/g' vite.config.ts
 $ rm -f vite.config.ts.bak
 ```
 
