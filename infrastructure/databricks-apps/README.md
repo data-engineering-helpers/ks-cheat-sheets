@@ -107,12 +107,12 @@ select * from samples.nyctaxi.trips limit 10;
   into them
 
 * For this cheat sheet, it is assumed that the catalog is `poc` and the schema
-  (aka database) is `default`
+  (aka database) is `apps`
 
 * It means that, thanks to the
   [Catalog Explorer UI](https://docs.databricks.com/aws/en/catalog-explorer/),
   it may usually be browsed on
-  https://your-workspace.cloud.databricks.com/explore/data/poc/default/
+  https://your-workspace.cloud.databricks.com/explore/data/poc/apps/
 	
 * And all the Databricks workspaces have the NYC taxi dataset
   (`samples.nyctaxi.trips`) available for everyone:
@@ -127,10 +127,36 @@ select * from samples.nyctaxi.trips limit 10;
   It should therefore be available through
   https://your-workspace.cloud.databricks.com/compute/database-instances/lakebase-poc
 
-* Note that the credentials for the admin users are temporary. It is therefore advised
-  to create specific users/roles dedicated to every use cases. For instance:
-  * [Ontos database and user](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/README.md#ontos-database-and-user)
+* Note that the credentials for the admin users are generated dynamically and
+  temporary. It is therefore advised to create specific users/roles dedicated
+  to every use cases. For instance:
   * [NYC taxi database and user](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/README.md#nyc-taxi-database-and-user)
+  * [Ontos database and user](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/README.md#ontos-database-and-user)
+
+* For that cheat sheet, it is assumed that the following databases, users/roles
+  and schemas have been created:
+  * For the NYC taxi application:
+    * Database: `nyctaxi`
+    * User/role: `nyctaxi`
+    * Schemas: `public` and `apps`
+  * For Ontos:
+    * Database: `ontos`
+    * User/role: `ontos`
+    * Schema: `public`
+
+* Note that when Databricks synchronizes a table from the Unity Catalog towards
+  a Lakebase table, it creates that table in a Postgres schema named according
+  to the target schema in Unity Catalog
+  * For this cheat sheet, the target Unity Catalog schema is assumed to be `apps`
+  (in the `poc` catalog):
+  https://your-workspace.cloud.databricks.com/explore/data/poc/apps/
+  * The Postgres user then needs to be granted access rights on that schema.
+  It may be granted with the following command (already detailed in the
+  [Postgres cheat sheet referenced above](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/README.md#nyc-taxi-database-and-user)):
+```bash
+$ psql -h $PG_SVR -U $PG_ADM_USR -d nyctaxi -c "grant all on schema apps to nyctaxi;"
+GRANT
+```
 
 # NYC taxi application
 * The example app displays recent taxi trips in both table and chart format
@@ -144,13 +170,20 @@ select * from samples.nyctaxi.trips limit 10;
   Say that the details are as following:
     * Source table: `samples.nyctaxi.trips`, which may usually be browsed on
 	https://your-workspace.cloud.databricks.com/explore/data/samples/nyctaxi/trips
-	* Target catalog, schema and table: `poc.default.nyctaxis`, which may then be browsed on
+	* Target catalog, schema and table: `poc.apps.nyctaxis`, which may then be browsed on
 	(once the synchronization pipeline has completed)
-	https://your-workspace.cloud.databricks.com/explore/data/poc/default/nyctaxis
+	https://your-workspace.cloud.databricks.com/explore/data/poc/apps/nyctaxis
 	* Target Lakebase instance and database
-  * For this cheat sheet, it is assumed that the NYC taxi dataset has been replicated into
-
-
-* The NYC taxi
+  * For this cheat sheet, it is assumed that the NYC taxi dataset has been
+  replicated into Lakebase with the following details:
+    * Database: `nyctaxi`
+	* Schema: `apps`
+	* Table: `nyctaxis`
+  * The synchronized table may therefore be browsed thanks to the following
+  command:
+```bash
+$ psql -h $PG_SVR -U nyctaxi -d nyctaxi -c "select * from apps.nyctaxis limit 10;"
+$ psql -h $PG_SVR -U nyctaxi -d nyctaxi -c "\copy (select * from apps.nyctaxis limit 10) to 'nyctaxi-sample.csv' delimiter ',' csv header;"
+```
 
 # Ontos
