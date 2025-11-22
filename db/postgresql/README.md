@@ -11,8 +11,11 @@ Cheat Sheet - PostgreSQL
   * [Quick setup for the use cases](#quick-setup-for-the-use-cases)
   * [Create a database and associated user](#create-a-database-and-associated-user)
     * [Guest database and user](#guest-database-and-user)
+    * [Tech Ref database and user](#tech-ref-database-and-user)
     * [SQLMesh database and user](#sqlmesh-database-and-user)
     * [Unity Catalog database and user](#unity-catalog-database-and-user)
+    * [Ontos database and user](#ontos-database-and-user)
+    * [NYC taxi database and user](#nyc-taxi-database-and-user)
     * [Hive Metastore database and user](#hive-metastore-database-and-user)
     * [MinIO database and user](#minio-database-and-user)
     * [LakeFS database and user](#lakefs-database-and-user)
@@ -190,6 +193,29 @@ GRANT
 * Check that the access to the PostgreSQL database works:
 ```bash
 $ psql -h $PG_SVR -U ontos -d ontos -c "select 42 as nb;"
+ nb 
+----
+ 42
+(1 row)
+```
+
+### NYC taxi database and user
+* Create on PostgreSQL a `nyctaxi` database and a `nyctaxi` user:
+```bash
+$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create database nyctaxi;"
+CREATE DATABASE
+$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create user nyctaxi with encrypted password '<nyctaxi-pass>'; grant all privileges on database nyctaxi to nyctaxi;"
+CREATE ROLE
+GRANT
+$ psql -h $PG_SVR -U $PG_ADM_USR -d nyctaxi -c "grant all on schema public to nyctaxi;"
+GRANT
+$ psql -h $PG_SVR -U $PG_ADM_USR -d nyctaxi -c "grant all on schema ontos to nyctaxi;"
+GRANT
+```
+
+* Check that the access to the PostgreSQL database works:
+```bash
+$ psql -h $PG_SVR -U nyctaxi -d nyctaxi -c "select 42 as nb;"
  nb 
 ----
  42

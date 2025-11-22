@@ -100,7 +100,57 @@ select * from samples.nyctaxi.trips limit 10;
 * Seamless deployment using
   [Databricks Asset Bundles (DABs)](https://docs.databricks.com/en/dev-tools/bundles/index.html)
 
+# Pre-requisites
+
+## Unity Catalog
+* A catalog and a schema need to be setup so that new tables may be created
+  into them
+
+* For this cheat sheet, it is assumed that the catalog is `poc` and the schema
+  (aka database) is `default`
+
+* It means that, thanks to the
+  [Catalog Explorer UI](https://docs.databricks.com/aws/en/catalog-explorer/),
+  it may usually be browsed on
+  https://your-workspace.cloud.databricks.com/explore/data/poc/default/
+	
+* And all the Databricks workspaces have the NYC taxi dataset
+  (`samples.nyctaxi.trips`) available for everyone:
+  https://your-workspace.cloud.databricks.com/explore/data/samples/nyctaxi/trips
+
+## Lakebase
+* A Lakebase/Postgres compute instance needs to be setup. Lakebase instances
+  are usually available in the Lakebase tab of the Compute menu, or directly
+  with https://your-workspace.cloud.databricks.com/compute/database-instances
+  
+* For this cheat sheet, it is assumed that the Lakebase instance is called `lakebase-poc`.
+  It should therefore be available through
+  https://your-workspace.cloud.databricks.com/compute/database-instances/lakebase-poc
+
+* Note that the credentials for the admin users are temporary. It is therefore advised
+  to create specific users/roles dedicated to every use cases. For instance:
+  * [Ontos database and user](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/README.md#ontos-database-and-user)
+  * [NYC taxi database and user](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/README.md#nyc-taxi-database-and-user)
+
 # NYC taxi application
-* 
+* The example app displays recent taxi trips in both table and chart format
+  and automatically polls for new trips
+  * It reads data from a Lakebase synced table, which mirrors a Delta table
+  in Unity Catalog
+  * The first step is thus to setup that
+  [synchronization pipeline](https://docs.databricks.com/aws/en/oltp/instances/sync-data/sync-table).
+  That may fairly easily be done with the
+  [Catalog Explorer UI](https://docs.databricks.com/aws/en/catalog-explorer/).
+  Say that the details are as following:
+    * Source table: `samples.nyctaxi.trips`, which may usually be browsed on
+	https://your-workspace.cloud.databricks.com/explore/data/samples/nyctaxi/trips
+	* Target catalog, schema and table: `poc.default.nyctaxis`, which may then be browsed on
+	(once the synchronization pipeline has completed)
+	https://your-workspace.cloud.databricks.com/explore/data/poc/default/nyctaxis
+	* Target Lakebase instance and database
+  * For this cheat sheet, it is assumed that the NYC taxi dataset has been replicated into
+
+
+* The NYC taxi
 
 # Ontos
