@@ -26,6 +26,7 @@ utilities such as `kubectl` and interacting with remote Kubernetes services
 # References
 
 ## Data Engineering helpers
+* [Data Engineering Helpers - Knowledge Sharing - Docker](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/infrastructure/docker/README.md)
 * [Architecture principles for data engineering pipelines on the Modern Data Stack (MDS)](https://github.com/data-engineering-helpers/architecture-principles)
 * [Data Engineering Helpers - Knowledge Sharing - AWS](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/clouds/aws/)
 * [Data Engineering Helpers - Knowledge Sharing - PostgreSQL](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/README.md)
@@ -37,7 +38,8 @@ utilities such as `kubectl` and interacting with remote Kubernetes services
 * Container-related utilities, such as Docker and Kubernetes command-line
   interfaces (_resp._ `docker` and `kubectl`) may be installed from all-in-one
   desktop applications like
-  [Rancher Desktop](https://rancherdesktop.io/), [Podman desktop](https://podman-desktop.io/) and
+  [Rancher Desktop](https://rancherdesktop.io/),
+  [Podman desktop](https://podman-desktop.io/) and
   [Docker Desktop](https://www.docker.com/products/docker-desktop/) (be aware
   that the license of that latter usually does not allow to use it in
   a corporate environment without the company signing a global agreement

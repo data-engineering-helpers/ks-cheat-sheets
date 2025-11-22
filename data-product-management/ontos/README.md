@@ -20,7 +20,12 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 # Overview
 [This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-product-management/ontos/README.md)
 explains how to install and to use
-[Ontos](https://github.com/larsgeorge/ontos).
+[Ontos](https://github.com/databrickslabs/ontos) locally.
+
+For a production-ready deployment, a
+[dedicated cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/infrastructure/databricks-apps/README.md)
+explains how to do it with
+[Databricks Apps](https://docs.databricks.com/aws/en/dev-tools/databricks-apps/).
 
 * The Ontos frontend (based on React and TypeScript) and backend (based on FastAPI)
   applications may run locally, on a laptop, or on a virtual machine (VM)
@@ -40,6 +45,7 @@ explains how to install and to use
 * [Data Engineering Helpers - Knowledge Sharing - Unity Catalog (UC)](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/unity-catalog/)
 * [Data Engineering Helpers - Knowledge Sharing - JS world](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/js-world/)
 * [Data Engineering Helpers - Knowledge Sharing - Python](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/python/)
+* [Data Engineering Helpers - Knowledge Sharing - Databricks Apps](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/infrastructure/databricks-apps/README.md)
 * [Material for the Data platform - Data life cycle](https://github.com/data-engineering-helpers/data-life-cycle)
 * [Material for the Data platform - Modern Data Stack (MDS) in a box](https://github.com/data-engineering-helpers/mds-in-a-box)
 
@@ -122,7 +128,7 @@ $ yarn dev:frontend
 # Setup
 
 ## Shell
-* Reference: https://github.com/larsgeorge/ontos?tab=readme-ov-file#environment-configuration
+* Reference: https://github.com/databrickslabs/ontos?tab=readme-ov-file#environment-configuration
 * Setup a few environment variables. Shell aliases are used here in order to switch
   to various environemtns (_e.g._, local, production)
 

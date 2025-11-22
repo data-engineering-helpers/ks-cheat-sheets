@@ -41,7 +41,7 @@ containers and images.
 
 ## Data Engineering helpers
 * [Material for the Data platform - Modern Data Stack (MDS) in a box](https://github.com/data-engineering-helpers/mds-in-a-box/blob/main/README.md)
-* [Data Engineering Helpers - Knowledge Sharing - Cheat Sheets (this Git repository)](https://github.com/data-engineering-helpers/ks-cheat-sheets)
+* [Data Engineering Helpers - Knowledge Sharing - Kubernetes (k8s)](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/infrastructure/k8s/README.md)
 
 ## Docker utilties and alternatives
 

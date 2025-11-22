@@ -48,6 +48,8 @@ on premises, _e.g._, on a laptop or on a virtual machine (VM).
 
 ## Data Engineering helpers
 * [Data Engineering Helpers - Knowledge Sharing - PostgreSQL](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/README.md#unity-catalog-database-and-user)
+* [Data Engineering Helpers - Knowledge Sharing - Lakebase](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/lakebase/README.md)
+* [Data Engineering Helpers - Knowledge Sharing - Databricks Apps](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/infrastructure/databricks-apps/README.md)
 * [Data Engineering Helpers - Knowledge Sharing - Hive Metastore](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/hive-metastore/README.md)
 * [Data Engineering Helpers - Knowledge Sharing - Egeria](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/egeria/README.md)
 * [Material for the Data platform - Modern Data Stack (MDS) in a box](https://github.com/data-engineering-helpers/mds-in-a-box/blob/main/README.md)
