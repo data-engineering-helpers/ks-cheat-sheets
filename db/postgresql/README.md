@@ -193,6 +193,18 @@ GRANT
 GRANT
 ```
 
+* Note that Databricks App will generate a user name with dashes (`-`) in it,
+  which makes `psql` report a syntax error if it is not quoted. As there are
+  already quotes around the SQL command, those quotes have to be escaped with
+  a backslash (`\`). It gives something like:
+```bash
+$ PG_USR_SP="7feb8928-6e75-439f-b9bc-9317dfebd2f6"
+$ psql -h $PG_SVR -U $PG_ADM_USR -d ontos -c "grant all privileges on database ontos to \"$PG_USR_SP\"; grant all on schema ontos to \"$PG_USR_SP\"; grant all privileges on all tables in schema ontos to \"$PG_USR_SP\";"
+GRANT
+GRANT
+GRANT
+```
+
 * Check that the access to the PostgreSQL database works:
 ```bash
 $ psql -h $PG_SVR -U ontos -d ontos -c "select 42 as nb;"
