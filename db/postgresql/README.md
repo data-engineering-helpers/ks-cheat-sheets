@@ -188,6 +188,9 @@ CREATE ROLE
 GRANT
 $ psql -h $PG_SVR -U $PG_ADM_USR -d ontos -c "grant all on schema public to ontos;"
 GRANT
+$ psql -h $PG_SVR -U $PG_ADM_USR -d ontos -c "grant all on schema ontos to ontos; grant all privileges on all tables in schema ontos to ontos;"
+GRANT
+GRANT
 ```
 
 * Check that the access to the PostgreSQL database works:
@@ -209,7 +212,8 @@ CREATE ROLE
 GRANT
 $ psql -h $PG_SVR -U $PG_ADM_USR -d nyctaxi -c "grant all on schema public to nyctaxi;"
 GRANT
-$ psql -h $PG_SVR -U $PG_ADM_USR -d nyctaxi -c "grant all on schema ontos to nyctaxi;"
+$ psql -h $PG_SVR -U $PG_ADM_USR -d nyctaxi -c "grant all on schema ontos to nyctaxi; grant all privileges on all tables in schema ontos to nyctaxi;"
+GRANT
 GRANT
 ```
 
