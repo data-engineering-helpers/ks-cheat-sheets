@@ -59,6 +59,7 @@ Two specific applications are detailed in this cheat sheet:
 * [Databricks docs - Service Principals](https://docs.databricks.com/aws/en/admin/users-groups/service-principals)
 * [Databricks docs - Databricks Asset Bundles (DABs)](https://docs.databricks.com/aws/en/dev-tools/bundles/)
   * [Databricks docs - DAB - Variables](https://docs.databricks.com/aws/en/dev-tools/bundles/variables)
+* [Databricks docs - Databricks CLI](https://docs.databricks.com/aws/en/dev-tools/cli)
 
 ## NYC taxis
 * [Databricks docs - Unity Catalog datasets - NYC taxis](https://docs.databricks.com/aws/en/discover/databricks-datasets#unity-catalog-datasets)
@@ -102,6 +103,26 @@ select * from samples.nyctaxi.trips limit 10;
   [Databricks Asset Bundles (DABs)](https://docs.databricks.com/en/dev-tools/bundles/index.html)
 
 # Pre-requisites
+
+## Databricks CLI
+* The [Databricks CLI](https://docs.databricks.com/aws/en/dev-tools/cli)
+  may be [installed](https://docs.databricks.com/aws/en/dev-tools/cli/install)
+  with the native packager. For instance, on MacOS:
+```bash
+$ brew tap databricks/tap
+$ brew install databricks
+```
+
+* The Databricks CLI configuration is usually stored in `~/.databrickscfg`.
+  It contains profiles for every workspace the user has access to. Such
+  profiles are usually like the following, that is, they specify the workspace
+  URL and the
+  [private access token (PAT)](https://docs.databricks.com/aws/en/dev-tools/auth/pat):
+```txt
+[dkt-sdbx]
+host = https://company-dev.cloud.databricks.com
+token = dapi00aa00aaxxxxx00
+```
 
 ## Unity Catalog
 * A catalog and a schema need to be setup so that new tables may be created
