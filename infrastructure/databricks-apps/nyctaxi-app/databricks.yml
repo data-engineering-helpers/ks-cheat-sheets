@@ -1,0 +1,34 @@
+#
+# File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/infrastructure/databricks-apps/nyctaxi-app/databricks.yml
+#
+# This is a Databricks asset bundle definition for apps-lakebase-dabs.
+# See:
+# * Documentation: https://docs.databricks.com/dev-tools/bundles/
+# * Original file: https://github.com/databricks-solutions/databricks-dab-examples/blob/main/knowledge-base/app-react-lakebase/databricks.yml
+#
+
+bundle:
+  name: poc-lakebase-nyctaxi-app
+
+# Uploads the app/frontend/dist folder when deploying the bundle
+sync:
+  include:
+    - app/frontend/dist
+
+include:
+  - resources/*.yml
+
+# Override the catalog and schema for the synced table
+variables:
+  catalog:
+    default: poc
+  schema:
+    default: apps
+
+# Add more environments as needed
+targets:
+  dev:
+    default: true
+    mode: development
+    workspace:
+      host: https://company-dev.cloud.databricks.com/
