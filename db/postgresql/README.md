@@ -116,20 +116,20 @@ $ psql -h $PG_SVR -U guest -c "select 42 as nb;"
 ```
 
 ### Tech Ref database and user
-* Create on PostgreSQL a `tech_ref` database and a `tech_ref` user:
+* Create on PostgreSQL a `techref` database and a `techref` user:
 ```bash
-$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create database tech_ref;"
+$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create database techref;"
 CREATE DATABASE
-$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create user tech_ref with encrypted password '<tech_ref-pass>'; grant all privileges on database tech_ref to tech_ref;"
+$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create user techref with encrypted password '<techref-pass>'; grant all privileges on database techref to techref;"
 CREATE ROLE
 GRANT
-$ psql -h $PG_SVR -U $PG_ADM_USR -d tech_ref -c "grant all on schema public to tech_ref;"
+$ psql -h $PG_SVR -U $PG_ADM_USR -d techref -c "grant all on schema public to techref; grant all on schema techref to techref;"
 GRANT
 ```
 
 * Check that the access to the PostgreSQL database works:
 ```bash
-$ psql -h $PG_SVR -U tech_ref -d tech_ref -c "select 42 as nb;"
+$ psql -h $PG_SVR -U techref -d techref -c "select 42 as nb;"
  nb 
 ----
  42
