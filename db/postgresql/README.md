@@ -12,6 +12,7 @@ Cheat Sheet - PostgreSQL
   * [Create a database and associated user](#create-a-database-and-associated-user)
     * [Guest database and user](#guest-database-and-user)
     * [Tech Ref database and user](#tech-ref-database-and-user)
+    * [Automated governance database and user](#automated-governance-database-and-user)
     * [SQLMesh database and user](#sqlmesh-database-and-user)
     * [Unity Catalog database and user](#unity-catalog-database-and-user)
     * [Ontos database and user](#ontos-database-and-user)
@@ -123,13 +124,34 @@ CREATE DATABASE
 $ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create user techref with encrypted password '<techref-pass>'; grant all privileges on database techref to techref;"
 CREATE ROLE
 GRANT
-$ psql -h $PG_SVR -U $PG_ADM_USR -d techref -c "grant all on schema public to techref; grant all on schema techref to techref;"
+$ psql -h $PG_SVR -U $PG_ADM_USR -d techref -c "grant all on schema public to techref; create schema techref; grant all on schema techref to techref;"
 GRANT
 ```
 
 * Check that the access to the PostgreSQL database works:
 ```bash
 $ psql -h $PG_SVR -U techref -d techref -c "select 42 as nb;"
+ nb 
+----
+ 42
+(1 row)
+```
+
+### Automated governance database and user
+* Create on PostgreSQL a `autogov` database and a `autogov` user:
+```bash
+$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create database autogov;"
+CREATE DATABASE
+$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create user autogov with encrypted password '<autogov-pass>'; grant all privileges on database autogov to autogov;"
+CREATE ROLE
+GRANT
+$ psql -h $PG_SVR -U $PG_ADM_USR -d autogov -c "grant all on schema public to autogov; create schema autogov; grant all on schema autogov to autogov;"
+GRANT
+```
+
+* Check that the access to the PostgreSQL database works:
+```bash
+$ psql -h $PG_SVR -U autogov -d autogov -c "select 42 as nb;"
  nb 
 ----
  42
