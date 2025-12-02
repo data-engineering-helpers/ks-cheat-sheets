@@ -21,34 +21,17 @@ Cheat Sheet - Spark
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
 # Overview
-[This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/README.md)
+[This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/README.md)
 explains how to install and to use
-[SQLMesh](https://sqlmesh.readthedocs.io/en/stable/), _e.g._,
+[Apache Spark](https://spark.apache.org), _e.g._,
 on a laptop or on a virtual machine (VM).
-
-> [SQLMesh](https://sqlmesh.readthedocs.io/en/stable/) is
-> a next-generation data transformation framework designed to ship
-> data quickly, efficiently, and without error. Data teams can efficiently
-> run and deploy data transformations written in SQL or Python with
-> visibility and control at any size. It is more than just a
-> [dbt alternative](https://tobikodata.com/reduce_costs_with_cron_and_partitions.html).
-
-SQLMesh requires some database to store its state.
-[DuckDB](https://duckdb.org/) is the database by default,
-as it is small and efficient enough to be available virtually everywhere:
-> [DuckDB](https://duckdb.org/) is an embedded database, similar to SQLite,
-> but designed for OLAP-style analytics. It is crazy fast and allows you
-> to read and write data stored in CSV, JSON, and Parquet files directly,
-> without requiring you to load them into the database first.
-
-For production-ready deployments, other database backends, like PostgreSQL,
-may be advised.
 
 # References
 
 ## Data Engineering helpers
 * [Data Engineering Helpers - Knowledge Sharing - Python](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/python/)
   * [Data Engineering Helpers - Knowledge Sharing - Jupyter, PySpark and DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/jupyter/jupyter-pyspark-duckdb/)
+* [Data Engineering Helpers - Knowledge Sharing - Spark Declarative Pipelines](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/declarative-pipelines/)
 * [Data Engineering Helpers - Knowledge Sharing - Unity Catalog (UC)](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/unity-catalog/)
 * [Data Engineering Helpers - Knowledge Sharing - SQLMesh](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/)
 * [Data Engineering Helpers - Knowledge Sharing - DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/)
@@ -56,13 +39,26 @@ may be advised.
 * [Material for the Data platform - Modern Data Stack (MDS) in a box](https://github.com/data-engineering-helpers/mds-in-a-box)
 
 ## Spark
-* [Apache Spark - Download Spark manually](https://spark.apache.org/docs/latest/api/python/getting_started/install.html#manually-downloading)
+* [Apache Spark - Download Spark](https://spark.apache.org/docs/latest/api/python/getting_started/install.html)
+  * The easiest way to install is through Pypi with something like
+  `pip install pyspark`
 * [Apache Spark - Doc - Getting started / Installation](https://spark.apache.org/docs/latest/api/python/getting_started/install.html)
 
 ### Spark Connect
 * [Apache Spark - Doc - Spark Connect - Overview](https://spark.apache.org/docs/latest/spark-connect-overview.html)
 * [Apache Spark - Doc - Spark Connect - Quick start](https://spark.apache.org/docs/latest/api/python/getting_started/quickstart_connect.html)
 
+### Delta Lake
+* [Delta Lake documentation](https://docs.delta.io/)
+  * [Delta Lake - Quick start guide](https://docs.delta.io/latest/quick-start.html)
+* [Delta Lake - Compatibility matrix with Spark](https://docs.delta.io/releases/)
+* [GitHub - Delta Lake - `delta` repository](https://github.com/delta-io/delta)
+* [Maven central - Delta Spark: `io.delta/delta-spark`](https://mvnrepository.com/artifact/io.delta/delta-spark)
+
+### Spark Declarative Pipelines
+* A
+  [specific cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/declarative-pipelines/)
+  is dedicated to that feature
 
 ## Unity Catalog (UC)
 * Home page: https://www.unitycatalog.io
