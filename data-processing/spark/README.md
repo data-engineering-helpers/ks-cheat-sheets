@@ -7,6 +7,8 @@ Cheat Sheet - Spark
   * [Data Engineering helpers](#data-engineering-helpers)
   * [Spark](#spark)
     * [Spark Connect](#spark-connect)
+    * [Delta Lake](#delta-lake)
+    * [Spark Declarative Pipelines](#spark-declarative-pipelines)
   * [Unity Catalog (UC)](#unity-catalog-uc)
 * [Installation](#installation)
   * [Clone this repository](#clone-this-repository)
@@ -31,6 +33,7 @@ on a laptop or on a virtual machine (VM).
 ## Data Engineering helpers
 * [Data Engineering Helpers - Knowledge Sharing - Python](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/python/)
   * [Data Engineering Helpers - Knowledge Sharing - Jupyter, PySpark and DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/jupyter/jupyter-pyspark-duckdb/)
+* [Data Engineering Helpers - Knowledge Sharing - Delta Lake](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/delta/)
 * [Data Engineering Helpers - Knowledge Sharing - Spark Declarative Pipelines](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/declarative-pipelines/)
 * [Data Engineering Helpers - Knowledge Sharing - Unity Catalog (UC)](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/unity-catalog/)
 * [Data Engineering Helpers - Knowledge Sharing - SQLMesh](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/)

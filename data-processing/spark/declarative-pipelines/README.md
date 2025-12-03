@@ -2,13 +2,24 @@ Cheat Sheet - Spark Declarative Pipelines
 =========================================
 
 # Table of Content (ToC)
+* [Overview](#overview)
+* [References](#references)
+  * [Data Engineering helpers](#data-engineering-helpers)
+  * [Delta Lake](#delta-lake)
+  * [Spark Declarative Pipelines](#spark-declarative-pipelines)
+* [Setup](#setup)
+  * [Java](#java)
+  * [Delta Lake](#delta-lake-1)
+  * [Spark 4\.1\.0 preview](#spark-410-preview)
+  * [Delta Lake](#delta-lake-2)
 
+Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
 # Overview
 [This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/declarative-pipelines/README.md)
 explains how to install and to use
-[Spark Declarative Pipelines](https://spark.apache.org/docs/4.1.0-preview4/declarative-pipelines-programming-guide.html), _e.g._,
-on a laptop or on a virtual machine (VM).
+[Spark Declarative Pipelines](https://spark.apache.org/docs/4.1.0-preview4/declarative-pipelines-programming-guide.html),
+_e.g._, on a laptop or on a virtual machine (VM).
 
 Note that, since the Declarative Pipelines feature is available in Apache Spark only
 from the yet to be released 4.1 version, as of end 2025 it has to be tested on preview
@@ -26,6 +37,7 @@ states that it is due for end of January 2026.
 * [Data Engineering Helpers - Knowledge Sharing - Python](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/python/)
   * [Data Engineering Helpers - Knowledge Sharing - Jupyter, PySpark and DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/jupyter/jupyter-pyspark-duckdb/)
 * [Data Engineering Helpers - Knowledge Sharing - Spark](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/)
+* [Data Engineering Helpers - Knowledge Sharing - Delta Lake](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/delta/)
 * [Data Engineering Helpers - Knowledge Sharing - Unity Catalog (UC)](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/unity-catalog/)
 * [Data Engineering Helpers - Knowledge Sharing - SQLMesh](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/)
 * [Data Engineering Helpers - Knowledge Sharing - DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/)
@@ -58,6 +70,10 @@ openjdk version "21.0.9" 2025-10-21 LTS
 OpenJDK Runtime Environment Corretto-21.0.9.10.1 (build 21.0.9+10-LTS)
 OpenJDK 64-Bit Server VM Corretto-21.0.9.10.1 (build 21.0.9+10-LTS, mixed mode, sharing)
 ```
+
+## Delta Lake
+* Reference:
+  [Data Engineering Helpers - Knowledge Sharing - Delta Lake](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/delta/)
 
 ## Spark 4.1.0 preview
 * Specify the Spark version:
