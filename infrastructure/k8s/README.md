@@ -5,23 +5,34 @@ Cheat Sheet - Kubernetes (K8S)
 * [Overview](#overview)
 * [References](#references)
   * [Data Engineering helpers](#data-engineering-helpers)
+  * [Flux](#flux)
 * [Installation](#installation)
   * [On laptops and desktops](#on-laptops-and-desktops)
   * [Linux](#linux)
 * [Installation](#installation-1)
   * [Shell variables and aliases](#shell-variables-and-aliases)
-* [Trouble\-shooting \- Getting started with Kubernetes](#trouble-shooting---getting-started-with-kubernetes)
+  * [Flux](#flux-1)
+    * [MacOS](#macos)
+    * [Linux](#linux-1)
+    * [All platforms \- Flux](#all-platforms---flux)
+  * [Helm](#helm)
+* [Getting started](#getting-started)
   * [Switch to a specific cluster and namespace](#switch-to-a-specific-cluster-and-namespace)
   * [Launch an elementary interactive Shell](#launch-an-elementary-interactive-shell)
   * [Launch a simple PostgreSQL database service](#launch-a-simple-postgresql-database-service)
+  * [Work with Flux](#work-with-flux)
+  * [Work with Helm](#work-with-helm)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
 # Overview
 [This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/infrastructure/k8s/README.md)
-explains how to use Kubernetes services, that is, installing Kubernetes client
-utilities such as `kubectl` and interacting with remote Kubernetes services
-(_e.g._, pods, services, jobs).
+explains how to use [Kubernetes services](https://kubernetes.io/),
+that is, installing Kubernetes client utilities such as `kubectl` and interacting
+with remote Kubernetes services (_e.g._, pods, services, jobs).
+
+The documentation also includes related tools like [Flux](https://fluxcd.io)
+and [Helm](https://helm.sh).
 
 # References
 
@@ -31,6 +42,24 @@ utilities such as `kubectl` and interacting with remote Kubernetes services
 * [Data Engineering Helpers - Knowledge Sharing - AWS](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/clouds/aws/)
 * [Data Engineering Helpers - Knowledge Sharing - PostgreSQL](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/README.md)
 * [Cloud helpers - Kubernetes The Hard Way - Bare Metal with VM and Containers](https://github.com/cloud-helpers/kubernetes-hard-way-bare-metal)
+
+## Helm
+* Helm home page: https://helm.sh/
+* Overview:
+> The package manager for Kubernetes.
+> Helm is the best way to find, share, and use software built for Kubernetes.
+
+## Flux
+* [FluxCD - Doc - Core concepts](https://fluxcd.io/flux/concepts/)
+* Overview:
+> Flux is a tool for keeping Kubernetes clusters in sync with sources of
+> configuration (like Git repositories), and automating updates
+> to configuration when there is new code to deploy.
+>
+> Flux is built from the ground up to use Kubernetes' API extension system,
+> and to integrate with Prometheus and other core components of the Kubernetes
+> ecosystem. Flux supports multi-tenancy and support for syncing an arbitrary
+> number of Git repositories.
 
 # Installation
 
@@ -89,7 +118,43 @@ _EOF
 $ . ~/.bash_aliases
 ```
 
-# Trouble-shooting - Getting started with Kubernetes
+## Flux
+* [FluxCD - Doc - Installation](https://fluxcd.io/flux/installation/)
+
+### MacOS
+* Flux formalae in HomeBrew:
+  https://github.com/fluxcd/homebrew-tap/blob/HEAD/Formula/flux.rb
+* Install the Flux command-line utility with HomeBrew:
+```bash
+$ brew install fluxcd/tap/flux
+```
+
+### Linux
+* Install Flux with the dedicated online script:
+```bash
+$ curl -s https://fluxcd.io/install.sh | sudo bash
+```
+
+### All platforms - Flux
+* Check the version of Flux:
+```bash
+$ flux --version
+flux version 2.7.5
+```
+
+## Helm
+* Helm (like `kubectl`) usually comes with Docker-related tools like
+  Rancher Desktop.
+It may also be installed independently. For instance, on MacOS with HomeBrew:
+```bash
+$ brew install helm
+```
+* Check the version of Helm:
+```bash
+$ helm version
+```
+
+# Getting started
 
 ## Switch to a specific cluster and namespace
 * If necessary for your environment, login with SAML on AWS (and, once logged,
@@ -173,7 +238,7 @@ statefulset.apps/db created
 ```
 
 * Check that the PostgreSQL Kubenertes service is running
-  + Check all the k8s services:
+  * Check all the k8s services:
 ```bash
 $ kubectl get all
 NAME       READY   STATUS    RESTARTS   AGE
@@ -182,13 +247,13 @@ pod/db-0   1/1     Running   0          58s
 NAME                  READY   AGE
 statefulset.apps/db   1/1     58s
 ```
-  + Check only the k8s pods:
+  * Check only the k8s pods:
 ```bash
 $ kubectl get pods
 NAME   READY   STATUS    RESTARTS   AGE
 db-0   1/1     Running   0          112s
 ```
-  + Wait for the k8s pods to start (type Control-C to leave the waiting mode
+  * Wait for the k8s pods to start (type Control-C to leave the waiting mode
     when the pods are ready):
 ```bash
 $ kubectl get pods -w
@@ -224,7 +289,7 @@ $ kubectl exec -it db-0 -- psql -c "select 42 as test;"
 ```
 
 * Launch an interactive Shell session
-  + Launch the Shell session:
+  * Launch the Shell session:
 ```bash
 $ kubectl exec -it db-0 -- bash
 postgres@db-0:/$ psql -c "select 42 as test;"
@@ -233,7 +298,7 @@ postgres@db-0:/$ psql -c "select 42 as test;"
    42
 (1 row)
 ```
-  + From the Shell session, launch the interactive PostgreSQL client:
+  * From the Shell session, launch the interactive PostgreSQL client:
 ```bash
 postgres@db-0:/$ psql
 psql (16.0 (Debian 16.0-1.pgdg120+1))
@@ -241,7 +306,7 @@ Type "help" for help.
 
 postgres=# 
 ```
-  + Execute SQL queries:
+  * Execute SQL queries:
 ```sql
 postgres=# select 42 as test;
 test 
@@ -250,14 +315,14 @@ test
 (1 row)
 postgres=# 
 ```
-  + Exit the PostgreSQL interactive client:
+  * Exit the PostgreSQL interactive client:
 ```sql
 postgres=# \q
 ```
 ```bash
 postgres@db-0:/$
 ```
-  + Visit the file-system in the PostgreSQL data directory:
+  * Visit the file-system in the PostgreSQL data directory:
 ```bash
 postgres@db-0:/$ cd
 postgres@db-0:~/$ pwd
@@ -271,7 +336,7 @@ postgres@db-0:~/data/pgdata$ df -h .
 Filesystem      Size  Used Avail Use% Mounted on
 /dev/nvme1n1p1   99G   23G   76G  24% /var/lib/postgresql/data
 ```
-  + Exit the interactive Shell session:
+  * Exit the interactive Shell session:
 ```bash
 postgres@db-0:~/$ exit
 exit
@@ -283,3 +348,71 @@ $ kubectl delete -f demos/simple-postgresql.yaml
 statefulset.apps "db" deleted
 ```
 
+## Work with Flux 
+* As Flux continuously scans some specific Git repositories:
+  * A SSH key pair (public and private keys) has to be stored as a k8s secret
+  * Flux should have access to both the public and private keys
+  * The public SSH key has to be uploaded as a deploy key on the Git repository.
+  On GitHub for instance, go into the Settings menu and then click on the
+  Deploy keys menu, then "Add deploy key" and copy/paste the SSH public key
+  * Setup Flux to scan the specific Git repository
+
+* Retrieve the SSH private key secret:
+```bash
+$ kubectl get ExternalSecret github-private-key
+NAME                 STORE                  REFRESH INTERVAL   STATUS         READY
+github-private-key   vault-backend-github   1m                 SecretSynced   True
+```
+* Retrieve the Git repository watched by Flux:
+```bash
+$ kubectl get GitRepository github-repository
+NAME                URL                                                 AGE     READY   STATUS
+github-repository   ssh://git@github.com/myorg/mycluster-myk8sapp.git   4d18h   True    stored artifact for revision 'main@sha1:3ad6ba84a98f905eef206ef2c430362b58b78b71'
+```
+* Retrieve the latest Helm chart version:
+```bash
+$ kubectl get Kustomization myk8sapp
+NAME           AGE     READY   STATUS
+myk8sapp       4d18h   True    Applied revision: main@sha1:3ad6ba84a98f905eef206ef2c430362b58b78b71
+```
+* List the Flux events:
+```bash
+$ flux events helmreleases
+LAST SEEN           	TYPE   	REASON                 	OBJECT                                             	MESSAGE
+27m                 	Normal 	Succeeded              	HelmRepository/helm-museum                         	Helm repository is ready
+22m (x13 over 34m)  	Normal 	info                   	HelmRelease/datalab-efficast-api                   	HelmChart 'myk8sns/myk8sapp' is not ready                    	
+21m                 	Normal 	info                   	HelmRelease/datalab-efficast-api                   	Helm install has started
+21m                 	Normal 	ChartPullSucceeded     	HelmChart/myk8sapp                                  pulled 'helm-chart-generic' chart with version '1.0.3'
+19m                 	Normal 	info                   	HelmRelease/datalab-efficast-api                   	Helm install succeeded
+...
+```
+* Flux will package the k8s deployment as a Helm chart/package.
+  See the following section for the details about Helm
+
+## Work with Helm
+* List the installed Helm releases:
+```bash
+$ helm list
+NAME            NAMESPACE      REVISION	UPDATED                         STATUS  	CHART                               	APP VERSION
+myk8sapp        mynamespace    14      	2023-06-06 13:35:41.540818136
+```
+Get the details about the Helm release
+Dev:
+```bash
+$ helm get values myk8sapp
+```
+```yaml
+USER-SUPPLIED VALUES:
+...
+applicationName: myk8sapp
+emptyDirs:
+- mountPath: /app
+  name: opt
+image:
+  repository: 1234567890.dkr.ecr.eu-center-1.amazonaws.com/myk8sapp
+  tag: latest
+ingress:
+  enabled: true
+  hosts:
+  - host: demo.examples.com
+```
