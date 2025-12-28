@@ -53,15 +53,17 @@ The following is an excerpt from https://duckdb.org/why_duckdb .
 * Connectivity with Arrow: https://duckdb.org/2023/08/04/adbc.html
 
 ## Data Engineering helpers
-* [Data Engineering Helpers - Knowledge Sharing - DuckLake](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-storage/ducklake/README.md)
-* [Material for the Data platform - Modern Data Stack (MDS) in a box](https://github.com/data-engineering-helpers/mds-in-a-box/blob/main/README.md)
-* [Data Engineering Helpers - Knowledge Sharing - PostgreSQL](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/README.md)
-* [Data Engineering Helpers - Knowledge Sharing - Minio](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-storage/minio/README.md)
-* [Data Engineering Helpers - Knowledge Sharing - LakeFS](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-storage/lakefs/README.md)
-* [Data Engineering Helpers - Knowledge Sharing - Hive Metastore](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/hive-metastore/README.md)
-* [Data Engineering Helpers - Knowledge Sharing - Trino](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/trino/README.md)
-* [Data Engineering Helpers - Knowledge Sharing - Java world](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/java-world/README.md)
+* [Material for the Data platform - Data Analytics / Data Analysis](https://github.com/data-engineering-helpers/data-analytics) (showcasing analytics with DuckDB)
+* [Material for the Data platform - Modern Data Stack (MDS) in a box](https://github.com/data-engineering-helpers/mds-in-a-box)
 * [Material for the Data platform - Data life cycle](https://github.com/data-engineering-helpers/data-life-cycle/blob/main/README.md)
+* Other cheat sheets:
+  * [Data Engineering Helpers - Knowledge Sharing - DuckLake cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-storage/ducklake/README.md)
+  * [Data Engineering Helpers - Knowledge Sharing - PostgreSQL cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/README.md)
+  * [Data Engineering Helpers - Knowledge Sharing - Minio cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-storage/minio/README.md)
+  * [Data Engineering Helpers - Knowledge Sharing - LakeFS cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-storage/lakefs/README.md)
+  * [Data Engineering Helpers - Knowledge Sharing - Hive Metastore cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/hive-metastore/README.md)
+  * [Data Engineering Helpers - Knowledge Sharing - Trino cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/trino/README.md)
+  * [Data Engineering Helpers - Knowledge Sharing - Java world cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/java-world/README.md)
 
 ## DuckDB in Jupyter
 * [GitHub - Data Engineering Helpers - Cheat Sheet - Jupyter with PySpark and DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/jupyter/jupyter-pyspark-duckdb/)
@@ -70,13 +72,26 @@ The following is an excerpt from https://duckdb.org/why_duckdb .
 ## Orchestrating DuckDB with dbt
 * [GitHub - dbt-duckdb](https://github.com/jwills/dbt-duckdb)
 
-### A few DuckDB extra features
+## A few DuckDB extra features
 
 ### Windowing with DuckDB
 * Gettaing started with Windowing: https://duckdb.org/2021/10/13/windowing.html
 * Reference documentation: https://duckdb.org/docs/sql/functions/window_functions.html
 * Catching up with Windowing (in Feb. 2025): https://duckdb.org/2025/02/10/window-catchup.html
 * Fast moving holistic aggregates: https://duckdb.org/2021/11/12/moving-holistic.html
+
+## DuckDB extensions
+* Unity Catalog
+* Delta Lake
+* Duck Lake
+
+## Analytics with DuckDB in the browser
+* See also [Material for the Data platform - Data Analytics / Data Analysis](https://github.com/data-engineering-helpers/data-analytics?tab=readme-ov-file#sqlrooms)
+* [Mosaic on UW IDL web site](https://idl.uw.edu/mosaic/)
+* [SQLRooms](https://sqlrooms.org)
+  * Example - deck.gl Mosaic:
+    * [SQLRooms - Example - Deck.dl Mosaic](https://sqlrooms.org/examples.html#deck-gl-mosaic)
+    * [GitHub - SQLRoomes examples - Deck.gl Mosaic](https://github.com/sqlrooms/examples/tree/main/deckgl-mosaic)
 
 # Use cases
 * Denormalize Geonames tables
