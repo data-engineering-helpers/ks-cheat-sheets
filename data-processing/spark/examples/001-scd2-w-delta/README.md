@@ -11,6 +11,7 @@ source data set into a Delta-enabled data set.
   July 2025, [Mathew Midhun](https://www.linkedin.com/in/mathew-midhun/)
 * [LinkedIn post - A cheat sheet for building fail-safe/idempotent DataBricks jobs](https://www.linkedin.com/posts/jrlasak_databricks-dataengineering-etl-activity-7358425287455363072-x2yw/),
   August 2025, [Jakub Lasak](https://www.linkedin.com/in/jrlasak/)
+* [GitHub - Datanomy](https://github.com/raulcd/datanomy)
 
 # Getting started
 
@@ -35,6 +36,12 @@ make init-database
   files for the initial and the incremental data-sets):
 ```bash
 make init-datasets
+```
+
+* Analyze the generate data-sets with Datanomy:
+```bash
+make check-dataset-init
+make check-dataset-incremental
 ```
 
 * Ingest the initial and incremental data-sets, filling the Delta table:

@@ -43,6 +43,12 @@ init-datasets: ## Generate Parquet source data file
 	echo "Customer data source generated in data/dim_customer/"
 	command -v tree && tree data/dim_customer/ || echo "The tree command does not seem to be installed. Please install it to analyze the content of the local file-system"
 
+check-dataset-init: ## Analyze the initial data-set
+	uv run datanomy data/dim_customer/init/part*.parquet
+
+check-dataset-incremental: ## Analyze the incremental data-set
+	uv run datanomy data/dim_customer/inc1/part*.parquet
+
 #
 init:
 	@uv lock
