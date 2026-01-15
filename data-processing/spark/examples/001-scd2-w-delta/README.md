@@ -20,10 +20,10 @@ source data set into a Delta-enabled data set.
 make cleaners
 ```
 
-* If needed, install Python dependencies (once it has been done once, it is
-  no longer necessary):
+* Initialize the uv virtual environment (_e.g._, uv installs the Python dependencies
+  in that dedicated virtual environment):
 ```bash
-make init-python
+make init update
 ```
 
 * Create the Delta tables in the local Spark warehouse/database:
@@ -31,7 +31,8 @@ make init-python
 make init-database
 ```
 
-* Generate the initial and incremental data-sets:
+* Generate the initial and incremental data-sets (it crates an stores Parquet
+  files for the initial and the incremental data-sets):
 ```bash
 make init-datasets
 ```
@@ -40,3 +41,9 @@ make init-datasets
 ```bash
 make ingest-datasets
 ```
+
+* Check the content of the database (Delta table):
+```bash
+make check-database
+```
+

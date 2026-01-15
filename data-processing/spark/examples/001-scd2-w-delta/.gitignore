@@ -7,3 +7,6 @@ dim_customer/
 # Logs
 /logs/
 
+# Python
+requirements.txt
+
