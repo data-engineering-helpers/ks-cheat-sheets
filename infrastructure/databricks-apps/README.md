@@ -2,6 +2,22 @@ Cheat Sheet - Databricks Apps
 =============================
 
 # Table of Content (ToC)
+* [Overview](#overview)
+* [References](#references)
+  * [Data Engineering helpers](#data-engineering-helpers)
+  * [Databricks](#databricks)
+  * [NYC taxis](#nyc-taxis)
+  * [Ontos](#ontos)
+  * [Involved technologies](#involved-technologies)
+* [Pre\-requisites](#pre-requisites)
+  * [Databricks CLI](#databricks-cli)
+  * [Unity Catalog](#unity-catalog)
+  * [Lakebase](#lakebase)
+  * [Databricks Asset Bundle (DAB)](#databricks-asset-bundle-dab)
+* [NYC taxi application](#nyc-taxi-application)
+* [Ontos](#ontos-1)
+
+Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
 # Overview
 [This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/infrastructure/databricks-apps/README.md)
