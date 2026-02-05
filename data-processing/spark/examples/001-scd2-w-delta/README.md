@@ -7,6 +7,8 @@ aims at showcasing how to perform a "merge into" operation, from some Parquet
 source data set into a Delta-enabled data set.
 
 # References
+* [Medium - Slowly Changing Dimensions Aren’t Slow — They’re About Respecting Time in Data](https://medium.com/@think-data/slowly-changing-dimensions-arent-slow-they-re-about-respecting-time-in-data-e3c64d088fd5),
+  Feb. 2026, [Think Data](https://medium.com/@think-data)
 * [LinkedIn post - SCD Type 2 Implementation Simplified with Spark and Delta Lake](https://www.linkedin.com/posts/mathew-midhun_lets-simplify-scd2-implementation-ugcPost-7352104443984666624-rjPs/),
   July 2025, [Mathew Midhun](https://www.linkedin.com/in/mathew-midhun/)
 * [LinkedIn post - A cheat sheet for building fail-safe/idempotent DataBricks jobs](https://www.linkedin.com/posts/jrlasak_databricks-dataengineering-etl-activity-7358425287455363072-x2yw/),
