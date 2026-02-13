@@ -124,7 +124,9 @@ CREATE DATABASE
 $ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create user techref with encrypted password '<techref-pass>'; grant all privileges on database techref to techref;"
 CREATE ROLE
 GRANT
-$ psql -h $PG_SVR -U $PG_ADM_USR -d techref -c "grant all on schema public to techref; create schema techref; grant all on schema techref to techref;"
+$ psql -h $PG_SVR -U $PG_ADM_USR -d techref -c "grant all on schema public to techref;"
+GRANT
+$ psql -h $PG_SVR -U $PG_ADM_USR -d techref -c "create schema techref; grant all on schema techref to techref; grant all privileges on all tables in schema techref to techref;"
 GRANT
 ```
 
@@ -145,7 +147,9 @@ CREATE DATABASE
 $ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create user autogov with encrypted password '<autogov-pass>'; grant all privileges on database autogov to autogov;"
 CREATE ROLE
 GRANT
-$ psql -h $PG_SVR -U $PG_ADM_USR -d autogov -c "grant all on schema public to autogov; create schema autogov; grant all on schema autogov to autogov;"
+$ psql -h $PG_SVR -U $PG_ADM_USR -d autogov -c "grant all on schema public to autogov;"
+GRANT
+$ psql -h $PG_SVR -U $PG_ADM_USR -d autogov -c "create schema autogov; grant all on schema autogov to autogov; grant all privileges on all tables in schema autogov to autogov;"
 GRANT
 ```
 
@@ -189,6 +193,8 @@ CREATE ROLE
 GRANT
 $ psql -h $PG_SVR -U $PG_ADM_USR -d ucdb -c "grant all on schema public to ucdba;"
 GRANT
+$ psql -h $PG_SVR -U $PG_ADM_USR -d ucdb -c "create schema ucdba; grant all on schema ucdba to ucdba; grant all privileges on all tables in schema ucdba to ucdba;"
+GRANT
 ```
 
 * Check that the access to the PostgreSQL database works:
@@ -210,7 +216,7 @@ CREATE ROLE
 GRANT
 $ psql -h $PG_SVR -U $PG_ADM_USR -d ontos -c "grant all on schema public to ontos;"
 GRANT
-$ psql -h $PG_SVR -U $PG_ADM_USR -d ontos -c "grant all on schema ontos to ontos; grant all privileges on all tables in schema ontos to ontos;"
+$ psql -h $PG_SVR -U $PG_ADM_USR -d ontos -c "create schema ontos; grant all on schema ontos to ontos; grant all privileges on all tables in schema ontos to ontos;"
 GRANT
 GRANT
 ```
