@@ -1,0 +1,6 @@
+
+name: poc_pipeline
+storage: file:///Users/mac-DARNAU24/dev/dkt/knowledge-sharing/ks-cheat-sheets/data-processing/spark/examples/004-spd-quick-start/poc_pipeline/pipeline-storage
+libraries:
+  - glob:
+      include: transformations/**

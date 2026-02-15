@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/examples/001-scd2-w-delta/src/001_scd2_w_delta/spark-merge-customer.py
+# File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/examples/004-spd-quick-start/src/004_spd_quick_start/spark-merge-customer.py
 #
 
 from pyspark.sql import SparkSession
@@ -10,7 +10,7 @@ import delta.tables as dt
 #
 cust_init_dataset = "data/dim_customer/init"
 cust_inc_dataset1 = "data/dim_customer/inc1"
-delta_table_name = "bronze.dim_customer"
+delta_table_name = "dim_customer"
 
 def getSparkSession() -> SparkSession:
     spark = (

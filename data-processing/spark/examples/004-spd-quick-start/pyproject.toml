@@ -11,16 +11,14 @@ urls = {repository = "https://github.com/data-engineering-helpers/ks-cheat-sheet
 
 # DEPENDENCIES
 dependencies = [
-    "datanomy",
-    "pyspark",
-    "delta-spark",
-    "faker",
-    "loguru",
-    "PyYAML"
+    "pyspark[pipelines]~=4.1.1",
+    "delta-spark~=4.0.1",
+    "faker"
 ]
 
 [dependency-groups]
 dev = [
+  "datanomy",
   "packaging",
   "ruff",
   "setuptools",
