@@ -12,7 +12,7 @@ import pyspark.sql.functions as F
 import delta.tables as dt
 
 #
-delta_table_name = "dim_customer"
+delta_table_name = "bronze.dim_customer"
 
 def getSparkSession() -> SparkSession:
     spark = (

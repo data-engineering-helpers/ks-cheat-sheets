@@ -106,10 +106,3 @@ ingest-datasets: ## Ingest the customer-related datasets (initial and incrementa
 	echo "Delta table updated in spark-warehouse/dim_customer/"
 	ls -lFh spark-warehouse/dim_customer/
 
-ingest-datasets-purepython: ## Ingest the customer-related datasets (initial and incremental)
-	@echo "Check logs/ingest-datasets.log"
-	mkdir -p logs
-	time uv run python src/001_scd2_w_delta/spark-merge-customer.py > logs/ingest-datasets.log 2>&1
-	echo "Delta table updated in spark-warehouse/dim_customer/"
-	ls -lFh spark-warehouse/dim_customer/
-

@@ -11,10 +11,13 @@ from pyspark.sql import SparkSession
 import pyspark.sql.functions as F
 import delta.tables as dt
 
-ddl_drop = "drop table if exists dim_customer;"
+#
+delta_table_name = "bronze.dim_customer"
 
-ddl_create = """
-create table dim_customer (
+ddl_drop = f"drop table if exists {delta_table_name};"
+
+ddl_create = f"""
+create table {delta_table_name} (
   address string,
   birthdate date,
   blood_group string,
@@ -34,7 +37,7 @@ create table dim_customer (
   is_current boolean
 )
 using delta
-location 'dim_customer';
+location '{delta_table_name}';
 """
 
 def getSparkSession() -> SparkSession:
