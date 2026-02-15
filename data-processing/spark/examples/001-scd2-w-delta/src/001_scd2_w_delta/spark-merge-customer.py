@@ -10,13 +10,14 @@ import delta.tables as dt
 #
 cust_init_dataset = "data/dim_customer/init"
 cust_inc_dataset1 = "data/dim_customer/inc1"
-delta_table_name = "dim_customer"
+delta_table_name = "bronze.dim_customer"
 
 def getSparkSession() -> SparkSession:
     spark = (
         SparkSession.builder.appName("scd2-app")
         .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
         .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog")
+        .enableHiveSupport()
         .getOrCreate()
     )
     return spark

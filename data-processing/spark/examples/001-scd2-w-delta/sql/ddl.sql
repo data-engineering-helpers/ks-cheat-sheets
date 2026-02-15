@@ -7,9 +7,20 @@
 -- so as to ease the Delta merging
 --
 
-drop table if exists dim_customer;
+--
+-- Schema: Bronze in local; it may differ in remote environments
+--
+create schema if not exists bronze;
 
-create table dim_customer (
+--
+-- Drop the table
+--
+drop table if exists bronze.dim_customer;
+
+--
+-- Create the table
+--
+create table bronze.dim_customer (
   address string,
   birthdate date,
   blood_group string,

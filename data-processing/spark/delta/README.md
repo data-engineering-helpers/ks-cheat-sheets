@@ -20,13 +20,19 @@ explains how (potentially to install and) to use
 [Delta Lake](https://github.com/delta-io/delta), _e.g._,
 on a laptop or on a virtual machine (VM).
 
-Note that Delta Lake needs to come with a version compatible to Spark, as per the
+## A note about Delta keeping up with Spark upgrades
+At some point, Spark is upgraded and the corresponding version of Delta Lake may
+not be immediately released to work together with the new Spark version.
+Indeed, Delta Lake needs to come with a version compatible to Spark, as per the
 [Delta Lake release compatibility matrix](https://docs.delta.io/releases/).
 
-Since Spark 4.1 is available only as a preview (as of end 2025), Delta Lake is not
-easily available in a compatible version.
-The [Delta Lake 4.1.0 milestone](https://github.com/delta-io/delta/milestone/31)
-states that it is due for end of January 2026.
+That situation happened for instance at the end of 2025, when:
+ * Spark 4.1 was available only as a preview
+ * Delta Lake was not easily available in a compatible version
+   * The
+   [Delta Lake 4.1.0 milestone](https://github.com/delta-io/delta/milestone/31)
+   stated that the new version was due for end of January 2026, which more or less
+   happened (it was released in February 2026).
 
 In some very specific cases (_e.g._, trying new features not yet available in the
 public releases), it may be interesting to build Delta Lake from the sources. This
@@ -35,9 +41,10 @@ cheat sheet also gives details on how to do it.
 # References
 
 ## Data Engineering helpers
+* [Data Engineering Helpers - Knowledge Sharing - Spark](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/)
+* [Data Engineering Helpers - Knowledge Sharing - Spark Declarative Pipelines (SDP)](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/spd/)
 * [Data Engineering Helpers - Knowledge Sharing - Python](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/python/)
   * [Data Engineering Helpers - Knowledge Sharing - Jupyter, PySpark and DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/jupyter/jupyter-pyspark-duckdb/)
-* [Data Engineering Helpers - Knowledge Sharing - Spark](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/)
 * [Data Engineering Helpers - Knowledge Sharing - Unity Catalog (UC)](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/unity-catalog/)
 * [Data Engineering Helpers - Knowledge Sharing - SQLMesh](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/)
 * [Data Engineering Helpers - Knowledge Sharing - DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/)
@@ -53,19 +60,25 @@ cheat sheet also gives details on how to do it.
 * [GitHub - Delta Lake - `delta` repository](https://github.com/delta-io/delta)
 * [Maven central - Delta Spark: `io.delta/delta-spark`](https://mvnrepository.com/artifact/io.delta/delta-spark)
 
-## Spark 4.1 preview
-* As of end 2025, per
+## Java
+* Java releases: https://www.java.com/releases/
+* From Sep. 2025, the new LTS has been the 25 release
+* The next LTS version should be the 27 release, expected to be available from
+  Sep. 2027
+
+## Spark 4.1
+* As of beginning 2026, per
   [Delta Lake release compatibility matrix](https://docs.delta.io/releases/)
   and [Delta Lake releases](https://github.com/delta-io/delta/releases),
   there does not seem to be a version of Delta Lake compatible with
-  the yet to be released Spark 4.1 version
+  the yet to be released Spark 4.1 versions
 * For this cheat sheet, the following two alternatives have been tried, without
   success so far:
   * Installing and using the latest Delta Lake version out of the box, that is,
-  [4.0.0 ](https://github.com/delta-io/delta/releases/tag/v4.0.0):
+  [4.0.1](https://github.com/delta-io/delta/releases/tag/v4.0.1):
 ```bash
-$ python -mpip install delta-spark==4.0.0
-$ pyspark --packages io.delta:delta-spark_2.13:4.0.0 --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" --conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog"
+$ python -mpip install delta-spark==4.0.1
+$ pyspark --packages io.delta:delta-spark_2.13:4.0.1 --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" --conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog"
 ```
   * Building Delta Lake from the sources, as detailed in the sub-section below,
   installing and using it:

@@ -3,8 +3,11 @@
 #
 
 PYTHON_VERSION := 3.12
-SPARK_VERSION := 3.5.2
-DELTA_VERSION := 3.2.0
+SCALA_VERSION := 2.12
+SPARK_VERSION := 3.5.2 # 4.1.1
+DELTA_VERSION := 3.2.0 # 4.0.1
+
+UV ?= uv
 
 # Cleaners
 clean-db: ## Clean database
@@ -14,32 +17,46 @@ clean-logs: ## Clean log files
 	rm -rf logs
 
 clean-python: ## Clean Python-related objects
-	rm -rf .venv requirements.txt
+	find . -type f -name '*.py[co]' -delete
+	find . -type d -name __pycache__ -delete
+	rm -f requirements.txt
+
+clean-package: ## Clean the project package.
+	rm -rf dist/
+
+clean-install: ## Clean the project installation.
+	rm -rf .venv/
 
 clean-datasets: ## Clean generated datasets
 	rm -rf data/dim_customer/init data/dim_customer/inc1
 
-cleaners: clean-db clean-logs clean-python clean-datasets ## Clean everything
+cleaners: clean-db clean-logs clean-python clean-package clean-install clean-datasets ## Clean everything
 
 # Initializers
-init-uv-python: ## Install Python 3.12 if necessary
+init-uv-python: ## Install Python $(PYTHON_VERSION) if necessary
 	uv python install $(PYTHON_VERSION)
 
-init-python: ## Initialize Python environment
-	python -mpip install -U pip
+init-pyspark: ## Install PySpark and Delta Lake in the current Python environment (not the uv virtual one)
 	python -mpip install pyspark==$(SPARK_VERSION) delta-spark==$(DELTA_VERSION)
-	python -mpip install -U faker
 
 init-database: ## Initialize the Delta tables
-	uv run spark-sql --packages io.delta:delta-spark_2.12:${DELTA_VERSION} \
+	uv run spark-sql --packages io.delta:delta-spark_$(SCALA_VERSION):$(DELTA_VERSION) \
 	  --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
 	  --conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog" \
 	  < sql/ddl.sql
 	echo "Delta table generated in spark-warehouse/dim_customer/"
 	ls -lFh spark-warehouse/dim_customer/
 
+init-database-purepython: ## Initialize the Delta tables
+	uv run spark-submit --packages io.delta:delta-spark_$(SCALA_VERSION):$(DELTA_VERSION) \
+	  --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
+	  --conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog" \
+		src/001_scd2_w_delta/ddl.py
+	echo "Delta table generated in spark-warehouse/dim_customer/"
+	ls -lFh spark-warehouse/dim_customer/
+
 init-datasets: ## Generate Parquet source data file
-	uv run pyspark < spark-generate-customer-increment.py
+	uv run pyspark < src/001_scd2_w_delta/spark-generate-customer-increment.py
 	echo "Customer data source generated in data/dim_customer/"
 	command -v tree && tree data/dim_customer/ || echo "The tree command does not seem to be installed. Please install it to analyze the content of the local file-system"
 
@@ -50,21 +67,31 @@ check-dataset-incremental: ## Analyze the incremental data-set
 	uv run datanomy data/dim_customer/inc1/part*.parquet
 
 #
-init:
+init: ## Setup Python virtual environment
 	@uv lock
 	@uv export --format requirements.txt > requirements.txt
 
-update:
+update: ## Update the dependencies
 	@uv sync
 	@uv export --format requirements.txt > requirements.txt
 
+build: ## Build the software artifact (wheel)
+	@uv build
 
 #
 check-database: ## Check the Delta tables
-	uv run spark-sql --packages io.delta:delta-spark_2.12:${DELTA_VERSION} \
+	uv run spark-sql --packages io.delta:delta-spark_$(SCALA_VERSION):$(DELTA_VERSION) \
 	  --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
 	  --conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog" \
 	  < sql/select-dim-customer-limit10.sql
+	echo "Delta table generated in spark-warehouse/dim_customer/"
+	ls -lFh spark-warehouse/dim_customer/
+
+check-database-purepython: ## Check the Delta tables
+	uv run spark-submit --packages io.delta:delta-spark_$(SCALA_VERSION):$(DELTA_VERSION) \
+	  --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
+	  --conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog" \
+	  src/001_scd2_w_delta/select-dim-customer-limit10.py
 	echo "Delta table generated in spark-warehouse/dim_customer/"
 	ls -lFh spark-warehouse/dim_customer/
 
@@ -72,10 +99,17 @@ check-database: ## Check the Delta tables
 ingest-datasets: ## Ingest the customer-related datasets (initial and incremental)
 	@echo "Check logs/ingest-datasets.log"
 	mkdir -p logs
-	time uv run spark-submit --packages io.delta:delta-spark_2.12:${DELTA_VERSION} \
+	time uv run spark-submit --packages io.delta:delta-spark_$(SCALA_VERSION):$(DELTA_VERSION) \
 	  --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
 	  --conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog" \
-	  spark-merge-customer.py > logs/ingest-datasets.log 2>&1
+	  src/001_scd2_w_delta/spark-merge-customer.py > logs/ingest-datasets.log 2>&1
+	echo "Delta table updated in spark-warehouse/dim_customer/"
+	ls -lFh spark-warehouse/dim_customer/
+
+ingest-datasets-purepython: ## Ingest the customer-related datasets (initial and incremental)
+	@echo "Check logs/ingest-datasets.log"
+	mkdir -p logs
+	time uv run python src/001_scd2_w_delta/spark-merge-customer.py > logs/ingest-datasets.log 2>&1
 	echo "Delta table updated in spark-warehouse/dim_customer/"
 	ls -lFh spark-warehouse/dim_customer/
 

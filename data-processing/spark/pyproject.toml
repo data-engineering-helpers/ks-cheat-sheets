@@ -1,20 +1,19 @@
 [project]
-name = "001-scd2-w-delta"
-version = "0.1.0"
+name = "spark-quick-start"
+version = "0.0.1"
 description = "Quick Start guide for Spark and derivatives"
-readme = "README.md"
 requires-python = ">=3.12,<3.13"
+readme = "README.md"
 authors = [
     {name = "Denis Arnaud", email = "denis.arnaud_fedora@m4x.org"},
 ]
 urls = {repository = "https://github.com/data-engineering-helpers/ks-cheat-sheets"}
 
+
 # DEPENDENCIES
 dependencies = [
-    "datanomy",
-    "pyspark~=3.5.2",
-    "delta-spark~=3.2.0",
-    "faker",
+    "pyspark",
+    "delta-spark",
     "loguru",
     "PyYAML"
 ]
@@ -34,6 +33,9 @@ lint = [
 [build-system]
 requires = ["uv_build"]
 build-backend = "uv_build"
+
+[project.scripts]
+#spark-poc = "spark_poc.jobs:cli"
 
 [tool.ruff]
 #src = ["src"]
