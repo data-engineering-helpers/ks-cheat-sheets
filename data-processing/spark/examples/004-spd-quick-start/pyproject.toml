@@ -1,0 +1,48 @@
+[project]
+name = "004-spd-quick-start"
+version = "0.1.0"
+description = "Quick Start guide for Spark and derivatives"
+readme = "README.md"
+requires-python = ">=3.12,<3.14"
+authors = [
+    {name = "Denis Arnaud", email = "denis.arnaud_fedora@m4x.org"},
+]
+urls = {repository = "https://github.com/data-engineering-helpers/ks-cheat-sheets"}
+
+# DEPENDENCIES
+dependencies = [
+    "datanomy",
+    "pyspark",
+    "delta-spark",
+    "faker",
+    "loguru",
+    "PyYAML"
+]
+
+[dependency-groups]
+dev = [
+  "packaging",
+  "ruff",
+  "setuptools",
+  "toml",
+  "twine",
+]
+lint = [
+  "ruff"
+]
+
+[build-system]
+requires = ["uv_build"]
+build-backend = "uv_build"
+
+[tool.ruff]
+#src = ["src"]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "Q", "I"]
+ignore = ["E203", "E501", "E712"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+

@@ -1,0 +1,12 @@
+# Spark Delta
+derby.log
+metastore_db/
+spark-warehouse/
+dim_customer/
+
+# Logs
+/logs/
+
+# Python
+requirements.txt
+
