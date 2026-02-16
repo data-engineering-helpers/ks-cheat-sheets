@@ -8,7 +8,7 @@ resolution-markers = [
 ]
 
 [[package]]
-name = "004-spd-quick-start"
+name = "004-sdp-quick-start"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [

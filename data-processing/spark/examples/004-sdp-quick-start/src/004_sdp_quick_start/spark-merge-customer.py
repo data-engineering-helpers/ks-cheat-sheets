@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/examples/004-spd-quick-start/src/004_spd_quick_start/spark-merge-customer.py
+# File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/examples/004-sdp-quick-start/src/004_sdp_quick_start/spark-merge-customer.py
 #
 
 from pyspark.sql import SparkSession

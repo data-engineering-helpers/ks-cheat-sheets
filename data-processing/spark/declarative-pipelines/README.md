@@ -1,12 +1,12 @@
-Cheat Sheet - Spark Declarative Pipelines
-=========================================
+Cheat Sheet - Spark Declarative Pipelines (SDP)
+===============================================
 
 # Table of Content (ToC)
 * [Overview](#overview)
 * [References](#references)
   * [Data Engineering helpers](#data-engineering-helpers)
+  * [Spark Declarative Pipelines (SDP)](#spark-declarative-pipelines-sdp)
   * [Delta Lake](#delta-lake)
-  * [Spark Declarative Pipelines](#spark-declarative-pipelines)
 * [Setup](#setup)
   * [Java](#java)
   * [Delta Lake](#delta-lake-1)
@@ -21,36 +21,46 @@ explains how to install and to use
 [Spark Declarative Pipelines](https://spark.apache.org/docs/4.1.0-preview4/declarative-pipelines-programming-guide.html),
 _e.g._, on a laptop or on a virtual machine (VM).
 
-Note that, since the Declarative Pipelines feature is available in Apache Spark only
-from the yet to be released 4.1 version, as of end 2025 it has to be tested on preview
-releases, _e.g._,
-[Apache Spark 4.1.0 preview](https://spark.apache.org/docs/4.1.0-preview4/)
-
-Since Spark 4.1 is available only as a preview (as of end 2025), Delta Lake is not
-easily available in a compatible version.
-The [Delta Lake 4.1.0 milestone](https://github.com/delta-io/delta/milestone/31)
-states that it is due for end of January 2026.
+Since Delta Lake has not released a version explicitly compatible with Spark 4.1.x
+yet, Delta Lake may not fully work with Spark versions featuring Spark Declarative
+Pipelines (SDP), that is, Spark 4.1+.
+[Delta Lake 4.1.0 milestone](https://github.com/delta-io/delta/milestone/31)
+states that it was due for end of January 2026, but the completion rate is still
+0% for that miestone, even at the end of Feb. 2026.
+And there is no sign in
+[Delta Lake releases](https://github.com/delta-io/delta/releases),
+nor in the
+[Delta Lake release compatibility matrix](https://docs.delta.io/releases/),
+of a version explicitly compatible with Spark 4.1.x.
 
 # References
 
 ## Data Engineering helpers
-* [Data Engineering Helpers - Knowledge Sharing - Python](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/python/)
-  * [Data Engineering Helpers - Knowledge Sharing - Jupyter, PySpark and DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/jupyter/jupyter-pyspark-duckdb/)
 * [Data Engineering Helpers - Knowledge Sharing - Spark](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/)
 * [Data Engineering Helpers - Knowledge Sharing - Delta Lake](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/delta/)
+* [Data Engineering Helpers - Knowledge Sharing - Python](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/python/)
+  * [Data Engineering Helpers - Knowledge Sharing - Jupyter, PySpark and DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/jupyter/jupyter-pyspark-duckdb/)
 * [Data Engineering Helpers - Knowledge Sharing - Unity Catalog (UC)](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/unity-catalog/)
 * [Data Engineering Helpers - Knowledge Sharing - SQLMesh](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/)
 * [Data Engineering Helpers - Knowledge Sharing - DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/)
 * [Data Engineering Helpers - Knowledge Sharing - PostgreSQL](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/)
 * [Material for the Data platform - Modern Data Stack (MDS) in a box](https://github.com/data-engineering-helpers/mds-in-a-box)
 
+## Spark Declarative Pipelines (SDP)
+* [Apache Spark doc - Spark Declarative Pipelines Programming Guide](https://spark.apache.org/docs/latest/declarative-pipelines-programming-guide.html)
+* Databricks Lakeflow:
+  * [Databricks doc - AWS - Lakeflow Spark Declarative Pipelines (LDP)](https://docs.databricks.com/aws/en/ldp/)
+  * [Microsoft doc - Lakeflow Spark Declarative Pipelines (LDP)](https://learn.microsoft.com/en-us/azure/databricks/ldp/)
+* [GitHub - End-to-end quick start guide for Spark Declarative Pipelines](https://github.com/Idowuilekura/sdp-quick-start)
+
 ## Delta Lake
 * [Delta Lake release compatibility matrix](https://docs.delta.io/releases/)
 * [Delta Lake releases](https://github.com/delta-io/delta/releases)
-
-## Spark Declarative Pipelines
-* [Apache Spark - Doc - Declarative Pipelines programming guide](https://spark.apache.org/docs/4.1.0-preview4/declarative-pipelines-programming-guide.html)
-* [Apache Spark - Doc - Spark 4.1.0 preview](https://spark.apache.org/docs/4.1.0-preview4/)
+* [Delta Lake documentation](https://docs.delta.io/)
+  * [Delta Lake - Quick start guide](https://docs.delta.io/latest/quick-start.html)
+* [Delta Lake - Compatibility matrix with Spark](https://docs.delta.io/releases/)
+* [GitHub - Delta Lake - `delta` repository](https://github.com/delta-io/delta)
+* [Maven central - Delta Spark: `io.delta/delta-spark`](https://mvnrepository.com/artifact/io.delta/delta-spark)
 
 # Setup
 

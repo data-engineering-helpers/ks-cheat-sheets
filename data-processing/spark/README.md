@@ -1,5 +1,5 @@
-Cheat Sheet - Spark
-===================
+Cheat Sheet - Apache Spark
+==========================
 
 # Table of Content (ToC)
 * [Overview](#overview)
@@ -8,7 +8,7 @@ Cheat Sheet - Spark
   * [Spark](#spark)
     * [Spark Connect](#spark-connect)
     * [Delta Lake](#delta-lake)
-    * [Spark Declarative Pipelines](#spark-declarative-pipelines)
+    * [Spark Declarative Pipelines (SDP)](#spark-declarative-pipelines-sdp)
   * [Unity Catalog (UC)](#unity-catalog-uc)
 * [Installation](#installation)
   * [Clone this repository](#clone-this-repository)
@@ -58,7 +58,7 @@ on a laptop or on a virtual machine (VM).
 * [GitHub - Delta Lake - `delta` repository](https://github.com/delta-io/delta)
 * [Maven central - Delta Spark: `io.delta/delta-spark`](https://mvnrepository.com/artifact/io.delta/delta-spark)
 
-### Spark Declarative Pipelines
+### Spark Declarative Pipelines (SDP)
 * A
   [specific cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/declarative-pipelines/)
   is dedicated to that feature

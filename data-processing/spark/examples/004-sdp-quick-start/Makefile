@@ -20,6 +20,7 @@ clean-logs: ## Clean log files
 clean-python: ## Clean Python-related objects
 	find . -type f -name '*.py[co]' -delete
 	find . -type d -name __pycache__ -delete
+	rm -rf .mypy_cache
 	rm -f requirements.txt
 
 clean-package: ## Clean the project package.
@@ -61,7 +62,7 @@ init-database: ## Initialize the Delta tables
 	ls -lFh spark-warehouse/dim_customer/
 
 init-datasets: ## Generate Parquet source data file
-	uv run pyspark < src/004_spd_quick_start/spark-generate-customer-increment.py
+	uv run pyspark < src/004_sdp_quick_start/spark-generate-customer-increment.py
 	echo "Customer data source generated in data/dim_customer/"
 	command -v tree && tree data/dim_customer/ || echo "The tree command does not seem to be installed. Please install it to analyze the content of the local file-system"
 
@@ -112,7 +113,7 @@ ingest-datasets: ## Ingest the customer-related datasets (initial and incrementa
 		--packages io.delta:delta-spark_$(SCALA_VERSION):$(DELTA_VERSION) \
 	  	--conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
 	  	--conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog" \
-	  src/004_spd_quick_start/spark-merge-customer.py \
+	  src/004_sdp_quick_start/spark-merge-customer.py \
 		> logs/ingest-datasets.log 2>&1
 	echo "Delta table updated in spark-warehouse/dim_customer/"
 	ls -lFh spark-warehouse/dim_customer/

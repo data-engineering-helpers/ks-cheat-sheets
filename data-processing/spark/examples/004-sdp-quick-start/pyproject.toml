@@ -1,5 +1,5 @@
 [project]
-name = "004-spd-quick-start"
+name = "004-sdp-quick-start"
 version = "0.1.0"
 description = "Quick Start guide for Spark and derivatives"
 readme = "README.md"
