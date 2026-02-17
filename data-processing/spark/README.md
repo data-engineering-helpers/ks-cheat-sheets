@@ -5,7 +5,7 @@ Cheat Sheet - Apache Spark
 * [Overview](#overview)
 * [References](#references)
   * [Data Engineering helpers](#data-engineering-helpers)
-  * [Spark](#spark)
+  * [Apache Spark](#apache-spark)
     * [Spark Connect](#spark-connect)
     * [Delta Lake](#delta-lake)
     * [Spark Declarative Pipelines (SDP)](#spark-declarative-pipelines-sdp)
@@ -13,7 +13,7 @@ Cheat Sheet - Apache Spark
 * [Installation](#installation)
   * [Clone this repository](#clone-this-repository)
   * [Unity Catalog (UC)](#unity-catalog-uc-1)
-  * [Spark](#spark-1)
+  * [Spark](#spark)
     * [PostgreSQL JDBC connector](#postgresql-jdbc-connector)
     * [Spark Connect](#spark-connect-1)
   * [Shell environment and aliases](#shell-environment-and-aliases)
@@ -41,11 +41,12 @@ on a laptop or on a virtual machine (VM).
 * [Data Engineering Helpers - Knowledge Sharing - PostgreSQL](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/)
 * [Material for the Data platform - Modern Data Stack (MDS) in a box](https://github.com/data-engineering-helpers/mds-in-a-box)
 
-## Spark
+## Apache Spark
 * [Apache Spark - Download Spark](https://spark.apache.org/docs/latest/api/python/getting_started/install.html)
   * The easiest way to install is through Pypi with something like
   `pip install pyspark`
 * [Apache Spark - Doc - Getting started / Installation](https://spark.apache.org/docs/latest/api/python/getting_started/install.html)
+* [GitHub - Palantir - PySpark style guide](https://github.com/palantir/pyspark-style-guide)
 
 ### Spark Connect
 * [Apache Spark - Doc - Spark Connect - Overview](https://spark.apache.org/docs/latest/spark-connect-overview.html)
