@@ -42,6 +42,7 @@ cheat sheet also gives details on how to do it.
 
 ## Data Engineering helpers
 * [Data Engineering Helpers - Knowledge Sharing - Spark](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/)
+* [Data Engineering Helpers - Knowledge Sharing - Spark Connect](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/spark-connect/)
 * [Data Engineering Helpers - Knowledge Sharing - Spark Declarative Pipelines (SDP)](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/spd/)
 * [Data Engineering Helpers - Knowledge Sharing - Python](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/python/)
   * [Data Engineering Helpers - Knowledge Sharing - Jupyter, PySpark and DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/jupyter/jupyter-pyspark-duckdb/)
@@ -56,9 +57,9 @@ cheat sheet also gives details on how to do it.
 * [Delta Lake releases](https://github.com/delta-io/delta/releases)
 * [Delta Lake documentation](https://docs.delta.io/)
   * [Delta Lake - Quick start guide](https://docs.delta.io/latest/quick-start.html)
-* [Delta Lake - Compatibility matrix with Spark](https://docs.delta.io/releases/)
 * [GitHub - Delta Lake - `delta` repository](https://github.com/delta-io/delta)
 * [Maven central - Delta Spark: `io.delta/delta-spark`](https://mvnrepository.com/artifact/io.delta/delta-spark)
+* [Delta Lake doc - Delta Connect](https://docs.delta.io/delta-spark-connect/)
 
 ## Java
 * Java releases: https://www.java.com/releases/
@@ -94,28 +95,20 @@ py4j.protocol.Py4JJavaError: An error occurred while calling o61.save.
 ```
 
 # Setup
-## Java
-* If not already done so, install Java 21
-  * [Spark 4.1.0 appears to be compatible with Java versions from 17 up to 21 included](https://spark.apache.org/docs/4.1.0-preview4/#downloading)
-  * SDKMan is recommended to manage the versions of Java-based
-    tools. For instance, with the Corretto JDKs:
-```bash
-$ sdk install java 21.0.9-amzn
-$ sdk default java 21.0.9-amzn
-```
-* Check the version of Java:
-```bash
-$ java -version
-openjdk version "21.0.9" 2025-10-21 LTS
-OpenJDK Runtime Environment Corretto-21.0.9.10.1 (build 21.0.9+10-LTS)
-OpenJDK 64-Bit Server VM Corretto-21.0.9.10.1 (build 21.0.9+10-LTS, mixed mode, sharing)
-```
+* See the
+  [setup section of the Spark cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/README.md#setup)
+  (in this same Git repository) for installation instructions about Java and Spark
 
 ## Delta Lake
 * The simplest way to install Delta Lake is through Pypi. First check the
   [Delta Lake release compatibility matrix](https://docs.delta.io/releases/),
   and then both PySpark and Delta Lake may be installed together.
   A few possible combinations:
+  * Spark 4.1 and Delta Lake 4.0.1 (as of Feb. 2026, no combination was found
+    which could make Delta Lake work):
+```bash
+$ python -mpip install pyspark==4.1.1 delta-spark==4.0.1
+```
   * Spark 4.0 and Delta Lake 4.0:
 ```bash
 $ python -mpip install pyspark==4.0.0 delta-spark==4.0.0

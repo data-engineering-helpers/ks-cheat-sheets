@@ -20,7 +20,7 @@ Cheat Sheet - Unity Catalog
   * [Spark integrated with Databricks Unity Catalog](#spark-integrated-with-databricks-unity-catalog)
   * [Daft integrated with Unity Catalog](#daft-integrated-with-unity-catalog)
   * [Interact with the UI](#interact-with-the-ui)
-* [Installation](#installation)
+* [Setup](#setup)
   * [Clone the Unity Catalog Git repository](#clone-the-unity-catalog-git-repository)
   * [Launch the Unity Catalog server with Java 17](#launch-the-unity-catalog-server-with-java-17)
   * [Launch the Unity Catalog server with docker\-compose](#launch-the-unity-catalog-server-with-docker-compose)
@@ -670,9 +670,14 @@ print(unity.list_tables("unity.default"))
 * Visit http://localhost:3000
 ![Unity Catalog UI running locally](/images/data-catalogs/uc-ui.png)
 
-# Installation
+# Setup
+* See the
+  [setup section of the Spark cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/README.md#setup)
+  (in this same Git repository) for installation instructions about Java and Spark
+* Relevant documentation when using Spark with Unity Catalog (UC):
+  https://docs.unitycatalog.io/integrations/unity-catalog-spark/
 * The Unity Catalog service may either be started in containers thanks to
-  Docker Compose, or directly with the Java 17 JVM. The following two sections
+  Docker Compose, or directly with the Java 21 JVM. The following two sections
   show either of the methods
 * The Unity Catalog UI relies on JavaScript (JS)/NodeJS
 
@@ -706,18 +711,19 @@ UC_VERSION="$(cut -d\" -f2,2 version.sbt)"
   alias in a dedicated tab of the Shell terminal, and terminated with the
   Control-C key
 
-## Launch the Unity Catalog server with Java 17
+## Launch the Unity Catalog server with Java 21
 * See the
   [Java cheat sheet on this Git repository](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/java-world/README.md)
   for how to install/maintain a Java 17 stack on various platforms with
-  [SDKMan](https://sdkman.io/), as well as tools like [SBT](https://www.scala-sbt.org/)
+  [SDKMan](https://sdkman.io/),
+  as well as tools like [SBT](https://www.scala-sbt.org/)
 
 * Example of SDK commands to install/upgrade the Java stack (with the
   [Amazon Corretto Java distribution](https://aws.amazon.com/corretto/)):
 ```bash
 sdk update
-sdk install java 17.0.13-amzn
-sdk default java 17.0.13-amzn
+sdk install java 21.0.10-amzn
+sdk default java 21.0.10-amzn
 ```
 
 * Example of SDK commands to install, or upgrade, SBT:
@@ -730,7 +736,7 @@ sdk upgrade sbt
 * Build the JAR package with SBT:
 ```bash
 sbt package
-[info] welcome to sbt 1.9.9 (Amazon.com Inc. Java 17.0.13)
+[info] welcome to sbt 1.9.9 (Amazon.com Inc. Java 21.0.10)
 ...
 [info] Successfully generated code to $HOME/some/path/unitycatalog/target/clients/java
 Generated classpath file '$HOME/some/path/unitycatalog/clients/python/target/classpath'
@@ -779,43 +785,47 @@ sbt publishLocal
 docker compose up
 ```
 ## WSL
-* On Windows, open CMD and type wsl.  
-* Install Git:  
+* On Windows, open CMD and type wsl
+* Install Git:
 ```
 sudo apt-get install git 
 ``` 
-* Navigate to the directory where you want to clone the repository.  
+* Navigate to the directory where you want to clone the repository.
 * Clone the repository by doing: 
 ```
 git clone web_URL
-```  
-* Navigate into the project you just cloned using cd command and make sure the following versions are installed correctly:  
-  * JDK 17 (check with java -version and javac -version.).  
-  * sbt 1.9.9 (check both sbt version in this project and sbt script version → verify with sbt -version).  
-  * Scala 2.13.15 (this may vary, but it must be compatible with JDK 17 and sbt 1.9.9 → verify with scala -version).  
-* To start the UI correctly, you need also to install node.js and yarn.  
+```
+* Navigate into the project you just cloned using cd command and make sure
+  the following versions are installed correctly:
+  * JDK 21 (check with java -version and javac -version.)
+  * sbt 1.9.9 (check both sbt version in this project and sbt script version
+  → verify with sbt -version)
+  * Scala 2.13.15 (this may vary, but it must be compatible with JDK 21
+  and sbt 1.9.9 → verify with scala -version)
+* To start the UI correctly, you need also to install node.js and yarn
 * From within the project you just cloned, we can now compile the project using:
 ```
 build/sbt package
-``` 
+```
 * Now start the UC server:
 ```
 bin/start-uc-server 
 ```
 
 * Open a new CMD, type wsl, and navigate to your project directory. 
-From here, you should already be able to list Delta tables using the CLI: 
+  From here, you should already be able to list Delta tables using the CLI: 
 ```
-bin/uc table list --catalog unity --schema default  
+bin/uc table list --catalog unity --schema default
 ```
 
-* To start the UI at http://localhost:3000/, since we already started the server, just run:  
+* To start the UI at http://localhost:3000/, since we already started the server,
+  just run:
 ```
-cd /ui  
-yarn install  
+cd /ui
+yarn install
 yarn start
-```  
-At this point, a browser tab will automatically open.  
+```
+At this point, a browser tab will automatically open.
 
 ## (Optional) Local PostgreSQL database
 * See also

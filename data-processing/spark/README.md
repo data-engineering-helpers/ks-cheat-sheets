@@ -10,7 +10,7 @@ Cheat Sheet - Apache Spark
     * [Delta Lake](#delta-lake)
     * [Spark Declarative Pipelines (SDP)](#spark-declarative-pipelines-sdp)
   * [Unity Catalog (UC)](#unity-catalog-uc)
-* [Installation](#installation)
+* [Setup](#setup)
   * [Clone this repository](#clone-this-repository)
   * [Unity Catalog (UC)](#unity-catalog-uc-1)
   * [Spark](#spark)
@@ -34,6 +34,7 @@ on a laptop or on a virtual machine (VM).
 * [Data Engineering Helpers - Knowledge Sharing - Python](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/python/)
   * [Data Engineering Helpers - Knowledge Sharing - Jupyter, PySpark and DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/jupyter/jupyter-pyspark-duckdb/)
 * [Data Engineering Helpers - Knowledge Sharing - Delta Lake](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/delta/)
+* [Data Engineering Helpers - Knowledge Sharing - Spark Connect](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/spark-connect/)
 * [Data Engineering Helpers - Knowledge Sharing - Spark Declarative Pipelines](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/declarative-pipelines/)
 * [Data Engineering Helpers - Knowledge Sharing - Unity Catalog (UC)](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/unity-catalog/)
 * [Data Engineering Helpers - Knowledge Sharing - SQLMesh](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/)
@@ -77,7 +78,24 @@ on a laptop or on a virtual machine (VM).
   * [Unity Catalog docs - Integrations - XTable](https://docs.unitycatalog.io/integrations/unity-catalog-xtable/)
 * [Unity Catalog blog post - Integrating Spark with Unity Catalog via Open APIs](https://www.unitycatalog.io/blogs/integrating-apache-spark-with-unity-catalog-assets-via-open-apis)
 
-# Installation
+# Setup
+
+## Java
+* If not already done so, install Java 21
+  * [Spark 4.1 appears to be compatible with Java versions from 17 up to 21 included](https://spark.apache.org/docs/4.1.1/#downloading)
+  * SDKMan is recommended to manage the versions of Java-based
+    tools. For instance, with the Corretto JDKs:
+```bash
+$ sdk install java 21.0.9-amzn
+$ sdk default java 21.0.9-amzn
+```
+* Check the version of Java:
+```bash
+$ java -version
+openjdk version "21.0.9" 2025-10-21 LTS
+OpenJDK Runtime Environment Corretto-21.0.9.10.1 (build 21.0.9+10-LTS)
+OpenJDK 64-Bit Server VM Corretto-21.0.9.10.1 (build 21.0.9+10-LTS, mixed mode, sharing)
+```
 
 ## Clone this repository
 * Clone this
@@ -88,6 +106,16 @@ mkdir -p ~/dev/knowledge-sharing
 git clone https://github.com/data-engineering-helpers/ks-cheat-sheets ~/dev/knowledge-sharing/ks-cheat-sheets
 cd ~/dev/knowledge-sharing/ks-cheat-sheets/data-processing/spark
 ```
+
+## Delta Lake
+* See the
+  [setup section of the Delta Lake cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/delta/README.md#setup)
+  (in this same Git repository) for installation instructions about Delta Lake
+
+## Spark Connect
+* See the
+  [setup section of the Spark Connect cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/spark-connect/README.md#setup)
+  (in this same Git repository) for installation instructions about Spark Connect
 
 ## Unity Catalog (UC)
 * See
@@ -161,51 +189,10 @@ bin/uc table read --full_name unity.default.numbers
 ```
 
 ## Spark
-* Relevant documentation when using Spark with Unity Catalog (UC):
-  https://docs.unitycatalog.io/integrations/unity-catalog-spark/
-
-* As per the official
-  [Apache Spark documentation](https://spark.apache.org/docs/latest/api/python/getting_started/install.html),
-  PyPi-installed PySpark (`pip install pyspark[connect]`) comes with
-  Spark Connect from Spark version 3.4 or later.
-  * However, as of Spark version up to 3.4.1, the PySpark installation
-  lacks the two new administration scripts allowing to start and
-  to stop the Spark Connect server.
-  * For convenience, these two scripts have therefore been copied into this
-  Git repository, in the
-  [`tools/` directory](https://github.com/data-engineering-helpers/ks-cheat-sheets/tree/main/tools).
-  They may then be simply copied in the PySpark `sbin` directory,
-  once PySpark has been installed with `pip`
-  * The Delta Lake version has to be compatible with Spark. See
-  https://docs.delta.io/latest/releases.html for the compatibility table
-  (_e.g._, PySpark `3.5.x` is compatible with Delta Lake `3.3.x`)
-    * Spark releases: https://spark.apache.org/releases/
-	* Delta Lake releases: https://github.com/delta-io/delta/releases/
-
-* Install PySpark, with the Spark Connect extension, from PyPi:
-```bash
-python -mpip install "pyspark[connect,sql,pandas_on_spark]==3.5.4"
-```
-
-* Install Delta Lake:
-```bash
-python -mpip install delta-lake==3.3.0
-```
 
 ### PostgreSQL JDBC connector
 * See
   [Data Engineering Helpers - Knowledge Sharing - PostgreSQL - JDBC connector sub-section](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/README.md#postgresql-jdbc-connector)
-
-* Note that, as of end 2025, at least on MacOS, Java still needs to be in version 8
-  * For instance, install the Corretto JDK8 with SDKMan:
-```bash
-$ sdk install java 8.0.472-amzn
-$ sdk default java 8.0.472-amzn
-$ java -version
-openjdk version "1.8.0_472"
-OpenJDK Runtime Environment Corretto-8.472.08.1 (build 1.8.0_472-b08)
-OpenJDK 64-Bit Server VM Corretto-8.472.08.1 (build 25.472-b08, mixed mode)
-```
 
 * Example on how to launch a Spark REPL
   * Spark Shell (in Scala):
@@ -221,20 +208,6 @@ $ pyspark --driver-class-path postgresql-42.7.8.jar --jars postgresql-42.7.8.jar
 ```
 ```python
 >>> quit()
-```
-
-### Spark Connect
-* Launch the Spark Connect cluster from a dedicated terminal window/tab
-  (Control-C to terminate it)
-* Note that the `SPARK_REMOTE` environment variable should not be set at this
-  stage, otherwise the Spark Connect server will try to connect to itself
-  (catch 22) and will therefore not start
-  * The
-  [Shell aliases given in this cheat sheet](#shell-environment-and-aliases)
-  first unset that environment variable before launching the Spark Connect
-  server (if you use those aliases, all is good)
-```bash
-sparkconnectstart
 ```
 
 ## Shell environment and aliases
@@ -270,49 +243,12 @@ $ exec bash
 $ exec zsh
 ```
 
-* Copy the two Spark connect administrative scripts into the PySpark
-  installation:
-```bash
-$ cp tools/st*-connect*.sh $SPARK_HOME/sbin/
-```
-
-* Check that the scripts are installed correctly:
-```bash
-$ ls -lFh $SPARK_HOME/sbin/*connect*.sh
--rwxr-xr-x  1 user staff 1.5K Jun 28 16:54 $PY_LIBDIR/pyspark/sbin/start-connect-server.sh*
--rwxr-xr-x  1 user staff 1.0K Jun 28 16:54 $PY_LIBDIR/pyspark/sbin/stop-connect-server.sh*
-```
-
-* Add the following Shell aliases to start and stop Spark, Spark Connect server
-  and JupyterLab:
-```bash
-$ cat >> ~/.bash_aliases << _EOF
-
-# Spark Connect
-alias sparkconnectset='export SPARK_REMOTE="sc://localhost:15002"'
-alias sparkconnectunset='unset SPARK_REMOTE'
-alias sparkconnectstart='sparkconnectunset; start-connect-server.sh --packages org.apache.spark:spark-connect_2.12:\$SPARK_VERSION,io.delta:delta-spark_2.12:\$DL_VERSION,io.unitycatalog:unitycatalog-spark_2.12:\$UC_VERSION,org.postgresql:postgresql:9.4.1212 --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" --conf "spark.sql.catalog.spark_catalog=io.unitycatalog.spark.UCSingleCatalog" --conf "spark.sql.catalog.unity=io.unitycatalog.spark.UCSingleCatalog" --conf "spark.sql.catalog.unity.uri=http://localhost:8080" --conf "spark.sql.catalog.unity.token=" --conf "spark.sql.defaultCatalog=unity"'
-alias sparkconnectstop='stop-connect-server.sh'
-
-# PySpark and/or PySpark kernel within JupyterLab
-alias pysparkdelta='pyspark --packages org.apache.spark:spark-connect_2.12:\$SPARK_VERSION,io.delta:delta-spark_2.12:\$DL_VERSION,io.unitycatalog:unitycatalog-spark_2.12:\$UC_VERSION,org.postgresql:postgresql:9.4.1212 --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" --conf "spark.sql.catalog.spark_catalog=io.unitycatalog.spark.UCSingleCatalog" --conf "spark.sql.catalog.unity=io.unitycatalog.spark.UCSingleCatalog" --conf "spark.sql.catalog.unity.uri=http://localhost:8080" --conf "spark.sql.catalog.unity.token=" --conf "spark.sql.defaultCatalog=unity"'
-alias pysparkdeltawconnect='sparkconnectset; pysparkdelta'
-alias pysparkdeltawoconnect='sparkconnectunset; pysparkdelta'
-
-_EOF
-```
-
-* Re-read the Shell aliases:
-```bash
-. ~/.bash_aliases
-```
-
 ## Install native Spark manually
 * That section is kept for reference only. It is normally not needed
 
-* Install Spark/PySpark manually, _e.g._ with Spark 3.5.4:
+* Install Spark/PySpark manually, _e.g._ with Spark 4.1.1:
 ```bash
-$ export SPARK_VERSION="3.5.4"
+$ export SPARK_VERSION="4.1.1"
   wget https://dlcdn.apache.org/spark/spark-$SPARK_VERSION/spark-$SPARK_VERSION-bin-hadoop3.tgz
   tar zxf spark-$SPARK_VERSION-bin-hadoop3.tgz && \
   mv spark-$SPARK_VERSION-bin-hadoop3 ~/ && \
@@ -335,17 +271,10 @@ _EOF
 exec bash
 ```
 
-* Add the following Shell aliases to start and stop Spark Connect server:
-```bash
-$ cat >> ~/.bash_aliases << _EOF
-
-# Spark Connect
-alias sparkconnectstart='start-connect-server.sh --packages org.apache.spark:spark-connect_2.12:${SPARK_VERSION}'
-alias sparkconnectstop='stop-connect-server.sh'
-
-_EOF
-. ~/.bash_aliases
-```
+* See the
+  ['Shell environment and aliases' section of the Spark Connect cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/spark-connect/README.md#shell-environment-and-aliases)
+  (in this same Git repository) for additional Shell aliases related to
+  Spark Connect
 
 ### All-in-one Spark engine
 * For consistency reason, it is better, for the Unity Catalog (UC) connector,
@@ -360,10 +289,10 @@ ls -lFh ~/.ivy2/jars/io.unitycatalog*
 * Launch PySpark
   * With support for local Unity Catalog (UC) service:
 ```bash
-DL_VERSION=3.3.0
+DL_VERSION=4.0.1
 UC_VERSION=0.3.0-SNAPSHOT
 pyspark --name "local-uc" --master "local[*]" \
-  --packages "io.delta:delta-spark_2.12:${DL_VERSION},io.unitycatalog:unitycatalog-spark_2.12:${UC_VERSION}" \
+  --packages "io.delta:delta-spark_2.13:${DL_VERSION},io.unitycatalog:unitycatalog-spark_2.13:${UC_VERSION}" \
   --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
   --conf "spark.sql.catalog.spark_catalog=io.unitycatalog.spark.UCSingleCatalog" \
   --conf "spark.sql.catalog.unity=io.unitycatalog.spark.UCSingleCatalog" \
@@ -374,7 +303,7 @@ pyspark --name "local-uc" --master "local[*]" \
   * Only with support for Delta:
 ```bash
 pyspark --name "local" --master "local[*]" \
-  --packages "io.delta:delta-spark_2.12:${DL_VERSION}" \
+  --packages "io.delta:delta-spark_2.13:${DL_VERSION}" \
   --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
 ```
 
