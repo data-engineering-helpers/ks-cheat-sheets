@@ -2,6 +2,13 @@ Cheat Sheet - AI - Rules and Skills
 ===================================
 
 # Table of Content (ToC)
+* [Overview](#overview)
+* [References](#references)
+  * [Data Engineering helpers](#data-engineering-helpers)
+  * [AI rules and skills](#ai-rules-and-skills)
+* [Getting started](#getting-started)
+
+Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
 # Overview
 [This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/ai/rules-skills/README.md)
@@ -24,4 +31,8 @@ on a laptop or on a virtual machine (VM).
 npx skills add vercel-labs/agent-skills --list
 ```
 
+* Install skills from dbt Labs:
+```bash
+npx skills add dbt-labs/dbt-agent-skills --global
+```
 
