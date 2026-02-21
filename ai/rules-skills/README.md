@@ -20,6 +20,7 @@ on a laptop or on a virtual machine (VM).
 
 ## Data Engineering helpers
 * [Data Engineering Helpers - Knowledge Sharing - JavaScript (JS) world](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/js-world/)
+* [Data Engineering Helpers - Knowledge Sharing - dbt](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/dbt/)
 
 ## AI rules and skills
 * Homepage: https://skills.sh/

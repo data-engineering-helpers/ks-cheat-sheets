@@ -10,7 +10,7 @@ Cheat Sheet - dbt
   * [dbt\-duckdb](#dbt-duckdb)
 * [Quickstart](#quickstart)
 * [Installation](#installation)
-  * [Dependencies](#dependencies)
+  * [dbt packages](#dbt-packages)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
@@ -35,6 +35,7 @@ on a virtual machine (VM).
 # References
 
 ## Data Engineering helpers
+* [Data Engineering Helpers - Knowledge Sharing - AI rules and skills](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/ai/rules-skills/)
 * [Data Engineering Helpers - Knowledge Sharing - SQLMesh](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/dbt/README.md)
 * [Material for the Data platform - Modern Data Stack (MDS) in a box](https://github.com/data-engineering-helpers/mds-in-a-box/blob/main/README.md)
 * [Material for the Data platform - Data life cycle](https://github.com/data-engineering-helpers/data-life-cycle/blob/main/README.md)
@@ -66,5 +67,43 @@ $ python -mpip install -U pip dbt-duckdb
 $ python -mpip install -U "dbt-duckdb[glue]"
 ```
 
-## Dependencies
+## dbt packages
+* In the `pyproject.toml` file, add Python dependencies. For instance, for code generator,
+  the `dependencies` section looks like:
+```yaml
+dependencies = [
+    ...
+    "dbt-databricks",
+    "dbt-generator",
+    "dbt-score",
+	...
+```
+* Update the Python dependencies. For instance, with uv:
+```bash
+uv lock
+uv sync
+```
+
+* Specify a few dbt packages in the `packages.yml` file. For instance,
+  for [`dbt-codegen`](https://hub.getdbt.com/dbt-labs/codegen/latest/),
+  the `packages.yml` file would look like:
+```bash
+packages:
+	...
+    - package: dbt-labs/codegen
+    version: 0.14.0
+    ...
+```
+
+* Install the dbt packages
+  * With uv:
+```bash
+uv run dbt deps
+```
+  * Directly, without uv:
+```bash
+dbt deps
+```
+
+
 
