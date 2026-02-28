@@ -1,39 +1,99 @@
-Cheat Sheet - AI - Rules and Skills
-===================================
+# Cheat Sheet - AI - Rules and Skills
 
-# Table of Content (ToC)
-* [Overview](#overview)
-* [References](#references)
-  * [Data Engineering helpers](#data-engineering-helpers)
-  * [AI rules and skills](#ai-rules-and-skills)
-* [Getting started](#getting-started)
+## Table of Content (ToC)
+
+* [Cheat Sheet \- AI \- Rules and Skills](#cheat-sheet---ai---rules-and-skills)
+  * [Table of Content (ToC)](#table-of-content-toc)
+  * [Overview](#overview)
+  * [References](#references)
+    * [AI helpers](#ai-helpers)
+    * [Data Engineering helpers](#data-engineering-helpers)
+    * [AI rules and skills](#ai-rules-and-skills)
+  * [Getting started](#getting-started)
+    * [List the skills already installed](#list-the-skills-already-installed)
+    * [Install a skill locally](#install-a-skill-locally)
+    * [Remove a skill](#remove-a-skill)
+    * [Update skills](#update-skills)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
-# Overview
+## Overview
+
 [This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/ai/rules-skills/README.md)
-explains how to install and to use
-[AI skills](https://skills.sh), _e.g._,
+explains how to install and to use [AI skills](https://skills.sh), _e.g._,
 on a laptop or on a virtual machine (VM).
 
-# References
+## References
 
-## Data Engineering helpers
+### AI helpers
+
+* [AI Helpers - Knowledge Sharing - AI skills curated](https://github.com/ai-helpers/ai-skills-curated)
+
+### Data Engineering helpers
+
+* [Data Engineering Helpers - Knowledge Sharing - Declarative Data Pipelines](https://github.com/data-engineering-helpers/declarative-data-pipelines/)
+* [Data Engineering Helpers - Knowledge Sharing - Databricks AI Dev Kit](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/ai/databricks-ai-dev-kit/)
+* [Data Engineering Helpers - Knowledge Sharing - AI skills and rules](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/ai/rules-skills/)
 * [Data Engineering Helpers - Knowledge Sharing - JavaScript (JS) world](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/js-world/)
-* [Data Engineering Helpers - Knowledge Sharing - dbt](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/dbt/)
+* [Data Engineering Helpers - Knowledge Sharing - Python](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/python/)
 
-## AI rules and skills
-* Homepage: https://skills.sh/
-* Git repository: https://github.com/vercel-labs/skills
+### AI rules and skills
 
-# Getting started
-* Install the agent skill manager from Vercel Labs:
+* [Vercel labs - Skills homepage](https://skills.sh)
+* [GitHub - Vercel labs - Skills](https://github.com/vercel-labs/skills)
+
+## Getting started
+
+### List the skills already installed
+
+* List the skills brought by the current project:
+
 ```bash
-npx skills add vercel-labs/agent-skills --list
+npx skills list
 ```
 
-* Install skills from dbt Labs:
+* List the skills installed globally (in the user directory, that is,
+  in the `$HOME/.agents/skills/` directory):
+
 ```bash
-npx skills add dbt-labs/dbt-agent-skills --global
+npx skills list -g
 ```
 
+### Install a skill locally
+
+* The available skill sets may be browsed online: all the skill sets are in the
+  [`agents/skills/` directory](https://github.com/ai-helpers/ai-skills-curated/blob/main/agents/skills/)
+
+* In order to install a skill set for generic agents (the `--global` parameter
+  will have the skill set installed in the `$HOME/.agents/skills/` global user
+  directory):
+
+```bash
+npx skills add ai-helpers/ai-skills-curated <sill-set> --global
+```
+
+* For instance, for the
+  [`managing-python-projects-with-uv`](https://github.com/ai-helpers/ai-skills-curated/tree/main/agents/skills/managing-python-projects-with-uv/)
+  skill set:
+
+```bash
+npx skills add ai-helpers/ai-skills-curated managing-python-projects-with-uv --global
+```
+
+### Remove a skill
+
+* In order to remove an installed skill set, use `npx skills remove <skill>`.
+  For instance, to remove the `managing-python-projects-with-uv` skill set:
+
+```bash
+npx skills remove managing-python-projects-with-uv -g
+```
+
+### Update skills
+
+* Upgrade the skills (it fetches potential new releases of the installed skills
+  and installs those latest versions):
+
+```bash
+npx skills update
+```

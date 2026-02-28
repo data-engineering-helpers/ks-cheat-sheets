@@ -1,0 +1,9 @@
+{
+  "servers": {
+    "databricks": {
+      "command": "$HOME/.ai-dev-kit/.venv/bin/python",
+      "args": ["$HOME/.ai-dev-kit/repo/databricks-mcp-server/run_server.py"],
+      "env": {"DATABRICKS_CONFIG_PROFILE": "dbx-fav"}
+    }
+  }
+}
