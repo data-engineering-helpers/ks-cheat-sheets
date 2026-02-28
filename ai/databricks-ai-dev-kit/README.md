@@ -221,6 +221,14 @@ bash <(curl -sL $ADK_URL)
   profile/workspace/environment, which is to be found in the Databricks CLI
   configuration file (`~/.databrickscfg`)
 
+* From [VS Code, open the chat](vscode://github.copilot-chat), and click on
+  the tool icon at the bottom-right of the chat window:
+<img width="1674" height="327" alt="image" src="https://github.com/user-attachments/assets/43aaa285-a134-4ef7-a71d-0c6dcf010245" />
+<img width="153" height="33" alt="image" src="https://github.com/user-attachments/assets/64e55688-9454-4117-b8af-dda103793c2f" />
+
+* In the tool pop-up window of that chat, click on `databricks` to enable it:
+<img width="597" height="136" alt="image" src="https://github.com/user-attachments/assets/4ba57905-f394-4c84-b08d-16b505680a5f" />
+
 ### Install globally
 
 * For some reason, as of Feb. 2026, the global installation does not seem
