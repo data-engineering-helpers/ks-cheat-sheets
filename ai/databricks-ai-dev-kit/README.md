@@ -282,17 +282,35 @@ bash <(curl -sL $ADK_URL)
 
 * [Browse the DataBricks AI Dev Kit Skills](https://skills.sh/?q=databricks-solutions/ai-dev-kit)
 
-* Install the DataBricks Python SDK Skill:
+* Install the DataBricks DataBricks development guide:
 
 ```bash
 npx skills add https://github.com/databricks-solutions/ai-dev-kit \
     --skill databricks-python-sdk -g
 ```
 
-* Install the DataBricks Python SDK Skill:
+* Install the DataBricks Python development rules:
 
 ```bash
 npx skills add https://github.com/databricks-solutions/ai-dev-kit 
     --skill python-dev -g
 ```
 
+* As of March 2026, for some reason, the remaining of the Skills cannot be
+  installed through the `npx skills` CLI interface. The details to install
+  them are left below for reference only (but Skills.sh report that those
+  Skills cannot be found)
+
+* Install the DataBricks Skill testing framework:
+
+```bash
+npx skills add https://github.com/databricks-solutions/ai-dev-kit \
+    --skill skill-test -g
+```
+
+* Install the DataBricks Skill testing framework:
+
+```bash
+npx skills add https://github.com/databricks-solutions/ai-dev-kit \
+    --skill databricks-unity-catalog -g
+```
