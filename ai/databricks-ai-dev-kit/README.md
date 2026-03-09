@@ -17,8 +17,9 @@
     * [Prerequisites](#prerequisites)
     * [Setup \- References](#setup---references)
     * [Authentication for the Databricks CLI](#authentication-for-the-databricks-cli)
-    * [Install in existing project](#install-in-existing-project)
-    * [Install globally](#install-globally)
+    * [MCP mode \- Install globally](#mcp-mode---install-globally)
+    * [MCP mode \- Install in existing project](#mcp-mode---install-in-existing-project)
+    * [Direct CLI mode installation](#direct-cli-mode-installation)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
@@ -136,6 +137,11 @@ _e.g._, on a laptop or on a virtual machine (VM).
   * [Copilot in VS Code](https://github.com/features/copilot/ai-code-editor)
   * [Claude Code](https://claude.ai/code)
   * [Cursor](https://cursor.com/)
+* For the direct CLI mode (rather than through MCP):
+  * [Vercel labs - Skills homepage](https://skills.sh)
+  * [GitHub - Vercel labs - Skills](https://github.com/vercel-labs/skills)
+  * See also
+  [Data Engineering Helpers - Knowledge Sharing - AI skills and rules](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/ai/rules-skills/)
 
 ### Setup - References
 
@@ -198,7 +204,38 @@ databricks auth login
 databricks auth login --profile dbx-fav
 ```
 
-### Install in existing project
+### MCP mode - Install globally
+
+* The MCP installation mode seems to be the default (documented) one
+  * However, as discussed in a mid-Feb. 2026 Medium article, namely
+  [Why CLIs Beat MCP for AI Agents](https://medium.com/@rentierdigital/why-clis-beat-mcp-for-ai-agents-and-how-to-build-your-own-cli-army-6c27b0aec969),
+  the MCP installation bloats the context window
+  * And, in the case of DataBricks AI Dev Kit, all the Skills nevertheless
+  already use the DataBricks CLI
+  * Most probably, it was documented that way (MCP first) to allow for easy
+  discovery, for instance through the VSCode tooling window
+  * Now that VSCode has a Copilot Skill menu, exposing DataBricks Skills
+  through MCP is becoming less important
+* Moreover, for some reason, as of March 2026, the global installation does not
+  seem to install anything that VSCode Copilot recognizes
+  * If you exclusively use Copilot, it may be easier to also install AI Dev Kit
+  locally, as seen in the subsection below
+  * Nevertheless, the global installation allows to have the DataBricks MCP server
+  installed at the user space level, that is, in the `~/.ai-dev-kit` directory
+  * Any further local installation (in project workspaces/directories) will then
+  use/reference that global installation, and avoir duplication of the
+  AI Dev Kit installation
+* Excute the following
+  [install Shell script](https://github.com/databricks-solutions/ai-dev-kit/blob/main/install.sh)
+  with the `--global` and `--force` options (it will force the reinstallation if
+  needed):
+
+```bash
+ADK_URL="https://raw.githubusercontent.com/databricks-solutions/ai-dev-kit/main/install.sh"
+bash <(curl -sL $ADK_URL) --global --force
+```
+
+### MCP mode - Install in existing project
 
 * By default this will install at a project level rather than a user level.
   This is often a good fit, but requires you to run your client from the exact
@@ -213,6 +250,11 @@ ADK_URL="https://raw.githubusercontent.com/databricks-solutions/ai-dev-kit/main/
 bash <(curl -sL $ADK_URL)
 ```
 
+* As a matter of fact, once AI Dev Kit has already been installed globally,
+  the local installation will only reference/point to the global installation,
+  and consists mainly of a `mcp.json` configuration file (see just below),
+  pointing to/referencing the global AI Dev Kit installation
+
 * If, for some reason, the Databricks MCP configuration file has not been
   installed (typically, in `.vscode/mcp.json`), you can copy
   [the sample `mcp.json` file from this repository](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/ai/databricks-ai-dev-kit/vscode/mcp.json)
@@ -223,24 +265,34 @@ bash <(curl -sL $ADK_URL)
 
 * From [VS Code, open the chat](vscode://github.copilot-chat), and click on
   the tool icon at the bottom-right of the chat window:
-<img width="1674" height="327" alt="image" src="https://github.com/user-attachments/assets/43aaa285-a134-4ef7-a71d-0c6dcf010245" />
-<img width="153" height="33" alt="image" src="https://github.com/user-attachments/assets/64e55688-9454-4117-b8af-dda103793c2f" />
+<img width="1674" height="327" alt="image"
+     src="https://github.com/user-attachments/assets/43aaa285-a134-4ef7-a71d-0c6dcf010245"
+/>
+<img width="153" height="33" alt="image"
+     src="https://github.com/user-attachments/assets/64e55688-9454-4117-b8af-dda103793c2f"
+/>
 
 * In the tool pop-up window of that chat, click on `databricks` to enable it,
   and then click on the OK button:
-<img width="597" height="136" alt="image" src="https://github.com/user-attachments/assets/4ba57905-f394-4c84-b08d-16b505680a5f" />
+<img width="597" height="136" alt="image"
+     src="https://github.com/user-attachments/assets/4ba57905-f394-4c84-b08d-16b505680a5f"
+/>
 
-### Install globally
+### Direct CLI mode installation
 
-* For some reason, as of Feb. 2026, the global installation does not seem
-  to install anything that VSCode Copilot recognizes. If you exclusively use
-  Copilot, install AI Dev Kit locally, as seen in the subsection above
-* Excute the following
-  [install Shell script](https://github.com/databricks-solutions/ai-dev-kit/blob/main/install.sh)
-  with the `--global` and `--force` options (it will force the reinstallation if
-  needed):
+* [Browse the DataBricks AI Dev Kit Skills](https://skills.sh/?q=databricks-solutions/ai-dev-kit)
+
+* Install the DataBricks Python SDK Skill:
 
 ```bash
-ADK_URL="https://raw.githubusercontent.com/databricks-solutions/ai-dev-kit/main/install.sh"
-bash <(curl -sL $ADK_URL) --global --force
+npx skills add https://github.com/databricks-solutions/ai-dev-kit \
+    --skill databricks-python-sdk -g
 ```
+
+* Install the DataBricks Python SDK Skill:
+
+```bash
+npx skills add https://github.com/databricks-solutions/ai-dev-kit 
+    --skill python-dev -g
+```
+
