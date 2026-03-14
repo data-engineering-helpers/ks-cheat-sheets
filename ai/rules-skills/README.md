@@ -42,6 +42,11 @@ on a laptop or on a virtual machine (VM).
 * [Vercel labs - Skills homepage](https://skills.sh)
 * [GitHub - Vercel labs - Skills](https://github.com/vercel-labs/skills)
 
+### AI Spec-Driven Development (SDD)
+
+#### SDD - Articles
+* [Substack - Stop chatting start specifying build](https://open.substack.com/pub/fabricemonnier/p/stop-chatting-start-specifying-build)
+
 ## Getting started
 
 ### List the skills already installed
