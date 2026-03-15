@@ -9,6 +9,11 @@
     * [AI helpers](#ai-helpers)
     * [Data Engineering helpers](#data-engineering-helpers)
     * [AI rules and skills](#ai-rules-and-skills)
+      * [Rules and skills \- Articles](#rules-and-skills---articles)
+        * [Copilot agents Dojo](#copilot-agents-dojo)
+    * [AI Spec\-Driven Development (SDD)](#ai-spec-driven-development-sdd)
+      * [SDD \- Articles](#sdd---articles)
+        * [Stop chatting start specifying build](#stop-chatting-start-specifying-build)
   * [Getting started](#getting-started)
     * [List the skills already installed](#list-the-skills-already-installed)
     * [Install a skill locally](#install-a-skill-locally)
@@ -45,6 +50,7 @@ on a laptop or on a virtual machine (VM).
 #### Rules and skills - Articles
 
 ##### Copilot agents Dojo
+
 * [GitHub - Copilot Agents Dojo](https://github.com/andreaswasita/copilot-agents-dojo)
 * Author: Andreas Wasita Pradipta
   ([Andreas Wasita Pradipta on LinkedIn](https://www.linkedin.com/in/andreaswasita/),
