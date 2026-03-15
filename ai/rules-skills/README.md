@@ -42,9 +42,26 @@ on a laptop or on a virtual machine (VM).
 * [Vercel labs - Skills homepage](https://skills.sh)
 * [GitHub - Vercel labs - Skills](https://github.com/vercel-labs/skills)
 
+#### Rules and skills - Articles
+
+##### Copilot agents Dojo
+* [GitHub - Copilot Agents Dojo](https://github.com/andreaswasita/copilot-agents-dojo)
+* Author: Andreas Wasita Pradipta
+  ([Andreas Wasita Pradipta on LinkedIn](https://www.linkedin.com/in/andreaswasita/),
+  [Andreas Wasita Pradipta on GitHub](https://github.com/andreaswasita))
+* Date: March 2026
+* [LinkedIn - Copilot Agents Dojo](https://www.linkedin.com/posts/andreaswasita_agenticai-githubcopilot-microsoft-activity-7438219647650283520-eKIT)
+
 ### AI Spec-Driven Development (SDD)
 
 #### SDD - Articles
+
+##### Stop chatting start specifying build
+
+* Author: Fabrice Monnier
+  ([Fabrice Monnier on LinkedIn](https://www.linkedin.com/in/fabrice-monnier-cloud-data-devops/),
+  [Fabrice Monnier on Substack](https://substack.com/@fabricemonnier))
+* Date: March 2026
 * [Substack - Stop chatting start specifying build](https://open.substack.com/pub/fabricemonnier/p/stop-chatting-start-specifying-build)
 
 ## Getting started
