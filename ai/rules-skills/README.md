@@ -10,6 +10,7 @@
     * [Data Engineering helpers](#data-engineering-helpers)
     * [AI rules and skills](#ai-rules-and-skills)
       * [Rules and skills \- Articles](#rules-and-skills---articles)
+        * [Claude Code ultimate guide](#claude-code-ultimate-guide)
         * [Copilot agents Dojo](#copilot-agents-dojo)
     * [AI Spec\-Driven Development (SDD)](#ai-spec-driven-development-sdd)
       * [SDD \- Articles](#sdd---articles)
@@ -48,6 +49,14 @@ on a laptop or on a virtual machine (VM).
 * [GitHub - Vercel labs - Skills](https://github.com/vercel-labs/skills)
 
 #### Rules and skills - Articles
+
+##### Claude Code ultimate guide
+
+* [GitHub - Claude Code ultimate guide](https://github.com/FlorianBruniaux/claude-code-ultimate-guide)
+* Author: Florian Bruniaux
+  ([Florian Bruniaux on LinkedIn](https://www.linkedin.com/in/florian-bruniaux-43408b83/),
+  [Florian Bruniaux on GitHub](https://github.com/FlorianBruniaux))
+* [LinkedIn - Claude Code ultimate guide](https://www.linkedin.com/posts/alindnbrg_claudecode-aiengineering-agenticai-share-7439473078243475456-4Yj7)
 
 ##### Copilot agents Dojo
 
