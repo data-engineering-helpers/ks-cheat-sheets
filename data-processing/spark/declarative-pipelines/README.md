@@ -13,6 +13,7 @@
   * [Articles](#articles)
     * [Spark Declarative Pipelines 101](#spark-declarative-pipelines-101)
     * [SDP Quick Start](#sdp-quick-start)
+  * [Getting started](#getting-started)
   * [Setup](#setup)
     * [Setup of Apache Spark](#setup-of-apache-spark)
     * [Setup of Delta Lake](#setup-of-delta-lake)
@@ -47,13 +48,6 @@ for more details about Delta Lake and its compatibility with Apache Spark.
 * [Data Engineering Helpers - Knowledge Sharing - PostgreSQL](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/)
 * [Material for the Data platform - Modern Data Stack (MDS) in a box](https://github.com/data-engineering-helpers/mds-in-a-box)
 
-### Java
-
-* [Java releases](https://www.java.com/releases/)
-* From Sep. 2025, the new LTS has been the 25 release
-* The next LTS version should be the 27 release, expected to be available from
-  Sep. 2027
-
 ### Spark Declarative Pipelines (SDP)
 
 * Spark Declarative Pipelines has been developed as part of
@@ -71,13 +65,7 @@ for more details about Delta Lake and its compatibility with Apache Spark.
 
 ### Delta Lake
 
-* [Delta Lake release compatibility matrix](https://docs.delta.io/releases/)
-* [Delta Lake releases](https://github.com/delta-io/delta/releases)
-* [Delta Lake documentation](https://docs.delta.io/)
-  * [Delta Lake - Quick start guide](https://docs.delta.io/latest/quick-start.html)
-* [Delta Lake - Compatibility matrix with Spark](https://docs.delta.io/releases/)
-* [GitHub - Delta Lake - `delta` repository](https://github.com/delta-io/delta)
-* [Maven central - Delta Spark: `io.delta/delta-spark`](https://mvnrepository.com/artifact/io.delta/delta-spark)
+* [Data Engineering Helpers - Knowledge Sharing - Delta Lake](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/delta/README.md#delta-lake)
 
 ## Articles
 
@@ -99,6 +87,30 @@ for more details about Delta Lake and its compatibility with Apache Spark.
 * [LinkedIn post showcasing the SDP Quick Start Git repository](https://www.linkedin.com/posts/ilekuraidowu_want-to-experiment-with-spark-declarative-activity-7435610338764410880-BsID)
 * [GitHub - SDP Quick Start](https://github.com/Idowuilekura/sdp-quick-start)
 
+## Getting started
+
+### Create a new project
+
+* Specify a project name, for instance `sdp-poc` (PoC standing for
+  Proof-of-Concept):
+  
+```bash
+MY_PROJ=sdp-poc
+```
+
+* Initialize the project and go into the newly created directory:
+
+```bash
+spark-pipelines init --name $MY_PROJ
+cd $MY_PROJ
+```
+
+* Execute the SDP pipeline:
+
+```bash
+spark-pipelines run
+```
+
 ## Setup
 
 ### Setup of Apache Spark
@@ -110,3 +122,38 @@ for more details about Delta Lake and its compatibility with Apache Spark.
 
 * Reference:
   [Data Engineering Helpers - Knowledge Sharing - Delta Lake](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/delta/)
+
+### Setup of SDP
+
+* See
+  [Apache Spark doc - SDP Programming Guide - Quick install](https://spark.apache.org/docs/latest/declarative-pipelines-programming-guide.html#quick-install)
+  for the details
+
+* SDP comes as an optional module of PySpark and can therefore be installed from
+  [Pypi](https://pypi.org/project/pyspark/):
+
+```bash
+python -mpip install "pyspark[pipelines]"
+```
+
+* Note that SDP has a dependency on
+  [Spark Connect](https://spark.apache.org/docs/latest/spark-connect-overview.html).
+  The installation of the SDP option will therefore pull in a few Python
+  dependencies related to Spark Connect, such as gRPC (_e.g._,
+  [grpcio](https://pypi.org/project/grpcio/)
+  and [Protocol Buffers (aka Protobuf)](https://pypi.org/project/protobuf/)).
+  The following alternate installation option should pull in the same
+  dependencies:
+
+```bash
+python -mpip install "pyspark[connect,sql,pandas_on_spark]"
+```
+
+* Moreover, in order to install with a compatible version of Delta Lake:
+
+```bash
+python -mpip install "pyspark[pipelines] delta-spark"
+```
+
+* As an alternative, it can of course be installed from a manual install of
+  [Apache Spark](https://spark.apache.org/downloads.html)
