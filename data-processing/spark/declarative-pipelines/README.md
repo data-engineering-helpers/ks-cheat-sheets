@@ -85,10 +85,11 @@ of a version explicitly compatible with Spark 4.1.x.
 
 ### SDP Quick Start
 
-* Date:
+* Date: March 2026
 * Author: Idowu Oselumhe Ilekura
   ([Idowu Oselumhe Ilekura on LinkedIn](https://www.linkedin.com/in/ilekuraidowu/),
   [Idowu Oselumhe Ilekura on GitHub](https://github.com/Idowuilekura))
+* [LinkedIn post showcasing the SDP Quick Start Git repository](https://www.linkedin.com/posts/ilekuraidowu_want-to-experiment-with-spark-declarative-activity-7435610338764410880-BsID)
 * [GitHub - SDP Quick Start](https://github.com/Idowuilekura/sdp-quick-start)
 
 # Setup
