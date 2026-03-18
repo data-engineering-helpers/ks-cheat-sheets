@@ -73,6 +73,7 @@ of a version explicitly compatible with Spark 4.1.x.
   ([Bartosz Konieczny on LinkedIn](https://www.linkedin.com/in/bartosz-konieczny-waitingforcode/),
   [Bartosz Konieczny on Waiting for code blog, that is, his blog](https://www.waitingforcode.com/static/about))
 * [Waiting for code blog - Spark Declarative Pipelines (SDP) 101](https://www.waitingforcode.com/apache-spark-structured-streaming/spark-declarative-pipelines-101/read)
+* [GitHub - PySpark example code supporting the blog post about SDP](https://github.com/bartosz25/spark-playground/tree/master/structured-streaming-declarative-pipelines/pyspark)
 
 # Setup
 
