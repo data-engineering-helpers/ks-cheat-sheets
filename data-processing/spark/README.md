@@ -14,7 +14,6 @@
     * [Unity Catalog (UC)](#unity-catalog-uc)
   * [Setup](#setup)
     * [Setup of Java](#setup-of-java)
-    * [Java](#java)
     * [Clone this repository](#clone-this-repository)
     * [Setup of Delta Lake](#setup-of-delta-lake)
     * [Setup of Spark Connect](#setup-of-spark-connect)
@@ -94,8 +93,6 @@ on a laptop or on a virtual machine (VM).
 ## Setup
 
 ### Setup of Java
-
-### Java
 
 * If not already done so, install Java 21
   * [Spark 4.1.0 appears to be compatible with Java versions from 17 up to 21 included](https://spark.apache.org/docs/4.1.0-preview4/#downloading)
