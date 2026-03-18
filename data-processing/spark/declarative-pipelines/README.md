@@ -49,11 +49,18 @@ of a version explicitly compatible with Spark 4.1.x.
 * [Material for the Data platform - Modern Data Stack (MDS) in a box](https://github.com/data-engineering-helpers/mds-in-a-box)
 
 ## Spark Declarative Pipelines (SDP)
+* Spark Declarative Pipelines has been developed as part of
+  [SPARK-51727](https://issues.apache.org/jira/browse/SPARK-51727) by:
+  Aakash Japi, Anish Mahto, Calili dos Santos Silva, Dongjoon Hyun, Jacek Laskowski,
+  Jacky Wang, Jon Mio, Jungtaek Lim, Peter Toth, Sandy Ryza, Sanford Ryza, Wenchen Fan,
+  Yang Jie, Yuheng Chang
 * [Apache Spark doc - Spark Declarative Pipelines Programming Guide](https://spark.apache.org/docs/latest/declarative-pipelines-programming-guide.html)
 * Databricks Lakeflow:
   * [Databricks doc - AWS - Lakeflow Spark Declarative Pipelines (LDP)](https://docs.databricks.com/aws/en/ldp/)
   * [Microsoft doc - Lakeflow Spark Declarative Pipelines (LDP)](https://learn.microsoft.com/en-us/azure/databricks/ldp/)
 * [GitHub - End-to-end quick start guide for Spark Declarative Pipelines](https://github.com/Idowuilekura/sdp-quick-start)
+* [YouTube - Spark Declarative Pipelines (SDP) explained in under 20 minutes](https://www.youtube.com/watch?v=WNPYEZ7SMSM),
+  by [Sandy Ryza](https://www.linkedin.com/in/sandyryza/), Feb. 2026
 
 ## Delta Lake
 * [Delta Lake release compatibility matrix](https://docs.delta.io/releases/)
