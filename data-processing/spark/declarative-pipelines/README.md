@@ -7,6 +7,8 @@ Cheat Sheet - Spark Declarative Pipelines (SDP)
   * [Data Engineering helpers](#data-engineering-helpers)
   * [Spark Declarative Pipelines (SDP)](#spark-declarative-pipelines-sdp)
   * [Delta Lake](#delta-lake)
+  * [Articles](#articles)
+    * [Spark Declarative Pipelines 101](#spark-declarative-pipelines-101)
 * [Setup](#setup)
   * [Java](#java)
   * [Delta Lake](#delta-lake-1)
@@ -61,6 +63,16 @@ of a version explicitly compatible with Spark 4.1.x.
 * [Delta Lake - Compatibility matrix with Spark](https://docs.delta.io/releases/)
 * [GitHub - Delta Lake - `delta` repository](https://github.com/delta-io/delta)
 * [Maven central - Delta Spark: `io.delta/delta-spark`](https://mvnrepository.com/artifact/io.delta/delta-spark)
+
+## Articles
+
+### Spark Declarative Pipelines 101
+
+* Date: March 2026
+* Author: Bartosz Konieczny
+  ([Bartosz Konieczny on LinkedIn](https://www.linkedin.com/in/bartosz-konieczny-waitingforcode/),
+  [Bartosz Konieczny on Waiting for code blog, that is, his blog](https://www.waitingforcode.com/static/about))
+* [Waiting for code blog - Spark Declarative Pipelines (SDP) 101](https://www.waitingforcode.com/apache-spark-structured-streaming/spark-declarative-pipelines-101/read)
 
 # Setup
 
