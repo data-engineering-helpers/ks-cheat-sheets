@@ -1,60 +1,66 @@
-Cheat Sheet - Spark Declarative Pipelines (SDP)
-===============================================
+# Cheat Sheet - Spark Declarative Pipelines (SDP)
 
-# Table of Content (ToC)
-* [Overview](#overview)
-* [References](#references)
-  * [Data Engineering helpers](#data-engineering-helpers)
-  * [Spark Declarative Pipelines (SDP)](#spark-declarative-pipelines-sdp)
-  * [Delta Lake](#delta-lake)
+## Table of Content (ToC)
+
+* [Cheat Sheet \- Spark Declarative Pipelines (SDP)](#cheat-sheet---spark-declarative-pipelines-sdp)
+  * [Table of Content (ToC)](#table-of-content-toc)
+  * [Overview](#overview)
+  * [References](#references)
+    * [Data Engineering helpers](#data-engineering-helpers)
+    * [Java](#java)
+    * [Spark Declarative Pipelines (SDP)](#spark-declarative-pipelines-sdp)
+    * [Delta Lake](#delta-lake)
   * [Articles](#articles)
     * [Spark Declarative Pipelines 101](#spark-declarative-pipelines-101)
     * [SDP Quick Start](#sdp-quick-start)
-* [Setup](#setup)
-  * [Java](#java)
-  * [Delta Lake](#delta-lake-1)
-  * [Spark 4\.1\.0 preview](#spark-410-preview)
-  * [Delta Lake](#delta-lake-2)
+  * [Setup](#setup)
+    * [Setup of Apache Spark](#setup-of-apache-spark)
+    * [Setup of Delta Lake](#setup-of-delta-lake)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
-# Overview
+## Overview
+
 [This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/declarative-pipelines/README.md)
 explains how to install and to use
 [Spark Declarative Pipelines](https://spark.apache.org/docs/4.1.0-preview4/declarative-pipelines-programming-guide.html),
 _e.g._, on a laptop or on a virtual machine (VM).
 
-Since Delta Lake has not released a version explicitly compatible with Spark 4.1.x
-yet, Delta Lake may not fully work with Spark versions featuring Spark Declarative
-Pipelines (SDP), that is, Spark 4.1+.
-[Delta Lake 4.1.0 milestone](https://github.com/delta-io/delta/milestone/31)
-states that it was due for end of January 2026, but the completion rate is still
-0% for that miestone, even at the end of Feb. 2026.
-And there is no sign in
-[Delta Lake releases](https://github.com/delta-io/delta/releases),
-nor in the
-[Delta Lake release compatibility matrix](https://docs.delta.io/releases/),
-of a version explicitly compatible with Spark 4.1.x.
+The
+[Delta Lake v4.1.0 release](https://github.com/delta-io/delta/releases/tag/v4.1.0)
+now brings support for Apache Spark 4.1, which is the first release of Spark
+featuring the Spark Declarative Pipelines (SDP) framework.
+See also
+[Data Engineering Helpers - Knowledge Sharing - Delta Lake](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/delta/)
+for more details about Delta Lake and its compatibility with Apache Spark.
 
-# References
+## References
 
-## Data Engineering helpers
-* [Data Engineering Helpers - Knowledge Sharing - Spark](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/)
-* [Data Engineering Helpers - Knowledge Sharing - Delta Lake](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/delta/)
+### Data Engineering helpers
+
+* [Data Engineering Helpers - Knowledge Sharing - Java](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/java-world/)
 * [Data Engineering Helpers - Knowledge Sharing - Python](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/python/)
-  * [Data Engineering Helpers - Knowledge Sharing - Jupyter, PySpark and DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/jupyter/jupyter-pyspark-duckdb/)
+* [Data Engineering Helpers - Knowledge Sharing - Spark](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/)
+* [Data Engineering Helpers - Knowledge Sharing - Spark Connect](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/spark-connect/)
+* [Data Engineering Helpers - Knowledge Sharing - Delta Lake](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/delta/)
 * [Data Engineering Helpers - Knowledge Sharing - Unity Catalog (UC)](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/unity-catalog/)
-* [Data Engineering Helpers - Knowledge Sharing - SQLMesh](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/)
-* [Data Engineering Helpers - Knowledge Sharing - DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/)
 * [Data Engineering Helpers - Knowledge Sharing - PostgreSQL](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/)
 * [Material for the Data platform - Modern Data Stack (MDS) in a box](https://github.com/data-engineering-helpers/mds-in-a-box)
 
-## Spark Declarative Pipelines (SDP)
+### Java
+
+* [Java releases](https://www.java.com/releases/)
+* From Sep. 2025, the new LTS has been the 25 release
+* The next LTS version should be the 27 release, expected to be available from
+  Sep. 2027
+
+### Spark Declarative Pipelines (SDP)
+
 * Spark Declarative Pipelines has been developed as part of
   [SPARK-51727](https://issues.apache.org/jira/browse/SPARK-51727) by:
-  Aakash Japi, Anish Mahto, Calili dos Santos Silva, Dongjoon Hyun, Jacek Laskowski,
-  Jacky Wang, Jon Mio, Jungtaek Lim, Peter Toth, Sandy Ryza, Sanford Ryza, Wenchen Fan,
-  Yang Jie, Yuheng Chang
+  Aakash Japi, Anish Mahto, Calili dos Santos Silva, Dongjoon Hyun,
+  Jacek Laskowski, Jacky Wang, Jon Mio, Jungtaek Lim, Peter Toth, Sandy Ryza,
+  Sanford Ryza, Wenchen Fan, Yang Jie, Yuheng Chang
 * [Apache Spark doc - Spark Declarative Pipelines Programming Guide](https://spark.apache.org/docs/latest/declarative-pipelines-programming-guide.html)
 * Databricks Lakeflow:
   * [Databricks doc - AWS - Lakeflow Spark Declarative Pipelines (LDP)](https://docs.databricks.com/aws/en/ldp/)
@@ -63,7 +69,8 @@ of a version explicitly compatible with Spark 4.1.x.
 * [YouTube - Spark Declarative Pipelines (SDP) explained in under 20 minutes](https://www.youtube.com/watch?v=WNPYEZ7SMSM),
   by [Sandy Ryza](https://www.linkedin.com/in/sandyryza/), Feb. 2026
 
-## Delta Lake
+### Delta Lake
+
 * [Delta Lake release compatibility matrix](https://docs.delta.io/releases/)
 * [Delta Lake releases](https://github.com/delta-io/delta/releases)
 * [Delta Lake documentation](https://docs.delta.io/)
@@ -92,77 +99,14 @@ of a version explicitly compatible with Spark 4.1.x.
 * [LinkedIn post showcasing the SDP Quick Start Git repository](https://www.linkedin.com/posts/ilekuraidowu_want-to-experiment-with-spark-declarative-activity-7435610338764410880-BsID)
 * [GitHub - SDP Quick Start](https://github.com/Idowuilekura/sdp-quick-start)
 
-# Setup
+## Setup
 
-## Java
-* If not already done so, install Java 21
-  * [Spark 4.1.0 appears to be compatible with Java versions from 17 up to 21 included](https://spark.apache.org/docs/4.1.0-preview4/#downloading)
-  * SDKMan is recommended to manage the versions of Java-based
-    tools. For instance, with the Corretto JDKs:
-```bash
-$ sdk install java 21.0.9-amzn
-$ sdk default java 21.0.9-amzn
-```
-* Check the version of Java:
-```bash
-$ java -version
-openjdk version "21.0.9" 2025-10-21 LTS
-OpenJDK Runtime Environment Corretto-21.0.9.10.1 (build 21.0.9+10-LTS)
-OpenJDK 64-Bit Server VM Corretto-21.0.9.10.1 (build 21.0.9+10-LTS, mixed mode, sharing)
-```
+### Setup of Apache Spark
 
-## Delta Lake
+* Reference:
+  [Data Engineering Helpers - Knowledge Sharing - Spark](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/)
+
+### Setup of Delta Lake
+
 * Reference:
   [Data Engineering Helpers - Knowledge Sharing - Delta Lake](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/delta/)
-
-## Spark 4.1.0 preview
-* Specify the Spark version:
-```bash
-$ SPARK_VERSION="4.1.0.dev4"
-```
-
-* Download PySpark:
-```bash
-$ mkdir -p $HOME/opt/spark/archives
-$ curl -kL https://dist.apache.org/repos/dist/release/spark/spark-4.1.0-preview4/pyspark-${SPARK_VERSION}.tar.gz -o $HOME/opt/spark/pyspark-${SPARK_VERSION}.tar.gz
-```
-* Build and install PySpark:
-``` bash
-$ pushd $HOME/opt/spark
-$ tar zxf pyspark-${SPARK_VERSION}.tar.gz && mv pyspark-${SPARK_VERSION}.tar.gz archives
-$ pushd pyspark-${SPARK_VERSION}
-$ python -mbuild .
-$ python -mpip install dist/pyspark-${SPARK_VERSION}-*.whl
-$ popd && popd
-```
-* Check that PySpark has been installed correctly:
-```bash
-$ python -mpip show pyspark
-```
-* Check the version of PySpark:
-```bash
-$ pyspark --version
-WARNING: Using incubator modules: jdk.incubator.vector
-Welcome to
-      ____              __
-     / __/__  ___ _____/ /__
-    _\ \/ _ \/ _ `/ __/  '_/
-   /___/ .__/\_,_/_/ /_/\_\   version 4.1.0-preview4
-      /_/
-
-Using Scala version 2.13.17, OpenJDK 64-Bit Server VM, 21.0.9
-Branch HEAD
-Compiled by user ubuntu on 2025-11-16T18:45:58Z
-Revision c125aea395b37ec1fa3b4e8b5a3e9bee270203c2
-Url https://github.com/apache/spark
-```
-
-## Delta Lake
-* [Delta Lake release compatibility matrix](https://docs.delta.io/releases/)
-* [Delta Lake releases](https://github.com/delta-io/delta/releases)
-* As of end 2025, the latest Delta Lake release is 4.0.0
-* There does not seem to be any release, or even
-  [branch](https://github.com/delta-io/delta/branches), for Spark 4.1
-* The
-  [default version of Delta Lake is 3.4.0-SNAPSHOT](https://github.com/delta-io/delta/blob/master/version.sbt)
-* The latest branch seems to be [branch 4.0](https://github.com/delta-io/delta/tree/branch-4.0)
