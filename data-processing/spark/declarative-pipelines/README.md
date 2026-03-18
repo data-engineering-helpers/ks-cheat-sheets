@@ -9,6 +9,7 @@ Cheat Sheet - Spark Declarative Pipelines (SDP)
   * [Delta Lake](#delta-lake)
   * [Articles](#articles)
     * [Spark Declarative Pipelines 101](#spark-declarative-pipelines-101)
+    * [SDP Quick Start](#sdp-quick-start)
 * [Setup](#setup)
   * [Java](#java)
   * [Delta Lake](#delta-lake-1)
@@ -81,6 +82,14 @@ of a version explicitly compatible with Spark 4.1.x.
   [Bartosz Konieczny on Waiting for code blog, that is, his blog](https://www.waitingforcode.com/static/about))
 * [Waiting for code blog - Spark Declarative Pipelines (SDP) 101](https://www.waitingforcode.com/apache-spark-structured-streaming/spark-declarative-pipelines-101/read)
 * [GitHub - PySpark example code supporting the blog post about SDP](https://github.com/bartosz25/spark-playground/tree/master/structured-streaming-declarative-pipelines/pyspark)
+
+### SDP Quick Start
+
+* Date:
+* Author: Idowu Oselumhe Ilekura
+  ([Idowu Oselumhe Ilekura on LinkedIn](https://www.linkedin.com/in/ilekuraidowu/),
+  [Idowu Oselumhe Ilekura on GitHub](https://github.com/Idowuilekura))
+* [GitHub - SDP Quick Start](https://github.com/Idowuilekura/sdp-quick-start)
 
 # Setup
 
