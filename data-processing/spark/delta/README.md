@@ -69,6 +69,7 @@ cheat sheet also gives details on how to do it.
 * [Delta Lake releases](https://github.com/delta-io/delta/releases)
 * [Delta Lake documentation](https://docs.delta.io/)
   * [Delta Lake - Quick start guide](https://docs.delta.io/latest/quick-start.html)
+  * [Delta Lake - Catalog-managed tables](https://docs.delta.io/delta-catalog-managed-tables/)
 * [GitHub - Delta Lake - `delta` repository](https://github.com/delta-io/delta)
 * [Maven central - Delta Spark: `io.delta/delta-spark`](https://mvnrepository.com/artifact/io.delta/delta-spark)
 * [Delta Lake doc - Delta Connect](https://docs.delta.io/delta-spark-connect/)

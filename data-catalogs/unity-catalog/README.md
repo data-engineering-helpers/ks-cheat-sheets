@@ -85,6 +85,8 @@ on premises, _e.g._, on a laptop or on a virtual machine (VM).
 
 ## Getting started
 
+### General
+
 * To interact with the UC
   * When the UC server has been started on the default port (entities: `schema`,
   `volume`, `model_version`, `metastore`, `auth`, `catalog`, `function`,
@@ -449,7 +451,6 @@ DL_JAR=delta-spark_$SC_VERSION:$DL_VERSION
 UC_DOM=io.unitycatalog
 UC_JAR=unitycatalog-spark_$SC_VERSION
 pyspark --name "local-uc-test" \
-  --master "local[*]" \
   --packages "io.delta:$DL_JAR,$UC_DOM:$UC_JAR:$UC_VERSION" \
   --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
   --conf "spark.sql.catalog.spark_catalog=$UC_DOM.spark.UCSingleCatalog" \
@@ -817,7 +818,7 @@ cd ~/dev/infra/unitycatalog
   * For the Java-based installation:
 
 ```bash
-alias unitycatalogstart='cd ~/dev/infra/unitycatalog; ./bin/start-uc-server'
+alias unitycatalogstart='cd ~/dev/infra/unitycatalog; bin/start-uc-server'
 ```
 
 * For the container-based installation:
@@ -866,30 +867,35 @@ sdk upgrade sbt
 * Build the JAR package with SBT:
 
 ```bash
-sbt package
+sbt +compile +package
 [info] welcome to sbt 1.9.9 (Amazon.com Inc. Java 21.0.10)
 ...
 [info] Successfully generated code to $HOME/some/path/unitycatalog/target/clients/java
-Generated classpath file '$HOME/some/path/unitycatalog/clients/python/target/classpath'
-Generated classpath file '$HOME/some/path/unitycatalog/server/target/controlmodels/target/classpath'
-Generated classpath file '$HOME/some/path/unitycatalog/target/classpath'
-Generated classpath file '$HOME/some/path/unitycatalog/target/clients/java/target/classpath'
-Generated classpath file '$HOME/some/path/unitycatalog/server/target/models/target/classpath'
-Generated classpath file '$HOME/some/path/unitycatalog/target/control/java/target/classpath'
-Generated classpath file '$HOME/some/path/unitycatalog/connectors/spark/target/scala-2.12/classpath'
-Generated classpath file '$HOME/some/path/unitycatalog/server/target/classpath'
-Generated classpath file '$HOME/some/path/unitycatalog/examples/cli/target/classpath'
+...
 [success] Total time: 9 s, completed Dec 17, 2024, 5:07:53 PM
 ```
 
-* Publish the JAR packages locally (in the Ivy2/Maven local cache):
+* Publish the JAR artifacts locally (in the Ivy2 and Maven local caches):
 
 ```bash
-sbt +publishLocal
+sbt +publishLocal +publishM2
 [info] :: delivering :: io.unitycatalog#unitycatalog-spark_...
 [info] delivering ivy file to $HOME/some/path/unitycatalog/connectors...
 [info] published ivy to $HOME/.ivy2/local/io.unitycatalog/...
 [success] Total time: 6 s, completed Dec 17, 2024, 5:04:18 PM
+```
+
+* A new feature of Spark 4.1, Delta 4.1 and associated Unity Catalog (0.5)
+  is for Delta Lake to delegate the management of tables to the catalog.
+  See the
+  [documentation catalog-managed Delta tables](https://docs.delta.io/delta-catalog-managed-tables/)
+  for more details
+  * Set the managed-table property feature to true (it is set to false by default)
+
+```bash
+sed -i.bak1 \
+  -e 's/server.managed-table.enabled=false/server.managed-table.enabled=true/' \
+  etc/conf/server.properties
 ```
 
 * Launch the Unity Catalog (Control-C to terminate the service)
@@ -936,16 +942,23 @@ git clone web_URL
 
 * Navigate into the project you just cloned using cd command and make sure
   the following versions are installed correctly:
-  * JDK 21 (check with java -version and javac -version.)
+  * JDK 21 (check with `java -version` and `javac -version`)
   * sbt 1.9.9 (check both sbt version in this project and sbt script version
-  → verify with sbt -version)
-  * Scala 2.13.15 (this may vary, but it must be compatible with JDK 21
-  and sbt 1.9.9 → verify with scala -version)
-* To start the UI correctly, you need also to install node.js and yarn
-* From within the project you just cloned, we can now compile the project using:
+  → verify with `sbt -version`)
+  * Scala 2.13.17 (this may vary, but it must be compatible with JDK 21
+  and sbt 1.9.9 → verify with `scala -version`)
+* To start the UI correctly, you need also to install NodeJS and Yarn
+* From within the just cloned repository, the project can now be compiled
+  and the JAR artifacts may be built:
 
 ```bash
-build/sbt package
+build/sbt +compile +package
+```
+
+* Publish the JAR in the Ivy2 and Maven local caches/repositories:
+
+```bash
+build/sbt +publishLocal +publishM2
 ```
 
 * Now start the UC server:
@@ -1009,7 +1022,7 @@ $ psql -h $PG_SVR -U ucdba -d ucdb -c "select 42 as nb;"
 * Add the `ucdba` credentials to the local PostgreSQL configuration file:
 
 ```bash
-echo "localhost:5432:ucdb:ucdba:<ucdba-pass-see-above>" >> ~/.pgpass
+echo "localhost:5432:*:ucdba:<ucdba-pass-see-above>" >> ~/.pgpass
 chmod 600 ~/.pgpass
 ```
 
@@ -1076,16 +1089,20 @@ rm -f etc/conf/hibernate.properties.bak?
 ./bin/start-uc-server -p 9090
 ```
 
-* (In a distinct terminal tab,) use the UC client to create a `unity` catalog:
+* (In a distinct terminal tab,) use the UC client to create a `unity` catalog
+  with a default storage location (for managed tables and managed volumes):
 
 ```bash
-./bin/uc catalog create --name unity --comment "Main catalog"
+mkdir -p /tmp/unitycatalog/storage
+bin/uc catalog create --name unity \
+  --storage_root /tmp/unitycatalog/storage --comment "Main catalog"
 ```
 
 * Create a `default` schema for the `unity` catalog:
 
 ```bash
-./bin/uc schema create --catalog unity --name default --comment "Default schema"
+bin/uc schema create --catalog unity --name default \
+  --storage_root /tmp/unitycatalog/storage --comment "Default schema"
 ```
 
 * Create the `numbers` table:
@@ -1095,9 +1112,10 @@ STR_FP=$HOME/some-uc-path/etc/data/external/unity/default/tables/numbers
 bin/uc table create \
   --full_name unity.default.numbers \
   --columns "as_int int, as_double double" \
-  --storage_location "file://$STR_FP"\
+  --table_type MANAGED \
   --format DELTA \
-  --properties '{"key1": "value1", "key2": "value2"}'
+  --properties '{"key1": "value1", "key2": "value2"}' \
+  # --storage_location "file://$STR_FP"
 ```
 
 * Create the `marksheet` table (as of end 2024, even though that table is
@@ -1113,9 +1131,10 @@ STR_FP=$HOME/some-uc-path/etc/data/managed/unity/default/tables/marksheet
 bin/uc table create \
   --full_name unity.default.marksheet \
   --columns "id int, name string, marks int" \
-  --storage_location "file://$STR_FP" \
+  --table_type MANAGED \
   --format DELTA \
   --properties '{"key1": "value1", "key2": "value2"}'
+  #--storage_location "file://$STR_FP"
 ```
 
 * Create the `marksheet_uniform` table:
@@ -1125,9 +1144,10 @@ STR_FP=$HOME/some-uc-path/etc/data/managed/unity/default/tables/marksheet_unifor
 bin/uc table create \
   --full_name unity.default.marksheet_uniform \
   --columns "id int, name string, marks int" \
-  --storage_location "file://$STR_FP \
+  --table_type MANAGED \
   --format DELTA \
   --properties '{"key1": "value1", "key2": "value2"}'
+  # --storage_location "file://$STR_FP
 ```
 
 * Create the `user_countries` table:
@@ -1137,9 +1157,10 @@ STR_FP=$HOME/some-uc-path/etc/data/managed/unity/default/tables/user_countries
 bin/uc table create \
   --full_name unity.default.user_countries \
   --columns "first_name string, age long, country string" \
-  --storage_location "file://$STR_FP" \
+  --table_type MANAGED \
   --format DELTA \
   --properties '{"key1": "value1", "key2": "value2"}'
+  # --storage_location "file://$STR_FP"
 ```
 
 * Create the `json_files` volume:
@@ -1185,7 +1206,6 @@ DL_JAR=delta-spark_$SC_VERSION:$DL_VERSION
 UC_DOM=io.unitycatalog
 UC_JAR=unitycatalog-spark_$SC_VERSION
 pyspark --name "local-uc-test" \
-  --master "local[*]" \
   --packages "io.delta:$DL_JAR,$UC_DOM:$UC_JAR:$UC_VERSION" \
   --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
   --conf "spark.sql.catalog.spark_catalog=$UC_DOM.spark.UCSingleCatalog" \
@@ -1210,6 +1230,15 @@ sql("SELECT * FROM default.numbers;").show()
 +------+---------+
 |     1|      0.0|
 +------+---------+
+```
+
+* Create another table, this time the SQL way and as a catalog-managed table
+  (the feature has to be enabled on the Unity Catalog server; see above
+  the `server.properties` adaptation):
+
+```python
+sql("create table default.numbers2 (as_int int, as_double double) \
+  using delta tblproperties('delta.feature.catalogManaged'='supported');")
 ```
 
 ### Setup of DuckDB
@@ -1262,6 +1291,13 @@ python -mpip install -U "getdaft[unity,deltalake]"
 * [NodeJS](https://nodejs.org/en/download/package-manager)
 * [Yarn](https://classic.yarnpkg.com/lang/en/docs/install)
 
+* If needed, install Yarn
+  * For instance, with NPM:
+
+```bash
+npm -g install yarn
+```
+
 * Start the UI through Yarn:
 
 ```bash
@@ -1269,3 +1305,4 @@ cd ui
 yarn install
 yarn start
 ```
+
