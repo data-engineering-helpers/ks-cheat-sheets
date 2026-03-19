@@ -16,31 +16,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-export SPARK_CONNECT_MODE=0
 
-# Enter posix mode for bash 
-set -o posix 
+# A shell script to stop all workers on a single worker
+#
+# Environment variables
+#
+#   SPARK_WORKER_INSTANCES The number of worker instances that should be
+#                          running on this worker machine.  Default is 1.
 
-# Shell script for starting the Spark Connect server
+# Usage: stop-worker.sh
+#   Stops all workers on this worker machine
+
 if [ -z "${SPARK_HOME}" ]; then
   export SPARK_HOME="$(cd "`dirname "$0"`"/..; pwd)"
 fi
 
-# NOTE: This exact class name is matched downstream by SparkSubmit.
-# Any changes need to be reflected there.
-CLASS="org.apache.spark.sql.connect.service.SparkConnectServer"
-
-if [[ "$@" = *--help ]] || [[ "$@" = *-h ]]; then
-  echo "Usage: ./sbin/start-connect-server.sh [--wait] [options]"
-
-  "${SPARK_HOME}"/bin/spark-submit --help 2>&1 | grep -v Usage 1>&2
-  exit 0
-fi
+. "${SPARK_HOME}/sbin/spark-config.sh"
 
 . "${SPARK_HOME}/bin/load-spark-env.sh"
 
-if [ "$1" == "--wait" ]; then
-  shift
-  export SPARK_NO_DAEMONIZE=1
+if [ "$SPARK_WORKER_INSTANCES" = "" ]; then
+  "${SPARK_HOME}/sbin"/spark-daemon.sh stop org.apache.spark.deploy.worker.Worker 1
+else
+  for ((i=0; i<$SPARK_WORKER_INSTANCES; i++)); do
+    "${SPARK_HOME}/sbin"/spark-daemon.sh stop org.apache.spark.deploy.worker.Worker $(( $i + 1 ))
+  done
 fi
-exec "${SPARK_HOME}"/sbin/spark-daemon.sh submit $CLASS 1 --name "Spark Connect server" "$@"

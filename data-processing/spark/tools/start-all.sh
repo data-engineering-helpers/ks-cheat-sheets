@@ -16,31 +16,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-export SPARK_CONNECT_MODE=0
 
-# Enter posix mode for bash 
-set -o posix 
+# Start all spark daemons.
+# Starts the master on this node.
+# Starts a worker on each node specified in conf/workers
 
-# Shell script for starting the Spark Connect server
 if [ -z "${SPARK_HOME}" ]; then
   export SPARK_HOME="$(cd "`dirname "$0"`"/..; pwd)"
 fi
 
-# NOTE: This exact class name is matched downstream by SparkSubmit.
-# Any changes need to be reflected there.
-CLASS="org.apache.spark.sql.connect.service.SparkConnectServer"
+# Load the Spark configuration
+. "${SPARK_HOME}/sbin/spark-config.sh"
 
-if [[ "$@" = *--help ]] || [[ "$@" = *-h ]]; then
-  echo "Usage: ./sbin/start-connect-server.sh [--wait] [options]"
+# Start Master
+"${SPARK_HOME}/sbin"/start-master.sh
 
-  "${SPARK_HOME}"/bin/spark-submit --help 2>&1 | grep -v Usage 1>&2
-  exit 0
-fi
-
-. "${SPARK_HOME}/bin/load-spark-env.sh"
-
-if [ "$1" == "--wait" ]; then
-  shift
-  export SPARK_NO_DAEMONIZE=1
-fi
-exec "${SPARK_HOME}"/sbin/spark-daemon.sh submit $CLASS 1 --name "Spark Connect server" "$@"
+# Start Workers
+"${SPARK_HOME}/sbin"/start-workers.sh

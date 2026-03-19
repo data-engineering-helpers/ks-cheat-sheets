@@ -16,31 +16,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-export SPARK_CONNECT_MODE=0
 
-# Enter posix mode for bash 
-set -o posix 
+# Starts a worker instance on each machine specified in the conf/workers file.
 
-# Shell script for starting the Spark Connect server
 if [ -z "${SPARK_HOME}" ]; then
   export SPARK_HOME="$(cd "`dirname "$0"`"/..; pwd)"
 fi
 
-# NOTE: This exact class name is matched downstream by SparkSubmit.
-# Any changes need to be reflected there.
-CLASS="org.apache.spark.sql.connect.service.SparkConnectServer"
-
-if [[ "$@" = *--help ]] || [[ "$@" = *-h ]]; then
-  echo "Usage: ./sbin/start-connect-server.sh [--wait] [options]"
-
-  "${SPARK_HOME}"/bin/spark-submit --help 2>&1 | grep -v Usage 1>&2
-  exit 0
-fi
-
+. "${SPARK_HOME}/sbin/spark-config.sh"
 . "${SPARK_HOME}/bin/load-spark-env.sh"
 
-if [ "$1" == "--wait" ]; then
-  shift
-  export SPARK_NO_DAEMONIZE=1
+# Find the port number for the master
+if [ "$SPARK_MASTER_PORT" = "" ]; then
+  SPARK_MASTER_PORT=7077
 fi
-exec "${SPARK_HOME}"/sbin/spark-daemon.sh submit $CLASS 1 --name "Spark Connect server" "$@"
+
+if [ "$SPARK_MASTER_HOST" = "" ]; then
+  case `uname` in
+      (SunOS)
+          SPARK_MASTER_HOST="`/usr/sbin/check-hostname | awk '{print $NF}'`"
+          ;;
+      (*)
+          SPARK_MASTER_HOST="`hostname -f`"
+          ;;
+  esac
+fi
+
+# Launch the workers
+"${SPARK_HOME}/sbin/workers.sh" cd "${SPARK_HOME}" \; "${SPARK_HOME}/sbin/start-worker.sh" "spark://$SPARK_MASTER_HOST:$SPARK_MASTER_PORT"

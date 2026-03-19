@@ -16,31 +16,34 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-export SPARK_CONNECT_MODE=0
 
-# Enter posix mode for bash 
-set -o posix 
+# Stop all spark daemons.
+# Run this on the master node.
 
-# Shell script for starting the Spark Connect server
 if [ -z "${SPARK_HOME}" ]; then
   export SPARK_HOME="$(cd "`dirname "$0"`"/..; pwd)"
 fi
 
-# NOTE: This exact class name is matched downstream by SparkSubmit.
-# Any changes need to be reflected there.
-CLASS="org.apache.spark.sql.connect.service.SparkConnectServer"
+# Load the Spark configuration
+. "${SPARK_HOME}/sbin/spark-config.sh"
 
-if [[ "$@" = *--help ]] || [[ "$@" = *-h ]]; then
-  echo "Usage: ./sbin/start-connect-server.sh [--wait] [options]"
+# Stop the workers, then the master
+"${SPARK_HOME}/sbin"/stop-workers.sh
+"${SPARK_HOME}/sbin"/stop-master.sh
 
-  "${SPARK_HOME}"/bin/spark-submit --help 2>&1 | grep -v Usage 1>&2
-  exit 0
+if [ "$1" == "--wait" ]
+then
+  printf "Waiting for workers to shut down..."
+  while true
+  do
+    running=`${SPARK_HOME}/sbin/workers.sh ps -ef | grep -v grep | grep deploy.worker.Worker`
+    if [ -z "$running" ]
+    then
+      printf "\nAll workers successfully shut down.\n"
+      break
+    else
+      printf "."
+      sleep 10
+    fi
+  done
 fi
-
-. "${SPARK_HOME}/bin/load-spark-env.sh"
-
-if [ "$1" == "--wait" ]; then
-  shift
-  export SPARK_NO_DAEMONIZE=1
-fi
-exec "${SPARK_HOME}"/sbin/spark-daemon.sh submit $CLASS 1 --name "Spark Connect server" "$@"
