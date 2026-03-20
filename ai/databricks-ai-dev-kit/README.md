@@ -11,6 +11,8 @@
     * [Spec\-driven development (SDD)](#spec-driven-development-sdd)
     * [Lakehouse Plumber](#lakehouse-plumber)
     * [Metadata\-Driven Lakehouse Ingestion](#metadata-driven-lakehouse-ingestion)
+    * [Articles about Databricks AI Dev Kit](#articles-about-databricks-ai-dev-kit)
+      * [Hitchhikers guide to the Databricks AI Dev Kit](#hitchhikers-guide-to-the-databricks-ai-dev-kit)
   * [Getting started](#getting-started)
     * [Use with VS Code Copilot](#use-with-vs-code-copilot)
   * [Setup](#setup)
@@ -108,6 +110,16 @@ _e.g._, on a laptop or on a virtual machine (VM).
 > Also, development can be managed via CLI + Claude
 > I tested Codex and Gemini Pro 3.1 as well; for this workflow Claude 4.6
 > performed best in my experience.
+
+### Articles about Databricks AI Dev Kit
+
+#### Hitchhikers guide to the Databricks AI Dev Kit
+* Title: Hitchhikers guide to the Databricks AI Dev Kit
+* Author: Jaco van Gelder
+  ([Jaco van Gelder on LinkedIn](https://www.linkedin.com/in/jwvangelder/)),
+  Co-Founder of [Dtyped](https://www.linkedin.com/company/dtyped)
+* [Dtyped blog - Hitchhikers guide to the Databricks AI Dev Kit](https://dtyped.com/hitchhikers-guide-to-the-databricks-ai-dev-kit/)
+<img width="911" height="1008" alt="image" src="https://github.com/user-attachments/assets/27992092-55a4-4f9f-9e2c-f35035c2f369" />
 
 ## Getting started
 
