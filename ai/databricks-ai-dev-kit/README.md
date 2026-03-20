@@ -119,7 +119,7 @@ _e.g._, on a laptop or on a virtual machine (VM).
   ([Jaco van Gelder on LinkedIn](https://www.linkedin.com/in/jwvangelder/)),
   Co-Founder of [Dtyped](https://www.linkedin.com/company/dtyped)
 * [Dtyped blog - Hitchhikers guide to the Databricks AI Dev Kit](https://dtyped.com/hitchhikers-guide-to-the-databricks-ai-dev-kit/)
-<img width="911" height="1008" alt="image" src="https://github.com/user-attachments/assets/27992092-55a4-4f9f-9e2c-f35035c2f369" />
+<img width="91" height="101" alt="image" src="https://github.com/user-attachments/assets/27992092-55a4-4f9f-9e2c-f35035c2f369" />
 
 ## Getting started
 
