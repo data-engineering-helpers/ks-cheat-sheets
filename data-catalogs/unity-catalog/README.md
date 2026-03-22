@@ -818,27 +818,49 @@ sql("create table default.transactions (transaction_id int, item_name string) \
     using delta tblproperties('delta.feature.catalogManaged'='supported');")
 ```
 
-* With the DataFrame API, as no `path` parameter is specified, the table is considered
-  to be managed:
+* Create a Spark DataFrame, and then a temporary view from it (this allows
+  to get access to the content of the table from the SQL API):
 
 ```python
 df = spark.createDataFrame(
   [(1, "socks"), (2, "chips"), (3, "air conditioner"), (4, "tea"),],
   ["transaction_id", "item_name"]
 )
+df.createTempView("tiny_df")
+```
+
+* Create the catalog-managed Delta table from the content of the DataFrame
+  with the SQL API (see also
+  [Databricks doc - SQL Reference - Create a table](https://docs.databricks.com/aws/en/sql/language-manual/sql-ref-syntax-ddl-create-table-using)):
+
+```python
+sql("create table unityxt.default.transactions as select * from tiny_df \
+     using delta tblproperties('delta.feature.catalogManaged'='supported');")
+```
+
+* As of March 2026, with the way (_e.g._, configuration) Spark is launched
+  as seen above, the DataFrame API does not work, as the table paths are
+  interpreted by Spark as local Hive Metastore paths (_i.e._, in the
+  `spark-warehouse/` sub-directory, created by Spark dynamically), not as
+  Unity Catalog paths
+
+* The following two DataFrame API do not work with Unity Catalog; they are kept
+  here for reference, so as to avoid wasting one's time trying them:
+
+```python
 (
   df.write
     .mode("overwrite")
     .format("delta")
     .saveAsTable("default.transactions")
 )
+(
+  df.writeTo("unityxt.default.transactions2")
+    .using("delta")
+    .tableProperty('delta.feature.catalogManaged', 'supported')
+    .createOrReplace()
+)
 ```
-
-* Note that with the DataFrame API, if the table has not already been created
-  as a managed one (that is, either with the Unity Catalog CLI or with the
-  SQL API and the `tblproperties` property), the `df.write().saveAsTable()`
-  method triggers an exception because the `tblproperties` property has
-  to be set
 
 #### Show the details of tables with Spark
 
