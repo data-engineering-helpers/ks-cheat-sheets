@@ -10,6 +10,8 @@
     * [Unity Catalog documentation](#unity-catalog-documentation)
     * [Iceberg REST API](#iceberg-rest-api)
   * [Getting started](#getting-started)
+    * [General](#general)
+    * [Check the content of the catalog when the db is PostgreSQL](#check-the-content-of-the-catalog-when-the-db-is-postgresql)
     * [Browse the content of the catalog with the CLI](#browse-the-content-of-the-catalog-with-the-cli)
     * [Simple DuckDB](#simple-duckdb)
     * [DuckDB integrated with Unity Catalog](#duckdb-integrated-with-unity-catalog)
@@ -29,8 +31,9 @@
     * [WSL](#wsl)
     * [(Optional) Local PostgreSQL database](#optional-local-postgresql-database)
       * [Setup the PostgreSQL connection in the Hibernate property file](#setup-the-postgresql-connection-in-the-hibernate-property-file)
-      * [Create the content of the catalog](#create-the-content-of-the-catalog)
-    * [Setup of Spark](#setup-of-spark)
+    * [Create the content of the catalog](#create-the-content-of-the-catalog)
+    * [Interact with Unity Catalog from Spark](#interact-with-unity-catalog-from-spark)
+      * [Create tables on Unity Catalog from Spark](#create-tables-on-unity-catalog-from-spark)
     * [Setup of DuckDB](#setup-of-duckdb)
       * [MacOS](#macos)
       * [Linux](#linux)
@@ -101,6 +104,22 @@ bin/uc <entity> <operation>
 
 ```bash
 bin/uc --server http://localhost:9090 <entity> <operation>
+```
+
+### Check the content of the catalog when the db is PostgreSQL
+
+* Browse the list of tables related to Unity Catalog
+  * With the `\dt` command:
+
+```bash
+psql -h localhost -U ucdba -d ucdb -c "\dt"
+```
+
+* With the `information_schema` schema:
+
+```bash
+psql -h localhost -U ucdba -d ucdb -c "select * from information_schema.tables \
+  where table_schema='ucdba'"
 ```
 
 ### Browse the content of the catalog with the CLI
@@ -1064,7 +1083,7 @@ cat etc/conf/hibernate.properties
 rm -f etc/conf/hibernate.properties.bak?
 ```
 
-#### Create the content of the catalog
+### Create the content of the catalog
 
 * With the default H2 database, the Git repository comes with a catalog
   pre-installed.
@@ -1074,6 +1093,20 @@ rm -f etc/conf/hibernate.properties.bak?
   when configured with the H2 database, exported into JSON. It is hence used
   here to recreate the content of the catalog when configured with the
   (initially empty) PostgreSQL database
+
+* For the catalog-managed tables, the catalog and schema have to be setup
+  with a default storage location. In the remainder of this sub-section
+  * A so-called extended catalog, named `unityxt` (xt standing for extended),
+    will be created with a default storage location pointing to the temporary
+    file-system (_i.e._, in `/tmp/unitycatalog/storage`)
+  * A default schema, also setup with the same default storage location,
+    will be created for that extended catalog
+
+* Typically, for the catalog-managed tables, Unity Catlog stores
+  * Catalog metadata in the `__unitystorage__/catalogs/` sub-directory
+    of the default storage location on the file-system
+  * Schema metadata in the `__unitystorage__/schemas/` sub-directory
+    of the default storage location on the file-system
 
 * Launch the Unity Catalog (UC) server in a dedicated terminal tab
   (reminder: type Control-C to stop the server)
@@ -1089,65 +1122,117 @@ rm -f etc/conf/hibernate.properties.bak?
 ./bin/start-uc-server -p 9090
 ```
 
-* (In a distinct terminal tab,) use the UC client to create a `unity` catalog
-  with a default storage location (for managed tables and managed volumes):
+* In a distinct terminal tab, if the `unity` catalog does not already exist
+  (_e.g._, when the underlying database is PostgreSQL), use the UC client
+  to create a `unity` catalog with a default storage location (for managed
+  tables and managed volumes):
+
+```bash
+bin/uc catalog create --name unity --comment "Main catalog"
+```
+
+* Use the UC client to create the `unityxt` (`xt` standing for extended, as that
+  version of the catalog uses default storage location in order to support
+  catalog-controlled tables, _i.e._, managed tables) catalog with a default
+  storage location (for managed tables and managed volumes):
 
 ```bash
 mkdir -p /tmp/unitycatalog/storage
-bin/uc catalog create --name unity \
-  --storage_root /tmp/unitycatalog/storage --comment "Main catalog"
+bin/uc catalog create --name unityxt \
+  --storage_root /tmp/unitycatalog/storage --comment "Extended catalog"
 ```
 
-* Create a `default` schema for the `unity` catalog:
+* If the `default` schema for the `unity` catalog does not already exist
+  (_e.g._, when using a PostgreSQL database), create it for the `unity` catalog:
 
 ```bash
-bin/uc schema create --catalog unity --name default \
+bin/uc schema create --catalog unity --name default --comment "Default schema"
+```
+
+* Create a `default` schema for the `unityxt` (extended) catalog:
+
+```bash
+bin/uc schema create --catalog unityxt --name default \
   --storage_root /tmp/unitycatalog/storage --comment "Default schema"
 ```
 
-* Create the `numbers` table:
+* If not already existing, create the `unity.default.numbers` table,
+  as an external table
+  * The `storage_location` parameter is required for external tables,
+    but is not needed for managed tables (as the storage location is that
+    of the catalog and schema)
+  * See also [relevant documentation](https://docs.unitycatalog.io/usage/cli/#33-create-a-table)
 
 ```bash
 STR_FP=$HOME/some-uc-path/etc/data/external/unity/default/tables/numbers
 bin/uc table create \
   --full_name unity.default.numbers \
   --columns "as_int int, as_double double" \
-  --table_type MANAGED \
+  --table_type EXTERNAL \
   --format DELTA \
   --properties '{"key1": "value1", "key2": "value2"}' \
-  # --storage_location "file://$STR_FP"
+  --storage_location "file://$STR_FP"
 ```
 
-* Create the `marksheet` table (as of end 2024, even though that table is
-  supposed to be managed, the UC CLI does not seem to accept table creation
-  commands without the `storage_location` parameter, that is,
-  the UC CLI does not seem to accept to create managed tables:
-  * The `storage_location` parameter is required for external tables,
-  but should not be needed for managed tables.
-  * See also [relevant documentation](https://docs.unitycatalog.io/usage/cli/#33-create-a-table)
+* Create the `unityxt.default.numbers` table, as a managed table:
 
 ```bash
-STR_FP=$HOME/some-uc-path/etc/data/managed/unity/default/tables/marksheet
+bin/uc table create \
+  --full_name unityxt.default.numbers \
+  --columns "as_int int, as_double double" \
+  --table_type MANAGED \
+  --format DELTA \
+  --properties '{"key1": "value1", "key2": "value2"}'
+```
+
+* If not already existing, create the `unity.default.marksheet` table,
+  as an external table:
+
+```bash
+STR_FP=$HOME/some-uc-path/etc/data/external/unity/default/tables/marksheet
 bin/uc table create \
   --full_name unity.default.marksheet \
   --columns "id int, name string, marks int" \
-  --table_type MANAGED \
+  --table_type EXTERNAL \
   --format DELTA \
-  --properties '{"key1": "value1", "key2": "value2"}'
-  #--storage_location "file://$STR_FP"
+  --properties '{"key1": "value1", "key2": "value2"}' \
+  --storage_location "file://$STR_FP"
 ```
 
-* Create the `marksheet_uniform` table:
+* Create the `unityxt.default.marksheet` table, as a managed table:
 
 ```bash
-STR_FP=$HOME/some-uc-path/etc/data/managed/unity/default/tables/marksheet_uniform
 bin/uc table create \
-  --full_name unity.default.marksheet_uniform \
+  --full_name unityxt.default.marksheet \
   --columns "id int, name string, marks int" \
   --table_type MANAGED \
   --format DELTA \
   --properties '{"key1": "value1", "key2": "value2"}'
-  # --storage_location "file://$STR_FP
+```
+
+* If not already existing, create the `unity.default.marksheet_uniform` table,
+  as an external table:
+
+```bash
+STR_FP=$HOME/some-uc-path/etc/data/external/unity/default/tables/marksheet_uniform
+bin/uc table create \
+  --full_name unity.default.marksheet_uniform \
+  --columns "id int, name string, marks int" \
+  --table_type EXTERNAL \
+  --format DELTA \
+  --properties '{"key1": "value1", "key2": "value2"}' \
+  --storage_location "file://$STR_FP"
+```
+
+* Create the `unityxt.default.marksheet_uniform` table, as a managed table:
+
+```bash
+bin/uc table create \
+  --full_name unityxt.default.marksheet_uniform \
+  --columns "id int, name string, marks int" \
+  --table_type MANAGED \
+  --format DELTA \
+  --properties '{"key1": "value1", "key2": "value2"}'
 ```
 
 * Create the `user_countries` table:
@@ -1163,27 +1248,49 @@ bin/uc table create \
   # --storage_location "file://$STR_FP"
 ```
 
-* Create the `json_files` volume:
+* If not already existing, create the `json_files` volume
+  * In the main catalog:
 
 ```bash
 STR_FP=$HOME/some-uc-path/etc/data/managed/unity/default/volumes/json_files/
 bin/uc volume create \
   --full_name unity.default.json_files \
+  --volume_type EXTERNAL \
   --storage_location file://$STR_FP \
   --comment "External volume"
 ```
 
-* Create the `txt_files` volume:
+* In the extended catalog:
+
+```bash
+bin/uc volume create \
+  --full_name unityxt.default.json_files \
+  --volume_type MANAGED \
+  --comment "External volume"
+```
+
+* Create the `txt_files` volume
+  * In the main catalog:
 
 ```bash
 STR_FP=$HOME/some-uc-path/etc/data/managed/unity/default/volumes/txt_files/
 bin/uc volume create \
   --full_name unity.default.txt_files \
+  --volume_type EXTERNAL \
   --storage_location file://$STR_FP \
   --comment "Managed volume"
 ```
 
-### Setup of Spark
+* In the extended catalog:
+
+```bash
+bin/uc volume create \
+  --full_name unityxt.default.txt_files \
+  --volume_type MANAGED \
+  --comment "Managed volume"
+```
+
+### Interact with Unity Catalog from Spark
 
 * [Relevant documentation](https://docs.unitycatalog.io/integrations/unity-catalog-spark/)
 
@@ -1194,10 +1301,11 @@ bin/uc volume create \
   in the local Ivy2/Maven cache:
 
 ```bash
-ls -lFh ~/.ivy2/jars/io.unitycatalog*
+ls -lFh ~/.ivy2*/jars/io.unitycatalog*
 ```
 
-* Launch PySpark:
+* Launch PySpark (the configuration is here for both the main and the extended
+  catalogs, namely `unity` and `unityxt`):
 
 ```bash
 SC_VERSION=2.13
@@ -1212,7 +1320,22 @@ pyspark --name "local-uc-test" \
   --conf "spark.sql.catalog.unity=$UC_DOM.spark.UCSingleCatalog" \
   --conf "spark.sql.catalog.unity.uri=http://localhost:8080" \
   --conf "spark.sql.catalog.unity.token=" \
+  --conf "spark.sql.catalog.unityxt=$UC_DOM.spark.UCSingleCatalog" \
+  --conf "spark.sql.catalog.unityxt.uri=http://localhost:8080" \
+  --conf "spark.sql.catalog.unityxt.token=" \
   --conf "spark.sql.defaultCatalog=unity"
+```
+
+* Select/switch to `unity` catalog:
+
+```python
+sql("use unity;")
+```
+
+* Select/switch to `unityxt` catalog:
+
+```python
+sql("use unityxt;")
 ```
 
 * Insert some values into the `numbers` table:
@@ -1232,13 +1355,33 @@ sql("SELECT * FROM default.numbers;").show()
 +------+---------+
 ```
 
-* Create another table, this time the SQL way and as a catalog-managed table
-  (the feature has to be enabled on the Unity Catalog server; see above
-  the `server.properties` adaptation):
+#### Create tables on Unity Catalog from Spark
+
+* As of March 2026, when using Spark to create tables, rather than using
+  the Unity Catalog command-line (`uc table create` command), even though
+  it does not seem to make any difference from the Spark point of view,
+  the Unity Catalog UI does not show the column specifications (the schema of
+  the table).
+
+* Create an external table, this time the SQL way. As it is an external table,
+  the storage location has to be specified:
 
 ```python
 sql("create table default.numbers2 (as_int int, as_double double) \
+  using delta location '/tmp/unitycatalog/storage/numbers2';")
+sql("insert into default.numbers2 values (1, 0.0);")
+sql("SELECT * FROM default.numbers2;").show()
+```
+
+* Create yet another table, still the SQL way, and this time as a
+  catalog-managed table (the feature has to be enabled on the Unity Catalog
+  server; see above the `server.properties` adaptation):
+
+```python
+sql("create table default.numbers3 (as_int int, as_double double) \
   using delta tblproperties('delta.feature.catalogManaged'='supported');")
+sql("insert into default.numbers3 values (1, 0.0);")
+sql("SELECT * FROM default.numbers3;").show()
 ```
 
 ### Setup of DuckDB
@@ -1305,4 +1448,3 @@ cd ui
 yarn install
 yarn start
 ```
-
