@@ -229,6 +229,17 @@ bin/uc table create \
   --properties '{"key1": "value1", "key2": "value2"}'
 ```
 
+* Create the `unityxt.default.transactions` table, as a managed table:
+
+```bash
+bin/uc table create \
+  --full_name unityxt.default.transactions \
+  --columns "transaction_id int, item_name string" \
+  --table_type MANAGED \
+  --format DELTA \
+  --properties '{"key1": "value1", "key2": "value2"}'
+```
+
 * If not already existing, create the `unity.default.marksheet` table,
   as an external table:
 
@@ -834,8 +845,18 @@ df.createTempView("tiny_df")
   [Databricks doc - SQL Reference - Create a table](https://docs.databricks.com/aws/en/sql/language-manual/sql-ref-syntax-ddl-create-table-using)):
 
 ```python
-sql("create table unityxt.default.transactions as select * from tiny_df \
+sql("create table default.transactions2 (transaction_id int, item_name string) \
      using delta tblproperties('delta.feature.catalogManaged'='supported');")
+```
+
+* As a reminder, when a table is created that way, the columns do not appear
+  in the Unity Catalog UI and/or CLI
+
+* Inserting the content of the DataFrame into the Delta table may then be
+  performed through the SQL API:
+
+```python
+sql("insert overwrite default.transactions select * from tiny_df;")
 ```
 
 * As of March 2026, with the way (_e.g._, configuration) Spark is launched
