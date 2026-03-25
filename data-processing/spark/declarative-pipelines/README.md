@@ -74,8 +74,8 @@ for more details about Delta Lake and its compatibility with Apache Spark.
 
 * Date: March 2026
 * Author: Hitesh Kaushik
-  ([Hitesh Kaushik on LinkedIn](),
-  [Hitesh Kaushik on Medium]())
+  ([Hitesh Kaushik on LinkedIn](https://www.linkedin.com/in/h-kaushik/),
+  [Hitesh Kaushik on Medium](https://medium.com/@hiteshkhk0105))
 * Series of LinkedIn posts:
   * [LinkedIn post - Lakeflow Declarative - Introduction](https://www.linkedin.com/posts/h-kaushik_lake-flow-spark-declarative-pipelines-activity-7432802777547862016-OUE8/)
   * [LinkedIn post - Lakeflow Declarative - Part 1](https://www.linkedin.com/posts/h-kaushik_dataengineering-databricks-lakeflow-activity-7439669655293755392-R-15/)
