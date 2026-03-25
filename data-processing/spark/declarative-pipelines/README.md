@@ -11,6 +11,7 @@
     * [Spark Declarative Pipelines (SDP)](#spark-declarative-pipelines-sdp)
     * [Delta Lake](#delta-lake)
   * [Articles](#articles)
+    * [Lakeflow Declarative Pipelines](#lakeflow-declarative-pipelines)
     * [Spark Declarative Pipelines 101](#spark-declarative-pipelines-101)
     * [SDP Quick Start](#sdp-quick-start)
   * [Getting started](#getting-started)
@@ -68,6 +69,18 @@ for more details about Delta Lake and its compatibility with Apache Spark.
 * [Data Engineering Helpers - Knowledge Sharing - Delta Lake](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/delta/README.md#delta-lake)
 
 ## Articles
+
+### Lakeflow Declarative Pipelines
+
+* Date: March 2026
+* Author: Hitesh Kaushik
+  ([Hitesh Kaushik on LinkedIn](),
+  [Hitesh Kaushik on Medium]())
+* Series of LinkedIn posts:
+  * [LinkedIn post - Lakeflow Declarative - Introduction](https://www.linkedin.com/posts/h-kaushik_lake-flow-spark-declarative-pipelines-activity-7432802777547862016-OUE8/)
+  * [LinkedIn post - Lakeflow Declarative - Part 1](https://www.linkedin.com/posts/h-kaushik_dataengineering-databricks-lakeflow-activity-7439669655293755392-R-15/)
+  * [LinkedIn post - Lakeflow Declarative - Part 2](https://www.linkedin.com/posts/h-kaushik_phase-2-of-the-lakeflow-series-we-build-share-7442202922941267969-YHzl/)
+    * [Medium - Lakeflow Declarative pipelines - Actual end-to-end example with code](https://medium.com/@hiteshkhk0105/build-a-real-etl-pipeline-from-scratch-with-lakeflow-declarative-pipelines-ae3aaabf7274)
 
 ### Spark Declarative Pipelines 101
 
