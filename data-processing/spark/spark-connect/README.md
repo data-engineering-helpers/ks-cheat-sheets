@@ -7,10 +7,14 @@
   * [Overview](#overview)
   * [References](#references)
     * [Data Engineering helpers](#data-engineering-helpers)
+    * [Unity Catalog (UC)](#unity-catalog-uc)
     * [Delta Lake](#delta-lake)
     * [Spark Connect](#spark-connect)
+  * [Getting started](#getting-started)
+    * [Spark as a client to Spark Connect](#spark-as-a-client-to-spark-connect)
   * [Setup](#setup)
     * [Setup of Spark Connect](#setup-of-spark-connect)
+    * [Manual install of Apache Spark](#manual-install-of-apache-spark)
     * [Shell environment and aliases](#shell-environment-and-aliases)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
@@ -31,8 +35,24 @@ on a laptop or on a virtual machine (VM).
 * [Data Engineering Helpers - Knowledge Sharing - Spark](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/)
 * [Data Engineering Helpers - Knowledge Sharing - Delta Lake](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/delta/)
 * [Data Engineering Helpers - Knowledge Sharing - Spark Declarative Pipelines (SDP)](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/spd/)
-* [Data Engineering Helpers - Knowledge Sharing - Unity Catalog (UC)](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/unity-catalog/)
 * [Material for the Data platform - Modern Data Stack (MDS) in a box](https://github.com/data-engineering-helpers/mds-in-a-box)
+
+### Unity Catalog (UC)
+
+* [Data Engineering Helpers - Knowledge Sharing - Unity Catalog (UC)](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/unity-catalog/)
+
+* Note that, as of March 2026
+  * The OSS version of Unity Catalog does not allow to create managed tables on
+  the sample catalog and schema (the ones provided by default, coming with the
+  OSS version of Unity Catalog), as those latter have not specified any default
+  storage location
+    * Trying to create a manage table on those catalog and schema typically
+    triggers an error stating that a storage location has not been specified
+  * That is why, in
+  [Data Engineering Helpers - Knowledge Sharing - Unity Catalog (UC)](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/unity-catalog/),
+  it is documented how to create another catalog, namely `unityxt` (`xt` standing
+  for extended), and associated default schema, this time with a proper default
+  storage location specified
 
 ### Delta Lake
 
@@ -43,6 +63,94 @@ on a laptop or on a virtual machine (VM).
 
 * [Apache Spark - Doc - Spark Connect - Overview](https://spark.apache.org/docs/latest/spark-connect-overview.html)
 * [Apache Spark - Doc - Spark Connect - Quick start](https://spark.apache.org/docs/latest/api/python/getting_started/quickstart_connect.html)
+
+## Getting started
+
+### Spark as a client to Spark Connect
+
+* See also
+  [Spark doc - Quickstart: Spark Connect](https://spark.apache.org/docs/latest/api/python/getting_started/quickstart_connect.html)
+
+* The good thing is that there is no need for any dependency (_e.g._, Unity Catalog,
+  Delta Lake), as the Spark driver is running in the server part of Spark Connect
+  
+* The only (small) issues are:
+  * Spark Connect yields a lot of logs, making it hard to spot the client part
+  * The Spark session object (`SparkSession`) is no longer instantiated by default.
+  It has to be started explicitly, for instance with something like:
+
+```python
+from pyspark.sql import SparkSession
+spark = SparkSession.builder.remote("sc://localhost:15002").getOrCreate()
+```
+
+* Typical sequence for PySpark on the client side
+  * Launch PySpark:
+
+```bash
+pyspark
+```
+
+* In PySpark, retrieve the Spark session:
+
+```python
+from pyspark.sql import SparkSession
+spark = SparkSession.builder.remote("sc://localhost:15002").getOrCreate()
+```
+
+* Specify the catalog and schema (from Unity Catalog) to use:
+
+```python
+spark.sql("use unity.default;")
+```
+
+* List the tables for the default (Unity) schema:
+
+```python
+spark.sql("show tables in unity.default;").show()
+```
+
+* Browse the content of a table:
+
+```python
+spark.sql("select * from default.numbers;").show()
+```
+
+* Create a DataFrame and create a temporary view out of it (allowing to get
+  access to that temporary view from within a SQL query):
+
+```python
+df = spark.createDataFrame(
+  [(1, "socks"), (2, "chips"), (3, "air conditioner"), (4, "tea"),],
+  ["transaction_id", "item_name"]
+)
+df.createTempView("tiny_df")
+```
+
+* Note that this example expects a `transactions` table to have been created
+  in Unity Catalog
+  * See the
+  [_Create managed tables with Spark_ section of Data Engineering Helpers - Unity Catalog (UC)](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/unity-catalog/README.md#create-managed-tables-with-spark)
+
+* Insert the content of the DataFrame into the corresponding table:
+
+```python
+spark.sql("insert overwrite default.transactions select * from tiny_df;")
+```
+
+* Check that the table has been filled correctly:
+
+```python
+spark.sql("select * from default.transactions;").show()
+```
+
+* On the Unity Catalog server side, the table may be browsed thanks to something
+  like:
+
+```bash
+bin/uc table get --full_name unityxt.default.transactions
+bin/uc table read --full_name unityxt.default.transactions
+```
 
 ## Setup
 
@@ -109,7 +217,10 @@ curl -k \
 ### Shell environment and aliases
 
 * Add the following Shell aliases to start and stop Spark, Spark Connect server
-  and JupyterLab:
+  and JupyterLab
+  * Note that the Shell aliases are compatible with having an additional `unityxt`
+  (`xt` standing for extended) catalog, but do not require it. In other words, even
+  if such a catlog does not exist, the alias will still work
 
 ```bash
 cat >> ~/.bash_aliases << _EOF
@@ -135,7 +246,11 @@ alias sparkconnectstartwucdelta='sparkconnectunset; start-connect-server.sh \
   --conf "spark.sql.catalog.unity=io.unitycatalog.spark.UCSingleCatalog" \
   --conf "spark.sql.catalog.unity.uri=http://localhost:8080" \
   --conf "spark.sql.catalog.unity.token=" \
-  --conf "spark.sql.defaultCatalog=unity"'
+  --conf "spark.sql.defaultCatalog=unity" \
+  --conf "spark.sql.catalog.unityxt=io.unitycatalog.spark.UCSingleCatalog" \
+  --conf "spark.sql.catalog.unityxt.uri=http://localhost:8080" \
+  --conf "spark.sql.catalog.unityxt.token=" \
+  --conf "spark.sql.defaultCatalog=unityxt"'
 
 ## Stop Spark Connect
 alias sparkconnectstop='stop-connect-server.sh'
@@ -153,7 +268,11 @@ alias pysparkucdelta='pyspark --packages org.apache.spark:spark-connect_2.13:\$S
   --conf "spark.sql.catalog.unity=io.unitycatalog.spark.UCSingleCatalog" \
   --conf "spark.sql.catalog.unity.uri=http://localhost:8080" \
   --conf "spark.sql.catalog.unity.token=" \
-  --conf "spark.sql.defaultCatalog=unity"'
+  --conf "spark.sql.defaultCatalog=unity" \
+  --conf "spark.sql.catalog.unityxt=io.unitycatalog.spark.UCSingleCatalog" \
+  --conf "spark.sql.catalog.unityxt.uri=http://localhost:8080" \
+  --conf "spark.sql.catalog.unityxt.token=" \
+  --conf "spark.sql.defaultCatalog=unityxt"'
 alias pysparkdeltawconnect='sparkconnectset; pysparkdelta'
 alias pysparkdeltawoconnect='sparkconnectunset; pysparkdelta'
 
