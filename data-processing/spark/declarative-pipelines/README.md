@@ -88,7 +88,8 @@ for more details about Delta Lake and its compatibility with Apache Spark.
 * Author: Bartosz Konieczny
   ([Bartosz Konieczny on LinkedIn](https://www.linkedin.com/in/bartosz-konieczny-waitingforcode/),
   [Bartosz Konieczny on Waiting for code blog, that is, his blog](https://www.waitingforcode.com/static/about))
-* [Waiting for code blog - Spark Declarative Pipelines (SDP) 101](https://www.waitingforcode.com/apache-spark-structured-streaming/spark-declarative-pipelines-101/read)
+* Part 1: [Waiting for code blog - Spark Declarative Pipelines (SDP) 101](https://www.waitingforcode.com/apache-spark-structured-streaming/spark-declarative-pipelines-101/read)
+* Part 2: [Waiting for code blog - Spark Declarative Pipelines (SDP), going further](https://www.waitingforcode.com/apache-spark-structured-streaming/spark-declarative-pipelines-going-further/read)
 * [GitHub - PySpark example code supporting the blog post about SDP](https://github.com/bartosz25/spark-playground/tree/master/structured-streaming-declarative-pipelines/pyspark)
 
 ### SDP Quick Start
