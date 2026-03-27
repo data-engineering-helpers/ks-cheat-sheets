@@ -70,7 +70,7 @@ for more details about Delta Lake and its compatibility with Apache Spark.
 
 ## Articles
 
-## Declarative Pipelining in Apache Spark
+### Declarative Pipelining in Apache Spark
 
 * Title: Declarative Pipelining in Apache Spark Part 1: Focus on Your Data, Not Your DAGs
 * Date: March 2026
