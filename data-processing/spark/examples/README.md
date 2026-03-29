@@ -19,7 +19,21 @@ showcases a few end-to-end Spark pipelines, for instance
 [SCD2 ingestion with Delta Lake](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/examples/001-scd2-w-delta/README.md),
 [Getting started with Spark Declarative Pipelines (SDP)](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/examples/004-sdp-quick-start/README.md).
 
-Some of the Spark-related tutorials require sample datasets.
+Some of the Spark-related tutorials require sample datasets, which may be
+generated/managed thanks to a [dedicated directory](000-data-setup/).
+
+The
+[_Spark and related components_ sub-section of the Spark cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/README.md#spark-and-related-components)
+details the various components in the Spark ecosystem. The Spark-related
+tutorials feature some of those components wherever possible. For instance,
+the
+[SCD2 ingestion with Delta Lake tutorial](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/examples/001-scd2-w-delta/)
+features a few variations:
+
+* Pure Delta Lake tables
+* Integration with Unity Catalog (UC)
+* Integration with Spark Connect only
+* Integration with Spark Connect, itself using Unity Catalog (UC)
 
 ## References
 
@@ -28,8 +42,9 @@ Some of the Spark-related tutorials require sample datasets.
 * [Data Engineering Helpers - Knowledge Sharing - Java](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/java-world/)
 * [Data Engineering Helpers - Knowledge Sharing - Python](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/python/)
 * [Data Engineering Helpers - Knowledge Sharing - Spark](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/)
-* [Data Engineering Helpers - Knowledge Sharing - Spark Connect](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/spark-connect/)
 * [Data Engineering Helpers - Knowledge Sharing - Delta Lake](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/delta/)
+* [Data Engineering Helpers - Knowledge Sharing - Spark Connect (SC)](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/spark-connect/)
+* [Data Engineering Helpers - Knowledge Sharing - Spark Declarative Pipelines (SDP)](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/declarative-pipelines/)
 * [Data Engineering Helpers - Knowledge Sharing - Unity Catalog (UC)](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/unity-catalog/)
 
 ## Spark-related tutorials

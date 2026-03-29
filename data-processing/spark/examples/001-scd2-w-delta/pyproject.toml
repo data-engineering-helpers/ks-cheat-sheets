@@ -28,6 +28,9 @@ lint = [
   "ruff"
 ]
 
+[project.scripts]
+merge_customer_001_simple = "001_scd2_w_delta.jobs.merge_customer_001_simple:main"
+
 [build-system]
 requires = ["uv_build<0.12"]
 build-backend = "uv_build"

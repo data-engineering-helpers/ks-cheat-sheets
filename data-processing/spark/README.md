@@ -5,7 +5,8 @@
 * [Cheat Sheet \- Apache Spark](#cheat-sheet---apache-spark)
   * [Table of Content (ToC)](#table-of-content-toc)
   * [Overview](#overview)
-  * [Sub\-directories for this Spark cheat sheet](#sub-directories-for-this-spark-cheat-sheet)
+    * [Spark and related components](#spark-and-related-components)
+    * [Sub\-directories for this Spark cheat sheet](#sub-directories-for-this-spark-cheat-sheet)
   * [References](#references)
     * [Data Engineering helpers](#data-engineering-helpers)
     * [Unity Catalog (UC)](#unity-catalog-uc)
@@ -35,16 +36,57 @@ explains how to install and to use
 [Apache Spark](https://spark.apache.org), _e.g._,
 on a laptop or on a virtual machine (VM).
 
-## Sub-directories for this Spark cheat sheet
+### Spark and related components
 
 * The Spark ecosystem is rich. The following cheat sheets are detailing specific
   Spark-related features/components
-  * [Delta Lake](delta/)
-  * [Spark Connect](spark-connect/)
-  * [Spark Declarative Pipelines](declarative-pipelines/)
-  * [Unity Catalog (UC)](unity-catalog/)
 
-* Moreover, a few end-to-end Spark-related tutorials, with full code source,
+* [Unity Catalog (UC)](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/unity-catalog/)
+  * UC is a governance platform and data catalog allowing any data-related
+  tools to access datasets through the names the corresponding schema and
+  table
+  * UC has no dependency on Spark (it does not need Spark to run), but
+  it integrates well, by design, with Spark and all its components
+  * UC also integrates with a wide range of
+  [data-related tools/engines](https://github.com/unitycatalog/unitycatalog?tab=readme-ov-file#vibrant-ecosystem)
+  (_e.g._, [DuckDB](https://duckdb.org/docs/stable/core_extensions/delta))
+
+* [Spark Connect (SC)](spark-connect/)
+  * Spark Connect introduced a decoupled client-server architecture for Spark
+  that allows remote connectivity to Spark clusters using the
+  [DataFrame API](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.html?highlight=dataframe#pyspark.sql.DataFrame)
+  * The separation between client and server allows Spark and its open
+  ecosystem to be leveraged from everywhere. It can be embedded in modern data
+  applications, in IDEs, notebooks and programming languages
+
+* [Delta Lake](delta/)
+  * Delta Lake is a storage framework that enables building a
+  [Lakehouse architecture](https://www.databricks.com/blog/2020/01/30/what-is-a-data-lakehouse.html)
+  with compute engines including Spark, DuckDB, PrestoDB, Flink, Trino, and
+  Hive and APIs for Scala, Java, Rust, Ruby, and Python
+  * [Delta Connect, the Delta Lake version of Spark Connect](https://docs.delta.io/delta-spark-connect/)
+
+* [Spark Declarative Pipelines (SDP)](declarative-pipelines/)
+  * Spark Declarative Pipelines (SDP) is a declarative framework for building
+  reliable, maintainable, and testable data pipelines on Spark. SDP simplifies
+  ETL development by allowing you to focus on the transformations you want
+  to apply to your data, rather than the mechanics of pipeline execution
+  * The key advantage of SDP is its declarative approach - you define what
+  tables should exist and what their contents should be, and SDP handles the
+  orchestration, compute management, and error handling automatically
+
+* Even though some of these components fully work without Spark (_e.g._, Unity
+  Catalog and Delta Lake may be interacted with DuckDB only, among others),
+  they are, by design, fully compatible with Spark
+
+### Sub-directories for this Spark cheat sheet
+
+* In addition to the above-mentionned Spark-related components:
+  * [Spark Connect (SC)](spark-connect/)
+  * [Delta Lake](delta/)
+  * [Spark Declarative Pipelines (SDP)](declarative-pipelines/)
+
+* A few end-to-end Spark-related tutorials, with full code source,
   are featured in the
   [examples/ directory](examples/)
 

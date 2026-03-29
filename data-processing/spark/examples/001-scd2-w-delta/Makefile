@@ -6,6 +6,11 @@ PYTHON_VERSION := 3.12
 SCALA_VERSION := 2.13
 SPARK_VERSION := 4.1.1 # 3.5.2
 DELTA_VERSION := 4.1.0 # 3.2.0
+DELTA_JAR := $(strip delta-spark_$(SCALA_VERSION):$(DELTA_VERSION))
+UC_VERSION := 0.5.0-SNAPSHOT
+UC_DOM := io.unitycatalog
+UC_JAR := unitycatalog-spark_$(SCALA_VERSION):$(UC_VERSION)
+UC_DIR := $(HOME)/dev/infra/unitycatalog
 # Dataset (dst) setup (stp) directory
 DSTSTP_DIR := ../000-data-setup
 # Customer (cst) dataset (dst)
@@ -36,6 +41,17 @@ clean-datasets: ## Clean generated datasets
 
 cleaners: clean-database clean-logs clean-python clean-package clean-install clean-datasets ## Clean everything
 
+clean-uc-table: ## Clean the table in Unity Catalog (UC)
+	@$(UC_DIR)/bin/uc table delete --full_name unityxt.bronze.dim_customer
+
+clean-uc-schema: ## Clean the schema in Unity Catalog (UC)
+	@$(UC_DIR)/bin/uc schema delete --full_name unityxt.bronze --force true
+
+clean-uc-catalog: ## Clean the catalog in Unity Catalog (UC)
+	@$(UC_DIR)/bin/uc catalog delete --name unityxt --force true
+
+clean-uc-all: clean-uc-catalog ## Clean all about the unityxt catalog
+
 # Initializers
 init-uv-python: ## Install Python $(PYTHON_VERSION) if necessary
 	uv python install $(PYTHON_VERSION)
@@ -60,6 +76,27 @@ init-database-purepython: ## Initialize the Delta tables
 		src/001_scd2_w_delta/ddl.py
 	@$(MAKE) check-database
 
+init-uc-catalog: ## Initialize the unityxt catalog in Unity Catalog (UC)
+	@$(UC_DIR)/bin/uc catalog create --name unityxt \
+		--storage_root /tmp/unitycatalog/storage --comment "Extended catalog"
+
+init-uc-schema: ## Initialize the unityxt.bronze catalog in Unity Catalog (UC)
+	@$(UC_DIR)/bin/uc schema create --catalog unityxt --name bronze \
+		--storage_root /tmp/unitycatalog/storage --comment "Bronze schema"
+
+init-uc-table: ## Initialize the dim_customer table in Unity Catalog (UC)
+	@$(UC_DIR)/bin/uc table create \
+		--full_name unityxt.bronze.dim_customer \
+		--columns "address string, birthdate date, blood_group string, \
+		company string, job string, mail string, name string, residence string, \
+		sex string, ssn string, username string, website string, \
+		current_location_lat double, current_location_lon double, \
+		start_date date, end_date date, is_current boolean" \
+		--table_type MANAGED --format DELTA \
+		--properties '{"key1": "value1", "key2": "value2"}'
+
+init-uc-all: init-uc-catalog init-uc-schema init-uc-table ## Init everything in Unity Catalog (UC)
+
 init-datasets: ## Generate sample datasets
 	@$(MAKE) -C $(DSTSTP_DIR) init-datasets
 
@@ -79,6 +116,9 @@ check-database: ## Check the content of the Spark database, if existing
 	else \
 		echo "The $(CSTDST_DIR)/ directory cannot be found. Be sure to execute 'make init-database'"; \
 	fi
+
+check-uc: ## Check the content of Unity Catalog (UC)
+	@$(UC_DIR)/bin/uc table get --full_name unityxt.bronze.dim_customer
 
 #
 init: ## Setup Python virtual environment
@@ -109,15 +149,56 @@ browse-database-purepython: ## Check the Delta tables
 	  	--conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog" \
 	  src/001_scd2_w_delta/select-dim-customer-limit10.py
 
+browse-uc: ## Browse the content of Unity Catalog (UC)
+	@$(UC_DIR)/bin/uc table read --full_name unityxt.bronze.dim_customer
+
 #
-ingest-datasets: ## Ingest the customer-related datasets (initial and incremental)
+ingest-datasets-simple: ## Ingest the customer-related datasets (initial and incremental) - Simple version
 	@$(MAKE) check-database
 	@echo "Check logs/ingest-datasets.log"
-	mkdir -p logs
+	@mkdir -p logs
 	time spark-submit \
 		--packages io.delta:delta-spark_$(SCALA_VERSION):$(DELTA_VERSION) \
 	  	--conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
 	  	--conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog" \
-	  src/001_scd2_w_delta/spark-merge-customer.py > logs/ingest-datasets.log 2>&1
+	  src/001_scd2_w_delta/jobs/merge_customer_001_simple.py > logs/merge_customer_001_simple.log 2>&1
+	@$(MAKE) check-database
+
+ingest-datasets-uc-only: ## Ingest the customer-related datasets (initial and incremental) - Version for UC only
+	@$(MAKE) check-database
+	@echo "Check logs/ingest-datasets.log"
+	@mkdir -p logs
+	time spark-submit \
+		--packages "io.delta:$(DELTA_JAR),$(UC_DOM):$(UC_JAR)" \
+	  	--conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
+        --conf "spark.sql.catalog.spark_catalog=$(UC_DOM).spark.UCSingleCatalog" \
+        --conf "spark.sql.catalog.unityxt=$(UC_DOM).spark.UCSingleCatalog" \
+        --conf "spark.sql.catalog.unityxt.uri=http://localhost:8080" \
+        --conf "spark.sql.catalog.unityxt.token=" \
+        --conf "spark.sql.defaultCatalog=unityxt" \
+	  src/001_scd2_w_delta/jobs/merge_customer_002_uc_only.py > logs/merge_customer_002_uc_only.log 2>&1
+	@$(MAKE) check-uc
+	@echo "Hint for next step: make browse-uc"
+
+ingest-datasets-sc-only: ## Ingest the customer-related datasets (initial and incremental) - Version for SC only
+	@$(MAKE) check-database
+	@echo "Check logs/ingest-datasets.log"
+	@mkdir -p logs
+	time spark-submit \
+		--packages io.delta:delta-spark_$(SCALA_VERSION):$(DELTA_VERSION) \
+	  	--conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
+	  	--conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog" \
+	  src/001_scd2_w_delta/jobs/merge_customer_003_sc_only.py > logs/merge_customer_003_sc_only.log 2>&1
+	@$(MAKE) check-database
+
+ingest-datasets-uc-and-sc: ## Ingest the customer-related datasets (initial and incremental) - Version for SC and UC
+	@$(MAKE) check-database
+	@echo "Check logs/ingest-datasets.log"
+	@mkdir -p logs
+	time spark-submit \
+		--packages io.delta:delta-spark_$(SCALA_VERSION):$(DELTA_VERSION) \
+	  	--conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
+	  	--conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog" \
+	  src/001_scd2_w_delta/jobs/merge_customer_004_sc_and_uc.py > logs/merge_customer_004_sc_and_uc.log 2>&1
 	@$(MAKE) check-database
 
