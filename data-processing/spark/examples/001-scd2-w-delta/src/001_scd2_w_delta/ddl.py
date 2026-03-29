@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/examples/spark-merge-customer.py
+# File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/examples/001-scd2-w-delta/src/001_scd2_w_delta/ddl.py
 #
 # The schema corresponds to Faker profiles:
 # https://faker.readthedocs.io/en/master/providers/faker.providers.profile.html
@@ -12,7 +12,7 @@ import pyspark.sql.functions as F
 import delta.tables as dt
 
 #
-delta_table_name = "bronze.dim_customer"
+delta_table_name = "dim_customer"
 
 ddl_drop = f"drop table if exists {delta_table_name};"
 

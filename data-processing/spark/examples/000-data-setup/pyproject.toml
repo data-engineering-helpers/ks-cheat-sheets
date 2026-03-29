@@ -1,7 +1,7 @@
 [project]
-name = "001-scd2-w-delta"
-version = "0.1.0"
-description = "Spark-related tutorials - SCD2 with Delta Lake"
+name = "000-data-setup"
+version = "0.0.1"
+description = "Setup of datasets for all the other Spark-related examples"
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
 authors = [
@@ -12,6 +12,7 @@ urls = {repository = "https://github.com/data-engineering-helpers/ks-cheat-sheet
 # DEPENDENCIES
 dependencies = [
     "datanomy",
+    "faker",
     "loguru",
     "PyYAML"
 ]
@@ -27,6 +28,9 @@ dev = [
 lint = [
   "ruff"
 ]
+
+[project.scripts]
+generate_customer_datasets_job = "generate_customer_datasets:main"
 
 [build-system]
 requires = ["uv_build<0.12"]

@@ -1,21 +1,19 @@
 #
-# File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/examples/001-scd2-w-delta/Makefile
+# File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/examples/000-data-setup/Makefile
 #
 
 PYTHON_VERSION := 3.12
 SCALA_VERSION := 2.13
 SPARK_VERSION := 4.1.1 # 3.5.2
 DELTA_VERSION := 4.1.0 # 3.2.0
-# Dataset (dst) setup (stp) directory
-DSTSTP_DIR := ../000-data-setup
-# Customer (cst) dataset (dst)
-CSTDST_DIR := dim_customer
+DATA_DIR := ../data
+DATA_CUST_DIR := $(DATA_DIR)/dim_customer
 
 UV ?= uv
 
 # Cleaners
-clean-database: ## Clean database
-	rm -rf derby.log metastore_db spark-warehouse $(CSTDST_DIR)
+clean-db: ## Clean database
+	rm -rf derby.log metastore_db spark-warehouse
 
 clean-logs: ## Clean log files
 	rm -rf logs
@@ -32,7 +30,7 @@ clean-install: ## Clean the project installation.
 	rm -rf .venv/
 
 clean-datasets: ## Clean generated datasets
-	@$(MAKE) -C $(DSTSTP_DIR) clean-datasets
+	rm -rf $(DATA_CUST_DIR)/init $(DATA_CUST_DIR)/inc1
 
 cleaners: clean-db clean-logs clean-python clean-package clean-install clean-datasets ## Clean everything
 
@@ -50,34 +48,28 @@ init-database: ## Initialize the Delta tables
 	  	--conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
 	  	--conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog" \
 	  < sql/ddl.sql
-	@$(MAKE) check-database
+	echo "Delta table generated in spark-warehouse/dim_customer/"
+	ls -lFh spark-warehouse/dim_customer/
 
 init-database-purepython: ## Initialize the Delta tables
-	spark-submit \
+	uv run spark-submit \
 		--packages io.delta:delta-spark_$(SCALA_VERSION):$(DELTA_VERSION) \
 	  	--conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
 	  	--conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog" \
 		src/001_scd2_w_delta/ddl.py
-	@$(MAKE) check-database
+	echo "Delta table generated in spark-warehouse/dim_customer/"
+	ls -lFh spark-warehouse/dim_customer/
 
 init-datasets: ## Generate sample datasets
-	@$(MAKE) -C $(DSTSTP_DIR) init-datasets
+	@pyspark < src/000_data_setup/generate_customer_datasets.py
+	@echo "Customer data source generated in $(DATA_CUST_DIR)/"
+	@command -v tree > /dev/null && tree $(DATA_CUST_DIR)/ || echo "The tree command does not seem to be installed. Please install it to analyze the content of the local file-system"
 
 check-dataset-init: ## Analyze the initial data-set
-	@$(MAKE) -C $(DSTSTP_DIR) check-dataset-init
+	uv run datanomy $(DATA_CUST_DIR)/init/part*.parquet
 
 check-dataset-incremental: ## Analyze the incremental data-set
-	@$(MAKE) -C $(DSTSTP_DIR) check-dataset-incremental
-
-check-database: ## Check the content of the Spark database, if existing
-	@echo "Checking whether the the $(CSTDST_DIR)/ directory has been created..."
-	@$(eval DB_CUST_DIR=$(shell find . -type d -name '$(CSTDST_DIR)'))
-	@if [ -d "$(DB_CUST_DIR)" ]; then \
-		echo "Delta table generated in $(DB_CUST_DIR)/ . Content of that directory:"; \
-		ls -lFh $(DB_CUST_DIR); \
-	else \
-         echo "The $(CSTDST_DIR)/ directory cannot be found. Be sure to execute 'make init-database'"; \
-	fi
+	uv run datanomy $(DATA_CUST_DIR)/inc1/part*.parquet
 
 #
 init: ## Setup Python virtual environment
@@ -92,31 +84,33 @@ build: ## Build the software artifact (wheel)
 	@uv build
 
 #
-browse-database: ## Browse the Delta tables
-	@$(MAKE) check-database
-	spark-sql \
+check-database: ## Check the Delta tables
+	uv run spark-sql \
 		--packages io.delta:delta-spark_$(SCALA_VERSION):$(DELTA_VERSION) \
 	  	--conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
 	  	--conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog" \
 	  < sql/select-dim-customer-limit10.sql
+	echo "Delta table generated in spark-warehouse/dim_customer/"
+	ls -lFh spark-warehouse/dim_customer/
 
-browse-database-purepython: ## Check the Delta tables
-	@$(MAKE) check-database
-	spark-submit \
+check-database-purepython: ## Check the Delta tables
+	uv run spark-submit \
 		--packages io.delta:delta-spark_$(SCALA_VERSION):$(DELTA_VERSION) \
 	  	--conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
 	  	--conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog" \
 	  src/001_scd2_w_delta/select-dim-customer-limit10.py
+	echo "Delta table generated in spark-warehouse/dim_customer/"
+	ls -lFh spark-warehouse/dim_customer/
 
 #
 ingest-datasets: ## Ingest the customer-related datasets (initial and incremental)
-	@$(MAKE) check-database
 	@echo "Check logs/ingest-datasets.log"
 	mkdir -p logs
-	time spark-submit \
+	time uv run spark-submit \
 		--packages io.delta:delta-spark_$(SCALA_VERSION):$(DELTA_VERSION) \
 	  	--conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
 	  	--conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog" \
 	  src/001_scd2_w_delta/spark-merge-customer.py > logs/ingest-datasets.log 2>&1
-	@$(MAKE) check-database
+	echo "Delta table updated in spark-warehouse/dim_customer/"
+	ls -lFh spark-warehouse/dim_customer/
 

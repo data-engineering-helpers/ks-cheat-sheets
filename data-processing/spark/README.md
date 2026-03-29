@@ -5,6 +5,7 @@
 * [Cheat Sheet \- Apache Spark](#cheat-sheet---apache-spark)
   * [Table of Content (ToC)](#table-of-content-toc)
   * [Overview](#overview)
+  * [Sub\-directories for this Spark cheat sheet](#sub-directories-for-this-spark-cheat-sheet)
   * [References](#references)
     * [Data Engineering helpers](#data-engineering-helpers)
     * [Apache Spark](#apache-spark)
@@ -34,16 +35,25 @@ explains how to install and to use
 [Apache Spark](https://spark.apache.org), _e.g._,
 on a laptop or on a virtual machine (VM).
 
+## Sub-directories for this Spark cheat sheet
+
+* The Spark ecosystem is rich. The following cheat sheets are detailing specific
+  Spark-related features/components
+  * [Delta Lake](delta/)
+  * [Spark Connect](spark-connect/)
+  * [Spark Declarative Pipelines](declarative-pipelines/)
+  * [Unity Catalog (UC)](unity-catalog/)
+
+* Moreover, a few end-to-end Spark-related tutorials, with full code source,
+  are featured in the
+  [examples/ directory](examples/)
+
 ## References
 
 ### Data Engineering helpers
 
 * [Data Engineering Helpers - Knowledge Sharing - Python](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/python/)
   * [Data Engineering Helpers - Knowledge Sharing - Jupyter, PySpark and DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/jupyter/jupyter-pyspark-duckdb/)
-* [Data Engineering Helpers - Knowledge Sharing - Delta Lake](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/delta/)
-* [Data Engineering Helpers - Knowledge Sharing - Spark Connect](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/spark-connect/)
-* [Data Engineering Helpers - Knowledge Sharing - Spark Declarative Pipelines](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/declarative-pipelines/)
-* [Data Engineering Helpers - Knowledge Sharing - Unity Catalog (UC)](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/unity-catalog/)
 * [Data Engineering Helpers - Knowledge Sharing - SQLMesh](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/sqlmesh/)
 * [Data Engineering Helpers - Knowledge Sharing - DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/)
 * [Data Engineering Helpers - Knowledge Sharing - PostgreSQL](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/)

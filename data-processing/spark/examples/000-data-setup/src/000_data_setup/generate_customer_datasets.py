@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/examples/001-scd2-w-delta/src/001_scd2_w_delta/spark-merge-customer.py
+# File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/examples/000_data_setup/generate_customer_datasets.py
 #
 
 from faker import Faker
@@ -9,8 +9,8 @@ import pyspark.sql.functions as F
 import pyspark.sql.types as T
 
 #
-cust_init_dataset = "data/dim_customer/init"
-cust_inc_dataset = "data/dim_customer/inc1"
+cust_init_dataset = "../data/dim_customer/init"
+cust_inc_dataset = "../data/dim_customer/inc1"
 
 def main() -> None:
     # Retrieve (or create) the Spark session
