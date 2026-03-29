@@ -8,11 +8,11 @@
   * [Sub\-directories for this Spark cheat sheet](#sub-directories-for-this-spark-cheat-sheet)
   * [References](#references)
     * [Data Engineering helpers](#data-engineering-helpers)
+    * [Unity Catalog (UC)](#unity-catalog-uc)
     * [Apache Spark](#apache-spark)
       * [Spark Connect](#spark-connect)
       * [Delta Lake](#delta-lake)
       * [Spark Declarative Pipelines (SDP)](#spark-declarative-pipelines-sdp)
-    * [Unity Catalog (UC)](#unity-catalog-uc)
   * [Setup](#setup)
     * [Setup of Java](#setup-of-java)
     * [Clone this repository](#clone-this-repository)
@@ -59,6 +59,10 @@ on a laptop or on a virtual machine (VM).
 * [Data Engineering Helpers - Knowledge Sharing - PostgreSQL](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/)
 * [Material for the Data platform - Modern Data Stack (MDS) in a box](https://github.com/data-engineering-helpers/mds-in-a-box)
 
+### Unity Catalog (UC)
+
+* [Data Engineering Helpers - Knowledge Sharing - Unity Catalog](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/unity-catalog/)
+
 ### Apache Spark
 
 * [Apache Spark - Download Spark](https://spark.apache.org/docs/latest/api/python/getting_started/install.html)
@@ -69,36 +73,15 @@ on a laptop or on a virtual machine (VM).
 
 #### Spark Connect
 
-* [Apache Spark - Doc - Spark Connect - Overview](https://spark.apache.org/docs/latest/spark-connect-overview.html)
-* [Apache Spark - Doc - Spark Connect - Quick start](https://spark.apache.org/docs/latest/api/python/getting_started/quickstart_connect.html)
+* [Data Engineering Helpers - Knowledge Sharing - Spark Connect](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/spark-connect/)
 
 #### Delta Lake
 
-* [Delta Lake documentation](https://docs.delta.io/)
-  * [Delta Lake - Quick start guide](https://docs.delta.io/latest/quick-start.html)
-* [Delta Lake - Compatibility matrix with Spark](https://docs.delta.io/releases/)
-* [GitHub - Delta Lake - `delta` repository](https://github.com/delta-io/delta)
-* [Maven central - Delta Spark: `io.delta/delta-spark`](https://mvnrepository.com/artifact/io.delta/delta-spark)
+* [Data Engineering Helpers - Knowledge Sharing - Delta Lake](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/delta/)
 
 #### Spark Declarative Pipelines (SDP)
 
-* A
-  [specific cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/declarative-pipelines/)
-  is dedicated to that feature
-
-### Unity Catalog (UC)
-
-* [Unity Catalog (UC) home page](https://www.unitycatalog.io)
-* [GitHub - Unity Catalog repository](https://github.com/unitycatalog/unitycatalog)
-* [Unity Catalog docs](https://docs.unitycatalog.io/)
-  * [Unity Catalog docs - Quickstart](https://docs.unitycatalog.io/quickstart/)
-  * [Unity Catalog docs - Usage - CLI](https://docs.unitycatalog.io/usage/cli/)
-  * [Unity Catalog docs - Deployment - PostgreSQL connection](https://docs.unitycatalog.io/deployment/#example-postgresql-connection)
-  * [Unity Catalog docs - Integrations - Spark](https://docs.unitycatalog.io/integrations/unity-catalog-spark/)
-  * [Unity Catalog docs - Integrations - DataBricks](https://sqlmesh.readthedocs.io/en/stable/integrations/engines/databricks/)
-  * [Unity Catalog docs - Integrations - DuckDB](https://docs.unitycatalog.io/integrations/unity-catalog-duckdb/)
-  * [Unity Catalog docs - Integrations - XTable](https://docs.unitycatalog.io/integrations/unity-catalog-xtable/)
-* [Unity Catalog blog post - Integrating Spark with Unity Catalog via Open APIs](https://www.unitycatalog.io/blogs/integrating-apache-spark-with-unity-catalog-assets-via-open-apis)
+* [Data Engineering Helpers - Knowledge Sharing - Spark Declarative Pipelines (SDP)](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/declarative-pipelines/)
 
 ## Setup
 

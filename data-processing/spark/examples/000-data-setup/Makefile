@@ -12,7 +12,7 @@ DATA_CUST_DIR := $(DATA_DIR)/dim_customer
 UV ?= uv
 
 # Cleaners
-clean-db: ## Clean database
+clean-database: ## Clean database
 	rm -rf derby.log metastore_db spark-warehouse
 
 clean-logs: ## Clean log files
@@ -32,7 +32,7 @@ clean-install: ## Clean the project installation.
 clean-datasets: ## Clean generated datasets
 	rm -rf $(DATA_CUST_DIR)/init $(DATA_CUST_DIR)/inc1
 
-cleaners: clean-db clean-logs clean-python clean-package clean-install clean-datasets ## Clean everything
+cleaners: clean-database clean-logs clean-python clean-package clean-install clean-datasets ## Clean everything
 
 # Initializers
 init-uv-python: ## Install Python $(PYTHON_VERSION) if necessary

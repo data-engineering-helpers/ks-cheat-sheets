@@ -19,6 +19,8 @@ showcases a few end-to-end Spark pipelines, for instance
 [SCD2 ingestion with Delta Lake](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/examples/001-scd2-w-delta/README.md),
 [Getting started with Spark Declarative Pipelines (SDP)](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/examples/004-sdp-quick-start/README.md).
 
+Some of the Spark-related tutorials require sample datasets.
+
 ## References
 
 ### Data Engineering helpers

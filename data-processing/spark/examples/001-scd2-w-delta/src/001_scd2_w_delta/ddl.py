@@ -12,7 +12,7 @@ import pyspark.sql.functions as F
 import delta.tables as dt
 
 #
-delta_table_name = "dim_customer"
+delta_table_name = "bronze.dim_customer"
 
 ddl_drop = f"drop table if exists {delta_table_name};"
 
@@ -37,7 +37,8 @@ create table {delta_table_name} (
   is_current boolean
 )
 using delta
-location '{delta_table_name}';
+--location '{delta_table_name}'
+;
 """
 
 def getSparkSession() -> SparkSession:

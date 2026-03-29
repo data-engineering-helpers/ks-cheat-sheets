@@ -34,7 +34,7 @@ clean-install: ## Clean the project installation.
 clean-datasets: ## Clean generated datasets
 	@$(MAKE) -C $(DSTSTP_DIR) clean-datasets
 
-cleaners: clean-db clean-logs clean-python clean-package clean-install clean-datasets ## Clean everything
+cleaners: clean-database clean-logs clean-python clean-package clean-install clean-datasets ## Clean everything
 
 # Initializers
 init-uv-python: ## Install Python $(PYTHON_VERSION) if necessary
@@ -71,12 +71,13 @@ check-dataset-incremental: ## Analyze the incremental data-set
 
 check-database: ## Check the content of the Spark database, if existing
 	@echo "Checking whether the the $(CSTDST_DIR)/ directory has been created..."
-	@$(eval DB_CUST_DIR=$(shell find . -type d -name '$(CSTDST_DIR)'))
+	@$(eval DB_CUST_DIR=$(shell find . -type d -name '$(CSTDST_DIR)' | head -1))
+	@echo "Resulting DB_CUST_DIR: $(DB_CUST_DIR)"
 	@if [ -d "$(DB_CUST_DIR)" ]; then \
 		echo "Delta table generated in $(DB_CUST_DIR)/ . Content of that directory:"; \
 		ls -lFh $(DB_CUST_DIR); \
 	else \
-         echo "The $(CSTDST_DIR)/ directory cannot be found. Be sure to execute 'make init-database'"; \
+		echo "The $(CSTDST_DIR)/ directory cannot be found. Be sure to execute 'make init-database'"; \
 	fi
 
 #

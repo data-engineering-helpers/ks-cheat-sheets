@@ -18,6 +18,9 @@ allows to manage (_i.e._, create/generate, delete/clean) sample datasets for
 themselves featured in the
 [Spark-related cheat sheets](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/README.md).
 
+Some of the Spark-related tutorials require the sample datasets managed in
+this directory.
+
 ## Getting started
 
 * Clean any previous work (including local Spark warehouse/database,
@@ -40,16 +43,9 @@ make init update
 make init-database
 ```
 
-* Generate the initial and incremental data-sets (it crates an stores Parquet
-  files for the initial and the incremental data-sets):
+* Check the content of the database (Delta table) storage location on
+  the file-system:
 
 ```bash
-make init-datasets
-```
-
-* Analyze the generate data-sets with Datanomy:
-
-```bash
-make check-dataset-init
-make check-dataset-incremental
+make check-database
 ```

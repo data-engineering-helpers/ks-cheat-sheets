@@ -5,6 +5,7 @@
 * [Knowledge Sharing (KS) \- Spark \- SCD2 with Delta](#knowledge-sharing-ks---spark---scd2-with-delta)
   * [Table of Content (ToC)](#table-of-content-toc)
   * [Overview](#overview)
+   * [Delta Lake tables](#delta-lake-tables)
   * [References](#references)
   * [Getting started](#getting-started)
 
@@ -22,7 +23,55 @@ It is part of
 themselves part of the
 [Spark-related cheat sheets](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/README.md).
 
-Some of the Spark-related tutorials require sample datasets.
+This tutorial requires sample datasets, which may be setup thanks to the
+[directory dedicated to managing sample datasets](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/examples/000-data-setup/).
+
+### Delta Lake tables
+
+* See
+  [Delta Lake - Table batch reads and writes](https://docs.delta.io/delta-batch/)
+  for the various ways to create Delta Lake tables
+
+* Delta Lake tables have to be created either by specifying a location (on the
+  file-system or on a cloud storage), or by specifying a schema and table names:
+  * SQL:
+
+```sql
+-- Create or replace table with location/path
+CREATE OR REPLACE TABLE delta.`/tmp/delta/people10m` (
+...
+)
+
+-- Create or replace table with schema and table names (without location)
+CREATE OR REPLACE TABLE default.people10m (
+)
+```
+
+* Python:
+
+```python
+# Create or replace table with location/path using DataFrame's schema and
+# write/overwrite data to it
+df.write.format("delta").mode("overwrite").save("/tmp/delta/people10m")
+
+# Create table in the metastore using DataFrame's schema and write data to it
+df.write.format("delta").saveAsTable("default.people10m")
+```
+
+* Use the `make init-database` target in order to create the (`dim_customer`)
+  Delta Lake table if needed
+
+* Use the `make check-database` target to check the content of the directory
+  storing the Parquet data files of the Delta Lake table
+
+* The main point is that discussion is to NOT use BOTH the location/path and
+  the schema and table names
+  * In the tutorial, the latter (using schema and
+  table names) is featured
+  * Typically, Spark/Delta stores the (Parquet/Delta) data files in the
+  `spark-warehouse/<schema>.db/<table_name>/` directory, that is, for the
+  `dim_customer` table in the `bronze` schema:
+  `spark-warehouse/bronze.db/dim_customer/`
 
 ## References
 
@@ -33,6 +82,13 @@ Some of the Spark-related tutorials require sample datasets.
 * [LinkedIn post - A cheat sheet for building fail-safe/idempotent DataBricks jobs](https://www.linkedin.com/posts/jrlasak_databricks-dataengineering-etl-activity-7358425287455363072-x2yw/),
   August 2025, [Jakub Lasak](https://www.linkedin.com/in/jrlasak/)
 * [GitHub - Datanomy](https://github.com/raulcd/datanomy)
+
+### Delta Lake
+
+* [Delta Lake documentation](https://docs.delta.io/)
+  * [Delta Lake - Quick start guide](https://docs.delta.io/latest/quick-start.html)
+  * [Delta Lake - Table batch reads and writes](https://docs.delta.io/delta-batch/)
+  * [Delta Lake - Catalog-managed tables](https://docs.delta.io/delta-catalog-managed-tables/)
 
 ## Getting started
 
@@ -76,8 +132,15 @@ make check-dataset-incremental
 make ingest-datasets
 ```
 
-* Check the content of the database (Delta table):
+* Check the content of the database (Delta table) storage location on
+  the file-system:
 
 ```bash
 make check-database
+```
+
+* Browse the content of the database (Delta table):
+
+```bash
+make browse-database
 ```

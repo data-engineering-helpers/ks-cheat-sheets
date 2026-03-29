@@ -1,5 +1,5 @@
 --
--- File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/examples/sql/ddl.sql
+-- File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/examples/001-scd2-w-delta/sql/ddl.sql
 --
 -- The schema corresponds to Faker profiles:
 -- https://faker.readthedocs.io/en/master/providers/faker.providers.profile.html
@@ -40,5 +40,6 @@ create table bronze.dim_customer (
   is_current boolean
 )
 using delta
-location 'dim_customer';
+--location 'dim_customer'
+;
 

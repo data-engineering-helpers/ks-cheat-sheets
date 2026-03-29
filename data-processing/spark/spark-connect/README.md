@@ -56,7 +56,7 @@ on a laptop or on a virtual machine (VM).
 
 ### Delta Lake
 
-* [Data Engineering Helpers - Knowledge Sharing - Delta Lake](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/delta/README.md#delta-lake)
+* [Data Engineering Helpers - Knowledge Sharing - Delta Lake](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/delta/)
 * [Delta Lake doc - Delta Connect](https://docs.delta.io/delta-spark-connect/)
 
 ### Spark Connect
