@@ -7,7 +7,15 @@
   * [Overview](#overview)
     * [Delta Lake tables](#delta-lake-tables)
   * [References](#references)
+    * [Data Engineering helpers](#data-engineering-helpers)
+    * [SCD2 type ingestion](#scd2-type-ingestion)
+    * [Delta Lake](#delta-lake)
   * [Getting started](#getting-started)
+    * [Pure Delta Lake tables](#pure-delta-lake-tables)
+    * [Integration with Unity Catalog (UC) only](#integration-with-unity-catalog-uc-only)
+    * [Integration with Spark Connect (SC) only](#integration-with-spark-connect-sc-only)
+    * [Integration with Spark Connect (SC) and Unity Catalog (UC)](#integration-with-spark-connect-sc-and-unity-catalog-uc)
+    * [Use of Spark Declarative Pipelines (SDP) with SC and UC](#use-of-spark-declarative-pipelines-sdp-with-sc-and-uc)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
@@ -252,23 +260,41 @@ make clean-uc-all
 * PySpark script:
   [`merge_customer_003_sc_only.py` script](src/001_scd2_w_delta/jobs/merge_customer_003_sc_only.py)
 
+* If not already done so, start the Spark Connect (SC) server:
+
+```bash
+make start-sc-only
+```
+
+* Clean potential previous database on the Spark Connect (SC), whcih is on
+  the same node/computer for that use case/example:
+
+```bash
+make clean-database
+```
+
+* Create the Delta tables on Spark Connect (SC) server:
+
+```bash
+make init-database-sc
+```
+
+* Check the content of the database (Delta table) on the Spark Connect (SC):
+
+```bash
+make check-database-sc
+```
+
 * Ingest the initial and incremental data-sets, filling the Delta table:
 
 ```bash
 make ingest-datasets-sc-only
 ```
 
-* Check the content of the database (Delta table) storage location on
-  the file-system:
+* Check the content of the database (Delta table) on the Spark Connect (SC):
 
 ```bash
-make check-database
-```
-
-* Browse the content of the database (Delta table):
-
-```bash
-make browse-database
+make check-database-sc
 ```
 
 ### Integration with Spark Connect (SC) and Unity Catalog (UC)
@@ -298,3 +324,10 @@ make browse-database
 ### Use of Spark Declarative Pipelines (SDP) with SC and UC
 
 * [Data Engineering Helpers - Knowledge Sharing - Spark Declarative Pipelines (SDP)](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/declarative-pipelines/)
+
+* If not already done so, start the Spark Connect (SC) server:
+
+```bash
+make start-uc-only
+```
+

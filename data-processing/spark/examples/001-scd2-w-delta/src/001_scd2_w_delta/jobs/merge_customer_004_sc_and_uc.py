@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/examples/001-scd2-w-delta/src/001_scd2_w_delta/jobs/merge_customer_003_sc_only.py
+# File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/examples/001-scd2-w-delta/src/001_scd2_w_delta/jobs/merge_customer_004_sc_and_uc.py
 #
 
 from pyspark.sql import SparkSession
@@ -10,13 +10,14 @@ import delta.tables as dt
 #
 cust_init_dataset = "../data/dim_customer/init"
 cust_inc_dataset1 = "../data/dim_customer/inc1"
-delta_table_name = "bronze.dim_customer"
-sc_url = "sc://localhost:15002"
+delta_table_name = "unityxt.bronze.dim_customer"
 
 def getSparkSession() -> SparkSession:
     spark = (
-        SparkSession.builder.appName("scd2-app-sc-only")
-        .remote(sc_url)
+        SparkSession.builder.appName("scd2-app-sc-and-uc")
+        .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
+        .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog")
+        .enableHiveSupport()
         .getOrCreate()
     )
     return spark
@@ -52,7 +53,9 @@ def processCustomerInit(spark: SparkSession):
 
     else:
         print(f"{delta_table_name} Delta table did not exist. Creating initial snapshot...")
-        source_df.write.format("delta").mode("overwrite").saveAsTable(delta_table_name)
+        source_df.createTempView("source_df")
+        spark.sql(f"insert overwrite {delta_table_name} select * from source_df;")
+        # source_df.write.format("delta").mode("overwrite").saveAsTable(delta_table_name)
 
         # DEBUG
         displayCustTableHdr(spark=spark)

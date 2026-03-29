@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/examples/001-scd2-w-delta/src/001_scd2_w_delta/ddl.py
+# File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/examples/001-scd2-w-delta/src/001_scd2_w_delta/sc-ddl.py
 #
 # The schema corresponds to Faker profiles:
 # https://faker.readthedocs.io/en/master/providers/faker.providers.profile.html
@@ -12,7 +12,11 @@ import pyspark.sql.functions as F
 import delta.tables as dt
 
 #
-delta_table_name = "bronze.dim_customer"
+schema_name = "bronze"
+delta_table_name = f"{schema_name}.dim_customer"
+sc_url = "sc://localhost:15002"
+
+schema_create = f"create schema if not exists {schema_name};"
 
 ddl_drop = f"drop table if exists {delta_table_name};"
 
@@ -43,15 +47,16 @@ using delta
 
 def getSparkSession() -> SparkSession:
     spark = (
-        SparkSession.builder.appName("scd2-app")
-        .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
-        .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog")
-        .enableHiveSupport()
+        SparkSession.builder.appName("scd2-app-sc-only")
+        .remote(sc_url)
         .getOrCreate()
     )
     return spark
 
 def ddl(spark: SparkSession):
+    # Create schema if not existing
+    spark.sql(schema_create)
+
     # Drop if existing
     spark.sql(ddl_drop)
 
