@@ -51,7 +51,13 @@ clean-datasets: ## Clean generated datasets
 cleaners: clean-database clean-logs clean-python clean-package clean-install clean-datasets ## Clean everything
 
 clean-uc-table: ## Clean the table in Unity Catalog (UC)
-	@$(UC_DIR)/bin/uc table delete --full_name unityxt.bronze.dim_customer
+	@$(eval TBL_NAME=$(shell $(UC_DIR)/bin/uc table list --catalog unityxt --schema bronze --output json | jq -r '.[]|select(.name|contains("dim_customer"))|.name'))
+	@if [ "$(TBL_NAME)" == "dim_customer" ]; then \
+		$(UC_DIR)/bin/uc table delete --full_name unityxt.bronze.dim_customer ; \
+	else \
+		echo "Table dim_customer has not been created on UC in unityxt.bronze yet"; \
+		echo "No need to delete it" ; \
+	fi
 
 clean-uc-schema: ## Clean the schema in Unity Catalog (UC)
 	@$(UC_DIR)/bin/uc schema delete --full_name unityxt.bronze --force true
@@ -165,7 +171,23 @@ check-database: ## Check the content of the Spark database, if existing
 	fi
 
 check-uc: ## Check the content of Unity Catalog (UC)
-	@$(UC_DIR)/bin/uc table get --full_name unityxt.bronze.dim_customer
+	@$(eval TBL_NAME=$(shell $(UC_DIR)/bin/uc table list --catalog unityxt --schema bronze --output json | jq -r '.[]|select(.name|contains("dim_customer"))|.name'))
+	@if [ "$(TBL_NAME)" == "dim_customer" ]; then \
+		$(UC_DIR)/bin/uc table get --full_name unityxt.bronze.dim_customer ; \
+	else \
+		echo "Table dim_customer has not been created on UC in unityxt.bronze yet"; \
+		echo "Hint: make init-uc-table"; \
+	fi
+
+check-uc-hard: ## Check the content of Unity Catalog (UC). Exit if not found
+	@$(eval TBL_NAME=$(shell $(UC_DIR)/bin/uc table list --catalog unityxt --schema bronze --output json | jq -r '.[]|select(.name|contains("dim_customer"))|.name'))
+	@if [ "$(TBL_NAME)" == "dim_customer" ]; then \
+		$(UC_DIR)/bin/uc table get --full_name unityxt.bronze.dim_customer ; \
+	else \
+		echo "Table dim_customer has not been created on UC in unityxt.bronze yet"; \
+		echo "Hint: make init-uc-table"; \
+		exit 1; \
+	fi
 
 check-database-sc: ## Check the table on Spark Connect (SC)
 	pyspark --remote $(SC_URL) \
@@ -218,7 +240,7 @@ ingest-datasets-simple: ## Ingest the customer-related datasets (initial and inc
 	@$(MAKE) check-database
 
 ingest-datasets-uc-only: ## Ingest the customer-related datasets (initial and incremental) - Version for UC only
-	@$(MAKE) check-uc
+	@$(MAKE) check-uc-hard
 	@echo "Check logs/merge_customer_002_uc_only.log"
 	@mkdir -p logs
 	time pyspark \
@@ -244,7 +266,7 @@ ingest-datasets-sc-only: ## Ingest the customer-related datasets (initial and in
 	@$(MAKE) check-database-sc
 
 ingest-datasets-sc-and-uc: ## Ingest the customer-related datasets (initial and incremental) - Version for SC and UC
-	@$(MAKE) check-uc
+	@$(MAKE) check-uc-hard
 	@echo "Check logs/merge_customer_004_sc_and_uc.log"
 	@mkdir -p logs
 	time pyspark --remote $(SC_URL) \

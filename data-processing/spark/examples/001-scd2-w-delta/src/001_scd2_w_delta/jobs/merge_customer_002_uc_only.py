@@ -44,21 +44,35 @@ def processCustomerInit(spark: SparkSession):
     source_df = source_df.withColumn("is_current", F.lit(True))
 
     # Retrieve the Delta table if existing, otherwise fill it
-    if dt.DeltaTable.isDeltaTable(spark, delta_table_name):
+    # if dt.DeltaTable.isDeltaTable(spark, delta_table_name):
+    try:
         delta_table = dt.DeltaTable.forName(spark, delta_table_name)
         print(f"{delta_table_name} Delta table exists. All is fine")
 
+        # The following is kept for reference only. It would perfectly work and is
+        # idempotent. However, it is not pure Python, as is the case for the operation
+        # just after (which, in turn, is not idempotent).
+        # Hence, apparently, we cannot have a pure Python overwrite clause: it is
+        # either SQL (and idempotent) or not idempotent (append)
+        # source_df.createTempView("source_df")
+        # spark.sql(f"insert overwrite {delta_table_name} select * from source_df;")
+
+        # That operation is not idempotent (as the initial dataset is added every time
+        # the Python script is called). But for that simple tutorial, it is fine, as
+        # the whole purpose is to showcase the merge feature of the Delta table in the
+        # processCustomerInc1() method (see below)
+        print(f"Inserting the initial dataset ({cust_init_dataset}) into {delta_table_name} Delta table")
+        source_df.write.format("delta").mode("append").saveAsTable(delta_table_name)
+        
         # DEBUG
         displayCustTableHdr(spark=spark)
 
-    else:
-        print(f"{delta_table_name} Delta table did not exist. Creating initial snapshot...")
-        source_df.createTempView("source_df")
-        spark.sql(f"insert overwrite {delta_table_name} select * from source_df;")
-        # source_df.write.format("delta").mode("overwrite").saveAsTable(delta_table_name)
-
-        # DEBUG
-        displayCustTableHdr(spark=spark)
+    except:
+        import sys
+        e = sys.exc_info()[0]
+        print(f"Error: {e}")
+        
+        print(f"{delta_table_name} Delta table does exist. Execute make init-uc-table")
 
 def processCustomerInc1(spark: SparkSession):
     inc_df = spark.read.parquet(cust_inc_dataset1)
