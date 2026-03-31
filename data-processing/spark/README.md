@@ -36,6 +36,9 @@ explains how to install and to use
 [Apache Spark](https://spark.apache.org), _e.g._,
 on a laptop or on a virtual machine (VM).
 
+Apache Spark is a multi-language engine for executing data engineering, data
+science, and machine learning (ML) on single-node machines or clusters.
+
 ### Spark and related components
 
 * The Spark ecosystem is rich. The following cheat sheets are detailing specific
@@ -47,6 +50,9 @@ on a laptop or on a virtual machine (VM).
   table
   * UC has no dependency on Spark (it does not need Spark to run), but
   it integrates well, by design, with Spark and all its components
+  * The
+  [Unity Catalog blog post](https://www.unitycatalog.io/blogs/unity-catalog-spark-delta-lake)
+  details how Unity Catalog (UC) works with Apache Spark ad Delta Lake
   * UC also integrates with a wide range of
   [data-related tools/engines](https://github.com/unitycatalog/unitycatalog?tab=readme-ov-file#vibrant-ecosystem)
   (_e.g._, [DuckDB](https://duckdb.org/docs/stable/core_extensions/delta))
