@@ -52,22 +52,76 @@ explains how to install and to use
 [Unity Catalog](https://www.unitycatalog.io)
 on premises, _e.g._, on a laptop or on a virtual machine (VM).
 
+* Unity Catalog (UC) is a governance platform and data catalog allowing any
+  data-related tools to access datasets through the names the corresponding
+  schema and table
+* UC has no dependency on Spark (it does not need Spark to run), but it
+  integrates well, by design, with Spark and all its components
+* The
+  [Unity Catalog blog post](https://www.unitycatalog.io/blogs/unity-catalog-spark-delta-lake)
+  details how Unity Catalog (UC) works with Apache Spark ad Delta Lake
+* UC also integrates with a wide range of
+  [data-related tools/engines](https://github.com/unitycatalog/unitycatalog?tab=readme-ov-file#vibrant-ecosystem)
+  (_e.g._, [DuckDB](https://duckdb.org/docs/stable/core_extensions/delta))
+
+The section of
+[Data Engineering Helpers - Knowledge Sharing - Spark](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/README.md#spark-and-related-components)
+dedicated to Spark and related components explains that the Spark ecosystem is
+rich. The following cheat sheets are detailing specific Spark-related
+features/components.
+
+* [Apache Spark](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/)
+  * Spark is a multi-language engine for executing data engineering, data
+  science, and machine learning (ML) on single-node machines or clusters
+
+* [Spark Connect (SC)](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/spark-connect/)
+  * Spark Connect introduced a decoupled client-server architecture for Spark
+  that allows remote connectivity to Spark clusters using the
+  [DataFrame API](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.html?highlight=dataframe#pyspark.sql.DataFrame)
+  * The separation between client and server allows Spark and its open
+  ecosystem to be leveraged from everywhere. It can be embedded in modern data
+  applications, in IDEs, notebooks and programming languages
+
+* [Delta Lake](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/delta/)
+  * Delta Lake is a storage framework that enables building a
+  [Lakehouse architecture](https://www.databricks.com/blog/2020/01/30/what-is-a-data-lakehouse.html)
+  with compute engines including Spark, DuckDB, PrestoDB, Flink, Trino, and
+  Hive and APIs for Scala, Java, Rust, Ruby, and Python
+  * [Delta Connect, the Delta Lake version of Spark Connect](https://docs.delta.io/delta-spark-connect/)
+
+* [Spark Declarative Pipelines (SDP)](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/declarative-pipelines/)
+  * Spark Declarative Pipelines (SDP) is a declarative framework for building
+  reliable, maintainable, and testable data pipelines on Spark. SDP simplifies
+  ETL development by allowing you to focus on the transformations you want
+  to apply to your data, rather than the mechanics of pipeline execution
+  * The key advantage of SDP is its declarative approach - you define what
+  tables should exist and what their contents should be, and SDP handles the
+  orchestration, compute management, and error handling automatically
+
+* Even though these components fully work without Unity Catalog (_e.g._, Spark
+  works autonomously with its own database system and catalog compatible with
+  Hive) they are, by design, fully compatible with Unity Catalog
+
 ## References
 
 ### Data Engineering helpers
 
+* [Data Engineering Helpers - Knowledge Sharing - Java world](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/java-world/)
+* [Data Engineering Helpers - Knowledge Sharing - JavaScipt (JS) world](https://github.com/data-engineering-helpers/ks-cheat-sheets/tree/main/programming/js-world)
+* [Data Engineering Helpers - Knowledge Sharing - Spark](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/)
+* [Data Engineering Helpers - Knowledge Sharing - Delta Lake](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/delta/)
+* [Data Engineering Helpers - Knowledge Sharing - Unity Catalog (UC)](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/unity-catalog/)
 * [Data Engineering Helpers - Knowledge Sharing - PostgreSQL](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/README.md#unity-catalog-database-and-user)
+* [Data Engineering Helpers - Knowledge Sharing - Spark Connect](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/spark-connect/)
+* [Data Engineering Helpers - Knowledge Sharing - Python](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/python/)
+* [Data Engineering Helpers - Knowledge Sharing - Hive Metastore](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/hive-metastore/README.md)
 * [Data Engineering Helpers - Knowledge Sharing - Lakebase](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/lakebase/README.md)
 * [Data Engineering Helpers - Knowledge Sharing - Databricks Apps](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/infrastructure/databricks-apps/README.md)
-* [Data Engineering Helpers - Knowledge Sharing - Hive Metastore](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/hive-metastore/README.md)
 * [Data Engineering Helpers - Knowledge Sharing - Egeria](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/egeria/README.md)
 * [Material for the Data platform - Modern Data Stack (MDS) in a box](https://github.com/data-engineering-helpers/mds-in-a-box/blob/main/README.md)
 * [Material for the Data platform - Data life cycle](https://github.com/data-engineering-helpers/data-life-cycle/blob/main/README.md)
-* [Data Engineering Helpers - Knowledge Sharing - Minio](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-storage/minio/README.md)
 * [Data Engineering Helpers - Knowledge Sharing - Trino](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/trino/README.md)
 * [Data Engineering Helpers - Knowledge Sharing - DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/README.md)
-* [Data Engineering Helpers - Knowledge Sharing - Java world](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/java-world/README.md)
-* [Data Engineering Helpers - Knowledge Sharing - JavaScipt (JS) world](https://github.com/data-engineering-helpers/ks-cheat-sheets/tree/main/programming/js-world)
 
 ### Unity Catalog documentation
 
@@ -81,6 +135,8 @@ on premises, _e.g._, on a laptop or on a virtual machine (VM).
   * [Unity Catalog docs - Integrations - DuckDB](https://docs.unitycatalog.io/integrations/unity-catalog-duckdb/)
   * [Unity Catalog docs - Integrations - XTable](https://docs.unitycatalog.io/integrations/unity-catalog-xtable/)
 * [Unity Catalog blog post - Integrating Spark with Unity Catalog via Open APIs](https://www.unitycatalog.io/blogs/integrating-apache-spark-with-unity-catalog-assets-via-open-apis)
+* [Unity Catalog blog post - Integrating Unity Catalog with Apache Spark and Delta Lake](https://www.unitycatalog.io/blogs/unity-catalog-spark-delta-lake)
+  details how Unity Catalog (UC) works with Apache Spark ad Delta Lake
 
 ### Iceberg REST API
 
