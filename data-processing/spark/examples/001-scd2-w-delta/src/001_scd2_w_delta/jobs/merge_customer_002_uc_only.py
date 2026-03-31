@@ -57,6 +57,9 @@ def processCustomerInit(spark: SparkSession):
         # source_df.createTempView("source_df")
         # spark.sql(f"insert overwrite {delta_table_name} select * from source_df;")
 
+        # The following does not work with Unity Catalog (UC)
+        # source_df.write.format("delta").mode("overwrite").saveAsTable(delta_table_name)
+
         # That operation is not idempotent (as the initial dataset is added every time
         # the Python script is called). But for that simple tutorial, it is fine, as
         # the whole purpose is to showcase the merge feature of the Delta table in the
