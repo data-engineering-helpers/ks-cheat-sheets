@@ -13,11 +13,11 @@ cust_inc_dataset1 = "../data/dim_customer/inc1"
 delta_table_name = "unityxt.bronze.dim_customer"
 
 def getSparkSession() -> SparkSession:
+    # .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
+    # .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog")
+    # .enableHiveSupport()
     spark = (
         SparkSession.builder.appName("scd2-app-uc-only")
-        .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
-        .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog")
-        .enableHiveSupport()
         .getOrCreate()
     )
     return spark
