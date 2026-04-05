@@ -11,21 +11,20 @@ import delta.tables as dt
 cust_init_dataset = "../data/dim_customer/init"
 cust_inc_dataset1 = "../data/dim_customer/inc1"
 delta_table_name = "unityxt.bronze.dim_customer"
+sc_url = "sc://localhost:15002"
 
 def getSparkSession() -> SparkSession:
     spark = (
         SparkSession.builder.appName("scd2-app-sc-and-uc")
-        .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
-        .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog")
-        .enableHiveSupport()
+        .remote(sc_url)
         .getOrCreate()
     )
     return spark
 
 def displayCustTableHdr(spark: SparkSession):
-    df_table = spark.sql(f"select * from {delta_table_name} limit 5")
+    df_table = spark.sql(f"select * from {delta_table_name}")
     nb_rows = df_table.count()
-    df_table_hdr = df_table.limit(5).show()
+    df_table_hdr = df_table.toPandas(5)
     print(f"Nb of rows: {nb_rows} - First 5 records of {delta_table_name}:")
     print(df_table_hdr)
 
@@ -44,21 +43,23 @@ def processCustomerInit(spark: SparkSession):
     source_df = source_df.withColumn("is_current", F.lit(True))
 
     # Retrieve the Delta table if existing, otherwise fill it
-    if dt.DeltaTable.isDeltaTable(spark, delta_table_name):
+    # if dt.DeltaTable.isDeltaTable(spark, delta_table_name):
+    try:
         delta_table = dt.DeltaTable.forName(spark, delta_table_name)
         print(f"{delta_table_name} Delta table exists. All is fine")
 
-        # DEBUG
-        displayCustTableHdr(spark=spark)
-
-    else:
-        print(f"{delta_table_name} Delta table did not exist. Creating initial snapshot...")
         source_df.createTempView("source_df")
         spark.sql(f"insert overwrite {delta_table_name} select * from source_df;")
-        # source_df.write.format("delta").mode("overwrite").saveAsTable(delta_table_name)
 
         # DEBUG
         displayCustTableHdr(spark=spark)
+
+    except:
+        import sys
+        e = sys.exc_info()[0]
+        print(f"Error: {e}")
+        
+        print(f"{delta_table_name} Delta table does exist. Execute make init-uc-table")
 
 def processCustomerInc1(spark: SparkSession):
     inc_df = spark.read.parquet(cust_inc_dataset1)

@@ -138,17 +138,19 @@ start-sc-only: ## Start Spark Connect (SC) only
 	@unset SPARK_REMOTE; start-connect-server.sh \
 		--packages "io.delta:$(DL_SC_SVR_JAR),$(PB_DOM):$(PB_JAR)" \
 		--conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
-		--conf "spark.sql.catalog.spark_catalog=$(DL_SQL_DOM).DeltaCatalog" \
 		--conf "spark.connect.extensions.relation.classes=org.apache.spark.sql.connect.delta.DeltaRelationPlugin" \
-		--conf "spark.connect.extensions.command.classes=org.apache.spark.sql.connect.delta.DeltaCommandPlugin"
+		--conf "spark.connect.extensions.command.classes=org.apache.spark.sql.connect.delta.DeltaCommandPlugin" \
+		--conf "spark.sql.catalog.spark_catalog=$(DL_SQL_DOM).DeltaCatalog"
 	@echo "In order to stop the Spark Connect (SC) server: make stop-sc"
 
 start-sc-and-uc: ## Start Spark Connect (SC), itself connected to UC
-	@echo "Starting Spark Connect (SC), itself connected to Unity Catalog (UC)"
 	@$(MAKE) check-uc
+	@echo "Starting Spark Connect (SC), itself connected to Unity Catalog (UC)"
 	@unset SPARK_REMOTE; start-connect-server.sh \
-		--packages "$(SC_DOM):$(SC_JAR),io.delta:$(DL_JAR),$(UC_DOM):$(UC_JAR)" \
+		--packages "io.delta:$(DL_SC_SVR_JAR),$(PB_DOM):$(PB_JAR),$(UC_DOM):$(UC_JAR)"\
 	  	--conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
+		--conf "spark.connect.extensions.relation.classes=org.apache.spark.sql.connect.delta.DeltaRelationPlugin" \
+		--conf "spark.connect.extensions.command.classes=org.apache.spark.sql.connect.delta.DeltaCommandPlugin" \
         --conf "spark.sql.catalog.spark_catalog=$(UC_DOM).spark.UCSingleCatalog" \
         --conf "spark.sql.catalog.unityxt=$(UC_DOM).spark.UCSingleCatalog" \
         --conf "spark.sql.catalog.unityxt.uri=http://localhost:8080" \
@@ -188,6 +190,7 @@ check-database: ## Check the content of the Spark database, if existing
 	fi
 
 check-uc: ## Check the content of Unity Catalog (UC)
+	@echo "Checking for the dim_customer table in the table list on Unity Catalog (UC)"
 	@$(eval TBL_NAME=$(shell $(UC_DIR)/bin/uc table list --catalog unityxt --schema bronze --output json | jq -r '.[]|select(.name|contains("dim_customer"))|.name'))
 	@if [ "$(TBL_NAME)" == "dim_customer" ]; then \
 		$(UC_DIR)/bin/uc table get --full_name unityxt.bronze.dim_customer ; \
@@ -197,6 +200,7 @@ check-uc: ## Check the content of Unity Catalog (UC)
 	fi
 
 check-uc-hard: ## Check the content of Unity Catalog (UC). Exit if not found
+	@echo "Checking for the dim_customer table in the table list on Unity Catalog (UC)"
 	@$(eval TBL_NAME=$(shell $(UC_DIR)/bin/uc table list --catalog unityxt --schema bronze --output json | jq -r '.[]|select(.name|contains("dim_customer"))|.name'))
 	@if [ "$(TBL_NAME)" == "dim_customer" ]; then \
 		$(UC_DIR)/bin/uc table get --full_name unityxt.bronze.dim_customer ; \
@@ -213,6 +217,14 @@ check-database-sc: ## Check the table on Spark Connect (SC)
 		< src/001_scd2_w_delta/sc-select-dim-customer-limit10.py \
 		> logs/check_database_sc.log 2>&1
 	@grep -v "^I00" logs/check_database_sc.log
+
+check-database-sc-and-uc: init-log-dir ## Check the table on Spark Connect (SC), itself connected to UC
+	@echo "Check the logs/check_database_sc_and_uc.log log file for details"
+	@pyspark --remote $(SC_URL) \
+		--packages "io.delta:$(DL_SC_CLT_JAR),$(PB_DOM):$(PB_JAR)" \
+		< src/001_scd2_w_delta/sc-and-uc-select-dim-customer-limit10.py \
+		> logs/check_database_sc_and_uc.log 2>&1
+	@grep -v "^I00" logs/check_database_sc_and_uc.log
 
 #
 init: ## Setup Python virtual environment
@@ -279,6 +291,7 @@ ingest-datasets-uc-only: ## Ingest the customer-related datasets (initial and in
 ingest-datasets-sc-only: init-log-dir ## Ingest the customer-related datasets (initial and incremental) - Version for SC only
 	@echo "Merging datasets into the table on SC. Check logs/merge_customer_003_sc_only.log"
 	time pyspark --remote $(SC_URL) \
+		--packages "io.delta:$(DL_SC_CLT_JAR),$(PB_DOM):$(PB_JAR)" \
 		< src/001_scd2_w_delta/jobs/merge_customer_003_sc_only.py \
 		> logs/merge_customer_003_sc_only.log 2>&1
 
@@ -287,6 +300,7 @@ ingest-datasets-sc-and-uc: ## Ingest the customer-related datasets (initial and 
 	@echo "Check logs/merge_customer_004_sc_and_uc.log"
 	@mkdir -p logs
 	time pyspark --remote $(SC_URL) \
+		--packages "io.delta:$(DL_SC_CLT_JAR),$(PB_DOM):$(PB_JAR)" \
 		< src/001_scd2_w_delta/jobs/merge_customer_004_sc_and_uc.py \
 		> logs/merge_customer_004_sc_and_uc.log 2>&1
 	@$(MAKE) check-uc

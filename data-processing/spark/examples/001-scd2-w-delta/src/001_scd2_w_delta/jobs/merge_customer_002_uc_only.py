@@ -23,9 +23,9 @@ def getSparkSession() -> SparkSession:
     return spark
 
 def displayCustTableHdr(spark: SparkSession):
-    df_table = spark.sql(f"select * from {delta_table_name} limit 5")
+    df_table = spark.sql(f"select * from {delta_table_name}")
     nb_rows = df_table.count()
-    df_table_hdr = df_table.limit(5).show()
+    df_table_hdr = df_table.limit(5).toPandas()
     print(f"Nb of rows: {nb_rows} - First 5 records of {delta_table_name}:")
     print(df_table_hdr)
 

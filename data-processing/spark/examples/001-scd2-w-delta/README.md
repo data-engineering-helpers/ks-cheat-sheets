@@ -346,23 +346,79 @@ make clean-database
 * PySpark script:
   [`merge_customer_004_sc_and_uc.py` script](src/001_scd2_w_delta/jobs/merge_customer_004_sc_and_uc.py)
 
+* If not already done so, in a dedicated Shell tab, start the UC server (knowing
+  that `~/dev/infra/unitycatalog` is the directory where the
+  [Unity Catalog Git repository](https://github.com/unitycatalog/unitycatalog)
+  has been cloned and UC has been built and packaged with
+  `sbt +clean +compile +package +publishLocal +publishM2`):
+
+```bash
+pushd ~/dev/infra/unitycatalog
+bin/start-uc-server # Control-C to stop the server
+popd
+```
+
+* If not already done so, initialize the Unity Catalog with:
+  * A `unityxt` (`xt` standing for extended, as that version of the catalog uses
+  default storage location in order to support catalog-controlled tables,
+  _i.e._, managed tables) catalog with a default storage location (for managed
+  tables and managed volumes)
+  * A `bronze` schema for the `unityxt` (extended) catalog
+  * A `unityxt.bronze.dim_customer` table, as a managed table
+
+```bash
+make init-uc-all
+```
+
+* Potentially stop the Spark Connect (SC) server (to then start from a cleaner
+  state):
+
+```bash
+make stop-sc
+```
+
+* If not already done so, start the Spark Connect (SC) server, itself connected
+  to Unity Catalog (UC):
+
+```bash
+make start-sc-and-uc
+```
+
+* Check that the Spark Connect (SC) server is running:
+
+```bash
+make check-sc
+```
+
 * Ingest the initial and incremental data-sets, filling the Delta table:
 
 ```bash
 make ingest-datasets-sc-and-uc
 ```
 
-* Check the content of the database (Delta table) storage location on
-  the file-system:
+* Check the content of the database (Delta table) on the Spark Connect (SC):
 
 ```bash
-make check-database
+make check-database-sc-and-uc
 ```
 
-* Browse the content of the database (Delta table):
+* Browse the content of the `dim_customer` table:
 
 ```bash
-make browse-database
+make browse-uc
+```
+
+* When the session is done, stop the Spark Connect (SC) server:
+
+```bash
+make stop-sc
+```
+
+* When the session is done, delete everything in Unity Catalog (that is,
+  the table, the schema and the catalog):
+
+```bash
+make clean-uc-all
 ```
 
 ### Use of Spark Declarative Pipelines (SDP) with SC and UC
@@ -374,4 +430,3 @@ make browse-database
 ```bash
 make start-uc-only
 ```
-
