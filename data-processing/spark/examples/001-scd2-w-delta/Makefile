@@ -2,6 +2,8 @@
 # File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/examples/001-scd2-w-delta/Makefile
 #
 
+#SHELL := /bin/bash
+
 PYTHON_VERSION := 3.12
 SCALA_VERSION := 2.13
 SPARK_VERSION := 4.1.1 # 3.5.2
@@ -67,9 +69,15 @@ clean-uc-catalog: ## Clean the catalog in Unity Catalog (UC)
 
 clean-uc-all: clean-uc-catalog ## Clean all about the unityxt catalog
 
+clean-sc-table: ## Clean the Spark Connect (SC) table if needed
+	@rm -rf spark-warehouse/bronze.db/dim_customer
+
 # Initializers
 init-uv-python: ## Install Python $(PYTHON_VERSION) if necessary
 	uv python install $(PYTHON_VERSION)
+
+init-log-dir: ## Create the logs directory if need
+	@mkdir -p logs
 
 init-pyspark: ## Install PySpark and Delta Lake in the current Python environment (not the uv virtual one)
 	python -mpip install --force-reinstall \
@@ -92,11 +100,12 @@ init-database-purepython: ## Initialize the Delta tables
 		src/001_scd2_w_delta/ddl.py
 	@$(MAKE) check-database
 
-init-database-sc: ## Initialize the Delta tables on SC
-	pyspark --remote $(SC_URL) \
+init-database-sc: clean-sc-table init-log-dir ## Initialize the Delta tables on SC
+	@echo "Creating the table on SC server. Check logs/init_database_sc.log"
+	@pyspark --remote $(SC_URL) \
 		--packages "io.delta:$(DL_SC_CLT_JAR),$(PB_DOM):$(PB_JAR)" \
-		< src/001_scd2_w_delta/sc-ddl.py
-	@$(MAKE) check-database-sc
+		< src/001_scd2_w_delta/sc-ddl.py \
+		> logs/init_database_sc.log 2>&1
 
 init-uc-catalog: ## Initialize the unityxt catalog in Unity Catalog (UC)
 	@$(UC_DIR)/bin/uc catalog create --name unityxt \
@@ -147,6 +156,14 @@ start-sc-and-uc: ## Start Spark Connect (SC), itself connected to UC
         --conf "spark.sql.defaultCatalog=unityxt"
 	@echo "In order to stop the Spark Connect (SC) server: make stop-sc"
 
+check-sc: ## Check whether Spark Connect (SC) runs
+	@$(eval IS_SC_RUNNING=$(shell ps -ax|grep "class org.apache.spark.sql.connect.service.SparkConnectServer" | grep -o "Spark Connect"))
+	@if [ "$(IS_SC_RUNNING)" == "Spark Connect Spark Connect" ]; then \
+		echo "Spark Connect (SC) seems to be running"; \
+	else \
+		echo "Spark Connect (SC) does not seem to be running"; \
+	fi
+
 stop-sc: ## Stop Spark Connect (SC)
 	@echo "Stopping Spark Connect (SC)"
 	@stop-connect-server.sh
@@ -190,9 +207,12 @@ check-uc-hard: ## Check the content of Unity Catalog (UC). Exit if not found
 	fi
 
 check-database-sc: ## Check the table on Spark Connect (SC)
-	pyspark --remote $(SC_URL) \
+	@echo "Check the logs/check_database_sc.log log file for details"
+	@pyspark --remote $(SC_URL) \
 		--packages "io.delta:$(DL_SC_CLT_JAR),$(PB_DOM):$(PB_JAR)" \
-	  < src/001_scd2_w_delta/sc-select-dim-customer-limit10.py
+		< src/001_scd2_w_delta/sc-select-dim-customer-limit10.py \
+		> logs/check_database_sc.log 2>&1
+	@grep -v "^I00" logs/check_database_sc.log
 
 #
 init: ## Setup Python virtual environment
@@ -229,7 +249,7 @@ browse-uc: ## Browse the content of Unity Catalog (UC)
 #
 ingest-datasets-simple: ## Ingest the customer-related datasets (initial and incremental) - Simple version
 	@$(MAKE) check-database
-	@echo "Check logs/merge_customer_001_simple.log"
+	@echo "Merging datasets into the table. Check logs/merge_customer_001_simple.log"
 	@mkdir -p logs
 	time pyspark \
 		--packages io.delta:delta-spark_$(SCALA_VERSION):$(DL_VERSION) \
@@ -241,7 +261,7 @@ ingest-datasets-simple: ## Ingest the customer-related datasets (initial and inc
 
 ingest-datasets-uc-only: ## Ingest the customer-related datasets (initial and incremental) - Version for UC only
 	@$(MAKE) check-uc-hard
-	@echo "Check logs/merge_customer_002_uc_only.log"
+	@echo "Merging datasets into the table. Check logs/merge_customer_002_uc_only.log"
 	@mkdir -p logs
 	time pyspark \
 		--packages "io.delta:$(DL_JAR),$(UC_DOM):$(UC_JAR)" \
@@ -256,14 +276,11 @@ ingest-datasets-uc-only: ## Ingest the customer-related datasets (initial and in
 	@$(MAKE) check-uc
 	@echo "Hint for next step: make browse-uc"
 
-ingest-datasets-sc-only: ## Ingest the customer-related datasets (initial and incremental) - Version for SC only
-	@$(MAKE) check-database
-	@echo "Check logs/merge_customer_003_sc_only.log"
-	@mkdir -p logs
+ingest-datasets-sc-only: init-log-dir ## Ingest the customer-related datasets (initial and incremental) - Version for SC only
+	@echo "Merging datasets into the table on SC. Check logs/merge_customer_003_sc_only.log"
 	time pyspark --remote $(SC_URL) \
 		< src/001_scd2_w_delta/jobs/merge_customer_003_sc_only.py \
 		> logs/merge_customer_003_sc_only.log 2>&1
-	@$(MAKE) check-database-sc
 
 ingest-datasets-sc-and-uc: ## Ingest the customer-related datasets (initial and incremental) - Version for SC and UC
 	@$(MAKE) check-uc-hard

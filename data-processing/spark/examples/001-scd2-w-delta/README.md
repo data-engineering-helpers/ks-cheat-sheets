@@ -160,7 +160,7 @@ make init-database
 make check-database
 ```
 
-* Generate the initial and incremental data-sets (it crates an stores Parquet
+* Generate the initial and incremental data-sets (it creates an stores Parquet
   files for the initial and the incremental data-sets):
 
 ```bash
@@ -260,17 +260,49 @@ make clean-uc-all
 * PySpark script:
   [`merge_customer_003_sc_only.py` script](src/001_scd2_w_delta/jobs/merge_customer_003_sc_only.py)
 
+* Note that, as the Spark Connect (SC) server runs on the same machine (typically,
+  the laptop)
+  * The database, which is a Hive/Spark local database, is the same as for
+  the use case without any Spark Connect (SC) setup, that is, in the
+  `spark-warehouse/bronze.db/dim_customer/` directory
+  * It would be cleaner to start the Spark Connect (SC) server elsewhere
+  (_e.g._, in a temporary directory like `/tmp/sparkconnect/workspace`). But,
+  then, the `make init-datasets` target would need to be adapted, as the
+  Spark Connect (SC) server will search for those datasets where it has been
+  started
+
+* Potentially stop the Spark Connect (SC) server (to then start from a cleaner
+  state):
+
+```bash
+make stop-sc
+```
+
+* Clean potential previous database on the Spark Connect (SC) server, whcih is
+  on the same node/computer for that use case/example:
+
+```bash
+make clean-database
+```
+
+* If not already done so, generate the initial and incremental data-sets
+  (it creates an stores Parquet files for the initial and the incremental
+  data-sets):
+
+```bash
+make init-datasets
+```
+
 * If not already done so, start the Spark Connect (SC) server:
 
 ```bash
 make start-sc-only
 ```
 
-* Clean potential previous database on the Spark Connect (SC), whcih is on
-  the same node/computer for that use case/example:
+* Check that the Spark Connect (SC) server is running:
 
 ```bash
-make clean-database
+make check-sc
 ```
 
 * Create the Delta tables on Spark Connect (SC) server:
@@ -295,6 +327,18 @@ make ingest-datasets-sc-only
 
 ```bash
 make check-database-sc
+```
+
+* Potentially stop the Spark Connect (SC) server:
+
+```bash
+make stop-sc
+```
+
+* Clean the database on the Spark Connect (SC) server:
+
+```bash
+make clean-database
 ```
 
 ### Integration with Spark Connect (SC) and Unity Catalog (UC)
