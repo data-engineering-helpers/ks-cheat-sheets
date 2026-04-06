@@ -210,13 +210,21 @@ check-uc-hard: ## Check the content of Unity Catalog (UC). Exit if not found
 		exit 1; \
 	fi
 
-check-database-sc: ## Check the table on Spark Connect (SC)
+check-database-sc: init-log-dir ## Check the table on Spark Connect (SC)
 	@echo "Check the logs/check_database_sc.log log file for details"
 	@pyspark --remote $(SC_URL) \
 		--packages "io.delta:$(DL_SC_CLT_JAR),$(PB_DOM):$(PB_JAR)" \
 		< src/001_scd2_w_delta/sc-select-dim-customer-limit10.py \
 		> logs/check_database_sc.log 2>&1
 	@grep -v "^I00" logs/check_database_sc.log
+
+check-database-uc: init-log-dir ## Check the table on Unity Catalog (UC)
+	@echo "Check the logs/check_database_uc.log log file for details"
+	@pyspark --remote $(SC_URL) \
+		--packages "io.delta:$(DL_SC_CLT_JAR),$(PB_DOM):$(PB_JAR)" \
+		< src/001_scd2_w_delta/uc-select-dim-customer-limit10.py \
+		> logs/check_database_uc.log 2>&1
+	@grep -v "^I00" logs/check_database_uc.log
 
 check-database-sc-and-uc: init-log-dir ## Check the table on Spark Connect (SC), itself connected to UC
 	@echo "Check the logs/check_database_sc_and_uc.log log file for details"

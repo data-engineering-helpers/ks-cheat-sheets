@@ -48,24 +48,36 @@ def processCustomerInit(spark: SparkSession):
     try:
         delta_table = dt.DeltaTable.forName(spark, delta_table_name)
         print(f"{delta_table_name} Delta table exists. All is fine")
+        print(
+            f"Replacing the {delta_table_name} Delta table by the content of the "
+            f"initial dataset ({cust_init_dataset})"
+        )
 
-        # The following is kept for reference only. It would perfectly work and is
-        # idempotent. However, it is not pure Python, as is the case for the operation
-        # just after (which, in turn, is not idempotent).
+        # The following works well, but it is in SQL, not in pure Python. Neverthless,
+        # the alternatives do not fully work:
+        # * The "append" mode is not idempotent (as everytime the records are appended)
+        # * The overwrite mode triggers an exception by the Spark engine. That holds
+        #   true for both direct access to Unity Catalog (UC) and for indirect access
+        #   through Spark Connect (SC), itself connected to United Catalog (UC),
+        #   eventhough the exception may not be the same.
         # Hence, apparently, we cannot have a pure Python overwrite clause: it is
         # either SQL (and idempotent) or not idempotent (append)
-        # source_df.createTempView("source_df")
-        # spark.sql(f"insert overwrite {delta_table_name} select * from source_df;")
+        source_df.createTempView("source_df")
+        spark.sql(f"insert overwrite {delta_table_name} select * from source_df;")
 
-        # The following does not work with Unity Catalog (UC)
+        print(f"{delta_table_name} Delta table has been successfully rewritten")
+
+        # The following does not work when Spark directly invokes Unity Catalog (UC),
+        # and does not work either when Spark connects to Spark Connect (SC), itself
+        # connected to Unity Catalog. See also merge_customer_004_sc_and_uc.py
         # source_df.write.format("delta").mode("overwrite").saveAsTable(delta_table_name)
 
-        # That operation is not idempotent (as the initial dataset is added every time
-        # the Python script is called). But for that simple tutorial, it is fine, as
-        # the whole purpose is to showcase the merge feature of the Delta table in the
+        # The following is kept for reference only. Indeed, that operation is not
+        # idempotent (as the initial dataset is added every time the Python script is
+        # called). Yet, for that simple tutorial, it would be fine, as the whole
+        # purpose is to showcase the merge feature of the Delta table in the
         # processCustomerInc1() method (see below)
-        print(f"Inserting the initial dataset ({cust_init_dataset}) into {delta_table_name} Delta table")
-        source_df.write.format("delta").mode("append").saveAsTable(delta_table_name)
+        # source_df.write.format("delta").mode("append").saveAsTable(delta_table_name)
         
         # DEBUG
         displayCustTableHdr(spark=spark)
@@ -75,7 +87,10 @@ def processCustomerInit(spark: SparkSession):
         e = sys.exc_info()[0]
         print(f"Error: {e}")
         
-        print(f"{delta_table_name} Delta table does exist. Execute make init-uc-table")
+        print(
+            f"There was an issue with the {delta_table_name} Delta table. "
+            "Potentially execute make init-uc-table"
+        )
 
 def processCustomerInc1(spark: SparkSession):
     inc_df = spark.read.parquet(cust_inc_dataset1)
@@ -117,6 +132,8 @@ def processCustomerInc1(spark: SparkSession):
     ).whenNotMatchedInsert(
         values = {
             "name": F.col("src.name"),
+            "company": F.col("src.company"),
+            "job": F.col("src.job"),
             "address": F.col("src.address"),
             "birthdate": F.col("src.birthdate"),
             "start_date": F.col("src.start_date"),
