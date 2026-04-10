@@ -48,6 +48,14 @@ on a laptop or on a virtual machine (VM).
 * [Vercel labs - Skills homepage](https://skills.sh)
 * [GitHub - Vercel labs - Skills](https://github.com/vercel-labs/skills)
 
+#### Curated lists of skills
+
+* [GitHub - https://github.com/addyosmani/agent-skills](https://www.linkedin.com/posts/addyosmani_ai-softwareengineering-programming-share-7448215914438877186-kEWN/)
+* Author:
+  ([Addi Osmani on LinkedIn](https://www.linkedin.com/in/addyosmani),
+  [Addi Osmani on GitHub](https://github.com/addyosmani))
+* [LinkedIn post](https://www.linkedin.com/posts/addyosmani_ai-softwareengineering-programming-share-7448215914438877186-kEWN/)
+
 #### Rules and skills - Articles
 
 ##### Claude Code ultimate guide
