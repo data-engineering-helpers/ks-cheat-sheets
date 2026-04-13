@@ -7,6 +7,7 @@
   * [Overview](#overview)
     * [Spark and related components](#spark-and-related-components)
     * [Sub\-directories for this Spark cheat sheet](#sub-directories-for-this-spark-cheat-sheet)
+    * [Spark ecosystem architectural shift towards native engines](#spark-ecosystem-architectural-shift-towards-native-engines)
   * [References](#references)
     * [Data Engineering helpers](#data-engineering-helpers)
     * [Unity Catalog (UC)](#unity-catalog-uc)
@@ -95,6 +96,34 @@ science, and machine learning (ML) on single-node machines or clusters.
 * A few end-to-end Spark-related tutorials, with full code source,
   are featured in the
   [examples/ directory](examples/)
+
+### Spark ecosystem architectural shift towards native engines
+
+* [LinkedIn post - Spark ecosystem architectural shift](https://www.linkedin.com/posts/lakehouse_the-spark-ecosystem-is-quietly-undergoing-activity-7444376892960399360-_IEn/)
+  * Date: Apr. 2026
+  * Author: [Kyle Weller](https://www.linkedin.com/in/lakehouse/)
+
+> The Spark ecosystem is quietly undergoing a deep architectural shift from
+> JVM-bound execution toward heterogeneous, vectorized, native backends.
+> What used to be a monolithic execution engine is now a pluggable compute
+> substrate.
+>
+> At a high level, Spark is evolving into a query planner plus orchestration
+> layer, delegating execution to specialized engines:
+>
+> * Photon (Databricks) → tightly integrated C++ vectorized engine optimized for
+>   whole-stage codegen replacement
+> * Quanton (Onehouse) → native execution layer pushing Hudi and Iceberg native
+>   and lakehouse optimizations closer to storage
+> * RAPIDS (NVIDIA) → GPU-accelerated columnar execution via cuDF, translating
+>   Spark plans into GPU kernels
+> * Gluten (Intel + ecosystem) → Velox backend bridge, decoupling Spark from
+>   JVM execution
+> * Velox (Meta) → reusable vectorized execution engine underpinning multiple
+>   systems (Presto, Spark via Gluten)
+> * DataFusion Comet (InfluxData) → Rust-native execution aligned with Arrow
+>   memory model
+> * Plus many more
 
 ## References
 
