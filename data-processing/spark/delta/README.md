@@ -6,10 +6,13 @@
   * [Table of Content (ToC)](#table-of-content-toc)
   * [Overview](#overview)
     * [A note about Delta keeping up with Spark upgrades](#a-note-about-delta-keeping-up-with-spark-upgrades)
+    * [A note about the shift towards catalog\-managed tables](#a-note-about-the-shift-towards-catalog-managed-tables)
   * [References](#references)
     * [Data Engineering helpers](#data-engineering-helpers)
-    * [Delta Lake](#delta-lake)
     * [Java](#java)
+    * [Delta Lake](#delta-lake)
+    * [Catalog\-managed tables](#catalog-managed-tables)
+      * [Shift towards catalog\-managed commits](#shift-towards-catalog-managed-commits)
     * [Spark 4\.1](#spark-41)
   * [Setup](#setup)
     * [Setup of Delta Lake](#setup-of-delta-lake)
@@ -44,6 +47,16 @@ In some very specific cases (_e.g._, trying new features not yet available in th
 public releases), it may be interesting to build Delta Lake from the sources. This
 cheat sheet also gives details on how to do it.
 
+### A note about the shift towards catalog-managed tables
+
+The underlying lakehouse format (Delta Lake, Iceberg) will have less and less
+importance in the future: there is indeed a move towards (Unity) catalog-managed
+tables, and when a table is catalog-managed, the underlying data format does not
+matter anymore.
+
+See also the
+[Catalog\-managed tables reference sub-section below](#catalog-managed-tables).
+
 ## References
 
 ### Data Engineering helpers
@@ -74,6 +87,19 @@ cheat sheet also gives details on how to do it.
 * [GitHub - Delta Lake - `delta` repository](https://github.com/delta-io/delta)
 * [Maven central - Delta Spark: `io.delta/delta-spark`](https://mvnrepository.com/artifact/io.delta/delta-spark)
 * [Delta Lake doc - Delta Connect](https://docs.delta.io/delta-spark-connect/)
+
+### Catalog-managed tables
+
+#### Shift towards catalog-managed commits
+
+* Title: Databricks Delta Lake’s Next Evolution: Understanding Catalog Managed
+  Commits (CMC)
+* Date: Apr. 2026
+* Author: Nidhi Gupta
+  ([Nidhi Gupta on LinkedIn](https://www.linkedin.com/in/nidhig631/),
+  [Nidhi Gupta on Medium](https://nidhig631.medium.com/))
+* [LinkedIn post - Databricks Delta Lake's next evolution](https://www.linkedin.com/posts/nidhig631_databricks-delta-lakes-next-evolution-understanding-activity-7448658321756135424-ul2Z/)
+* [Medium - Databricks Delta Lake’s Next Evolution: Understanding Catalog Managed Commits (CMC)](https://nidhig631.medium.com/databricks-delta-lakes-next-evolution-understanding-catalog-managed-commits-cmc-f808f5e9b0b1)
 
 ### Spark 4.1
 
