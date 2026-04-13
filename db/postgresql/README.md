@@ -162,6 +162,40 @@ $ psql -h $PG_SVR -U autogov -d autogov -c "select 42 as nb;"
 (1 row)
 ```
 
+### Lakehouse at home database and user
+* Create on PostgreSQL a `lakehouse` database and a `lakehouse` user:
+```bash
+$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create database lakehouse;"
+CREATE DATABASE
+$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create database iceberg_catalog;"
+CREATE DATABASE
+$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create user lakehouse with encrypted password '<lakehouse-pass>';"
+CREATE ROLE
+$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "grant all privileges on database lakehouse to lakehouse; grant all privileges on database iceberg_catalog to lakehouse;"
+GRANT
+GRANT
+$ psql -h $PG_SVR -U $PG_ADM_USR -d lakehouse -c "grant all on schema public to lakehouse;"
+GRANT
+$ psql -h $PG_SVR -U $PG_ADM_USR -d iceberg_catalog -c "grant all on schema public to lakehouse;"
+GRANT
+$ psql -h $PG_SVR -U $PG_ADM_USR -d lakehouse -c "create schema lakehouse; grant all on schema lakehouse to lakehouse; grant all privileges on all tables in schema lakehouse to lakehouse;"
+GRANT
+```
+
+* Check that the access to the PostgreSQL database works:
+```bash
+$ psql -h $PG_SVR -U lakehouse -d lakehouse -c "select 42 as nb;"
+ nb 
+----
+ 42
+(1 row)
+$ psql -h $PG_SVR -U lakehouse -d iceberg_catalog -c "select 42 as nb;"
+ nb 
+----
+ 42
+(1 row)
+```
+
 ### SQLMesh database and user
 * Create on PostgreSQL a `sqlmesh` database and a `sqlmesh` user:
 ```bash
