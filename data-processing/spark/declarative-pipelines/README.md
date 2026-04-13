@@ -72,6 +72,17 @@ for more details about Delta Lake and its compatibility with Apache Spark.
 
 ## Articles
 
+### Deploy ETLs using Lakeflow Declarative Pipelines
+
+* Title: Deploy streaming incremental and batch processing ETLs using Lakeflow Declarative Pipelines
+  in Databricks Lakehouse Medallion Architecture with agentic AI support
+* Date: Apr. 2026
+* Author: Mikołaj Sędek
+  ([Mikołaj Sędek on LinkedIn](https://www.linkedin.com/in/mikolajsedek/),
+  [Mikołaj Sędek on Medium](https://medium.com/@mikoajsdek))
+* [LinkedIn post](https://www.linkedin.com/posts/mikolajsedek_deploy-streaming-incremental-and-batch-processing-activity-7449383500136271873-OfrG/)
+* [GitHub - Lakeflow Declarative Pipelines in Databrick Free Edition](https://github.com/MikolajSedek/lakeflow_declarative_pipelines_demo)
+
 ### Declarative Pipelining in Apache Spark
 
 * Title: Declarative Pipelining in Apache Spark Part 1: Focus on Your Data, Not Your DAGs
