@@ -43,22 +43,19 @@ on a laptop or on a virtual machine (VM).
 * [Data Engineering Helpers - Knowledge Sharing - JavaScript (JS) world](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/js-world/)
 * [Data Engineering Helpers - Knowledge Sharing - Python](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/python/)
 
-### AI rules and skills
+### AgentSkills.io - References
 
-* [Vercel labs - Skills homepage](https://skills.sh)
-* [GitHub - Vercel labs - Skills](https://github.com/vercel-labs/skills)
+* [AgentSkills.io docs - What are (Agent) Skills](https://agentskills.io/what-are-skills)
+  * Learn about skills, how they work, and why they matter
+* [GitHub - Anthropics - Examples of (Agent) Skills](https://github.com/anthropics/skills)
+* [AgentSkills.io docs - Specification for (Agent) Skills](https://agentskills.io/specification)
+  * The complete format specification for SKILL.md files
+* [AgentSkills.io docs - Support for (Agent) Skills](https://agentskills.io/client-implementation/adding-skills-support)
+  * Add skills support to your agent or tool
 
-#### Curated lists of skills
+### Rules and skills - Articles
 
-* [GitHub - https://github.com/addyosmani/agent-skills](https://www.linkedin.com/posts/addyosmani_ai-softwareengineering-programming-share-7448215914438877186-kEWN/)
-* Author:
-  ([Addi Osmani on LinkedIn](https://www.linkedin.com/in/addyosmani),
-  [Addi Osmani on GitHub](https://github.com/addyosmani))
-* [LinkedIn post](https://www.linkedin.com/posts/addyosmani_ai-softwareengineering-programming-share-7448215914438877186-kEWN/)
-
-#### Rules and skills - Articles
-
-##### Claude Code ultimate guide
+#### Claude Code ultimate guide
 
 * [GitHub - Claude Code ultimate guide](https://github.com/FlorianBruniaux/claude-code-ultimate-guide)
 * Author: Florian Bruniaux
@@ -66,7 +63,7 @@ on a laptop or on a virtual machine (VM).
   [Florian Bruniaux on GitHub](https://github.com/FlorianBruniaux))
 * [LinkedIn - Claude Code ultimate guide](https://www.linkedin.com/posts/alindnbrg_claudecode-aiengineering-agenticai-share-7439473078243475456-4Yj7)
 
-##### Copilot agents Dojo
+#### Copilot agents Dojo
 
 * [GitHub - Copilot Agents Dojo](https://github.com/andreaswasita/copilot-agents-dojo)
 * Author: Andreas Wasita Pradipta
@@ -75,17 +72,60 @@ on a laptop or on a virtual machine (VM).
 * Date: March 2026
 * [LinkedIn - Copilot Agents Dojo](https://www.linkedin.com/posts/andreaswasita_agenticai-githubcopilot-microsoft-activity-7438219647650283520-eKIT)
 
-### AI Spec-Driven Development (SDD)
+### AI Spec-Driven Development (SDD) - Articles
 
-#### SDD - Articles
-
-##### Stop chatting start specifying build
+#### Stop chatting start specifying build
 
 * Author: Fabrice Monnier
   ([Fabrice Monnier on LinkedIn](https://www.linkedin.com/in/fabrice-monnier-cloud-data-devops/),
   [Fabrice Monnier on Substack](https://substack.com/@fabricemonnier))
 * Date: March 2026
 * [Substack - Stop chatting start specifying build](https://open.substack.com/pub/fabricemonnier/p/stop-chatting-start-specifying-build)
+
+## Frameworks
+
+### Anthropic - Agentskills.io
+
+* [AgentSkills.io home page](https://agentskills.io)
+* [GitHub - AgentSkills](https://github.com/agentskills/agentskills)
+* Overview:
+
+> **Open development**
+> The Agent Skills format was originally developed by [Anthropic](https://www.anthropic.com/),
+> released as an open standard, and has been adopted by a growing number of agent products.
+> The standard is open to contributions from the broader ecosystem.
+
+### Vercel Labs - Skills.sh
+
+* [Vercel labs - Skills homepage](https://skills.sh)
+* [GitHub - Vercel labs - Skills](https://github.com/vercel-labs/skills)
+
+### Microsoft - Agent Package Manager (APM)
+
+* [Microsoft - Agent Package Manager (APM) home page](https://microsoft.github.io/apm/)
+* [GitHub - Microsoft - Agent Package Manager (APM)](https://github.com/microsoft/apm)
+  * [Microsoft docs - APM - Getting Started](https://microsoft.github.io/apm/getting-started/quick-start/)
+
+## Curated lists of skills
+
+### Anthropic's curated skills
+
+* [GitHub - Anthropics - Curated list of (Agent) Skills](https://github.com/anthropics/skills)
+
+### Shubham Saboo's curated skills
+
+* [GitHub - Shubham Saboo - Awesome_agent_skills](https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/awesome_agent_skills)
+* Author: Shubham Saboo
+  ([Shubham Saboo on LinkedIn](https://www.linkedin.com/in/shubhamsaboo/),
+  [Shubham Saboo on Github](https://github.com/Shubhamsaboo))
+
+### Addi Osmani's curated skills
+
+* [GitHub - https://github.com/addyosmani/agent-skills](https://www.linkedin.com/posts/addyosmani_ai-softwareengineering-programming-share-7448215914438877186-kEWN/)
+* Author:
+  ([Addi Osmani on LinkedIn](https://www.linkedin.com/in/addyosmani),
+  [Addi Osmani on GitHub](https://github.com/addyosmani))
+* [LinkedIn post](https://www.linkedin.com/posts/addyosmani_ai-softwareengineering-programming-share-7448215914438877186-kEWN/)
 
 ## Getting started
 
