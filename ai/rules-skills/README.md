@@ -8,13 +8,20 @@
   * [References](#references)
     * [AI helpers](#ai-helpers)
     * [Data Engineering helpers](#data-engineering-helpers)
-    * [AI rules and skills](#ai-rules-and-skills)
-      * [Rules and skills \- Articles](#rules-and-skills---articles)
-        * [Claude Code ultimate guide](#claude-code-ultimate-guide)
-        * [Copilot agents Dojo](#copilot-agents-dojo)
-    * [AI Spec\-Driven Development (SDD)](#ai-spec-driven-development-sdd)
-      * [SDD \- Articles](#sdd---articles)
-        * [Stop chatting start specifying build](#stop-chatting-start-specifying-build)
+    * [AgentSkills\.io \- References](#agentskillsio---references)
+    * [Rules and skills \- Articles](#rules-and-skills---articles)
+      * [Claude Code ultimate guide](#claude-code-ultimate-guide)
+      * [Copilot agents Dojo](#copilot-agents-dojo)
+    * [AI Spec\-Driven Development (SDD) \- Articles](#ai-spec-driven-development-sdd---articles)
+      * [Stop chatting start specifying build](#stop-chatting-start-specifying-build)
+  * [Frameworks](#frameworks)
+    * [Anthropic \- Agentskills\.io](#anthropic---agentskillsio)
+    * [Vercel Labs \- Skills\.sh](#vercel-labs---skillssh)
+    * [Microsoft \- Agent Package Manager (APM)](#microsoft---agent-package-manager-apm)
+  * [Curated lists of skills](#curated-lists-of-skills)
+    * [Anthropic's curated skills](#anthropics-curated-skills)
+    * [Shubham Saboo's curated skills](#shubham-saboos-curated-skills)
+    * [Addi Osmani's curated skills](#addi-osmanis-curated-skills)
   * [Getting started](#getting-started)
     * [List the skills already installed](#list-the-skills-already-installed)
     * [Install a skill locally](#install-a-skill-locally)
@@ -92,8 +99,9 @@ on a laptop or on a virtual machine (VM).
 
 > **Open development**
 > The Agent Skills format was originally developed by [Anthropic](https://www.anthropic.com/),
-> released as an open standard, and has been adopted by a growing number of agent products.
-> The standard is open to contributions from the broader ecosystem.
+> released as an open standard, and has been adopted by a growing number of
+> agent products. The standard is open to contributions from the broader
+> ecosystem.
 
 ### Vercel Labs - Skills.sh
 
