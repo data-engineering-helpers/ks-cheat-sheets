@@ -17,6 +17,7 @@
   * [Frameworks](#frameworks)
     * [Anthropic \- Agentskills\.io](#anthropic---agentskillsio)
     * [Vercel Labs \- Skills\.sh](#vercel-labs---skillssh)
+    * [AgentSkill\.sh](#agentskillsh)
     * [Microsoft \- Agent Package Manager (APM)](#microsoft---agent-package-manager-apm)
   * [Curated lists of skills](#curated-lists-of-skills)
     * [Anthropic's curated skills](#anthropics-curated-skills)
@@ -107,6 +108,10 @@ on a laptop or on a virtual machine (VM).
 
 * [Vercel labs - Skills homepage](https://skills.sh)
 * [GitHub - Vercel labs - Skills](https://github.com/vercel-labs/skills)
+
+### AgentSkill.sh
+
+* [AgentSkill.sh home page](https://agentskill.sh)
 
 ### Microsoft - Agent Package Manager (APM)
 
