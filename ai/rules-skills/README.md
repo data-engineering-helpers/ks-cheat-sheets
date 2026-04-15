@@ -12,11 +12,13 @@
     * [Rules and skills \- Articles](#rules-and-skills---articles)
       * [Claude Code ultimate guide](#claude-code-ultimate-guide)
       * [Copilot agents Dojo](#copilot-agents-dojo)
+      * [Data modeling skills](#data-modeling-skills)
     * [AI Spec\-Driven Development (SDD) \- Articles](#ai-spec-driven-development-sdd---articles)
       * [Stop chatting start specifying build](#stop-chatting-start-specifying-build)
   * [Frameworks](#frameworks)
     * [Anthropic \- Agentskills\.io](#anthropic---agentskillsio)
     * [Vercel Labs \- Skills\.sh](#vercel-labs---skillssh)
+    * [Astrafy \- Agent tools and skills](#astrafy---agent-tools-and-skills)
     * [AgentSkill\.sh](#agentskillsh)
     * [Microsoft \- Agent Package Manager (APM)](#microsoft---agent-package-manager-apm)
   * [Curated lists of skills](#curated-lists-of-skills)
@@ -80,6 +82,18 @@ on a laptop or on a virtual machine (VM).
 * Date: March 2026
 * [LinkedIn - Copilot Agents Dojo](https://www.linkedin.com/posts/andreaswasita_agenticai-githubcopilot-microsoft-activity-7438219647650283520-eKIT)
 
+#### Data modeling skills
+
+* Title: Data Modeling: Best Practices with BigQuery and dbt
+* [Medium - ](https://medium.astrafy.io/data-modeling-best-practices-with-bigquery-and-dbt-329b37faf229)
+* Author: Alejandro "Alex" De La Cruz López
+  ([Alejandro "Alex" De La Cruz López on LinkedIn](https://www.linkedin.com/in/acrulopez/),
+  [Alejandro "Alex" De La Cruz López on GitHub](https://github.com/acrulopez))
+* [LinkedIn - From a comprehensive Data Modeling guide to open-source skills](https://www.linkedin.com/posts/axel-thevenot_from-a-comprehensive-data-modeling-guide-activity-7440315698679087104-6Xoo/)
+  * Author: Axel Thevenot
+  ([Axel Thevenot on LinkedIn](https://www.linkedin.com/in/axel-thevenot/),
+  [Axel Thevenot on GitHub]())
+
 ### AI Spec-Driven Development (SDD) - Articles
 
 #### Stop chatting start specifying build
@@ -108,6 +122,14 @@ on a laptop or on a virtual machine (VM).
 
 * [Vercel labs - Skills homepage](https://skills.sh)
 * [GitHub - Vercel labs - Skills](https://github.com/vercel-labs/skills)
+
+### Astrafy - Agent tools and skills
+
+* [GitHub - Astrafy - Agent tools](https://github.com/astrafy/astrafy-agent-tools)
+* Overview:
+
+> A central hub for Astrafy's AI agent tools: skills, MCPs, commands,
+> hooks, and more. Includes a CLI to download any skill directly into your project.
 
 ### AgentSkill.sh
 
