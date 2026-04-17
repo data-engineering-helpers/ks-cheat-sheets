@@ -153,6 +153,8 @@ on a laptop or on a virtual machine (VM).
 * Author: Shubham Saboo
   ([Shubham Saboo on LinkedIn](https://www.linkedin.com/in/shubhamsaboo/),
   [Shubham Saboo on Github](https://github.com/Shubhamsaboo))
+* Examples of skills:
+  * [GitHub - Shubham Saboo - Awesome_agent_skills - Self-improving agent skills](https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/awesome_agent_skills/self-improving-agent-skills)
 
 ### Addi Osmani's curated skills
 
