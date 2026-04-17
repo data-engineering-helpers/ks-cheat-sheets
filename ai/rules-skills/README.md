@@ -22,6 +22,7 @@
     * [AgentSkill\.sh](#agentskillsh)
     * [Microsoft \- Agent Package Manager (APM)](#microsoft---agent-package-manager-apm)
   * [Curated lists of skills](#curated-lists-of-skills)
+    * [dbt agent skills](#dbt-agent-skills)
     * [Anthropic's curated skills](#anthropics-curated-skills)
     * [Shubham Saboo's curated skills](#shubham-saboos-curated-skills)
     * [Addi Osmani's curated skills](#addi-osmanis-curated-skills)
@@ -146,6 +147,10 @@ on a laptop or on a virtual machine (VM).
 ### Anthropic's curated skills
 
 * [GitHub - Anthropics - Curated list of (Agent) Skills](https://github.com/anthropics/skills)
+
+### dbt agent skills
+
+* [GitHub - dbt labs - dbt agent skills](https://github.com/dbt-labs/dbt-agent-skills)
 
 ### Shubham Saboo's curated skills
 
