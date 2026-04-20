@@ -114,12 +114,16 @@ _e.g._, on a laptop or on a virtual machine (VM).
 ### Articles about Databricks AI Dev Kit
 
 #### Hitchhikers guide to the Databricks AI Dev Kit
+
 * Title: Hitchhikers guide to the Databricks AI Dev Kit
 * Author: Jaco van Gelder
   ([Jaco van Gelder on LinkedIn](https://www.linkedin.com/in/jwvangelder/)),
   Co-Founder of [Dtyped](https://www.linkedin.com/company/dtyped)
 * [Dtyped blog - Hitchhikers guide to the Databricks AI Dev Kit](https://dtyped.com/hitchhikers-guide-to-the-databricks-ai-dev-kit/)
-<img width="182" height="202" alt="image" src="https://github.com/user-attachments/assets/27992092-55a4-4f9f-9e2c-f35035c2f369" />
+
+<img width="182" height="202" alt="image"
+     src="https://github.com/user-attachments/assets/27992092-55a4-4f9f-9e2c-f35035c2f369"
+/>
 
 ## Getting started
 
