@@ -264,7 +264,7 @@ browse-database-purepython: ## Check the Delta tables
 	  src/001_scd2_w_delta/select-dim-customer-limit10.py
 
 browse-uc: ## Browse the content of Unity Catalog (UC)
-	@$(UC_DIR)/bin/uc table read --full_name unityxt.bronze.dim_customer
+	@$(UC_DIR)/bin/uc table read --full_name unityxt.bronze.dim_customer --max_results 3
 
 #
 ingest-datasets-simple: ## Ingest the customer-related datasets (initial and incremental) - Simple version
