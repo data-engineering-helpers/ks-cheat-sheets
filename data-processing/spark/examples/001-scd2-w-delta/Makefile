@@ -143,7 +143,7 @@ start-sc-only: ## Start Spark Connect (SC) only
 		--conf "spark.sql.catalog.spark_catalog=$(DL_SQL_DOM).DeltaCatalog"
 	@echo "In order to stop the Spark Connect (SC) server: make stop-sc"
 
-start-sc-and-uc: ## Start Spark Connect (SC), itself connected to UC
+start-sc-w-uc: ## Start Spark Connect (SC), itself connected to UC
 	@$(MAKE) check-uc
 	@echo "Starting Spark Connect (SC), itself connected to Unity Catalog (UC)"
 	@unset SPARK_REMOTE; start-connect-server.sh \
@@ -226,13 +226,13 @@ check-database-uc: init-log-dir ## Check the table on Unity Catalog (UC)
 		> logs/check_database_uc.log 2>&1
 	@grep -v "^I00" logs/check_database_uc.log
 
-check-database-sc-and-uc: init-log-dir ## Check the table on Spark Connect (SC), itself connected to UC
-	@echo "Check the logs/check_database_sc_and_uc.log log file for details"
+check-database-sc-w-uc: init-log-dir ## Check the table on Spark Connect (SC), itself connected to UC
+	@echo "Check the logs/check_database_sc_w_uc.log log file for details"
 	@pyspark --remote $(SC_URL) \
 		--packages "io.delta:$(DL_SC_CLT_JAR),$(PB_DOM):$(PB_JAR)" \
-		< src/001_scd2_w_delta/sc-and-uc-select-dim-customer-limit10.py \
-		> logs/check_database_sc_and_uc.log 2>&1
-	@grep -v "^I00" logs/check_database_sc_and_uc.log
+		< src/001_scd2_w_delta/sc-w-uc-select-dim-customer-limit10.py \
+		> logs/check_database_sc_w_uc.log 2>&1
+	@grep -v "^I00" logs/check_database_sc_w_uc.log
 
 #
 init: ## Setup Python virtual environment
@@ -303,14 +303,20 @@ ingest-datasets-sc-only: init-log-dir ## Ingest the customer-related datasets (i
 		< src/001_scd2_w_delta/jobs/merge_customer_003_sc_only.py \
 		> logs/merge_customer_003_sc_only.log 2>&1
 
-ingest-datasets-sc-and-uc: ## Ingest the customer-related datasets (initial and incremental) - Version for SC and UC
+ingest-datasets-sc-w-uc: ## Ingest the customer-related datasets (initial and incremental) - Version for SC with UC
 	@$(MAKE) check-uc-hard
-	@echo "Check logs/merge_customer_004_sc_and_uc.log"
+	@echo "Check logs/merge_customer_004_sc_w_uc.log"
 	@mkdir -p logs
 	time pyspark --remote $(SC_URL) \
 		--packages "io.delta:$(DL_SC_CLT_JAR),$(PB_DOM):$(PB_JAR)" \
-		< src/001_scd2_w_delta/jobs/merge_customer_004_sc_and_uc.py \
-		> logs/merge_customer_004_sc_and_uc.log 2>&1
+		< src/001_scd2_w_delta/jobs/merge_customer_004_sc_w_uc.py \
+		> logs/merge_customer_004_sc_w_uc.log 2>&1
 	@$(MAKE) check-uc
 	@echo "Hint for next step: make browse-uc"
 
+sdp-run-sc-w-uc: ## Run the SDP pipeline - Version for SC with UC
+	@echo "Running the SDP pipeline in sdp-005-sc-w-uc/ ..."
+	@pushd sdp-005-sc-w-uc
+	@spark-pipelines run --remote sc://my-cluster:15002 \
+		> logs/merge_customer_005_sdp_sc_w_uc.log 2>&1
+	@popd

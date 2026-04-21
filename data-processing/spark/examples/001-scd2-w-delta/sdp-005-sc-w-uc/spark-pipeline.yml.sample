@@ -1,0 +1,6 @@
+
+name: sdp-005-sc-w-uc
+storage: file://<some-absolute-path>/ks-cheat-sheets/data-processing/spark/examples/001-scd2-w-delta/sdp-005-sc-w-uc/pipeline-storage
+libraries:
+  - glob:
+      include: transformations/**

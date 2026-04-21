@@ -187,7 +187,7 @@ python -mpip install "pyspark[connect,sql,pandas_on_spark]"
 * Moreover, in order to install with a compatible version of Delta Lake:
 
 ```bash
-python -mpip install "pyspark[pipelines] delta-spark"
+python -mpip install "pyspark[pipelines]" delta-spark
 ```
 
 * As an alternative, it can of course be installed from a manual install of
