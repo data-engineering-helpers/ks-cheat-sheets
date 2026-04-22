@@ -50,7 +50,7 @@ tutorial features those components through a few variations:
   [`merge_customer_003_sc_only.py` script](src/001_scd2_w_delta/jobs/merge_customer_003_sc_only.py)
 * Integration with Spark Connect, itself using Unity Catalog (UC)
   * PySpark script:
-  [`merge_customer_004_sc_and_uc.py` script](src/001_scd2_w_delta/jobs/merge_customer_004_sc_and_uc.py)
+  [`merge_customer_004_sc_w_uc.py` script](src/001_scd2_w_delta/jobs/merge_customer_004_sc_w_uc.py)
 
 Each variation is detailed in the [_Getting started_ section](#getting-started)
 below.
@@ -344,7 +344,7 @@ make clean-database
 ### Integration with Spark Connect (SC) and Unity Catalog (UC)
 
 * PySpark script:
-  [`merge_customer_004_sc_and_uc.py` script](src/001_scd2_w_delta/jobs/merge_customer_004_sc_and_uc.py)
+  [`merge_customer_004_sc_w_uc.py` script](src/001_scd2_w_delta/jobs/merge_customer_004_sc_w_uc.py)
 
 * If not already done so, in a dedicated Shell tab, start the UC server (knowing
   that `~/dev/infra/unitycatalog` is the directory where the
