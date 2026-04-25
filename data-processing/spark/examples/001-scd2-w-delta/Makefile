@@ -4,30 +4,57 @@
 
 #SHELL := /bin/bash
 
+# Python - Only the minor version has to be specified
 PYTHON_VERSION := 3.12
+# Scala - Only the minor version has to be specified
 SCALA_VERSION := 2.13
-SPARK_VERSION := 4.1.1 # 3.5.2
-DL_VERSION := 4.1.0 # 3.2.0
-DL_JAR := $(strip delta-spark_$(SCALA_VERSION):$(DL_VERSION))
-DL_SC_SVR_JAR := $(strip delta-connect-server_$(SCALA_VERSION):$(DL_VERSION))
-DL_SC_CLT_JAR := $(strip delta-connect-client_$(SCALA_VERSION):$(DL_VERSION))
+# Apache Spark - https://spark.apache.org/downloads.html
+SPARK_VERSION := 4.1.1
+$(eval SPARK_MINOR_VERSION=$(shell echo $(SPARK_VERSION)|cut -d'.' -f1,2))
+# Spark Connect (SC)
+SC_DOM := org.apache.spark
+SC_JAR := $(strip spark-connect_$(SCALA_VERSION):$(SPARK_VERSION))
+SC_URL = sc://localhost:15002
+# Delta Lake (DL) - https://github.com/delta-io/delta/releases
+DL_VERSION := 4.2.0
+DL_JAR := $(strip delta-spark_$(SPARK_MINOR_VERSION)_$(SCALA_VERSION):$(DL_VERSION))
+DL_SC_SVR_JAR := $(strip delta-connect-server_$(SPARK_MINOR_VERSION)_$(SCALA_VERSION):$(DL_VERSION))
+DL_SC_CLT_JAR := $(strip delta-connect-client_$(SPARK_MINOR_VERSION)_$(SCALA_VERSION):$(DL_VERSION))
 DL_SQL_DOM := org.apache.spark.sql.delta.catalog
+# ProtoBuf (PB)
+## All versions: https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java
+## PB with Delta Connect: https://docs.delta.io/delta-spark-connect/
+## Check the POM file of the delta-spark-common JAR, eg
+## https://repo1.maven.org/maven2/io/delta/delta-connect-common_4.1_2.13/4.2.0/delta-connect-common_4.1_2.13-4.2.0.pom
+## https://repo1.maven.org/maven2/com/google/protobuf/protobuf-java/
 PB_DOM := com.google.protobuf
-PB_VERSION := 3.25.1
+PB_VERSION := 3.25.1 # 3.24.4
 PB_JAR := $(strip protobuf-java:$(PB_VERSION))
+# Unity Catalog (UC)
+## UC releases: https://github.com/unitycatalog/unitycatalog/releases
+## UC rollover: https://github.com/unitycatalog/unitycatalog/blob/main/version.sbt
 UC_VERSION := 0.5.0-SNAPSHOT
 UC_DOM := io.unitycatalog
 UC_JAR := unitycatalog-spark_$(SCALA_VERSION):$(UC_VERSION)
 UC_DIR := $(HOME)/dev/infra/unitycatalog
-SC_DOM := org.apache.spark
-SC_JAR := $(strip spark-connect_$(SCALA_VERSION):$(SPARK_VERSION))
-SC_URL = sc://localhost:15002
 # Dataset (dst) setup (stp) directory
 DSTSTP_DIR := ../000-data-setup
 # Customer (cst) dataset (dst)
 CSTDST_DIR := dim_customer
 
 UV ?= uv
+
+# Reporting
+info: ## Information
+	@echo "Python (minor) version: $(PYTHON_VERSION)"
+	@echo "Scala (minor) version: $(SCALA_VERSION)"
+	@echo "Spark version: $(SPARK_VERSION) => Minor version: $(SPARK_MINOR_VERSION) - See also: https://spark.apache.org/downloads.html"
+	@echo "Spark Connect (SC) - Maven domain: $(SC_DOM); JAR: $(SC_JAR); SPARK_REMOTE: $(SC_URL)"
+	@echo "Delta Lake - Version: $(DL_VERSION); common JAR: $(DL_JAR); server JAR: $(DL_SC_SVR_JAR); client JAR: $(DL_SC_CLT_JAR); Maven domain: $(DL_SQL_DOM) - See also https://github.com/delta-io/delta/releases/tag/v4.2.0"
+	@echo "Protocol Buffers (PB) - Version: $(PB_VERSION); JAR: $(PB_JAR); Maven domain: $(PB_DOM) - See also https://docs.delta.io/delta-spark-connect/ and https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java"
+	@echo "Unity Catalog (UC) - Version: $(UC_VERSION); $(UC_DOM); Maven JAR: $(UC_JAR); local directory: $(UC_DIR)"
+	@echo "Dataset (dst) setup (stp) directory: $(DSTSTP_DIR)"
+	@echo "Customer (cst) dataset (dst): $(CSTDST_DIR)"
 
 # Cleaners
 clean-database: ## Clean database
