@@ -3,7 +3,7 @@
 ## Overview
 
 [This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/ai/llm-wiki/README.md)
-is about the Andrey Karpathy's idea for AI agents and human beings
+is about the Andrej Karpathy's idea for AI agents and human beings
 to capitalize knowkedge through a collection of wiki-typed pages, materialized as
 MarkDown (md) files. Both AI agents and human beings benefit from that knowledge base,
 which both of them contribute to as well.
