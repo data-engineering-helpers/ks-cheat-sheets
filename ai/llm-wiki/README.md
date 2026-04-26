@@ -1,5 +1,18 @@
 # Knowledge Sharing (KS) - LLM Wiki
 
+## Table of Content (ToC)
+
+* [Knowledge Sharing (KS) \- LLM Wiki](#knowledge-sharing-ks---llm-wiki)
+  * [Table of Content (ToC)](#table-of-content-toc)
+  * [Overview](#overview)
+  * [References](#references)
+    * [LLM Wiki](#llm-wiki)
+  * [Initiatives](#initiatives)
+    * [Tolaria](#tolaria)
+    * [Wikibricks \- Context and Memory for Agents on Databricks](#wikibricks---context-and-memory-for-agents-on-databricks)
+
+Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
+
 ## Overview
 
 [This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/ai/llm-wiki/README.md)
