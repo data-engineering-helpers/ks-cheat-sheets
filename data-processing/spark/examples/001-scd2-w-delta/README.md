@@ -358,6 +358,13 @@ bin/start-uc-server # Control-C to stop the server
 popd
 ```
 
+* If there are leftovers from a previous session, delete everything in
+  Unity Catalog (that is, the table, the schema and the catalog):
+
+```bash
+make clean-uc-all
+```
+
 * If not already done so, initialize the Unity Catalog with:
   * A `unityxt` (`xt` standing for extended, as that version of the catalog uses
   default storage location in order to support catalog-controlled tables,
@@ -368,6 +375,12 @@ popd
 
 ```bash
 make init-uc-all
+```
+
+* Browse the content of the `dim_customer` table (which is empty, normally):
+
+```bash
+make browse-uc
 ```
 
 * Potentially stop the Spark Connect (SC) server (to then start from a cleaner
@@ -388,6 +401,14 @@ make start-sc-w-uc
 
 ```bash
 make check-sc
+```
+
+* If not already done so, generate the initial and incremental data-sets
+  (it creates an stores Parquet files for the initial and the incremental
+  data-sets):
+
+```bash
+make init-datasets
 ```
 
 * Ingest the initial and incremental data-sets, filling the Delta table:
