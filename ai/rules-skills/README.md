@@ -40,6 +40,12 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 explains how to install and to use [AI skills](https://skills.sh), _e.g._,
 on a laptop or on a virtual machine (VM).
 
+Agent skills are portable sets of instructions, scripts, and resources that
+teach AI agents how to perform specific tasks. They follow the open
+[Agent Skills specification](https://agentskills.io/), and work across multiple
+agent hosts including GitHub Copilot, Claude Code, Cursor, Codex, and Gemini CLI
+among others.
+
 ## References
 
 ### AI helpers
@@ -123,6 +129,48 @@ on a laptop or on a virtual machine (VM).
 
 * [Vercel labs - Skills homepage](https://skills.sh)
 * [GitHub - Vercel labs - Skills](https://github.com/vercel-labs/skills)
+
+### Microsoft - GitHub CLI
+
+* [GitHub - GitHub CLI](https://github.com/cli/cli)
+* [GitHub blog - Manage agent skills with GitHub CLI](https://github.blog/changelog/2026-04-16-manage-agent-skills-with-github-cli/)
+  * Date: Apr. 2026
+* Overview:
+
+> `gh` is GitHub on the command line (CLI). It brings pull requests (PR), issues, and other
+> GitHub concepts to the terminal next to where you are already working with git and your code.
+
+#### Getting started with gh skill
+
+* Browse skills in a repository and install them interactively:
+
+```bash
+gh skill install github/awesome-copilot
+```
+
+* Or install a specific skill directly:
+
+```bash
+gh skill install github/awesome-copilot documentation-writer
+```
+
+* Install a specific version using `@tag`:
+
+```bash
+gh skill install github/awesome-copilot documentation-writer@v1.2.0
+```
+
+* Install at a specific commit SHA:
+
+```bash
+gh skill install github/awesome-copilot documentation-writer@abc123def
+```
+
+* Discover skills:
+
+```bash
+gh skill search mcp-apps
+```
 
 ### Astrafy - Agent tools and skills
 
