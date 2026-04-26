@@ -99,7 +99,16 @@ clean-uc-all: clean-uc-catalog ## Clean all about the unityxt catalog
 clean-sc-table: ## Clean the Spark Connect (SC) table if needed
 	@rm -rf spark-warehouse/bronze.db/dim_customer
 
+# Setup of versions in the source code
+
+set-versions-in-ddl: ## Setup the versions in the ddl.py source code
+	@sed -i.bak 's/^k_scala_version = .*/k_scala_version = "$(SCALA_VERSION)"/' src/001_scd2_w_delta/ddl.py && rm src/001_scd2_w_delta/ddl.py.bak
+	@sed -i.bak 's/^k_dl_version = .*/k_dl_version = "$(DL_VERSION)"/' src/001_scd2_w_delta/ddl.py && rm src/001_scd2_w_delta/ddl.py.bak
+
+set-versions-all: set-versions-in-ddl
+
 # Initializers
+
 init-uv-python: ## Install Python $(PYTHON_VERSION) if necessary
 	uv python install $(PYTHON_VERSION)
 
@@ -111,20 +120,16 @@ init-pyspark: ## Install PySpark and Delta Lake in the current Python environmen
 		pyspark==$(SPARK_VERSION) delta-spark==$(DL_VERSION) \
 		pyspark-client==$(SPARK_VERSION)
 
-init-database: ## Initialize the Delta tables
-	spark-sql \
-		--packages io.delta:delta-spark_$(SCALA_VERSION):$(DL_VERSION) \
+init-database: ## Initialize the Delta tables - Python version
+	@pyspark < src/001_scd2_w_delta/ddl.py
+	@$(MAKE) check-database
+
+init-database-sql: ## Initialize the Delta tables - SQL version
+	@spark-sql \
+		--packages io.delta:$(DL_JAR) \
 	  	--conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
 	  	--conf "spark.sql.catalog.spark_catalog=$(DL_SQL_DOM).DeltaCatalog" \
 	  < sql/ddl.sql
-	@$(MAKE) check-database
-
-init-database-purepython: ## Initialize the Delta tables
-	spark-submit \
-		--packages io.delta:delta-spark_$(SCALA_VERSION):$(DL_VERSION) \
-	  	--conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
-	  	--conf "spark.sql.catalog.spark_catalog=$(DL_SQL_DOM).DeltaCatalog" \
-		src/001_scd2_w_delta/ddl.py
 	@$(MAKE) check-database
 
 init-database-sc: clean-sc-table init-log-dir ## Initialize the Delta tables on SC
@@ -274,21 +279,17 @@ build: ## Build the software artifact (wheel)
 	@uv build
 
 #
-browse-database: ## Browse the Delta tables
+browse-database: ## Check the Delta tables - Python version
+	@$(MAKE) check-database
+	pyspark < src/001_scd2_w_delta/select-dim-customer-limit10.py
+
+browse-database-sql: ## Browse the Delta tables - SQL version
 	@$(MAKE) check-database
 	spark-sql \
-		--packages io.delta:delta-spark_$(SCALA_VERSION):$(DL_VERSION) \
+		--packages io.delta:$(DL_JAR) \
 	  	--conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
 	  	--conf "spark.sql.catalog.spark_catalog=$(DL_SQL_DOM).DeltaCatalog" \
 	  < sql/select-dim-customer-limit10.sql
-
-browse-database-purepython: ## Check the Delta tables
-	@$(MAKE) check-database
-	spark-submit \
-		--packages io.delta:delta-spark_$(SCALA_VERSION):$(DL_VERSION) \
-	  	--conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
-	  	--conf "spark.sql.catalog.spark_catalog=$(DL_SQL_DOM).DeltaCatalog" \
-	  src/001_scd2_w_delta/select-dim-customer-limit10.py
 
 browse-uc: ## Browse the content of Unity Catalog (UC)
 	@$(UC_DIR)/bin/uc table read --full_name unityxt.bronze.dim_customer --max_results 3
@@ -298,11 +299,7 @@ ingest-datasets-simple: ## Ingest the customer-related datasets (initial and inc
 	@$(MAKE) check-database
 	@echo "Merging datasets into the table. Check logs/merge_customer_001_simple.log"
 	@mkdir -p logs
-	time pyspark \
-		--packages io.delta:delta-spark_$(SCALA_VERSION):$(DL_VERSION) \
-	  	--conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
-	  	--conf "spark.sql.catalog.spark_catalog=$(DL_SQL_DOM).DeltaCatalog" \
-		< src/001_scd2_w_delta/jobs/merge_customer_001_simple.py \
+	time pyspark < src/001_scd2_w_delta/jobs/merge_customer_001_simple.py \
 		> logs/merge_customer_001_simple.log 2>&1
 	@$(MAKE) check-database
 

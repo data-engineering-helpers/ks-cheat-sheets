@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/examples/sql/select-dim-customer-limit10.sql
+# File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/examples/001-scd2-w-delta/src/001_scd2_w_delta/select-dim-customer-limit10.sql
 #
 # The schema corresponds to Faker profiles:
 # https://faker.readthedocs.io/en/master/providers/faker.providers.profile.html
@@ -12,13 +12,23 @@ import pyspark.sql.functions as F
 import delta.tables as dt
 
 #
-delta_table_name = "bronze.dim_customer"
+k_spark_version = "4.1"
+k_scala_version = "2.13"
+k_dl_version = "4.2.0"
+k_dl_jar_package = f"io.delta:delta-spark_{k_spark_version}_{k_scala_version}:{k_dl_version}"
+
+#
+schema_name = "bronze"
+delta_table_name = f"{schema_name}.dim_customer"
+
 
 def getSparkSession() -> SparkSession:
     spark = (
         SparkSession.builder.appName("scd2-app")
+        .config("spark.jars.packages", k_dl_jar_package)
         .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
-        .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog")
+        .config("spark.sql.catalog.spark_catalog",
+                "org.apache.spark.sql.delta.catalog.DeltaCatalog")
         .enableHiveSupport()
         .getOrCreate()
     )

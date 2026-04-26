@@ -147,19 +147,6 @@ make cleaners
 make init update
 ```
 
-* Create the Delta tables in the local Spark warehouse/database:
-
-```bash
-make init-database
-```
-
-* Check the content of the database (Delta table) storage location on
-  the file-system:
-
-```bash
-make check-database
-```
-
 * Generate the initial and incremental data-sets (it creates an stores Parquet
   files for the initial and the incremental data-sets):
 
@@ -181,6 +168,27 @@ make check-dataset-incremental
 
 * PySpark script:
   [`merge_customer_001_simple.py` script](src/001_scd2_w_delta/jobs/merge_customer_001_simple.py)
+
+* Create the Delta tables in the local Spark warehouse/database:
+
+```bash
+make init-database
+```
+
+* Check the content of the database (Delta table) storage location on
+  the file-system:
+
+```bash
+make check-database
+```
+
+* If not already done so, generate the initial and incremental data-sets
+  (it creates an stores Parquet files for the initial and the incremental
+  data-sets):
+
+```bash
+make init-datasets
+```
 
 * Ingest the initial and incremental data-sets, filling the Delta table:
 
@@ -232,6 +240,14 @@ popd
 
 ```bash
 make init-uc-all
+```
+
+* If not already done so, generate the initial and incremental data-sets
+  (it creates an stores Parquet files for the initial and the incremental
+  data-sets):
+
+```bash
+make init-datasets
 ```
 
 * Ingest the initial and incremental data-sets, filling the Delta table:
@@ -315,6 +331,14 @@ make init-database-sc
 
 ```bash
 make check-database-sc
+```
+
+* If not already done so, generate the initial and incremental data-sets
+  (it creates an stores Parquet files for the initial and the incremental
+  data-sets):
+
+```bash
+make init-datasets
 ```
 
 * Ingest the initial and incremental data-sets, filling the Delta table:
