@@ -1,15 +1,13 @@
 #!/usr/bin/env python
 #
-# File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/examples/001-scd2-w-delta/src/001_scd2_w_delta/sc-w-uc-select-dim-customer-limit10.py
+# File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/examples/001-scd2-w-delta/src/001_scd2_w_delta/test_004_delta_sc_w_uc.py
 #
-# The schema corresponds to Faker profiles:
-# https://faker.readthedocs.io/en/master/providers/faker.providers.profile.html
-# The structure and array have been removed for simplification purpose,
-# so as to ease the Delta merging
-#
+
 from pyspark.sql import SparkSession
 import pyspark.sql.functions as F
 import delta.tables as dt
+
+from jobs import merge_customer_004_sc_w_uc
 
 #
 k_spark_version = "4.1"
@@ -33,27 +31,35 @@ sc_url = "sc://localhost:15002"
 
 def getSparkSession() -> SparkSession:
     spark = (
-        SparkSession.builder.appName("scd2-app-sc-and-uc")
+        SparkSession.builder.appName("test-scd2-004-app")
         .config("spark.jars.packages", k_all_jars)
         .remote(sc_url)
         .getOrCreate()
     )
     return spark
 
-def displayCustTableHdr(spark: SparkSession):
-    df_table = spark.sql(f"select * from {delta_table_name}")
-    nb_rows = df_table.count()
-    df_table_hdr = df_table.limit(5).toPandas()
-    print(f"Nb of rows: {nb_rows} - First 5 records of {delta_table_name}:")
-    print(df_table_hdr)
-
-def main() -> None:
+def test_merge_customer_004_sc_w_uc():
+    """
+    Test that the job ingesting initial and incremental data sets
+    """
+    # Execute the ingestion job
+    merge_customer_004_sc_w_uc.main()
+    
     # Retrieve the Spark session
     spark = getSparkSession()
 
-    # Execute checking queries
-    displayCustTableHdr(spark=spark)
+    # Retrieve the Delta table
+    delta_table = dt.DeltaTable.forName(spark, delta_table_name)
+    df_dt = delta_table.toDF()
+
+    #
+    nb_rows_dt = df_dt.count()
+    assert nb_rows_dt == 100
+
+    # Derive only the rows which have been updated (they are no longer current)
+    df_updated = df_dt.filter(df_dt.is_current == False)
+    nb_rows_updated = df_updated.count()
+    assert nb_rows_updated == 42
 
 if __name__ == "__main__":
-    main()
-
+    test_merge_customer_004_sc_w_uc()

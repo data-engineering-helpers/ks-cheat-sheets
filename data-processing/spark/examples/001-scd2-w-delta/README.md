@@ -190,7 +190,16 @@ make check-database
 make init-datasets
 ```
 
-* Ingest the initial and incremental data-sets, filling the Delta table:
+* Test that the ingestion of the initial and incremental data-sets, filling the
+  Delta table, works as expected (PyTest executes the ingestion job and then
+  checks are performed on the number of updated rows):
+
+```bash
+make test-ingest-datasets-simple
+```
+
+* (optional) If anything goes wrong, it may be useful to execute the ingestion job
+  directly, without the PyTest context:
 
 ```bash
 make ingest-datasets-simple
@@ -250,13 +259,28 @@ make init-uc-all
 make init-datasets
 ```
 
-* Ingest the initial and incremental data-sets, filling the Delta table:
+* Test that the ingestion of the initial and incremental data-sets, filling the
+  Delta table, works as expected (PyTest executes the ingestion job and then
+  checks are performed on the number of updated rows):
+
+```bash
+make test-ingest-datasets-uc-only
+```
+
+* (optional) If anything goes wrong, it may be useful to execute the ingestion job
+  directly, without the PyTest context:
 
 ```bash
 make ingest-datasets-uc-only
 ```
 
-* Browse the content of the `dim_customer` table:
+* Check the content of the `dim_customer` table in Unity Catalog (UC) with PySpark:
+
+```bash
+make check-database-uc
+```
+
+* Browse the content of the `dim_customer` table directly with the UC CLI:
 
 ```bash
 make browse-uc
@@ -370,6 +394,28 @@ make clean-database
 * PySpark script:
   [`merge_customer_004_sc_w_uc.py` script](src/001_scd2_w_delta/jobs/merge_customer_004_sc_w_uc.py)
 
+* The Spark Connect (SC) server itself connects to the Unity Catalog (UC)
+  server
+  * It means, among other things, that the tables are created on,
+  and managed by, Unity Catalog
+  * The initialization of the table may therefore be done with UC only (_e.g._,
+  with `make init-uc-table`) or with SC and UC (_e.g._, with
+  `make init-database-sc-w-uc`)
+  * The same way, when checking the content of the table, it can be done
+  with UC only (_e.g._, with `make browse-uc` or `make check-database-uc`)
+  or with SC and UC (_e.g._, with `make check-database-sc-w-uc`)
+
+* Note that the main/only difference between the two use cases involving SC,
+  that is, on one hand SC only, and on the other hand SC with UC, is the fully
+  qualified name of the table:
+  * In the SC only case, the fully qualified name of the table is
+  `bronze.dim_customer`. That is, the name of the catalog is not specified
+  * In the SC with UC case, the fully qualified name of the table is
+  `unityxt.bronze.dim_customer`. That is, the name of the catalog is specified
+
+* In other words, using the SC only scripts, in order to check or to initialize
+  the table, will not work (as the catalog name will be missing)
+
 * If not already done so, in a dedicated Shell tab, start the UC server (knowing
   that `~/dev/infra/unitycatalog` is the directory where the
   [Unity Catalog Git repository](https://github.com/unitycatalog/unitycatalog)
@@ -445,6 +491,15 @@ make ingest-datasets-sc-w-uc
 
 ```bash
 make check-database-sc-w-uc
+```
+
+* As a matter of fact, as the table is managed by Unity Catalog (UC), it can be
+  browsed directly on UC as well
+  * Check the content of the `dim_customer` table in Unity Catalog (UC) with
+  PySpark:
+
+```bash
+make check-database-uc
 ```
 
 * Browse the content of the `dim_customer` table:

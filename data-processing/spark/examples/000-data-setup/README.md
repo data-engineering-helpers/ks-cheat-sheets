@@ -37,15 +37,16 @@ make cleaners
 make init update
 ```
 
-* Create the Delta tables in the local Spark warehouse/database:
+* Generate the initial and incremental data-sets (it creates an stores Parquet
+  files for the initial and the incremental data-sets):
 
 ```bash
-make init-database
+make init-datasets
 ```
 
-* Check the content of the database (Delta table) storage location on
-  the file-system:
+* Analyze the generate data-sets with Datanomy:
 
 ```bash
-make check-database
+make check-dataset-init
+make check-dataset-incremental
 ```

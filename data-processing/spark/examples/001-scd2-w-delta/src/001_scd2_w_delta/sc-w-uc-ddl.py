@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/examples/001-scd2-w-delta/src/001_scd2_w_delta/sc-w-uc-select-dim-customer-limit10.py
+# File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/examples/001-scd2-w-delta/src/001_scd2_w_delta/sc-w-uc-ddl.py
 #
 # The schema corresponds to Faker profiles:
 # https://faker.readthedocs.io/en/master/providers/faker.providers.profile.html
@@ -31,28 +31,62 @@ cust_init_dataset = f"../data/{table_name}/init"
 cust_inc_dataset1 = f"../data/{table_name}/inc1"
 sc_url = "sc://localhost:15002"
 
+#
+schema_create = f"create schema if not exists {schema_name};"
+
+ddl_drop = f"drop table if exists {delta_table_name};"
+
+ddl_create = f"""
+create table {delta_table_name} (
+  address string,
+  birthdate date,
+  blood_group string,
+  company string,
+  job string,
+  mail string,
+  name string,
+  residence string,
+  sex string,
+  ssn string,
+  username string,
+  website string,
+  current_location_lat double,
+  current_location_lon double,
+  start_date date,
+  end_date date,
+  is_current boolean
+)
+using delta
+tblproperties('delta.feature.catalogManaged' = 'supported')
+--location '{delta_table_name}'
+;
+"""
+
 def getSparkSession() -> SparkSession:
     spark = (
-        SparkSession.builder.appName("scd2-app-sc-and-uc")
+        SparkSession.builder.appName("scd2-app-sc-only")
         .config("spark.jars.packages", k_all_jars)
         .remote(sc_url)
         .getOrCreate()
     )
     return spark
 
-def displayCustTableHdr(spark: SparkSession):
-    df_table = spark.sql(f"select * from {delta_table_name}")
-    nb_rows = df_table.count()
-    df_table_hdr = df_table.limit(5).toPandas()
-    print(f"Nb of rows: {nb_rows} - First 5 records of {delta_table_name}:")
-    print(df_table_hdr)
+def ddl(spark: SparkSession):
+    # Create schema if not existing
+    spark.sql(schema_create)
+
+    # Drop if existing
+    spark.sql(ddl_drop)
+
+    # Create
+    spark.sql(ddl_create)
 
 def main() -> None:
     # Retrieve the Spark session
     spark = getSparkSession()
 
-    # Execute checking queries
-    displayCustTableHdr(spark=spark)
+    # Process the DDL statements
+    ddl(spark=spark)
 
 if __name__ == "__main__":
     main()

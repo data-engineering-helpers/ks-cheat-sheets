@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/examples/000_data_setup/generate_customer_datasets.py
+# File: https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/examples/000_data_setup/src/000_data_setup/generate_customer_datasets.py
 #
 
 from faker import Faker
@@ -45,9 +45,10 @@ def main() -> None:
     # directory
     df_customer_init.coalesce(1).write.mode("overwrite").save(cust_init_dataset)
 
-    # Derive a sample from the initial dataset: take roughly 40% of the initial
-    # dataset (that is, around 40 records out of 100)
-    df_customer_inc1 = df_customer_init.sample(0.4)
+    # Derive a sample from the initial dataset: take roughly 50% of the initial
+    # dataset (that is, around 50 records out of 100) and then limit to 42, so that
+    # this number be deterministic
+    df_customer_inc1 = df_customer_init.sample(fraction=0.5).limit(42)
 
     # Update the job field (with randomly generated new strings thanks to Faker)
     udf_job = F.udf(lambda _: faker.job(), T.StringType())

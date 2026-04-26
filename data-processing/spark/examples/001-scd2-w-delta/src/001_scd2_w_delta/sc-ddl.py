@@ -12,10 +12,25 @@ import pyspark.sql.functions as F
 import delta.tables as dt
 
 #
+k_spark_version = "4.1"
+k_scala_version = "2.13"
+k_dl_version = "4.2.0"
+k_pb_version = "3.25.1"
+
+#
+k_dl_jar_package = f"io.delta:delta-connect-client_{k_spark_version}_{k_scala_version}:{k_dl_version}"
+k_pb_jar_package = f"com.google.protobuf:protobuf-java:{k_pb_version}"
+k_all_jars = f"{k_dl_jar_package},{k_pb_jar_package}"
+
+#
 schema_name = "bronze"
-delta_table_name = f"{schema_name}.dim_customer"
+table_name = "dim_customer"
+delta_table_name = f"{schema_name}.{table_name}"
+cust_init_dataset = f"../data/{table_name}/init"
+cust_inc_dataset1 = f"../data/{table_name}/inc1"
 sc_url = "sc://localhost:15002"
 
+#
 schema_create = f"create schema if not exists {schema_name};"
 
 ddl_drop = f"drop table if exists {delta_table_name};"
@@ -48,6 +63,7 @@ using delta
 def getSparkSession() -> SparkSession:
     spark = (
         SparkSession.builder.appName("scd2-app-sc-only")
+        .config("spark.jars.packages", k_all_jars)
         .remote(sc_url)
         .getOrCreate()
     )

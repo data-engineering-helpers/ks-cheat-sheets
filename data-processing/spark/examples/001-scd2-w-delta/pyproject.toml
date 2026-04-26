@@ -19,6 +19,8 @@ dependencies = [
 [dependency-groups]
 dev = [
   "packaging",
+  "pyspark[connect,sql,pipelines,pandas_on_spark]",
+  "delta-spark",
   "ruff",
   "setuptools",
   "toml",

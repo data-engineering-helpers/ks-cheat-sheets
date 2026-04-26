@@ -101,11 +101,17 @@ clean-sc-table: ## Clean the Spark Connect (SC) table if needed
 
 # Setup of versions in the source code
 
-set-versions-in-ddl: ## Setup the versions in the ddl.py source code
-	@sed -i.bak 's/^k_scala_version = .*/k_scala_version = "$(SCALA_VERSION)"/' src/001_scd2_w_delta/ddl.py && rm src/001_scd2_w_delta/ddl.py.bak
-	@sed -i.bak 's/^k_dl_version = .*/k_dl_version = "$(DL_VERSION)"/' src/001_scd2_w_delta/ddl.py && rm src/001_scd2_w_delta/ddl.py.bak
+set-versions-in-topdir: ## Setup the versions in the top directory of the source code
+	@sed -i.bak 's/^k_spark_version = .*/k_spark_version = "$(SPARK_MINOR_VERSION)"/' src/001_scd2_w_delta/*.py && rm src/001_scd2_w_delta/*.py.bak
+	@sed -i.bak 's/^k_scala_version = .*/k_scala_version = "$(SCALA_VERSION)"/' src/001_scd2_w_delta/*.py && rm src/001_scd2_w_delta/*.py.bak
+	@sed -i.bak 's/^k_dl_version = .*/k_dl_version = "$(DL_VERSION)"/' src/001_scd2_w_delta/*.py && rm src/001_scd2_w_delta/*.py.bak
 
-set-versions-all: set-versions-in-ddl
+set-versions-in-jobdir: ## Setup the versions in the job directory of the source code
+	@sed -i.bak 's/^k_spark_version = .*/k_spark_version = "$(SPARK_MINOR_VERSION)"/' src/001_scd2_w_delta/jobs/*.py && rm src/001_scd2_w_delta/jobs/*.py.bak
+	@sed -i.bak 's/^k_scala_version = .*/k_scala_version = "$(SCALA_VERSION)"/' src/001_scd2_w_delta/jobs/*.py && rm src/001_scd2_w_delta/jobs/*.py.bak
+	@sed -i.bak 's/^k_dl_version = .*/k_dl_version = "$(DL_VERSION)"/' src/001_scd2_w_delta/jobs/*.py && rm src/001_scd2_w_delta/jobs/*.py.bak
+
+set-versions-all: set-versions-in-topdir set-versions-in-jobdir
 
 # Initializers
 
@@ -121,7 +127,7 @@ init-pyspark: ## Install PySpark and Delta Lake in the current Python environmen
 		pyspark-client==$(SPARK_VERSION)
 
 init-database: ## Initialize the Delta tables - Python version
-	@pyspark < src/001_scd2_w_delta/ddl.py
+	@python src/001_scd2_w_delta/ddl.py
 	@$(MAKE) check-database
 
 init-database-sql: ## Initialize the Delta tables - SQL version
@@ -132,12 +138,19 @@ init-database-sql: ## Initialize the Delta tables - SQL version
 	  < sql/ddl.sql
 	@$(MAKE) check-database
 
+# pyspark --remote $(SC_URL) --packages "io.delta:$(DL_SC_CLT_JAR),$(PB_DOM):$(PB_JAR)"
 init-database-sc: clean-sc-table init-log-dir ## Initialize the Delta tables on SC
 	@echo "Creating the table on SC server. Check logs/init_database_sc.log"
-	@pyspark --remote $(SC_URL) \
-		--packages "io.delta:$(DL_SC_CLT_JAR),$(PB_DOM):$(PB_JAR)" \
-		< src/001_scd2_w_delta/sc-ddl.py \
+	@python src/001_scd2_w_delta/sc-ddl.py \
 		> logs/init_database_sc.log 2>&1
+	@grep -v "^I00" logs/init_database_sc.log
+
+# pyspark --remote $(SC_URL) --packages "io.delta:$(DL_SC_CLT_JAR),$(PB_DOM):$(PB_JAR)"
+init-database-sc-w-uc: clean-sc-table init-log-dir ## Initialize the Delta tables on SC with UC
+	@echo "Creating the table on SC server with UC. Check logs/init_database_sc_w_uc.log"
+	@python src/001_scd2_w_delta/sc-w-uc-ddl.py \
+		> logs/init_database_sc_w_uc.log 2>&1
+	@grep -v "^I00" logs/init_database_sc_w_uc.log
 
 init-uc-catalog: ## Initialize the unityxt catalog in Unity Catalog (UC)
 	@$(UC_DIR)/bin/uc catalog create --name unityxt \
@@ -242,27 +255,21 @@ check-uc-hard: ## Check the content of Unity Catalog (UC). Exit if not found
 		exit 1; \
 	fi
 
+# pyspark --remote $(SC_URL) --packages "io.delta:$(DL_SC_CLT_JAR),$(PB_DOM):$(PB_JAR)"
 check-database-sc: init-log-dir ## Check the table on Spark Connect (SC)
 	@echo "Check the logs/check_database_sc.log log file for details"
-	@pyspark --remote $(SC_URL) \
-		--packages "io.delta:$(DL_SC_CLT_JAR),$(PB_DOM):$(PB_JAR)" \
-		< src/001_scd2_w_delta/sc-select-dim-customer-limit10.py \
+	@python src/001_scd2_w_delta/sc-select-dim-customer-limit10.py \
 		> logs/check_database_sc.log 2>&1
 	@grep -v "^I00" logs/check_database_sc.log
 
 check-database-uc: init-log-dir ## Check the table on Unity Catalog (UC)
 	@echo "Check the logs/check_database_uc.log log file for details"
-	@pyspark --remote $(SC_URL) \
-		--packages "io.delta:$(DL_SC_CLT_JAR),$(PB_DOM):$(PB_JAR)" \
-		< src/001_scd2_w_delta/uc-select-dim-customer-limit10.py \
-		> logs/check_database_uc.log 2>&1
-	@grep -v "^I00" logs/check_database_uc.log
+	@python src/001_scd2_w_delta/uc-select-dim-customer-limit10.py
 
+# pyspark --remote $(SC_URL) --packages "io.delta:$(DL_SC_CLT_JAR),$(PB_DOM):$(PB_JAR)"
 check-database-sc-w-uc: init-log-dir ## Check the table on Spark Connect (SC), itself connected to UC
 	@echo "Check the logs/check_database_sc_w_uc.log log file for details"
-	@pyspark --remote $(SC_URL) \
-		--packages "io.delta:$(DL_SC_CLT_JAR),$(PB_DOM):$(PB_JAR)" \
-		< src/001_scd2_w_delta/sc-w-uc-select-dim-customer-limit10.py \
+	@python src/001_scd2_w_delta/sc-w-uc-select-dim-customer-limit10.py \
 		> logs/check_database_sc_w_uc.log 2>&1
 	@grep -v "^I00" logs/check_database_sc_w_uc.log
 
@@ -281,11 +288,11 @@ build: ## Build the software artifact (wheel)
 #
 browse-database: ## Check the Delta tables - Python version
 	@$(MAKE) check-database
-	pyspark < src/001_scd2_w_delta/select-dim-customer-limit10.py
+	@python < src/001_scd2_w_delta/select-dim-customer-limit10.py
 
 browse-database-sql: ## Browse the Delta tables - SQL version
 	@$(MAKE) check-database
-	spark-sql \
+	@spark-sql \
 		--packages io.delta:$(DL_JAR) \
 	  	--conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
 	  	--conf "spark.sql.catalog.spark_catalog=$(DL_SQL_DOM).DeltaCatalog" \
@@ -295,52 +302,56 @@ browse-uc: ## Browse the content of Unity Catalog (UC)
 	@$(UC_DIR)/bin/uc table read --full_name unityxt.bronze.dim_customer --max_results 3
 
 #
+test-ingest-datasets-simple: ## Test the ingestion of the customer-related datasets (initial and incremental) - Simple version
+	@pytest src/001_scd2_w_delta/test_001_delta_simple.py
+
 ingest-datasets-simple: ## Ingest the customer-related datasets (initial and incremental) - Simple version
 	@$(MAKE) check-database
 	@echo "Merging datasets into the table. Check logs/merge_customer_001_simple.log"
 	@mkdir -p logs
-	time pyspark < src/001_scd2_w_delta/jobs/merge_customer_001_simple.py \
+	time python src/001_scd2_w_delta/jobs/merge_customer_001_simple.py \
 		> logs/merge_customer_001_simple.log 2>&1
 	@$(MAKE) check-database
+
+test-ingest-datasets-uc-only: ## Test the ingestion of the customer-related datasets (initial and incremental) - Version for UC only
+	@pytest src/001_scd2_w_delta/test_002_delta_uc_only.py
 
 ingest-datasets-uc-only: ## Ingest the customer-related datasets (initial and incremental) - Version for UC only
 	@$(MAKE) check-uc-hard
 	@echo "Merging datasets into the table. Check logs/merge_customer_002_uc_only.log"
 	@mkdir -p logs
-	time pyspark \
-		--packages "io.delta:$(DL_JAR),$(UC_DOM):$(UC_JAR)" \
-	  	--conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
-        --conf "spark.sql.catalog.spark_catalog=$(DL_SQL_DOM).DeltaCatalog" \
-        --conf "spark.sql.catalog.unityxt=$(UC_DOM).spark.UCSingleCatalog" \
-        --conf "spark.sql.catalog.unityxt.uri=http://localhost:8080" \
-        --conf "spark.sql.catalog.unityxt.token=" \
-        --conf "spark.sql.defaultCatalog=unityxt" \
-		< src/001_scd2_w_delta/jobs/merge_customer_002_uc_only.py \
+	time python src/001_scd2_w_delta/jobs/merge_customer_002_uc_only.py \
 		> logs/merge_customer_002_uc_only.log 2>&1
 	@$(MAKE) check-uc
 	@echo "Hint for next step: make browse-uc"
 
+# pyspark --remote $(SC_URL) --packages "io.delta:$(DL_SC_CLT_JAR),$(PB_DOM):$(PB_JAR)"
+test-ingest-datasets-sc-only: ## Test the ingestion of the customer-related datasets (initial and incremental) - Version for SC only
+	@pytest src/001_scd2_w_delta/test_003_delta_sc_only.py 2> /dev/null
+
+# pyspark --remote $(SC_URL) --packages "io.delta:$(DL_SC_CLT_JAR),$(PB_DOM):$(PB_JAR)"
 ingest-datasets-sc-only: init-log-dir ## Ingest the customer-related datasets (initial and incremental) - Version for SC only
 	@echo "Merging datasets into the table on SC. Check logs/merge_customer_003_sc_only.log"
-	time pyspark --remote $(SC_URL) \
-		--packages "io.delta:$(DL_SC_CLT_JAR),$(PB_DOM):$(PB_JAR)" \
-		< src/001_scd2_w_delta/jobs/merge_customer_003_sc_only.py \
+	time python src/001_scd2_w_delta/jobs/merge_customer_003_sc_only.py \
 		> logs/merge_customer_003_sc_only.log 2>&1
 
+# pyspark --remote $(SC_URL) --packages "io.delta:$(DL_SC_CLT_JAR),$(PB_DOM):$(PB_JAR)"
+test-ingest-datasets-sc-w-uc: ## Test the ingestion of the customer-related datasets (initial and incremental) - Version for SC with UC
+	@pytest src/001_scd2_w_delta/test_004_delta_sc_w_uc.py 2> /dev/null
+
+# pyspark --remote $(SC_URL) --packages "io.delta:$(DL_SC_CLT_JAR),$(PB_DOM):$(PB_JAR)"
 ingest-datasets-sc-w-uc: ## Ingest the customer-related datasets (initial and incremental) - Version for SC with UC
 	@$(MAKE) check-uc-hard
 	@echo "Check logs/merge_customer_004_sc_w_uc.log"
 	@mkdir -p logs
-	time pyspark --remote $(SC_URL) \
-		--packages "io.delta:$(DL_SC_CLT_JAR),$(PB_DOM):$(PB_JAR)" \
-		< src/001_scd2_w_delta/jobs/merge_customer_004_sc_w_uc.py \
+	time python src/001_scd2_w_delta/jobs/merge_customer_004_sc_w_uc.py \
 		> logs/merge_customer_004_sc_w_uc.log 2>&1
 	@$(MAKE) check-uc
 	@echo "Hint for next step: make browse-uc"
 
 sdp-run-sc-w-uc: ## Run the SDP pipeline - Version for SC with UC
-	@echo "Running the SDP pipeline in sdp-005-sc-w-uc/ ..."
-	@pushd sdp-005-sc-w-uc
-	@spark-pipelines run --remote sc://my-cluster:15002 \
-		> logs/merge_customer_005_sdp_sc_w_uc.log 2>&1
-	@popd
+	@echo "Running the SDP pipeline in sdp-005-sc-w-uc/"
+	@echo "Check logs in logs/merge_customer_005_sdp_sc_w_uc.log"
+	@cd sdp-005-sc-w-uc; \
+	spark-pipelines run --remote $(SC_URL) \
+		> ../logs/merge_customer_005_sdp_sc_w_uc.log 2>&1

@@ -20,6 +20,8 @@ dependencies = [
 [dependency-groups]
 dev = [
   "packaging",
+  "pyspark",
+  "delta-spark",
   "ruff",
   "setuptools",
   "toml",
