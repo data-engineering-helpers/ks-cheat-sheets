@@ -48,11 +48,15 @@ def test_merge_customer_001_simple():
     delta_table = dt.DeltaTable.forName(spark, delta_table_name)
     df_dt = delta_table.toDF()
 
-    #
+    # The table contains the list of:
+    # The (100) initial records
+    # The (42) records with a change
     nb_rows_dt = df_dt.count()
-    assert nb_rows_dt == 100
+    assert nb_rows_dt == 142
 
     # Derive only the rows which have been updated (they are no longer current)
+    # Note that among the (100) initial records, the (42) ones with a change have
+    # their is_current field set to False
     df_updated = df_dt.filter(df_dt.is_current == False)
     nb_rows_updated = df_updated.count()
     assert nb_rows_updated == 42

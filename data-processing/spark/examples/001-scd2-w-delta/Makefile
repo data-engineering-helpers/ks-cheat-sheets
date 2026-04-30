@@ -163,7 +163,7 @@ init-uc-schema: ## Initialize the unityxt.bronze catalog in Unity Catalog (UC)
 init-uc-table: ## Initialize the dim_customer table in Unity Catalog (UC)
 	@$(UC_DIR)/bin/uc table create \
 		--full_name unityxt.bronze.dim_customer \
-		--columns "address string, birthdate date, blood_group string, \
+		--columns "uuid string, address string, birthdate date, blood_group string, \
 		company string, job string, mail string, name string, residence string, \
 		sex string, ssn string, username string, website string, \
 		current_location_lat double, current_location_lon double, \

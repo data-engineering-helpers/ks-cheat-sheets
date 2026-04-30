@@ -117,11 +117,29 @@ df.write.format("delta").saveAsTable("default.people10m")
 ### SCD2 type ingestion
 
 * [Medium - Slowly Changing Dimensions Aren’t Slow — They’re About Respecting Time in Data](https://medium.com/@think-data/slowly-changing-dimensions-arent-slow-they-re-about-respecting-time-in-data-e3c64d088fd5)
-  , Feb. 2026, [Think Data](https://medium.com/@think-data)
+  * Date: Feb. 2026
+  * Author: [Think Data](https://medium.com/@think-data)
+
 * [LinkedIn post - SCD Type 2 Implementation Simplified with Spark and Delta Lake](https://www.linkedin.com/posts/mathew-midhun_lets-simplify-scd2-implementation-ugcPost-7352104443984666624-rjPs/),
-  July 2025, [Mathew Midhun](https://www.linkedin.com/in/mathew-midhun/)
+  * Date: July 2025
+  * Author: [Mathew Midhun](https://www.linkedin.com/in/mathew-midhun/)
+
 * [LinkedIn post - A cheat sheet for building fail-safe/idempotent DataBricks jobs](https://www.linkedin.com/posts/jrlasak_databricks-dataengineering-etl-activity-7358425287455363072-x2yw/),
-  August 2025, [Jakub Lasak](https://www.linkedin.com/in/jrlasak/)
+  * Date: Aug. 2025
+  * Author: [Jakub Lasak](https://www.linkedin.com/in/jrlasak/)
+
+* [Medium post - Slowly Changing Dimension (SCD) Type 2 with Delta merge in Databricks](https://medium.com/@smanocha/slowly-changing-dimension-scd-type-2-with-delta-merge-in-databricks-2736fba1a10f)
+  * Date: Sep. 2025
+  * Author: [Sandeep Manocha](https://medium.com/@smanocha)
+
+* [Medium post - Delta Lake: The Game-Changer for Slowly Changing Dimensions](https://medium.com/@smdbilal.vt5815/delta-lake-the-game-changer-for-slowly-changing-dimensions-a-step-by-step-guide-to-scd-type-2-ab326b986671)
+  * Date: Aug. 2024
+  * Author: [Mohamed Bilal S](https://medium.com/@smdbilal.vt5815)
+
+* [Munging data - Type 2 Slowly Changing Dimension Upserts with Delta Lake](https://www.mungingdata.com/delta-lake/type-2-scd-upserts/)
+
+### Datanomy
+
 * [GitHub - Datanomy](https://github.com/raulcd/datanomy)
 
 ### Delta Lake

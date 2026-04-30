@@ -37,6 +37,7 @@ ddl_drop = f"drop table if exists {delta_table_name};"
 
 ddl_create = f"""
 create table {delta_table_name} (
+  uuid string,
   address string,
   birthdate date,
   blood_group string,

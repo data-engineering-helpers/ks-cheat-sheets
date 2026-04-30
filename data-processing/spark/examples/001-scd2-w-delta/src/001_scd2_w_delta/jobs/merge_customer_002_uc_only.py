@@ -88,15 +88,15 @@ def processCustomerInit(spark: SparkSession):
         #   eventhough the exception may not be the same.
         # Hence, apparently, we cannot have a pure Python overwrite clause: it is
         # either SQL (and idempotent) or not idempotent (append)
-        source_df.createTempView("source_df")
-        spark.sql(f"insert overwrite {delta_table_name} select * from source_df;")
-
-        print(f"{delta_table_name} Delta table has been successfully rewritten")
+        # source_df.createTempView("source_df")
+        # spark.sql(f"insert overwrite {delta_table_name} select * from source_df;")
 
         # The following does not work when Spark directly invokes Unity Catalog (UC),
         # and does not work either when Spark connects to Spark Connect (SC), itself
         # connected to Unity Catalog. See also merge_customer_004_sc_and_uc.py
-        # source_df.write.format("delta").mode("overwrite").saveAsTable(delta_table_name)
+        source_df.write.format("delta").mode("overwrite").saveAsTable(delta_table_name)
+
+        print(f"{delta_table_name} Delta table has been successfully rewritten")
 
         # The following is kept for reference only. Indeed, that operation is not
         # idempotent (as the initial dataset is added every time the Python script is
@@ -126,9 +126,9 @@ def processCustomerInc1(spark: SparkSession):
     print(f"Nb of rows in {cust_inc_dataset1}: {nb_rows_inc}")
 
     # Add metadata fields
-    inc_df = inc_df.withColumn("start_date", F.current_date().cast("date"))
-    inc_df = inc_df.withColumn("end_date", F.lit("9999-12-31").cast("date"))
-    inc_df = inc_df.withColumn("is_current", F.lit(True))
+    # inc_df = inc_df.withColumn("start_date", F.current_date().cast("date"))
+    # inc_df = inc_df.withColumn("end_date", F.lit("9999-12-31").cast("date"))
+    # inc_df = inc_df.withColumn("is_current", F.lit(True))
 
     # Sanity check
     #if not dt.DeltaTable.isDeltaTable(spark, delta_table_name):
@@ -142,29 +142,65 @@ def processCustomerInc1(spark: SparkSession):
     print(f"Nb of rows in {delta_table_name}: {nb_rows_dt}")
 
     # Merge the incremental dataset into the Delta table
-    print("Merging the incremental dataset ({cust_inc_dataset1}) into {delta_table_name} Delta table...")
+    # See https://docs.delta.io/delta-update/#slowly-changing-data-scd-type-2-operation-into-delta-tables
+    print(f"Merging the incremental dataset ({cust_inc_dataset1}) into {delta_table_name} Delta table...")
 
+    # Rows to INSERT new details (company, job) of existing customers
+    newDetailsToInsert = (
+        inc_df.alias("src")
+        .join(delta_table.toDF().alias("tgt"), "uuid")
+        .where("tgt.is_current = true AND (src.company != tgt.company or src.job != tgt.job)")
+    )
+
+    # Stage the update by unioning two sets of rows
+    # 1. Rows that will be inserted in the whenNotMatched clause
+    # 2. Rows that will either update the current details (company, job) of existing
+    #    customers or insert the new details of new customers
+    stagedUpdates = (
+        newDetailsToInsert
+        .selectExpr("NULL as mergeKey", "src.*") # Rows for 1
+        .union(inc_df.alias("src").selectExpr("src.uuid as mergeKey", "*")) # Rows for 2
+    )
+
+    # Apply SCD Type 2 operation using merge
     delta_table.alias("tgt").merge(
-        inc_df.alias("src"),
-        "tgt.name = src.name and tgt.is_current = true"
+        stagedUpdates.alias("stgupd"),
+        "tgt.uuid = mergeKey"
 
     ).whenMatchedUpdate(
-        condition="tgt.company != src.company or tgt.job != src.job",
+        condition = "tgt.is_current = true AND (tgt.company != stgupd.company or tgt.job != stgupd.job)",
+        # Set is_current to false and end_date to today's date. The validity of the
+        # old record/row ends today: it is now superceded by the new record to be
+        # inserted in the whenNotMatchedInsert() clause below
         set={
             "is_current": F.lit(False),
             "end_date": F.current_date()
         }
 
     ).whenNotMatchedInsert(
+        # Set is_current to true along with the new company and/or job and
+        # its end_date.
+        # For the full list of field names and types, see the init-uc-table target of
+        # https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/examples/001-scd2-w-delta/Makefile
         values = {
-            "name": F.col("src.name"),
-            "company": F.col("src.company"),
-            "job": F.col("src.job"),
-            "address": F.col("src.address"),
-            "birthdate": F.col("src.birthdate"),
-            "start_date": F.col("src.start_date"),
-            "end_date": F.col("src.end_date"),
-            "is_current": F.col("src.is_current"),
+            "name": F.col("stgupd.name"),
+            "username": F.col("stgupd.username"),
+            "mail": F.col("stgupd.mail"),
+            "ssn": F.col("stgupd.ssn"),
+            "company": F.col("stgupd.company"),
+            "job": F.col("stgupd.job"),
+            "address": F.col("stgupd.address"),
+            "residence": F.col("stgupd.residence"),
+            "birthdate": F.col("stgupd.birthdate"),
+            "sex": F.col("stgupd.sex"),
+            "blood_group": F.col("stgupd.blood_group"),
+            "website": F.col("stgupd.website"),
+            "current_location_lat": F.col("stgupd.current_location_lat"),
+            "current_location_lon": F.col("stgupd.current_location_lon"),
+            # Added fields for SCD2
+            "start_date": F.current_date().cast("date"),
+            "end_date": F.lit("9999-12-31").cast("date"),
+            "is_current": F.lit(True),
         }
 
     ).execute()

@@ -21,6 +21,7 @@ drop table if exists bronze.dim_customer;
 -- Create the table
 --
 create table bronze.dim_customer (
+  uuid string,
   address string,
   birthdate date,
   blood_group string,

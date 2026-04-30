@@ -130,6 +130,7 @@ def processCustomerInc1(spark: SparkSession):
     print(f"Nb of rows in {delta_table_name}: {nb_rows_dt}")
 
     # Merge the incremental dataset into the Delta table
+    # See https://docs.delta.io/delta-update/#slowly-changing-data-scd-type-2-operation-into-delta-tables
     print("Merging the incremental dataset ({cust_inc_dataset1}) into {delta_table_name} Delta table...")
 
     delta_table.alias("tgt").merge(
