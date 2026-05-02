@@ -8,6 +8,8 @@
   * [References](#references)
     * [Data Engineering helpers](#data-engineering-helpers)
   * [Spark\-related tutorials](#spark-related-tutorials)
+  * [Different ingestion types](#different-ingestion-types)
+    * [Full refresh vs increment pipelines](#full-refresh-vs-increment-pipelines)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
@@ -54,3 +56,14 @@ features a few variations:
 * (WIP) [002 - Incremental vs full ingestion](002-incremental-vs-full//README.md)
 * (TBD) [003 - Row-level lineage](003-row-level-lineage/README.md)
 * (WIP) [004 - Getting started with Spark Declarative Pipelines (SDP)](004-sdp-quick-start/README.md)
+
+## Different ingestion types
+
+### Full refresh vs increment pipelines
+
+* [Substack - Seattle Data Guy - Full refresh vs increment pipelines](https://seattledataguy.substack.com/p/full-refresh-vs-incremental-pipelines)
+  * Author: [Seattle Data Guy](https://substack.com/@seattledataguy)
+  * Date: March 2026
+* [LinkedIn post - Full refresh vs increment pipelines](https://www.linkedin.com/posts/jimmy-pang-hk603_full-refresh-vs-incremental-pipelines-share-7441154171598381056-WNIv/)
+  * Author: [Jimmy Pang](https://www.linkedin.com/in/jimmy-pang-hk603)
+  * Date: May 2026
