@@ -88,14 +88,15 @@ science, and machine learning (ML) on single-node machines or clusters.
 
 ### Sub-directories for this Spark cheat sheet
 
-* In addition to the above-mentionned Spark-related components:
+* The following sub-directories give more specific details for the
+  above-mentionned Spark-related components:
   * [Spark Connect (SC)](spark-connect/)
   * [Delta Lake](delta/)
   * [Spark Declarative Pipelines (SDP)](declarative-pipelines/)
 
-* A few end-to-end Spark-related tutorials, with full code source,
-  are featured in the
-  [examples/ directory](examples/)
+* Another sub-directory, namely `examples/`, has been moved to
+  [Material for the Data platform - Modern Data Stack (MDS) in a box - Lakehouse use cases with the Spark ecosystem](https://github.com/data-engineering-helpers/mds-in-a-box/tree/main/lakehouse-use-cases-w-spark-ecosystem/)
+  and features a few end-to-end Spark-related tutorials, with full code source
 
 ### Spark ecosystem architectural shift towards native engines
 
