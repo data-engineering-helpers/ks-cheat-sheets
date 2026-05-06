@@ -26,6 +26,8 @@
   * [Curated lists of skills](#curated-lists-of-skills)
     * [Anthropic's curated skills](#anthropics-curated-skills)
     * [dbt agent skills](#dbt-agent-skills)
+    * [Otto \- The Airflow agent skills](#otto---the-airflow-agent-skills)
+    * [Obsidian agent skills](#obsidian-agent-skills)
     * [Shubham Saboo's curated skills](#shubham-saboos-curated-skills)
     * [Addi Osmani's curated skills](#addi-osmanis-curated-skills)
   * [Getting started](#getting-started)
