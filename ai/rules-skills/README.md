@@ -202,6 +202,17 @@ gh skill search mcp-apps
 
 * [GitHub - dbt labs - dbt agent skills](https://github.com/dbt-labs/dbt-agent-skills)
 
+### Otto - The Airflow agent skills
+
+* [GitHub - Astronomer - Airflow agent skills](https://github.com/astronomer/agents)
+* [Astronomer docs - Otto skills](https://www.astronomer.io/docs/astro/otto-skills)
+* [Astronomer docs - Otto overview](https://www.astronomer.io/docs/astro/otto-overview)
+* [Astronomer blog - Introducing Otto the data engineering agent built for Airflow](https://www.astronomer.io/blog/introducing-otto-the-only-data-engineering-agent-built-for-airflow/)
+
+### Obsidian agent skills
+
+* [Github - Obsidian agent skills](https://github.com/kepano/obsidian-skills)
+
 ### Shubham Saboo's curated skills
 
 * [GitHub - Shubham Saboo - Awesome_agent_skills](https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/awesome_agent_skills)
