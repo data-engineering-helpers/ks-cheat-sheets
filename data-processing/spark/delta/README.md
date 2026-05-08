@@ -14,6 +14,7 @@
     * [Catalog\-managed tables](#catalog-managed-tables)
       * [Shift towards catalog\-managed commits](#shift-towards-catalog-managed-commits)
     * [Spark 4\.1](#spark-41)
+      * [Unity Catalog and Delta tables](#unity-catalog-and-delta-tables)
   * [Setup](#setup)
     * [Setup of Delta Lake](#setup-of-delta-lake)
     * [Build from the sources](#build-from-the-sources)

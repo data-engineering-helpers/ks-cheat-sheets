@@ -10,6 +10,7 @@
     * [Unity Catalog documentation](#unity-catalog-documentation)
     * [Unity REST API](#unity-rest-api)
     * [Iceberg Catalog REST API](#iceberg-catalog-rest-api)
+    * [Articles](#articles)
   * [Getting started](#getting-started)
     * [General](#general)
     * [Unity Catalog with Docker](#unity-catalog-with-docker)
