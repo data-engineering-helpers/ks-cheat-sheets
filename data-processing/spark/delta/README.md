@@ -139,6 +139,15 @@ py4j.protocol.Py4JJavaError: An error occurred while calling o61.save.
  'void org.apache.spark.internal.LogKey.$init$(org.apache.spark.internal.LogKey)'
 ```
 
+#### Unity Catalog and Delta tables
+
+* [DuckDB blog post - Delta Grows Up: Writes, Unity Catalog and Time Travel](https://duckdb.org/2026/05/07/delta-uc-updates)
+  * Date: May 2026
+* [Databricks docs - Access Databricks data using external systems](https://docs.databricks.com/aws/en/external-access/)
+  * [Databricks docs - Iceberg REST Catalog API: Access Databricks tables from Apache Iceberg clients](https://docs.databricks.com/aws/en/external-access/iceberg)
+  * [Databricks docs - Unity REST API: Access Databricks tables from Delta clients](https://docs.databricks.com/aws/en/external-access/unity-rest)
+  * [Databricks docs - Unity Catalog integrations](https://docs.databricks.com/aws/en/external-access/integrations)
+
 ## Setup
 
 * See the
