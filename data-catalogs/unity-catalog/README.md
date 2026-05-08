@@ -8,7 +8,8 @@
   * [References](#references)
     * [Data Engineering helpers](#data-engineering-helpers)
     * [Unity Catalog documentation](#unity-catalog-documentation)
-    * [Iceberg REST API](#iceberg-rest-api)
+    * [Unity REST API](#unity-rest-api)
+    * [Iceberg Catalog REST API](#iceberg-catalog-rest-api)
   * [Getting started](#getting-started)
     * [General](#general)
     * [Unity Catalog with Docker](#unity-catalog-with-docker)
@@ -134,15 +135,29 @@ features/components.
   * [Unity Catalog docs - Integrations - Spark](https://docs.unitycatalog.io/integrations/unity-catalog-spark/)
   * [Unity Catalog docs - Integrations - DuckDB](https://docs.unitycatalog.io/integrations/unity-catalog-duckdb/)
   * [Unity Catalog docs - Integrations - XTable](https://docs.unitycatalog.io/integrations/unity-catalog-xtable/)
+* [Databricks docs - Access Databricks data using external systems](https://docs.databricks.com/aws/en/external-access/)
+  * [Databricks docs - Iceberg REST Catalog API: Access Databricks tables from Apache Iceberg clients](https://docs.databricks.com/aws/en/external-access/iceberg)
+  * [Databricks docs - Unity REST API: Access Databricks tables from Delta clients](https://docs.databricks.com/aws/en/external-access/unity-rest)
+  * [Databricks docs - Unity Catalog integrations](https://docs.databricks.com/aws/en/external-access/integrations)
 * [Unity Catalog blog post - Integrating Spark with Unity Catalog via Open APIs](https://www.unitycatalog.io/blogs/integrating-apache-spark-with-unity-catalog-assets-via-open-apis)
 * [Unity Catalog blog post - Integrating Unity Catalog with Apache Spark and Delta Lake](https://www.unitycatalog.io/blogs/unity-catalog-spark-delta-lake)
   details how Unity Catalog (UC) works with Apache Spark ad Delta Lake
 
-### Iceberg REST API
+### Unity REST API
 
-* [GitHub - Iceberg REST API Specification](https://github.com/apache/iceberg/blob/main/open-api/rest-catalog-open-api.yaml)
+* [Databricks docs - Unity REST API: Access Databricks tables from Delta clients](https://docs.databricks.com/aws/en/external-access/unity-rest)
+
+### Iceberg Catalog REST API
+
+* [GitHub - Apache Iceberg - Iceberg REST API Specification](https://github.com/apache/iceberg/blob/main/open-api/rest-catalog-open-api.yaml)
+* [Databricks docs - Iceberg REST Catalog API: Access Databricks tables from Apache Iceberg clients](https://docs.databricks.com/aws/en/external-access/iceberg)
 * [Article on Substack by Alex Merced](https://amdatalakehouse.substack.com/p/iceberg-rest-catalog-overview-1-introduction),
   Feb. 2025
+
+### Articles
+
+* [DuckDB blog post - Delta Grows Up: Writes, Unity Catalog and Time Travel](https://duckdb.org/2026/05/07/delta-uc-updates)
+  * Date: May 2026
 
 ## Getting started
 
