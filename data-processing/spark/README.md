@@ -140,6 +140,8 @@ science, and machine learning (ML) on single-node machines or clusters.
 ### Unity Catalog (UC)
 
 * [Data Engineering Helpers - Knowledge Sharing - Unity Catalog](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-catalogs/unity-catalog/)
+* [DuckDB blog post - Delta Grows Up: Writes, Unity Catalog and Time Travel](https://duckdb.org/2026/05/07/delta-uc-updates)
+  * Date: May 2026
 
 ### Apache Spark
 
@@ -156,6 +158,8 @@ science, and machine learning (ML) on single-node machines or clusters.
 #### Delta Lake
 
 * [Data Engineering Helpers - Knowledge Sharing - Delta Lake](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/spark/delta/)
+* [DuckDB blog post - Delta Grows Up: Writes, Unity Catalog and Time Travel](https://duckdb.org/2026/05/07/delta-uc-updates)
+  * Date: May 2026
 
 #### Spark Declarative Pipelines (SDP)
 
