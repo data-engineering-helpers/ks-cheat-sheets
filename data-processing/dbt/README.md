@@ -1,7 +1,7 @@
-Cheat Sheet - dbt
-=================
+# Knowledge Sharing (KS) - Cheat Sheet - dbt
 
-# Table of Content (ToC)
+## Table of Content (ToC)
+
 * [Overview](#overview)
 * [References](#references)
   * [Data Engineering helpers](#data-engineering-helpers)
@@ -14,7 +14,8 @@ Cheat Sheet - dbt
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
-# Overview
+## Overview
+
 [This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/dbt/README.md)
 explains how to install and to use [dbt](https://getdbt.com/) with
 [DuckDB](https://duckdb.org/) on premises, _e.g._, on a laptop or
@@ -32,9 +33,10 @@ on a virtual machine (VM).
 > [Modern Data Stack In A Box](https://duckdb.org/2022/10/12/modern-data-stack-in-a-box.html)
 > or a simple and powerful data lakehouse with Python.
 
-# References
+## References
 
-## Data Engineering helpers
+### Data Engineering helpers
+
 * [Data Engineering Helpers - Knowledge Sharing - AI rules and skills](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/ai/rules-skills/)
 * [Data Engineering Helpers - Knowledge Sharing - SQLMesh](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-processing/dbt/README.md)
 * [Material for the Data platform - Modern Data Stack (MDS) in a box](https://github.com/data-engineering-helpers/mds-in-a-box/blob/main/README.md)
@@ -42,20 +44,35 @@ on a virtual machine (VM).
 * [Data Engineering Helpers - Knowledge Sharing - Minio](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/data-storage/minio/README.md)
 * [Data Engineering Helpers - Knowledge Sharing - DuckDB](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/duckdb/README.md)
 
-## DuckDB
+### DuckDB
+
 * Home page: https://duckdb.org/
   * [DuckDB doc - HTTPFS extension](https://duckdb.org/docs/extensions/httpfs.html)
 
-## dbt
+### dbt
+
 * Home page: https://gitdbt.com
 
-## `dbt-duckdb`
+### `dbt-duckdb`
+
 * Git repository: https://github.com/duckdb/dbt-duckdb
 
-# Quickstart
+### Articles
 
-# Installation
+#### The ideal dbt project
+
+* [LinkedIn post - The ideal dbt project](https://www.linkedin.com/feed/update/urn:li:activity:7458485893666902017/)
+  * Author: [Oleg Agapov](https://www.linkedin.com/in/oleg-agapov/)
+  * Date: May 2026
+
+## Quickstart
+
+* TBD
+
+## Installation
+
 * Install `dbt-duckdb` as a Python module:
+
 ```bash
 $ python -mpip install -U pip dbt-duckdb
 ```
@@ -63,13 +80,16 @@ $ python -mpip install -U pip dbt-duckdb
 * To enable persistency of the DuckDB-created tables in the
   [AWS Glue service](https://aws.amazon.com/glue/),
   install the Glue dependency:
+
 ```bash
 $ python -mpip install -U "dbt-duckdb[glue]"
 ```
 
-## dbt packages
+### dbt packages
+
 * In the `pyproject.toml` file, add Python dependencies. For instance, for code generator,
   the `dependencies` section looks like:
+
 ```yaml
 dependencies = [
     ...
@@ -78,7 +98,9 @@ dependencies = [
     "dbt-score",
 	...
 ```
+
 * Update the Python dependencies. For instance, with uv:
+
 ```bash
 uv lock
 uv sync
@@ -87,6 +109,7 @@ uv sync
 * Specify a few dbt packages in the `packages.yml` file. For instance,
   for [`dbt-codegen`](https://hub.getdbt.com/dbt-labs/codegen/latest/),
   the `packages.yml` file would look like:
+
 ```bash
 packages:
 	...
@@ -97,10 +120,12 @@ packages:
 
 * Install the dbt packages
   * With uv:
+
 ```bash
 uv run dbt deps
 ```
-  * Directly, without uv:
+
+* Directly, without uv:
 ```bash
 dbt deps
 ```
