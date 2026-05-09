@@ -1,9 +1,19 @@
+# Knowledge Sharing (KS) - Cheat sheets - dbt - The ideal dbt project
+
+## Overview
+
+This cheat sheet is part of the
+[Data Engineering Helpers - dbt cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/tree/main/data-processing/dbt).
+
+## References
 
 * [LinkedIn post - The ideal dbt project](https://www.linkedin.com/feed/update/urn:li:activity:7458485893666902017/)
   * Author: [Oleg Agapov](https://www.linkedin.com/in/oleg-agapov/)
   * Date: May 2026
 
-Ideal dbt project structure, according to Oleg Agapov:
+## Ideal dbt project structure
+
+The ideal dbt project structure, according to Oleg Agapov:
 * `/analyses` — ad-hoc SQL queries that compile but don't materialize. Great for one-off investigations you want version-controlled.
 
 * `/macros` — reusable Jinja functions. Custom tests, generate statements, repeated logic.
