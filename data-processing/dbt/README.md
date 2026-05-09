@@ -61,6 +61,7 @@ on a virtual machine (VM).
 
 #### The ideal dbt project
 
+* [Cheat sheet dedicated to the ideal dbt project](Ideal-dbt-project-by-Oleg-Agapov.md)
 * [LinkedIn post - The ideal dbt project](https://www.linkedin.com/feed/update/urn:li:activity:7458485893666902017/)
   * Author: [Oleg Agapov](https://www.linkedin.com/in/oleg-agapov/)
   * Date: May 2026
