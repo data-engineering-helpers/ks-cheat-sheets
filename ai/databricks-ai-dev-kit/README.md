@@ -251,6 +251,23 @@ ADK_URL="https://raw.githubusercontent.com/databricks-solutions/ai-dev-kit/main/
 bash <(curl -sL $ADK_URL) --global --force
 ```
 
+#### MCP - Global Configuration for VS Code (macOS)
+* Launch Palette (CMd + SHift + P) And search for "MCP: Open User Configuration"
+* in the JSON file opened, copy this text
+```
+{
+  "servers": {
+    "databricks": {
+      "command": "/Users/mac-TMANIE12/.ai-dev-kit/.venv/bin/python",
+      "args": ["/Users/mac-TMANIE12/.ai-dev-kit/repo/databricks-mcp-server/run_server.py"],
+      "env": {"DATABRICKS_CONFIG_PROFILE": "DEFAULT"}
+    }
+}
+}
+```
+* Restart VS Code - Databricks will appear in MCPs and you can activate it. It is then globally activated.
+* Note: The MCPs from this file are loaded in every session. In addition, MCPs contained in your project at relative path `.vscode/mcp.json`.
+
 ### MCP mode - Install in existing project
 
 * By default this will install at a project level rather than a user level.
