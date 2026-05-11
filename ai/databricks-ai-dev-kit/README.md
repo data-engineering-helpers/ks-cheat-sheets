@@ -20,6 +20,7 @@
     * [Setup \- References](#setup---references)
     * [Authentication for the Databricks CLI](#authentication-for-the-databricks-cli)
     * [MCP mode \- Install globally](#mcp-mode---install-globally)
+      * [MCP \- Global Configuration for VS Code (macOS)](#mcp---global-configuration-for-vs-code-macos)
     * [MCP mode \- Install in existing project](#mcp-mode---install-in-existing-project)
     * [Direct CLI mode installation](#direct-cli-mode-installation)
 
@@ -252,9 +253,11 @@ bash <(curl -sL $ADK_URL) --global --force
 ```
 
 #### MCP - Global Configuration for VS Code (macOS)
-* Launch Palette (Cmd + Shift + P) And search for "MCP: Open User Configuration"
-* in the JSON file opened, copy this text
-```
+
+* Launch Palette (Cmd + Shift + P) and search for "MCP: Open User Configuration"
+* In the JSON file opened by the Palette, copy the following text:
+
+```json
 {
   "servers": {
     "databricks": {
@@ -265,8 +268,12 @@ bash <(curl -sL $ADK_URL) --global --force
 }
 }
 ```
-* Restart VS Code - Databricks will appear in MCPs and you can activate it. It is then globally activated.
-* Note: The MCPs from this file are loaded in every session. In addition, MCPs contained in your project at relative path `.vscode/mcp.json`.
+
+* Restart VS Code - Databricks will appear in the list of MCP servers and it can
+  then be activated. It is a global seeting, _i.e._, the MCP servers will be activated
+  globally
+* Note: The MCP servers from this file are loaded in every session. In addition,
+  MCPs contained in the project/workspace at relative path `.vscode/mcp.json`
 
 ### MCP mode - Install in existing project
 
