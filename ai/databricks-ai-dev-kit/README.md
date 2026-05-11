@@ -252,14 +252,14 @@ bash <(curl -sL $ADK_URL) --global --force
 ```
 
 #### MCP - Global Configuration for VS Code (macOS)
-* Launch Palette (CMd + SHift + P) And search for "MCP: Open User Configuration"
+* Launch Palette (Cmd + Shift + P) And search for "MCP: Open User Configuration"
 * in the JSON file opened, copy this text
 ```
 {
   "servers": {
     "databricks": {
-      "command": "/Users/mac-TMANIE12/.ai-dev-kit/.venv/bin/python",
-      "args": ["/Users/mac-TMANIE12/.ai-dev-kit/repo/databricks-mcp-server/run_server.py"],
+      "command": "$HOME.ai-dev-kit/.venv/bin/python",
+      "args": ["$HOME/.ai-dev-kit/repo/databricks-mcp-server/run_server.py"],
       "env": {"DATABRICKS_CONFIG_PROFILE": "DEFAULT"}
     }
 }
