@@ -157,6 +157,12 @@ features/components.
 
 ### Articles
 
+* [Delta Lake blog post - Delta catalog-managed tables](https://delta.io/blog/2026-02-02-delta-catalog-managed-tables/)
+  * Date: Feb. 2026
+  * Authors:
+    * [Benjamin Mathew](https://www.linkedin.com/in/benjamin-mathew/),
+    * [Scott Sandre](https://www.linkedin.com/in/scottsandre/),
+    * [Scott Haines](https://www.linkedin.com/in/scotthaines/)
 * [Databricks blog post - Open Catalogs: Catalog Commits is Generally Available](https://www.databricks.com/blog/convergence-open-table-formats-and-open-catalogs-catalog-commits-generally-available)
   * Date: May 2026
 * [DuckDB blog post - Delta Grows Up: Writes, Unity Catalog and Time Travel](https://duckdb.org/2026/05/07/delta-uc-updates)
