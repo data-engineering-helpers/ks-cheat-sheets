@@ -157,6 +157,12 @@ features/components.
 
 ### Articles
 
+* [Unity Catalog blog post - Introducing Unity Catalog Managed Tables](https://unitycatalog.io/blogs/introducing-unity-catalog-managed-tables/)
+  * Authors:
+    * [Benjamin Mathew](https://www.linkedin.com/in/benjamin-mathew/),
+    * [Scott Sandre](https://www.linkedin.com/in/scottsandre/),
+    * [Robert Pack](https://www.linkedin.com/in/robert-pack/),
+    * [Scott Haines](https://www.linkedin.com/in/scotthaines/)
 * [Delta Lake blog post - Delta catalog-managed tables](https://delta.io/blog/2026-02-02-delta-catalog-managed-tables/)
   * Date: Feb. 2026
   * Authors:
