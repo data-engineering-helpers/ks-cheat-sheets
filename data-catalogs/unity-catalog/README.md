@@ -157,6 +157,8 @@ features/components.
 
 ### Articles
 
+* [Databricks blog post - Open Catalogs: Catalog Commits is Generally Available](https://www.databricks.com/blog/convergence-open-table-formats-and-open-catalogs-catalog-commits-generally-available)
+  * Date: May 2026
 * [DuckDB blog post - Delta Grows Up: Writes, Unity Catalog and Time Travel](https://duckdb.org/2026/05/07/delta-uc-updates)
   * Date: May 2026
 
