@@ -1,0 +1,14 @@
+{
+	"proxmox": {
+		"host": "host.example.com",
+		"port": 443
+	},
+	"auth": {
+		"user": "root@pam",
+		"token_name": "mcp-token",
+		"token_value": "abcd1234-123a-4567-ab12-1a23b456789b"
+	},
+	"logging": {
+		"level": "INFO"
+	}
+}

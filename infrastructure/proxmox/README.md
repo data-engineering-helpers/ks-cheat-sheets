@@ -5,15 +5,20 @@
 * [Cheat Sheet \- Proxmox Virtual Environment (VE)](#cheat-sheet---proxmox-virtual-environment-ve)
   * [Table of Content (ToC)](#table-of-content-toc)
   * [Overview](#overview)
+    * [A note about administering a Proxmox server with AI agents](#a-note-about-administering-a-proxmox-server-with-ai-agents)
   * [References](#references)
     * [Knowledge Sharing](#knowledge-sharing)
     * [Proxmox](#proxmox)
     * [AI Agent skills and MCP servers](#ai-agent-skills-and-mcp-servers)
+      * [AI Agent skills](#ai-agent-skills)
+      * [MCP servers](#mcp-servers)
   * [Setup of AI Agent harness and skills](#setup-of-ai-agent-harness-and-skills)
     * [Getting started with Copilot on a Proxmox host](#getting-started-with-copilot-on-a-proxmox-host)
       * [Getting started with the proxmox\-admin skill](#getting-started-with-the-proxmox-admin-skill)
       * [Getting started with the nginx\-configuration skill](#getting-started-with-the-nginx-configuration-skill)
       * [Getting started with the systemd skill](#getting-started-with-the-systemd-skill)
+      * [Getting started with the Proxmox MCP server on a laptop](#getting-started-with-the-proxmox-mcp-server-on-a-laptop)
+      * [Setup of Proxmox MCP server on a laptop](#setup-of-proxmox-mcp-server-on-a-laptop)
     * [Setup of Copilot on a Proxmox host](#setup-of-copilot-on-a-proxmox-host)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
@@ -37,6 +42,34 @@ and is therefore out of scope of this cheat sheet. Rather, this cheat sheet
 showcases a few tools on top of the Proxmox VE platform, such as how to run
 Copilot in order to troubleshoot the Proxmox host and/or its containers.
 
+### A note about administering a Proxmox server with AI agents
+
+AI agents can help administering Proxmox servers (see the
+[section related to AI Agent skills and MCP servers](#ai-agent-skills-and-mcp-servers)below).
+Basically:
+
+* Agent skills are to be installed on the Proxmox hosts to administer. They
+  instruct the AI agent harnesses (_e.g._, Copilot) in which use cases
+  to actionate which capabilities. Even though there are
+  * [Proxmox-specific skills](https://github.com/bastos/skills/tree/main/proxmox-admin),
+  most of the agent skills are not specific to Proxmox, and rather address
+  specific Linux administrive topics like
+  * [SystemD](https://github.com/BagelHole/DevOps-Security-Agent-Skills/tree/main/infrastructure/servers/systemd-services)
+  or
+  * [Nginx proxies](https://github.com/aj-geddes/useful-ai-prompts/tree/main/skills/nginx-configuration)
+  
+* [MCP servers](#mcp-servers), on the other hand, are to be installed on
+  client devices (_e.g._, laptops)
+  * They allow the AI agent harnesses (_e.g._, Copilot) on the client to connect
+  to the external world. In the case of the Proxmox, the MCP servers allow the
+  agent harnesses on the client to connect to the Proxmox host through the
+  Proxmox API
+  * As the connection to he containers is indirect (through the MCP server and
+  then through the Proxmox API), our recommendation is to use that scheme
+  only for quick/light administrative tasks
+  * For heavier administrative tasks, our recommendation is to use an AI agent
+  harness and AI agent skills directly on the Proxmox host
+
 ## References
 
 ### Knowledge Sharing
@@ -54,6 +87,8 @@ Copilot in order to troubleshoot the Proxmox host and/or its containers.
 
 ### AI Agent skills and MCP servers
 
+#### AI Agent skills
+
 * proxmox-admin:
   * [Skills.sh - proxomox-admin](https://www.skills.sh/bastos/skills/proxmox-admin)
   * [GitHub - proxomox-admin Agent Skill](https://github.com/bastos/skills/tree/main/proxmox-admin)
@@ -64,6 +99,11 @@ Copilot in order to troubleshoot the Proxmox host and/or its containers.
 * Nginx-configuration:
   * [Skills.sh - nginx-configuration Agent Skill](https://www.skills.sh/aj-geddes/useful-ai-prompts/nginx-configuration)
   * [GitHub - nginx-configuration Agent Skill](https://github.com/aj-geddes/useful-ai-prompts/tree/main/skills/nginx-configuration)
+
+#### MCP servers
+
+* [GitHub - ProxmoxMCP-Plus](https://github.com/RekklesNA/ProxmoxMCP-Plus)
+* [GitHub - ProxmoxMCP](https://github.com/canvrno/ProxmoxMCP)
 
 ## Setup of AI Agent harness and skills
 
@@ -139,6 +179,64 @@ nginx (1.26.3-3+deb13u4) UNRELEASED; urgency=medium
 /systemd-services analyze the sshd logs and make suggestions
 ...
 yes, install, configure and start fail2ban
+```
+
+#### Getting started with the Proxmox MCP server on a laptop
+
+* List the containers of a Proxmox host:
+
+```agent
+With proxmox, list the containers
+```
+
+#### Setup of Proxmox MCP server on a laptop
+
+* Install the ProxmoxMCP-Plus Python package from Pypi.org and restart the Shell:
+
+```bash
+python -mpip install -U proxmox-mcp-plus
+python -mpip show proxmox-mcp-plus|grep "^Location"
+exec bash # zsh
+```
+
+* Sample configuration file for the Proxmox MCP Plus server:
+  [GitHub - KS - Proxmox cheat sheet - `proxmox-mcp-plus-config.json` sample](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/infrastructure/proxmox/proxmox-mcp-plus-config.json)
+* Add the Proxmox MCP server details to the agent harness configuration,
+  either globally or locally at the project/workspace scope
+  * For instance, for VSCode, the global MCP configuration is in
+  `~/.copilot/mcp-config.json`:
+
+```json
+{
+  "mcpServers": {
+    "__comment": "... (other potential servers)",
+    "proxmox-mcp-plus": {
+      "command": "~/.pyenv/shims/proxmox-mcp-plus",
+      "args": [],
+      "env": {
+        "PROXMOX_MCP_CONFIG": "~/.config/proxmox-mcp-plus/config.json"
+      }
+    }
+  }
+}
+```
+
+* And at the project/workspace scope, still for VSCode,
+  the MCP configuration is in `/.vscode/mcp.json`:
+
+```json
+{
+  "servers": {
+    "__comment": "... (other potential servers)",
+    "proxmox-mcp-plus": {
+      "command": "~/.pyenv/shims/proxmox-mcp-plus",
+      "args": [],
+      "env": {
+        "PROXMOX_MCP_CONFIG": "~/.config/proxmox-mcp-plus/config.json"
+      }
+    }
+  }
+}
 ```
 
 ### Setup of Copilot on a Proxmox host

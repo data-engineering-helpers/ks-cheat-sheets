@@ -242,7 +242,7 @@ gh skill search mcp-apps
   ([Tiago Bastos on LinkedIn](https://www.linkedin.com/in/tiagobastosdasilva/),
   [Tiago Bastos on GitHub](https://github.com/bastos))
 * Among other AI agent skills:
-  * [Data Engineering Helpers - Knowledge Sharing - Proxmox-admin](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/infrastructure/proxmox/README.md#ai-agent-skills-and-mcp-servers)
+  * [Data Engineering Helpers - Knowledge Sharing - Proxmox](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/infrastructure/proxmox/README.md#ai-agent-skills-and-mcp-servers)
     * [Skills.sh - proxmox-admin](https://www.skills.sh/bastos/skills/proxmox-admin)
     * [GitHub - proxmox-admin Agent Skill](https://github.com/bastos/skills/tree/main/proxmox-admin)
 
