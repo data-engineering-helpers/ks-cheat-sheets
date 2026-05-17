@@ -283,9 +283,16 @@ copilot
 npx skills add https://github.com/bastos/skills --skill proxmox-admin -g
 ```
 
-* Install the `nginx-configuration` skill globally:
+* Install the `systemd-service` skill globally:
 
 ```bash
 npx skills add https://github.com/aj-geddes/useful-ai-prompts \
   --skill nginx-configuration -g
+```
+
+* Install the `nginx-configuration` skill globally:
+
+```bash
+npx skills add https://github.com/bagelhole/devops-security-agent-skills \
+  --skill systemd-services -g
 ```
