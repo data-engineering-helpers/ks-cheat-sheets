@@ -215,6 +215,29 @@ gh skill search mcp-apps
 
 * [Github - Obsidian agent skills](https://github.com/kepano/obsidian-skills)
 
+### AJ Geddes agent skills
+
+* [GitHub - AJ Geddes - Agent skills](https://github.com/aj-geddes/useful-ai-prompts/tree/main/skills/)
+* Author: AJ Geddes
+  ([AJ Geddes on LinkedIn](),
+  [AJ Geddes on GitHub](https://github.com/aj-geddes))
+
+#### AJ Geddes agent skill - NGinx configuration
+
+* [Skills.sh - nginx-configuration Agent Skill](https://www.skills.sh/aj-geddes/useful-ai-prompts/nginx-configuration)
+* [GitHub - nginx-configuration Agent Skill](https://github.com/aj-geddes/useful-ai-prompts/tree/main/skills/nginx-configuration)
+
+### Tiago Bastos agent skills
+
+* [GitHub - Tiago Bastos - Agent skills](https://github.com/bastos/skills)
+* Author: Tiago Bastos
+  ([Tiago Bastos on LinkedIn](https://www.linkedin.com/in/tiagobastosdasilva/),
+  [Tiago Bastos on GitHub](https://github.com/bastos))
+* Among other AI agent skills:
+  * [Data Engineering Helpers - Knowledge Sharing - Proxmox-admin](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/infrastructure/proxmox/README.md#ai-agent-skills-and-mcp-servers)
+  => [GitHub - proxomox-admin Agent Skill](https://github.com/bastos/skills/tree/main/proxmox-admin) /
+  [Skills.sh - proxomox-admin](https://www.skills.sh/bastos/skills/proxmox-admin)
+
 ### Shubham Saboo's curated skills
 
 * [GitHub - Shubham Saboo - Awesome_agent_skills](https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/awesome_agent_skills)
