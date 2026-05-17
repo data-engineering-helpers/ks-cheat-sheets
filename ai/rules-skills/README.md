@@ -28,6 +28,10 @@
     * [dbt agent skills](#dbt-agent-skills)
     * [Otto \- The Airflow agent skills](#otto---the-airflow-agent-skills)
     * [Obsidian agent skills](#obsidian-agent-skills)
+    * [AJ Geddes agent skills](#aj-geddes-agent-skills)
+      * [AJ Geddes agent skill \- NGinx configuration](#aj-geddes-agent-skill---nginx-configuration)
+    * [Tiago Bastos agent skills](#tiago-bastos-agent-skills)
+    * [Jarvis Happy agent skills](#jarvis-happy-agent-skills)
     * [Shubham Saboo's curated skills](#shubham-saboos-curated-skills)
     * [Addi Osmani's curated skills](#addi-osmanis-curated-skills)
   * [Getting started](#getting-started)
@@ -96,14 +100,14 @@ among others.
 #### Data modeling skills
 
 * Title: Data Modeling: Best Practices with BigQuery and dbt
-* [Medium - ](https://medium.astrafy.io/data-modeling-best-practices-with-bigquery-and-dbt-329b37faf229)
+* [Medium - Data modeling best practices with BigQuery and dbt](https://medium.astrafy.io/data-modeling-best-practices-with-bigquery-and-dbt-329b37faf229)
 * Author: Alejandro "Alex" De La Cruz López
   ([Alejandro "Alex" De La Cruz López on LinkedIn](https://www.linkedin.com/in/acrulopez/),
   [Alejandro "Alex" De La Cruz López on GitHub](https://github.com/acrulopez))
 * [LinkedIn - From a comprehensive Data Modeling guide to open-source skills](https://www.linkedin.com/posts/axel-thevenot_from-a-comprehensive-data-modeling-guide-activity-7440315698679087104-6Xoo/)
   * Author: Axel Thevenot
   ([Axel Thevenot on LinkedIn](https://www.linkedin.com/in/axel-thevenot/),
-  [Axel Thevenot on GitHub]())
+  [Axel Thevenot on GitHub](https://github.com/AxelThevenot))
 
 ### AI Spec-Driven Development (SDD) - Articles
 
@@ -141,8 +145,9 @@ among others.
   * Date: Apr. 2026
 * Overview:
 
-> `gh` is GitHub on the command line (CLI). It brings pull requests (PR), issues, and other
-> GitHub concepts to the terminal next to where you are already working with git and your code.
+> `gh` is GitHub on the command line (CLI). It brings pull requests (PR), issues,
+> and other GitHub concepts to the terminal next to where you are already working
+> with git and your code.
 
 #### Getting started with gh skill
 
@@ -217,9 +222,10 @@ gh skill search mcp-apps
 
 ### AJ Geddes agent skills
 
+* Domain: System administration
 * [GitHub - AJ Geddes - Agent skills](https://github.com/aj-geddes/useful-ai-prompts/tree/main/skills/)
 * Author: AJ Geddes
-  ([AJ Geddes on LinkedIn](),
+  ([AJ Geddes on LinkedIn](https://www.linkedin.com/in/a-j-geddes-6613ab4/),
   [AJ Geddes on GitHub](https://github.com/aj-geddes))
 
 #### AJ Geddes agent skill - NGinx configuration
@@ -229,26 +235,38 @@ gh skill search mcp-apps
 
 ### Tiago Bastos agent skills
 
+* Domain: Proxmox and other system administration
 * [GitHub - Tiago Bastos - Agent skills](https://github.com/bastos/skills)
 * Author: Tiago Bastos
   ([Tiago Bastos on LinkedIn](https://www.linkedin.com/in/tiagobastosdasilva/),
   [Tiago Bastos on GitHub](https://github.com/bastos))
 * Among other AI agent skills:
   * [Data Engineering Helpers - Knowledge Sharing - Proxmox-admin](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/infrastructure/proxmox/README.md#ai-agent-skills-and-mcp-servers)
-  => [GitHub - proxmox-admin Agent Skill](https://github.com/bastos/skills/tree/main/proxmox-admin) /
-  [Skills.sh - proxmox-admin](https://www.skills.sh/bastos/skills/proxmox-admin)
+    * [Skills.sh - proxmox-admin](https://www.skills.sh/bastos/skills/proxmox-admin)
+    * [GitHub - proxmox-admin Agent Skill](https://github.com/bastos/skills/tree/main/proxmox-admin)
+
+### Jarvis Happy agent skills
+
+* Domain: System administration - terminal-based utilities
+* Author: [Jarvis "Happy"](https://github.com/jarvishappy)
+* Among other skills:
+  * systemd:
+  [Skills.sh - systemd](https://www.skills.sh/chaterm/terminal-skills/systemd) /
+  [GitHub - systemd Agent Skill](https://github.com/chaterm/terminal-skills/tree/main/server/systemd)
 
 ### Shubham Saboo's curated skills
 
-* [GitHub - Shubham Saboo - Awesome_agent_skills](https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/awesome_agent_skills)
+* Domain: LLM agentic
+* [GitHub - Shubham Saboo - Awesome agent skills](https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/awesome_agent_skills)
 * Author: Shubham Saboo
   ([Shubham Saboo on LinkedIn](https://www.linkedin.com/in/shubhamsaboo/),
   [Shubham Saboo on Github](https://github.com/Shubhamsaboo))
 * Examples of skills:
-  * [GitHub - Shubham Saboo - Awesome_agent_skills - Self-improving agent skills](https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/awesome_agent_skills/self-improving-agent-skills)
+  * [GitHub - Shubham Saboo - Awesome agent skills - Self-improving agent skills](https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/awesome_agent_skills/self-improving-agent-skills)
 
 ### Addi Osmani's curated skills
 
+* Domain: AI software engineering
 * [GitHub - https://github.com/addyosmani/agent-skills](https://www.linkedin.com/posts/addyosmani_ai-softwareengineering-programming-share-7448215914438877186-kEWN/)
 * Author:
   ([Addi Osmani on LinkedIn](https://www.linkedin.com/in/addyosmani),

@@ -13,6 +13,7 @@
     * [Getting started with Copilot on a Proxmox host](#getting-started-with-copilot-on-a-proxmox-host)
       * [Getting started with the proxmox\-admin skill](#getting-started-with-the-proxmox-admin-skill)
       * [Getting started with the nginx\-configuration skill](#getting-started-with-the-nginx-configuration-skill)
+      * [Getting started with the systemd skill](#getting-started-with-the-systemd-skill)
     * [Setup of Copilot on a Proxmox host](#setup-of-copilot-on-a-proxmox-host)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
@@ -53,9 +54,16 @@ Copilot in order to troubleshoot the Proxmox host and/or its containers.
 
 ### AI Agent skills and MCP servers
 
-* [Skills.sh - proxomox-admin](https://www.skills.sh/bastos/skills/proxmox-admin)
+* proxmox-admin:
+  * [Skills.sh - proxomox-admin](https://www.skills.sh/bastos/skills/proxmox-admin)
   * [GitHub - proxomox-admin Agent Skill](https://github.com/bastos/skills/tree/main/proxmox-admin)
 * [GitHub - proxmox-ops OpenClaw skill](https://github.com/eddygk/proxmox-ops)
+* systemd:
+  * [Skills.sh - systemd](https://www.skills.sh/chaterm/terminal-skills/systemd)
+  * [GitHub - systemd Agent Skill](https://github.com/chaterm/terminal-skills/tree/main/server/systemd)
+* Nginx:
+  * [Skills.sh - nginx-configuration Agent Skill](https://www.skills.sh/aj-geddes/useful-ai-prompts/nginx-configuration)
+  * [GitHub - nginx-configuration Agent Skill](https://github.com/aj-geddes/useful-ai-prompts/tree/main/skills/nginx-configuration)
 
 ## Setup of AI Agent harness and skills
 
@@ -121,6 +129,18 @@ nginx (1.26.3-3+deb13u4) UNRELEASED; urgency=medium
     * it is workaround for Debian bug #1126960 for stable/oldstable release
 ```
 
+#### Getting started with the systemd skill
+
+* (In the Copilot CLI, invoke the `systemd` skill) to check the SystemD
+  configuration and fix the issues discovered by the agent (here, analyze SSH
+  service logs and proceed with the installation of `fail2ban`):
+
+```agent
+/systemd analyze the sshd logs and make suggestions
+...
+yes, install, configure and start fail2ban
+```
+
 ### Setup of Copilot on a Proxmox host
 
 * Reference:
@@ -128,7 +148,8 @@ nginx (1.26.3-3+deb13u4) UNRELEASED; urgency=medium
 
 * Prerequisites:
   * Copilot subcription - [Copilot plans](https://github.com/features/copilot/plans?ref_product=copilot&ref_type=engagement&ref_style=text)
-  * JavaScript/Node - [Data Engineering Helpers - Knowledge Sharing - JavaScript (JS) world](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/js-world/)
+  * JavaScript/Node -
+  [Data Engineering Helpers - Knowledge Sharing - JavaScript (JS) world](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/js-world/)
 
 * On the Proxmox host, install the Copilot CLI:
 
