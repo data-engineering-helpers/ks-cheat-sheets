@@ -12,13 +12,14 @@
     * [AI Agent skills and MCP servers](#ai-agent-skills-and-mcp-servers)
       * [AI Agent skills](#ai-agent-skills)
       * [MCP servers](#mcp-servers)
-  * [Setup of AI Agent harness and skills](#setup-of-ai-agent-harness-and-skills)
+  * [Getting started with AI Agent harness and skills](#getting-started-with-ai-agent-harness-and-skills)
     * [Getting started with Copilot on a Proxmox host](#getting-started-with-copilot-on-a-proxmox-host)
-      * [Getting started with the proxmox\-admin skill](#getting-started-with-the-proxmox-admin-skill)
-      * [Getting started with the nginx\-configuration skill](#getting-started-with-the-nginx-configuration-skill)
-      * [Getting started with the systemd skill](#getting-started-with-the-systemd-skill)
-      * [Getting started with the Proxmox MCP server on a laptop](#getting-started-with-the-proxmox-mcp-server-on-a-laptop)
-      * [Setup of Proxmox MCP server on a laptop](#setup-of-proxmox-mcp-server-on-a-laptop)
+    * [Getting started with the proxmox\-admin skill](#getting-started-with-the-proxmox-admin-skill)
+    * [Getting started with the nginx\-configuration skill](#getting-started-with-the-nginx-configuration-skill)
+    * [Getting started with the systemd skill](#getting-started-with-the-systemd-skill)
+    * [Getting started with the Proxmox MCP server on a laptop](#getting-started-with-the-proxmox-mcp-server-on-a-laptop)
+  * [Setup of AI Agent harness and skills](#setup-of-ai-agent-harness-and-skills)
+    * [Setup of Proxmox MCP server on a laptop](#setup-of-proxmox-mcp-server-on-a-laptop)
     * [Setup of Copilot on a Proxmox host](#setup-of-copilot-on-a-proxmox-host)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
@@ -105,7 +106,7 @@ Basically:
 * [GitHub - ProxmoxMCP-Plus](https://github.com/RekklesNA/ProxmoxMCP-Plus)
 * [GitHub - ProxmoxMCP](https://github.com/canvrno/ProxmoxMCP)
 
-## Setup of AI Agent harness and skills
+## Getting started with AI Agent harness and skills
 
 ### Getting started with Copilot on a Proxmox host
 
@@ -119,7 +120,7 @@ copilot
 /login
 ```
 
-#### Getting started with the proxmox-admin skill
+### Getting started with the proxmox-admin skill
 
 * (In the Copilot CLI, invoke the `proxmox-admin` skill) to list the containers:
 
@@ -134,7 +135,7 @@ copilot
 /proxmox-admin upgrade distribution of container #CTID
 ```
 
-#### Getting started with the nginx-configuration skill
+### Getting started with the nginx-configuration skill
 
 * (In the Copilot CLI, invoke the `nginx-configuration` skill) to check the
   Nginx configuration and fix the issues discovered by the agent (here, the
@@ -169,7 +170,7 @@ nginx (1.26.3-3+deb13u4) UNRELEASED; urgency=medium
     * it is workaround for Debian bug #1126960 for stable/oldstable release
 ```
 
-#### Getting started with the systemd skill
+### Getting started with the systemd skill
 
 * (In the Copilot CLI, invoke the `systemd-services` skill) to check the SystemD
   configuration and fix the issues discovered by the agent (here, analyze SSH
@@ -181,7 +182,7 @@ nginx (1.26.3-3+deb13u4) UNRELEASED; urgency=medium
 yes, install, configure and start fail2ban
 ```
 
-#### Getting started with the Proxmox MCP server on a laptop
+### Getting started with the Proxmox MCP server on a laptop
 
 * List the containers of a Proxmox host:
 
@@ -189,7 +190,9 @@ yes, install, configure and start fail2ban
 With proxmox, list the containers
 ```
 
-#### Setup of Proxmox MCP server on a laptop
+## Setup of AI Agent harness and skills
+
+### Setup of Proxmox MCP server on a laptop
 
 * Install the ProxmoxMCP-Plus Python package from Pypi.org and restart the Shell:
 
