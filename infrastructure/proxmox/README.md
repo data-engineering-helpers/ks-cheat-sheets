@@ -58,10 +58,10 @@ Copilot in order to troubleshoot the Proxmox host and/or its containers.
   * [Skills.sh - proxomox-admin](https://www.skills.sh/bastos/skills/proxmox-admin)
   * [GitHub - proxomox-admin Agent Skill](https://github.com/bastos/skills/tree/main/proxmox-admin)
 * [GitHub - proxmox-ops OpenClaw skill](https://github.com/eddygk/proxmox-ops)
-* systemd:
-  * [Skills.sh - systemd](https://www.skills.sh/chaterm/terminal-skills/systemd)
-  * [GitHub - systemd Agent Skill](https://github.com/chaterm/terminal-skills/tree/main/server/systemd)
-* Nginx:
+* systemd-services:
+  * [Skills.sh - systemd-services](https://www.skills.sh/bagelhole/devops-security-agent-skills/systemd-services)
+  * [GitHub - systemd-services Agent Skill](https://github.com/BagelHole/DevOps-Security-Agent-Skills/tree/main/infrastructure/servers/systemd-services)
+* Nginx-configuration:
   * [Skills.sh - nginx-configuration Agent Skill](https://www.skills.sh/aj-geddes/useful-ai-prompts/nginx-configuration)
   * [GitHub - nginx-configuration Agent Skill](https://github.com/aj-geddes/useful-ai-prompts/tree/main/skills/nginx-configuration)
 
@@ -131,12 +131,12 @@ nginx (1.26.3-3+deb13u4) UNRELEASED; urgency=medium
 
 #### Getting started with the systemd skill
 
-* (In the Copilot CLI, invoke the `systemd` skill) to check the SystemD
+* (In the Copilot CLI, invoke the `systemd-services` skill) to check the SystemD
   configuration and fix the issues discovered by the agent (here, analyze SSH
   service logs and proceed with the installation of `fail2ban`):
 
 ```agent
-/systemd analyze the sshd logs and make suggestions
+/systemd-services analyze the sshd logs and make suggestions
 ...
 yes, install, configure and start fail2ban
 ```

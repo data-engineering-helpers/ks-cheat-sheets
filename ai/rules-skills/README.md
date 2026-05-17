@@ -31,7 +31,8 @@
     * [AJ Geddes agent skills](#aj-geddes-agent-skills)
       * [AJ Geddes agent skill \- NGinx configuration](#aj-geddes-agent-skill---nginx-configuration)
     * [Tiago Bastos agent skills](#tiago-bastos-agent-skills)
-    * [Jarvis Happy agent skills](#jarvis-happy-agent-skills)
+    * [Toby Miller's agent skills](#toby-millers-agent-skills)
+    * [Jarvis Happy's agent skills](#jarvis-happys-agent-skills)
     * [Shubham Saboo's curated skills](#shubham-saboos-curated-skills)
     * [Addi Osmani's curated skills](#addi-osmanis-curated-skills)
   * [Getting started](#getting-started)
@@ -245,7 +246,18 @@ gh skill search mcp-apps
     * [Skills.sh - proxmox-admin](https://www.skills.sh/bastos/skills/proxmox-admin)
     * [GitHub - proxmox-admin Agent Skill](https://github.com/bastos/skills/tree/main/proxmox-admin)
 
-### Jarvis Happy agent skills
+### Toby Miller's agent skills
+
+* Domain: System administration - terminal-based utilities
+* Author: Toby Miller
+  ([Toby Miller on LinkedIn](https://www.linkedin.com/in/toby-miller-cloud/),
+  [Toby Miller on GitHub](https://github.com/BagelHole))
+* Among other skills:
+  * systemd:
+    * [Skills.sh - systemd-services](https://www.skills.sh/bagelhole/devops-security-agent-skills/systemd-services)
+    * [GitHub - systemd-services Agent Skill](https://github.com/BagelHole/DevOps-Security-Agent-Skills/tree/main/infrastructure/servers/systemd-services)
+
+### Jarvis Happy's agent skills
 
 * Domain: System administration - terminal-based utilities
 * Author: [Jarvis "Happy"](https://github.com/jarvishappy)
