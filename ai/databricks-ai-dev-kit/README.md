@@ -6,7 +6,7 @@
   * [Table of Content (ToC)](#table-of-content-toc)
   * [Overview](#overview)
   * [References](#references)
-    * [Data Engineering helpers](#data-engineering-helpers)
+    * [Data Engineering and AI helpers](#data-engineering-and-ai-helpers)
     * [Databricks declarative development](#databricks-declarative-development)
     * [Spec\-driven development (SDD)](#spec-driven-development-sdd)
     * [Lakehouse Plumber](#lakehouse-plumber)
@@ -35,12 +35,14 @@ _e.g._, on a laptop or on a virtual machine (VM).
 
 ## References
 
-### Data Engineering helpers
+### Data Engineering and AI helpers
 
+* [AI Helpers - Knowledge Sharing - Cheat Sheets](https://github.com/ai-helpers/ks-cheat-sheets/)
+* [AI Helpers - Knowledge Sharing - Curated AI agent skills](https://github.com/ai-helpers/ai-skills-curated/)
 * [Data Engineering Helpers - Knowledge Sharing - Declarative Data Pipelines](https://github.com/data-engineering-helpers/declarative-data-pipelines/)
 * [Data Engineering Helpers - Knowledge Sharing - AI skills and rules](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/ai/rules-skills/)
 * [Data Engineering Helpers - Knowledge Sharing - JavaScript (JS) world](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/js-world/)
-* [Data Engineering Helpers - Knowledge Sharing - python](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/python/)
+* [Data Engineering Helpers - Knowledge Sharing - Python](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/programming/python/)
 
 ### Databricks declarative development
 
