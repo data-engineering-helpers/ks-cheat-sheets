@@ -1,0 +1,57 @@
+[project]
+name = "airflow-cheat-sheet"
+version = "0.1.0"
+description = "Cheat sheet for Airflow"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dynamic = ["dependencies"]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
+
+[dependency-groups]
+runtime = [
+    "apache-airflow[celery]",
+    "asyncpg",
+    "cloudpathlib[s3]",
+    "psycopg2",
+]
+dev = [
+    "coverage",
+    "packaging",
+    "pytest",
+    "pytest-cov",
+    "pytest-xdist",
+    "ruff",
+    "setuptools",
+    "sphinx",
+    "sphinx-rtd-theme",
+    "toml",
+    "twine",
+    "types-PyYAML",
+]
+
+[tool.coverage.run]
+branch = true
+source = ["."]
+
+[tool.coverage.report]
+omit = ["tests/*"]
+
+[tool.ruff]
+src = ["src"]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "Q", "I"]
+ignore = ["E203", "E501", "E712"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]

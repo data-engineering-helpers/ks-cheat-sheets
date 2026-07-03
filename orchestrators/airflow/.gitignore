@@ -1,4 +1,4 @@
 # Python
-/.python-version
-/Pipfile
-/Pipfile.lock
+*.egg-info/
+requirements.txt
+
