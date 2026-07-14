@@ -5,7 +5,6 @@ intro: Cheat sheet about Airflow, be it OSS, Astro or AWS MWAA
 
 ## Table of Content (ToC)
 
-* [title: Cheat Sheet \- Airflowintro: Cheat sheet about Airflow, be it OSS, Astro or AWS MWAA](#title-cheat-sheet---airflowintro-cheat-sheet-about-airflow-be-it-oss-astro-or-aws-mwaa)
 * [Table of Content (ToC)](#table-of-content-toc)
 * [Overview](#overview)
 * [References](#references)
@@ -14,11 +13,16 @@ intro: Cheat sheet about Airflow, be it OSS, Astro or AWS MWAA
   * [PostgreSQL documentation](#postgresql-documentation)
   * [Airflow documentation](#airflow-documentation)
 * [Quick start](#quick-start)
+  * [Astro daily routine with astro](#astro-daily-routine-with-astro)
+  * [Astro daily routine with af](#astro-daily-routine-with-af)
+  * [Operating Airflow locally](#operating-airflow-locally)
   * [Specific DAG](#specific-dag)
   * [Tutorials](#tutorials)
 * [Installation](#installation)
-  * [Installation from PyPI](#installation-from-pypi)
   * [Python](#python)
+  * [Install the astro CLI utility](#install-the-astro-cli-utility)
+    * [A few environment variables for Astro](#a-few-environment-variables-for-astro)
+    * [A few Shell aliases for Astro](#a-few-shell-aliases-for-astro)
   * [Setup of Astro agentic tooling](#setup-of-astro-agentic-tooling)
     * [Setup of Astro Airflow MCP server](#setup-of-astro-airflow-mcp-server)
   * [Setup of PostgreSQL](#setup-of-postgresql)
@@ -68,6 +72,133 @@ or on a virtual machine (VM).
   * [Installation of Airflow from PyPI](https://airflow.apache.org/docs/apache-airflow/stable/installation/installing-from-pypi.html)
 
 ## Quick start
+
+### Astro daily routine with astro
+
+* The `astro` command line needs slightly more understanding of the underlying
+  Astro API, but is easy to install and fully works as expected
+
+* If needed, login with Astro (which will open the web browser):
+
+```bash
+astro login
+```
+
+* From a remote terminal, without access to a graphical UI, show a login URL
+  and login from a local web browser:
+
+```bash
+astro login -l
+```
+
+* Set the default deployment (it sets the `ASTRO_DEPL_ID` environment variable):
+
+```bash
+astrosetdepl
+```
+
+* Set the default DAG ID (it sets the `ASTRO_DAG_ID` environment variable):
+
+```bash
+astrosetdag
+```
+
+* Get the details for the default DAG:
+
+```bash
+astroapigetdag
+```
+
+* List the runs for the default DAG:
+
+```bash
+astroapigetdagrunswfltr
+```
+
+* From the list above, copy the `task_id` which needs to be investigated, and
+  paste it as the default run ID for the default DAG. The `astrosetdagrun`
+  just shows the environment variable to be set. Copy/paste it and complement
+  it with the selected `task_id`:
+
+```bash
+astrosetdagrun
+ASTRO_DAG_RUN_ID="scheduled__2026-07-14T00:00:00+00:00" # this is just an example
+```
+
+* List the tasks (instances) for the default DAG run:
+
+```bash
+astroapigetdagruninstanceswfltr
+```
+
+* Set the default task ID (it sets the `ASTRO_TASK_ID` environment variable):
+
+```bash
+astrosettask
+```
+
+* Get the logs for the default task (instance) for the default DAG run:
+
+```bash
+astroapigetdagruninstancelogwfltr
+```
+
+### Astro daily routine with af
+
+* That method (using the `af` CLI utility) is simpler, but does not seem
+  to be fully working for all the commands
+  * For instance, as of July 2026, listing the DAG runs for a specific
+  DAG fails
+  * Moreover, it requires the installation of the `astro-airflow-mcp`
+  Python package
+  * For AI agents, however, it works overall better
+
+* If needed, login with Astro (which will open the web browser):
+
+```bash
+astro login
+```
+
+* List the (deployment) instances:
+
+```bash
+af instance list
+```
+
+* Select the default (deployment) instance:
+
+```bash
+af instance use astro-cloud-deployment
+```
+
+* List the DAGs:
+
+```bash
+af dags list
+```
+
+* Get the details for a specific DAG:
+
+```bash
+af dags get my-airflow-dag
+af dags explore my-airflow-dag # the version with full details
+```
+
+* Get the list of runs for a specific DAG (as of July 2026, it did not work for
+  the writer of this cheat sheet, permission error; however, retrieving the logs
+  worked if the run IDs and task IDs are already known):
+
+```bash
+af runs list --dag-id my-airflow-dag
+```
+
+* Get the logs for a specific DAG, run and task:
+
+```bash
+ af tasks logs my-airflow-dag my_dag_run_id my_task_id
+```
+
+### Operating Airflow locally
 
 * Upgrade to the latest versions:
 
@@ -168,6 +299,59 @@ make init update
 make airflow-info
 ```
 
+### Install the `astro` CLI utility
+
+* [Astronomer docs - `astro` CLI - Install](https://www.astronomer.io/docs/astro/cli/install-cli)
+
+* On MacOS, with the default HomeBrew:
+
+```bash
+brew install astro
+```
+
+* On MacOS, with the official Astronomer tap (for instance, it allows not
+  to install Podman):
+
+```bash
+brew tap astronomer/tap
+brew trust astronomer/tap
+brew install astronomer/tap/astro --without-podman
+```
+
+#### A few environment variables for Astro
+
+* In the Shell configuration (_e.g._, `~/.bashrc`), add the following:
+
+```bash
+export ASTRO_DEPL_ID=""
+export ASTRO_DAG_ID=""
+export ASTRO_DAG_RUN_ID=""
+export ASTRO_TASK_ID=""
+```
+
+#### A few Shell aliases for Astro
+
+* In the Shell alias configuration (_e.g._, `~/.bash_aliases`), add the following:
+
+```bash
+alias astrologin='astro login'
+alias astrosetdepl='ASTRO_DEPL_ID="<my-astro-deployment-id>"'
+alias astrosetdagrun='echo "ASTRO_DAG_RUN_ID="'
+alias astrosetdag='ASTRO_DAG_ID="my-airflow-dag"'
+alias astrosettask='ASTRO_TASK_ID="my_dag_task"'
+alias astroapi='astro api airflow --deployment-id $ASTRO_DEPL_ID'
+alias astroapils='astroapi ls'
+alias astroapigetversion='astroapi get_version'
+alias astroapigetdag='astroapi get_dag -p dag_id=$ASTRO_DAG_ID'
+alias astroapigetdagruns='astroapi get_dag_runs -p dag_id=$ASTRO_DAG_ID'
+alias astroapigetdagrunswfltr='echo "run_type,state,dag_id,dag_run_id,logical_date,duration_mn,start_date,end_date"; astroapigetdagruns | jq -r '\''.dag_runs[]|[.run_type,.state,.dag_id,.dag_run_id,.logical_date,.duration/60,.start_date,.end_date]|@csv'\'' '
+alias astroapigetdagrundetails='astroapi get_dag_run -p dag_id=$ASTRO_DAG_ID -p dag_run_id="$ASTRO_DAG_RUN_ID"'
+alias astroapigetdagruninstances='astroapi get_task_instances -p dag_id=$ASTRO_DAG_ID -p dag_run_id="$ASTRO_DAG_RUN_ID"'
+alias astroapigetdagruninstanceswfltr='echo "task_id,state,operator,duration_mn,start_date,end_date"; astroapigetdagruninstances | jq -r '\''.task_instances[]|[.task_id,.state,.operator,.duration/60,.start_date,.end_date]|@csv'\'' '
+alias astroapigetdagruninstancelog='astroapi get_log -p dag_id=$ASTRO_DAG_ID -p dag_run_id="$ASTRO_DAG_RUN_ID" -p task_id=$ASTRO_TASK_ID -p try_number=1'
+alias astroapigetdagruninstancelogwfltr='echo "timestamp,logger,level,event"; astroapigetdagruninstancelog | jq -r '\''.content[]|[.timestamp,.logger,.level,.event]|@csv'\'' '
+```
+
 ### Setup of Astro agentic tooling
 
 * Install all the Astro agentic tools with a single command:
@@ -177,6 +361,33 @@ npx skills add astronomer/agents --skill '*' -g
 ```
 
 #### Setup of Astro Airflow MCP server
+
+* Note that the `af` CLI utility comes up with the `astro-airflow-mcp` package.
+  It can be installed globally, for instance with:
+
+```bash
+python -mpip install -U astro-airflow-mcp
+```
+
+* If needed, login with Astro (which will open the web browser):
+
+```bash
+astro login
+```
+
+* Launch the discovery process:
+
+```bash
+af instance discover astro
+```
+
+* It will add the deployments found on the [Astronomer cloud](https://cloud.astronomer.io)
+  in the user's configuration (`~/.astro/config.yaml`):
+
+```bash
+$ ls -lFh ~/.astro/config.yaml
+-rw-------@ 1 user group 2.8K Jul 14 16:14 $HOME/.astro/config.yaml
+```
 
 * Integrate the following Astro Airflow MCP server setting in the agent
   configuration:
