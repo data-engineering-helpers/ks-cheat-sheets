@@ -52,6 +52,8 @@ or on a virtual machine (VM).
 
 * [GitHub - Astronomer - Agentic tooling](https://github.com/astronomer/agents)
   * [GitHub - Astronomer - Astro Airflow MCP](https://github.com/astronomer/agents/tree/main/astro-airflow-mcp)
+* [Astronomer docs - `astro` CLI install](https://www.astronomer.io/docs/astro/cli/install-cli)
+* [Astronomer docs - Latest docs with Astro MCP](https://docs.astro.build/en/guides/build-with-ai/)
 
 ### PostgreSQL documentation
 
