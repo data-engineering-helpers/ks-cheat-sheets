@@ -1,59 +1,64 @@
-Cheat Sheet - PostgreSQL
-========================
+# Cheat Sheet - PostgreSQL
 
-# Table of Content (ToC)
-* [Overview](#overview)
-* [References](#references)
-  * [PostgreSQL](#postgresql)
-    * [PostgreSQL JDBC connector](#postgresql-jdbc-connector)
-  * [Linux](#linux)
-* [Use cases](#use-cases)
+## Table of Content (ToC)
+
+  * [Overview](#overview)
+  * [References](#references)
+    * [PostgreSQL](#postgresql)
+      * [PostgreSQL JDBC connector](#postgresql-jdbc-connector)
+    * [Linux](#linux)
+  * [Use cases](#use-cases)
   * [Quick setup for the use cases](#quick-setup-for-the-use-cases)
-  * [Create a database and associated user](#create-a-database-and-associated-user)
-    * [Guest database and user](#guest-database-and-user)
-    * [Tech Ref database and user](#tech-ref-database-and-user)
-    * [Automated governance database and user](#automated-governance-database-and-user)
-    * [SQLMesh database and user](#sqlmesh-database-and-user)
-    * [Unity Catalog database and user](#unity-catalog-database-and-user)
-    * [Ontos database and user](#ontos-database-and-user)
-    * [NYC taxi database and user](#nyc-taxi-database-and-user)
-    * [Hive Metastore database and user](#hive-metastore-database-and-user)
-    * [MinIO database and user](#minio-database-and-user)
-    * [LakeFS database and user](#lakefs-database-and-user)
-    * [Airflow database and user](#airflow-database-and-user)
-    * [AWS RDS proxy and PostgreSQL database](#aws-rds-proxy-and-postgresql-database)
-  * [Import files, create and browse tables](#import-files-create-and-browse-tables)
-  * [Export Parquet datasets into a PostgreSQL database](#export-parquet-datasets-into-a-postgresql-database)
-* [Installation](#installation)
-  * [Python](#python)
-  * [PySpark](#pyspark)
-  * [PostgreSQL clients](#postgresql-clients)
-    * [MacOS](#macos)
-    * [Linux](#linux-1)
-      * [Recent RedHat\-based Linux](#recent-redhat-based-linux)
-    * [General](#general)
-  * [PostgreSQL server](#postgresql-server)
-    * [MacOS](#macos-1)
-    * [Linux](#linux-2)
-      * [Recent RedHat\-based Linux](#recent-redhat-based-linux-1)
-    * [Nginx](#nginx)
-  * [PostgreSQL as a managed service with AWS RDS](#postgresql-as-a-managed-service-with-aws-rds)
-    * [AWS RDS PostgreSQL database](#aws-rds-postgresql-database)
-    * [AWS RDS proxy](#aws-rds-proxy)
-  * [PostgreSQL JDBC connector](#postgresql-jdbc-connector-1)
+    * [Create a database and associated user](#create-a-database-and-associated-user)
+      * [Guest database and user](#guest-database-and-user)
+      * [OpenTREP database and user](#opentrep-database-and-user)
+      * [Tech Ref database and user](#tech-ref-database-and-user)
+      * [Automated governance database and user](#automated-governance-database-and-user)
+      * [Lakehouse at home database and user](#lakehouse-at-home-database-and-user)
+      * [SQLMesh database and user](#sqlmesh-database-and-user)
+      * [Unity Catalog database and user](#unity-catalog-database-and-user)
+      * [Ontos database and user](#ontos-database-and-user)
+      * [NYC taxi database and user](#nyc-taxi-database-and-user)
+      * [Hive Metastore database and user](#hive-metastore-database-and-user)
+      * [MinIO database and user](#minio-database-and-user)
+      * [LakeFS database and user](#lakefs-database-and-user)
+      * [Airflow database and user](#airflow-database-and-user)
+        * [AWS RDS proxy and PostgreSQL database](#aws-rds-proxy-and-postgresql-database)
+    * [Import files, create and browse tables](#import-files-create-and-browse-tables)
+    * [Export Parquet datasets into a PostgreSQL database](#export-parquet-datasets-into-a-postgresql-database)
+  * [Installation](#installation)
+    * [Python](#python)
+    * [PySpark](#pyspark)
+    * [PostgreSQL clients](#postgresql-clients)
+      * [MacOS](#macos)
+      * [Linux](#linux-1)
+        * [Recent RedHat\-based Linux](#recent-redhat-based-linux)
+      * [General](#general)
+    * [PostgreSQL server](#postgresql-server)
+      * [MacOS](#macos-1)
+      * [Linux](#linux-2)
+        * [Recent RedHat\-based Linux](#recent-redhat-based-linux-1)
+      * [Nginx](#nginx)
+    * [PostgreSQL as a managed service with AWS RDS](#postgresql-as-a-managed-service-with-aws-rds)
+      * [AWS RDS PostgreSQL database](#aws-rds-postgresql-database)
+      * [AWS RDS proxy](#aws-rds-proxy)
+    * [PostgreSQL JDBC connector](#postgresql-jdbc-connector-1)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 
-# Overview
+## Overview
+
 [This cheat sheet](https://github.com/data-engineering-helpers/ks-cheat-sheets/blob/main/db/postgresql/README.md)
 explains how to install and to use PostgreSQL server.
 
-# References
+## References
 
-## PostgreSQL
+### PostgreSQL
+
 * PostgreSQL home page: https://www.postgresql.org
 
-### PostgreSQL JDBC connector
+#### PostgreSQL JDBC connector
+
 * The Spark JDBC PostgreSQL connector allows to read from and write to
   tables on PostgreSQL database server
 * Spark - JDBC to other databases (with example of Spark source code):
@@ -67,7 +72,8 @@ explains how to install and to use PostgreSQL server.
   * Direct download page on Maven release:
   https://repo1.maven.org/maven2/org/postgresql/postgresql/
 
-## Linux
+### Linux
+
 * Examples of recent RedHat-based distributions:
   [Amazon Linux 2023](https://aws.amazon.com/linux/amazon-linux-2023/),
   [RedHat Enterprise Linux (RHEL) 9](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9),
@@ -75,28 +81,36 @@ explains how to install and to use PostgreSQL server.
   [Alma Linux 9](https://almalinux.org/),
   [Rocky Linux 9](https://rockylinux.org/)
 
-# Use cases
+## Use cases
 
 ## Quick setup for the use cases
+
 * Specify a few environment variables
   * For local PostgreSQL server on MacOS:
+
 ```bash
-$ PG_SVR="localhost"; PG_ADM_USR="$USER"
-```
-  * For local PostgreSQL server on Linux:
-```bash
-$ PG_SVR="localhost"; PG_ADM_USR="postgres"
-```
-  * For AWS RDS PostgreSQL service (set the proxy endpoint to
-    the AWS RDS proxy one):
-```bash
-$ PG_SVR="project-proxy.proxy-someid.us-east-1.rds.amazonaws.com"; PG_ADM_USR="postgres"
+PG_SVR="localhost"; PG_ADM_USR="$USER"
 ```
 
-## Create a database and associated user
+* For local PostgreSQL server on Linux:
 
-### Guest database and user
+```bash
+PG_SVR="localhost"; PG_ADM_USR="postgres"
+```
+
+* For AWS RDS PostgreSQL service (set the proxy endpoint to
+  the AWS RDS proxy one):
+
+```bash
+PG_SVR="project-proxy.proxy-someid.us-east-1.rds.amazonaws.com"; PG_ADM_USR="postgres"
+```
+
+### Create a database and associated user
+
+#### Guest database and user
+
 * Create on PostgreSQL a `guest` database and a `guest` user:
+
 ```bash
 $ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create database guest;"
 CREATE DATABASE
@@ -108,6 +122,7 @@ GRANT
 ```
 
 * Check that the access to the PostgreSQL database works:
+
 ```bash
 $ psql -h $PG_SVR -U guest -c "select 42 as nb;"
  nb 
@@ -116,8 +131,36 @@ $ psql -h $PG_SVR -U guest -c "select 42 as nb;"
 (1 row)
 ```
 
-### Tech Ref database and user
+#### OpenTREP database and user
+
+* Create on PostgreSQL a `trep` database and a `trep` user:
+
+```bash
+$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create database trep;"
+CREATE DATABASE
+$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create user trep with encrypted password '<trep-pass>'; grant all privileges on database trep to trep;"
+CREATE ROLE
+GRANT
+$ psql -h $PG_SVR -U $PG_ADM_USR -d trep -c "grant all on schema public to trep;"
+GRANT
+$ psql -h $PG_SVR -U $PG_ADM_USR -d trep -c "create schema trep; grant all on schema trep to trep; grant all privileges on all tables in schema trep to trep;"
+GRANT
+```
+
+* Check that the access to the PostgreSQL database works:
+
+```bash
+$ psql -h $PG_SVR -U techref -d techref -c "select 42 as nb;"
+ nb 
+----
+ 42
+(1 row)
+```
+
+#### Tech Ref database and user
+
 * Create on PostgreSQL a `techref` database and a `techref` user:
+
 ```bash
 $ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create database techref;"
 CREATE DATABASE
@@ -131,6 +174,7 @@ GRANT
 ```
 
 * Check that the access to the PostgreSQL database works:
+
 ```bash
 $ psql -h $PG_SVR -U techref -d techref -c "select 42 as nb;"
  nb 
@@ -139,8 +183,10 @@ $ psql -h $PG_SVR -U techref -d techref -c "select 42 as nb;"
 (1 row)
 ```
 
-### Automated governance database and user
+#### Automated governance database and user
+
 * Create on PostgreSQL a `autogov` database and a `autogov` user:
+
 ```bash
 $ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create database autogov;"
 CREATE DATABASE
@@ -154,6 +200,7 @@ GRANT
 ```
 
 * Check that the access to the PostgreSQL database works:
+
 ```bash
 $ psql -h $PG_SVR -U autogov -d autogov -c "select 42 as nb;"
  nb 
@@ -162,8 +209,10 @@ $ psql -h $PG_SVR -U autogov -d autogov -c "select 42 as nb;"
 (1 row)
 ```
 
-### Lakehouse at home database and user
+#### Lakehouse at home database and user
+
 * Create on PostgreSQL a `lakehouse` database and a `lakehouse` user:
+
 ```bash
 $ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create database lakehouse;"
 CREATE DATABASE
@@ -183,6 +232,7 @@ GRANT
 ```
 
 * Check that the access to the PostgreSQL database works:
+
 ```bash
 $ psql -h $PG_SVR -U lakehouse -d lakehouse -c "select 42 as nb;"
  nb 
@@ -196,8 +246,10 @@ $ psql -h $PG_SVR -U lakehouse -d iceberg_catalog -c "select 42 as nb;"
 (1 row)
 ```
 
-### SQLMesh database and user
+#### SQLMesh database and user
+
 * Create on PostgreSQL a `sqlmesh` database and a `sqlmesh` user:
+
 ```bash
 $ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create database sqlmesh;"
 CREATE DATABASE
@@ -209,6 +261,7 @@ GRANT
 ```
 
 * Check that the access to the PostgreSQL database works:
+
 ```bash
 $ psql -h $PG_SVR -U sqlmesh -d sqlmesh -c "select 42 as nb;"
  nb 
@@ -217,8 +270,10 @@ $ psql -h $PG_SVR -U sqlmesh -d sqlmesh -c "select 42 as nb;"
 (1 row)
 ```
 
-### Unity Catalog database and user
+#### Unity Catalog database and user
+
 * Create on PostgreSQL a `ucdb` database and a `ucdba` user:
+
 ```bash
 $ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create database ucdb;"
 CREATE DATABASE
@@ -232,6 +287,7 @@ GRANT
 ```
 
 * Check that the access to the PostgreSQL database works:
+
 ```bash
 $ psql -h $PG_SVR -U ucdba -d ucdb -c "select 42 as nb;"
  nb 
@@ -240,8 +296,10 @@ $ psql -h $PG_SVR -U ucdba -d ucdb -c "select 42 as nb;"
 (1 row)
 ```
 
-### Ontos database and user
+#### Ontos database and user
+
 * Create on PostgreSQL a `ontos` database and a `ontos` user:
+
 ```bash
 $ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create database ontos;"
 CREATE DATABASE
@@ -259,6 +317,7 @@ GRANT
   which makes `psql` report a syntax error if it is not quoted. As there are
   already quotes around the SQL command, those quotes have to be escaped with
   a backslash (`\`). It gives something like:
+
 ```bash
 $ PG_USR_SP="7feb8928-6e75-439f-b9bc-9317dfebd2f6"
 $ psql -h $PG_SVR -U $PG_ADM_USR -d ontos -c "grant all privileges on database ontos to \"$PG_USR_SP\"; grant all on schema ontos to \"$PG_USR_SP\"; grant all privileges on all tables in schema ontos to \"$PG_USR_SP\";"
@@ -268,6 +327,7 @@ GRANT
 ```
 
 * Check that the access to the PostgreSQL database works:
+
 ```bash
 $ psql -h $PG_SVR -U ontos -d ontos -c "select 42 as nb;"
  nb 
@@ -276,8 +336,10 @@ $ psql -h $PG_SVR -U ontos -d ontos -c "select 42 as nb;"
 (1 row)
 ```
 
-### NYC taxi database and user
+#### NYC taxi database and user
+
 * Create on PostgreSQL a `nyctaxi` database and a `nyctaxi` user:
+
 ```bash
 $ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create database nyctaxi;"
 CREATE DATABASE
@@ -292,6 +354,7 @@ GRANT
 ```
 
 * Check that the access to the PostgreSQL database works:
+
 ```bash
 $ psql -h $PG_SVR -U nyctaxi -d nyctaxi -c "select 42 as nb;"
  nb 
@@ -300,8 +363,10 @@ $ psql -h $PG_SVR -U nyctaxi -d nyctaxi -c "select 42 as nb;"
 (1 row)
 ```
 
-### Hive Metastore database and user
+#### Hive Metastore database and user
+
 * Create on PostgreSQL a `metastore` database and a `metastore` user:
+
 ```bash
 $ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create database metastore;"
 CREATE DATABASE
@@ -313,6 +378,7 @@ GRANT
 ```
 
 * Check that the access to the PostgreSQL database works:
+
 ```bash
 $ psql -h $PG_SVR -U metastore -d metastore -c "select 42 as nb;"
  nb 
@@ -321,8 +387,10 @@ $ psql -h $PG_SVR -U metastore -d metastore -c "select 42 as nb;"
 (1 row)
 ```
 
-### MinIO database and user
+#### MinIO database and user
+
 * Create on PostgreSQL a `minio` database and a `minio` user:
+
 ```bash
 $ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create database minio;"
 CREATE DATABASE
@@ -334,6 +402,7 @@ GRANT
 ```
 
 * Check that the access to the PostgreSQL database works:
+
 ```bash
 $ psql -h $PG_SVR -U minio -d minio -c "select 42 as nb;"
  nb 
@@ -342,8 +411,10 @@ $ psql -h $PG_SVR -U minio -d minio -c "select 42 as nb;"
 (1 row)
 ```
 
-### LakeFS database and user
+#### LakeFS database and user
+
 * Create on PostgreSQL a `lakefs` database and a `lakefs` user:
+
 ```bash
 $ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create database lakefs;"
 CREATE DATABASE
@@ -363,8 +434,10 @@ $ psql -h $PG_SVR -U lakefs -d lakefs -c "select 42 as nb;"
 (1 row)
 ```
 
-### Airflow database and user
+#### Airflow database and user
+
 * Create on PostgreSQL a `airflow` database and a `airflow` user:
+
 ```bash
 $ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create database airflow;"
 CREATE DATABASE
@@ -376,6 +449,7 @@ GRANT
 ```
 
 * Check that the access to the PostgreSQL database works:
+
 ```bash
 $ psql -h $PG_SVR -U airflow -d airflow -c "select 42 as nb;"
  nb 
@@ -384,85 +458,102 @@ $ psql -h $PG_SVR -U airflow -d airflow -c "select 42 as nb;"
 (1 row)
 ```
 
-### AWS RDS proxy and PostgreSQL database
+##### AWS RDS proxy and PostgreSQL database
+
 * In the AWS console, with the
   [AWS Secrets Manager](https://aws.amazon.com/secrets-manager/),
   create an AWS secret, named like `<project>/db/guest`
 * Modify the
   [`project-proxy` RDS proxy](https://us-east-1.console.aws.amazon.com/rds/home?region=us-east-1#proxy:id=project-proxy)
   so as to add the new secret, and save the changes
-  + Check on the
+  * Check on the
     [`project-proxy` RDS proxy page](https://us-east-1.console.aws.amazon.com/rds/home?region=us-east-1#proxy:id=project-proxy)
     the full name of the secret, for instance
     `arn:aws:secretsmanager:us-east-1:1234567890:secret:project/db/guest-BZo8GD`
     for the `guest` user
-  + Edit the IAM policy in JSON mode and add that secret full name to the list
+  * Edit the IAM policy in JSON mode and add that secret full name to the list
     of resources in the IAM policy corresponding to the RDS proxy role
 	(see just below)
-  + Modify (again) the RDS proxy, even though nothing changes this time.
+  * Modify (again) the RDS proxy, even though nothing changes this time.
     That is fine, modifying the RDS proxy triggers a restart and re-reading
 	of the secrets
 * [AWS console - Policies](https://us-east-1.console.aws.amazon.com/iamv2/home)
     (associated to the IAM role of the proxy)
 
-## Import files, create and browse tables
+### Import files, create and browse tables
+
 * List the tables:
+
 ```bash
-$ psql -h $PG_SVR -U guest -c "\dt"
+psql -h $PG_SVR -U guest -c "\dt"
 ```
 
 * Describe a given table:
+
 ```bash
-$ psql -h $PG_SVR -U guest -c "\d mytable"
+psql -h $PG_SVR -U guest -c "\d mytable"
 ```
 
 * Execute a specific SQL script:
+
 ```bash
-$ psql -h $PG_SVR -U guest -f db/postgresql/sql/create-geonames-tables.sql
+psql -h $PG_SVR -U guest -f db/postgresql/sql/create-geonames-tables.sql
 ```
 
 * Load CSV data into a table
-  + Download the country information CSV data file from
+  * Download the country information CSV data file from
     [Geonames](https://download.geonames.org/export/dump/):
+
 ```bash
-$ curl https://download.geonames.org/export/dump/countryInfo.txt -o db/duckdb/data/csv/countryInfo.txt
+curl https://download.geonames.org/export/dump/countryInfo.txt -o db/duckdb/data/csv/countryInfo.txt
 ```
-  + Remove the header comments:
+
+* Remove the header comments:
+
 ```bash
-$ tail -n +51 db/duckdb/data/csv/countryInfo.txt > db/duckdb/data/csv/countryInfo.csv
+tail -n +51 db/duckdb/data/csv/countryInfo.txt > db/duckdb/data/csv/countryInfo.csv
 ```
-  + Parse and load the data into PostgreSQL
-    (`<CTRL-V-TAB>` means: on the terminal, press successively the Control-V
-	  and the TAB keys):
+
+* Parse and load the data into PostgreSQL
+  (`<CTRL-V-TAB>` means: on the terminal, press successively the Control-V
+  and the TAB keys):
+
 ```bash
-$ psql -h $PG_SVR -U guest -c "\copy country_info(iso_alpha2, iso_alpha3, iso_numeric, fips_code, name, capital, areainsqkm, population, continent, tld, currency_code, currency_name, phone, postal_code_format, postal_code_regex, languages, geonameId, neighbours, equivalent_fips_code) from 'db/duckdb/data/csv/countryInfo.csv' delimiter '<CTRL-V-TAB>' csv header;"
+psql -h $PG_SVR -U guest -c "\copy country_info(iso_alpha2, iso_alpha3, iso_numeric, fips_code, name, capital, areainsqkm, population, continent, tld, currency_code, currency_name, phone, postal_code_format, postal_code_regex, languages, geonameId, neighbours, equivalent_fips_code) from 'db/duckdb/data/csv/countryInfo.csv' delimiter '<CTRL-V-TAB>' csv header;"
 ```
   
 * Display the content of a table:
+
 ```bash
-$ psql -h $PG_SVR -U guest -c "select iso_alpha2, iso_alpha3, name, capital, continent, currency_code, languages from country_info;"
+psql -h $PG_SVR -U guest -c "select iso_alpha2, iso_alpha3, name, capital, continent, currency_code, languages from country_info;"
 ```
 
-## Export Parquet datasets into a PostgreSQL database
+### Export Parquet datasets into a PostgreSQL database
 
+TBD
 
-# Installation
+## Installation
 
-## Python
+### Python
+
 * The Python notebooks and/or scripts make use of some libraries,
   which therefore need to be installed:
+
 ```bash
-$ python -mpip install -U pip sqlalchemy psycopg2 cloudpathlib[s3] pandas jupyterlab jupysql
+python -mpip install -U pip sqlalchemy psycopg2 cloudpathlib[s3] pandas jupyterlab jupysql
 ```
 
-## PySpark
+### PySpark
+
 * Install PySpark:
+
 ```bash
-$ python -mpip install -U pip sqlalchemy psycopg2 cloudpathlib[s3] pandas jupyterlab jupysql pyspark
+python -mpip install -U pip sqlalchemy psycopg2 cloudpathlib[s3] pandas jupyterlab jupysql pyspark
 ```
 
 * In the Shell initialization scripts (_e.g._, `~/.bashrc`), add the following
   setup for Spark-related environment variables:
+
 ```bash
 $ cat >> ~/.bashrc << _EOF
 
@@ -480,23 +571,27 @@ _EOF
 ```
 
 * Download Spark-related JAR artifacts, required by PySpark:
+
 ```bash
 $ curl https://repo1.maven.org/maven2/org/postgresql/postgresql/42.6.0/postgresql-42.6.0.jar -o db/postgresql/jars/postgresql-42.6.0.jar
   curl https://repo1.maven.org/maven2/io/delta/delta-core_2.12/2.4.0/delta-core_2.12-2.4.0.jar -o db/postgresql/jars/delta-core_2.12-2.4.0.jar
 ```
 
 * Setup the PySpark Jupyter kernel
-  + Create the directory for the Jupyter kernel:
+  * Create the directory for the Jupyter kernel:
+
 ```bash
-$ mkdir -p ~/.local/share/jupyter/kernels/pyspark
+mkdir -p ~/.local/share/jupyter/kernels/pyspark
 ```
 
 * Copy the kernel configuration file:
+
 ```bash
-$ envsubst > ~/.local/share/jupyter/kernels/spark-local/kernel.json < db/postgresql/jupyter/pyspark-kernel.json
+envsubst > ~/.local/share/jupyter/kernels/spark-local/kernel.json < db/postgresql/jupyter/pyspark-kernel.json
 ```
 
 * Check that the kernel has been added:
+
 ```bash
 $ jupyter kernelspec list
 Available kernels:
@@ -504,44 +599,55 @@ Available kernels:
   python3      ~/.pyenv/versions/3.11.4/share/jupyter/kernels/python3
 ```
 
-## PostgreSQL clients
+### PostgreSQL clients
 
-### MacOS
+#### MacOS
+
 * On MacOS, the HomeBrew PostgreSQL recipe installs both the server
   and the client tools:
+
 ```bash
 $ brew install postgresql@15
   psql --version
 psql (PostgreSQL) 15.4 (Homebrew)
 ```
 
-### Linux
+#### Linux
 
-#### Recent RedHat-based Linux
+##### Recent RedHat-based Linux
+
 * Install PostgreSQL client tool and development packages:
+
 ```bash
 $ sudo dnf -y install postgresql15 libpq-devel python3-psycopg2
   psql --version
 psql (PostgreSQL) 15.0
 ```
 
-### General
+#### General
+
 * Specify a few environment variables
   * For local PostgreSQL server on MacOS:
+
 ```bash
-$ PG_SVR="localhost"; PG_ADM_USR="$USER"
+PG_SVR="localhost"; PG_ADM_USR="$USER"
 ```
-  * For local PostgreSQL server on Linux:
+
+* For local PostgreSQL server on Linux:
+
 ```bash
-$ PG_SVR="localhost"; PG_ADM_USR="postgres"
+PG_SVR="localhost"; PG_ADM_USR="postgres"
 ```
-  * For AWS RDS PostgreSQL service (set the proxy endpoint to
-    the AWS RDS proxy one):
+
+* For AWS RDS PostgreSQL service (set the proxy endpoint to
+  the AWS RDS proxy one):
+
 ```bash
-$ PG_SVR="project-proxy.proxy-someid.us-east-1.rds.amazonaws.com"; PG_ADM_USR="postgres"
+PG_SVR="project-proxy.proxy-someid.us-east-1.rds.amazonaws.com"; PG_ADM_USR="postgres"
 ```
 
 * Add the PostgreSQL credentials to the home configuration:
+
 ```bash
 $ cat >> ~/.pgpass << _EOF
 $PG_SVR:5432:*:$PG_ADM_USR:<admin-passwd-see-below>
@@ -550,46 +656,54 @@ _EOF
   chmod 600 ~/.pgpass
 ```
 
-## PostgreSQL server
+### PostgreSQL server
 
-### MacOS
+#### MacOS
+
 * On MacOS, the HomeBrew PostgreSQL recipe installs both the server
   and the client tools:
+
 ```bash
 $ brew install postgresql@15
   psql --version
 psql (PostgreSQL) 15.4 (Homebrew)
 ```
 
-### Linux
+#### Linux
 
-#### Recent RedHat-based Linux
+##### Recent RedHat-based Linux
+
 * Install the PostgreSQL server package:
+
 ```bash
-$ sudo dnf -y install postgresql-server || sudo dnf -y install postgresql15-server
+sudo dnf -y install postgresql-server || sudo dnf -y install postgresql15-server
 ```
 
 >**Note**
 The PostgreSQL installation comes with a documentation specific to
 RedHat-based Linux OSes. Once the `postgresql-server` is installed with DNF,
 the documentation may be browsed on the command-line:
+
 ```bash
-$ less /usr/share/doc/postgresql*/README.rpm-dist
+less /usr/share/doc/postgresql*/README.rpm-dist
 ```
 
 * Initialize the PostgreSQL server:
+
 ```bash
-$ sudo /usr/bin/postgresql-setup --initdb
+sudo /usr/bin/postgresql-setup --initdb
 ```
 
 * Start PostgreSQL as a (SystemD) service:
+
 ```bash
-$ sudo systemctl start postgresql.service
+sudo systemctl start postgresql.service
 ```
 
 * Check the PostgreSQL (SystemD) service:
+
 ```bash
-$ sudo systemctl status -l postgresql
+sudo systemctl status -l postgresql
 ```
 
 >**Note**
@@ -604,71 +718,90 @@ online in no time.
 
 * Specify the target location of the PostgreSQL database data storage
   (and potentially create the corresponding directory structure):
+
 ```bash
 $ PG_DATA_DIR="/home/postgres/db"
   sudo mkdir -p $PG_DATA_DIR
 ```
 
 * Move the storage for the PostgreSQL database
-  + Stop the PostgreSQL (SystemD) service:
+  * Stop the PostgreSQL (SystemD) service:
+
 ```bash
-$ sudo systemctl stop postgresql
+sudo systemctl stop postgresql
 ```
-  + Alter the PostgreSQL configuration so as to allow access
-    from other machines:
+
+* Alter the PostgreSQL configuration so as to allow access
+  from other machines:
+
 ```bash
 $ sudo sed -i -e "s/^#port = 5432/port = 6543/g" /var/lib/pgsql/data/postgresql.conf
   sudo sed -i -e "s/^#listen_addresses = 'localhost'/listen_addresses = '*'/g" /var/lib/pgsql/data/postgresql.conf
   sudo sed -i -e "s|127.0.0.1/32            ident|0.0.0.0/0            md5|g" /var/lib/pgsql/data/pg_hba.conf
 ```
-  + Deep copy the PostgreSQL storage directory structure onto the new location:
+
+* Deep copy the PostgreSQL storage directory structure onto the new location:
+
 ```bash
 $ sudo rsync -av --quiet /var/lib/pgsql/ ${PG_DATA_DIR}/
   sudo chown -R postgres.postgres ${PG_DATA_DIR}
   sudo semanage fcontext --add --equal /var/lib/pgsql ${PG_DATA_DIR}
   sudo restorecon -rv ${PG_DATA_DIR}
 ```
-  + Update the SystemD configuration for the PostgreSQL service:
+
+* Update the SystemD configuration for the PostgreSQL service:
+
 ```bash
-$ sudo sed -i -e "s|Environment=PGDATA=\(.*\)|Environment=PGDATA=${PG_DATA_DIR}/data|g" /usr/lib/systemd/system/postgresql.service
+sudo sed -i -e "s|Environment=PGDATA=\(.*\)|Environment=PGDATA=${PG_DATA_DIR}/data|g" /usr/lib/systemd/system/postgresql.service
 ```
-  + Check that the location of the PostgreSQL storage has been correctly set:
+
+* Check that the location of the PostgreSQL storage has been correctly set:
+
 ```bash
 $ systemd_datadir="$(grep "^Environment=PGDATA=" /usr/lib/systemd/system/postgresql.service|cut -d'=' -f3,3)"
   echo "Expected location: $PG_DATA_DIR"
   echo "Actual location: $systemd_datadir"
 ```
-  + Reload the SystemD service configuration:
+
+* Reload the SystemD service configuration:
+
 ```bash
-$ sudo systemctl daemon-reload
+sudo systemctl daemon-reload
 ```
-  + Start the PostgreSQL (SystemD) service:
+
+* Start the PostgreSQL (SystemD) service:
+
 ```bash
-$ sudo systemctl start postgresql
+sudo systemctl start postgresql
 ```
 
 * Check that the PostgreSQL (SystemD) service is running correctly:
+
 ```bash
-$ sudo systemctl status -l postgresql
+sudo systemctl status -l postgresql
 ```
 
 * Log in as the `postgres` Unix user:
+
 ```bash
-$ sudo su - postgres
+sudo su - postgres
 ```
 
 * Specify a password for the PostgreSQL admin user, also named `postgres`:
+
 ```bash
 postgres@vm$ psql -c "ALTER USER postgres WITH PASSWORD '<admin-passwd>';"
 ```
 
 * Log out of the `postgres` Unix user:
+
 ```bash
 postgres@vm$ exit
 logout
 ```
 
-### Nginx
+#### Nginx
+
 >**Note**
 That step is not strictly necessary. It adds some robustness
 and security in the deployment of PostgreSQL (and other services)
@@ -682,20 +815,23 @@ is installed, Nginx is the service listening on the PostgreSQL default port
 (if installed as specified in the above section)
 
 * If not already done so, install Nginx:
+
 ```bash
-$ sudo dnf -y install nginx nginx-mod-stream
+sudo dnf -y install nginx nginx-mod-stream
 ```
 
 * Install the Nginx reverse-proxy:
+
 ```bash
 $ sudo mkdir -p /etc/nginx/conf.d
   sudo cp db/postgresql/nginx/conf.d/*.conf /etc/nginx/conf.d/
 ```
 
 * In the Nginx configuration file (`sudo vi /etc/nginx/nginx.conf`)
-  + Add a stream section
-    - Spot the `http` block
-	- Add, just before it, the following stream section:
+  * Add a stream section
+    * Spot the `http` block
+	* Add, just before it, the following stream section:
+
 ```conf
 
 stream {
@@ -706,68 +842,80 @@ stream {
 }
 
 ```
-  + Add the possible length of fully qualified server names
-    - Spot the `types_hash_max_size 2048;` line, in the `http` block
-    - Add, just after that latter line, the following line:
+ 
+* Add the possible length of fully qualified server names
+  * Spot the `types_hash_max_size 2048;` line, in the `http` block
+  * Add, just after that latter line, the following line:
+
 ```conf
     server_names_hash_bucket_size 100;
 ```
 
 * Set the SE Linux web server (`httpd_can_network_connect`) boolean:
+
 ```bash
-$ sudo setsebool -P httpd_can_network_connect 1
+sudo setsebool -P httpd_can_network_connect 1
 ```
 
 * Check that the Nginx configuration is good:
+
 ```bash
 $ sudo nginx -t
 $ # sudo nginx -s reload
 ```
 
 * Enable and start the Nginx as a SystemD service:
+
 ```bash
 $ sudo systemctl daemon-reload
 $ sudo systemctl enable nginx --now
 ```
 
 * Check that the (SystemD) Nginx service works correctly:
+
 ```bash
-$ sudo systemctl status -l nginx
+sudo systemctl status -l nginx
 ```
 
 * Potentially debug with the system journal:
+
 ```bash
-$ sudo journalctl -xeu nginx.service
+sudo journalctl -xeu nginx.service
 ```
 
-## PostgreSQL as a managed service with AWS RDS
+### PostgreSQL as a managed service with AWS RDS
+
 * That solution is an alternative to the PostgreSQL server
 
 * The password of the admin user, namely `postgres`, is specified when
   installing/creating the AWS RDS PostgreSQL service
 
-### AWS RDS PostgreSQL database
+#### AWS RDS PostgreSQL database
+
 * [AWS console - `project-db` RDS PostgreSQL](https://eu-west-1.console.aws.amazon.com/rds/home?region=eu-west-1#database:id=project-db;is-cluster=false)
 * Endpoint: `project-db.someid.us-east-1.rds.amazonaws.com`
 * Port: 5342
 
-### AWS RDS proxy
+#### AWS RDS proxy
+
 * Documentation:
-  + [AWS docs - Using RDS proxy](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/rds-proxy.html)
-  + [AWS docs - Managing RDS proxy - Adding a new database user](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/rds-proxy-managing.html#rds-proxy-new-db-user)
+  * [AWS docs - Using RDS proxy](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/rds-proxy.html)
+  * [AWS docs - Managing RDS proxy - Adding a new database user](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/rds-proxy-managing.html#rds-proxy-new-db-user)
 * [AWS console - `projecy-proxy` proxy to RDS](https://us-east-1.console.aws.amazon.com/rds/home?region=us-east-1#proxy:id=project-proxy)
 * Endpoint: [AWS console - `project-proxy` proxy endpoint](https://us-east-1.console.aws.amazon.com/rds/home?region=us-east-1#proxy-endpoint:id=default;proxy=project-proxy)
-  + Endpoint address:
+  * Endpoint address:
     project-proxy.proxy-someid.us-east-1.rds.amazonaws.com
 * IAM role:
   `arn:aws:iam::1234567890:role/service-role/rds-proxy-role-1234567890`
 
-## PostgreSQL JDBC connector
+### PostgreSQL JDBC connector
+
 * See the
   [PostgreSQL JDBC connector sub-section in the reference section above](#postgresql-jdbc-connector)
 
 * Note that, as of end 2025, at least on MacOS, Java still needs to be in version 8
   * For instance, install the Corretto JDK8 with SDKMan:
+
 ```bash
 $ sdk install java 8.0.472-amzn
 $ sdk default java 8.0.472-amzn
@@ -779,15 +927,18 @@ OpenJDK 64-Bit Server VM Corretto-8.472.08.1 (build 25.472-b08, mixed mode)
 
 * Example on how to launch a Spark REPL
   * Spark Shell (in Scala):
+
 ```bash
-$ spark-shell --driver-class-path postgresql-42.7.8.jar --jars postgresql-42.7.8.jar
+spark-shell --driver-class-path postgresql-42.7.8.jar --jars postgresql-42.7.8.jar
 ```
 ```scala
 scala> :quit
 ```
-  * PySpark (in Python):
+
+* PySpark (in Python):
+
 ```bash
-$ pyspark --driver-class-path postgresql-42.7.8.jar --jars postgresql-42.7.8.jar
+pyspark --driver-class-path postgresql-42.7.8.jar --jars postgresql-42.7.8.jar
 ```
 ```python
 >>> quit()
