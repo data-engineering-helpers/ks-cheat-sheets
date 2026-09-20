@@ -136,10 +136,8 @@ $ psql -h $PG_SVR -U guest -c "select 42 as nb;"
 * [OpenTREP](https://github.com/trep/opentrep) is a C++ transport-search library, with
   Python bindings, indexing [OpenTravelData (OPTD)](https://github.com/opentraveldata/opentraveldata)
   POR data. See its
-  [`README.md`](https://github.com/trep/opentrep/blob/master/README.md) and its
-  canonical project card,
-  [`Project:oss-opentrep`](https://github.com/dktunited/ai-t2-data-staff/blob/main/memory/entities/Project/oss-opentrep.md),
-  for the PostgreSQL support context.
+  [`README.md`](https://github.com/trep/opentrep/blob/master/README.md) for the
+  PostgreSQL support context.
 
 * Create on PostgreSQL a `trep` database and a `trep` user:
 
