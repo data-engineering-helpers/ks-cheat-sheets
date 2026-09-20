@@ -136,21 +136,31 @@ $ psql -h $PG_SVR -U guest -c "select 42 as nb;"
 * Create on PostgreSQL a `trep` database and a `trep` user:
 
 ```bash
-$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create database trep;"
+$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create database trep0; create database trep1;"
 CREATE DATABASE
-$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create user trep with encrypted password '<trep-pass>'; grant all privileges on database trep to trep;"
+$ psql -h $PG_SVR -U $PG_ADM_USR -d postgres -c "create user trep with encrypted password '<trep-pass>'; grant all privileges on database trep0 to trep; grant all privileges on database trep1 to trep;"
 CREATE ROLE
 GRANT
-$ psql -h $PG_SVR -U $PG_ADM_USR -d trep -c "grant all on schema public to trep;"
+$ psql -h $PG_SVR -U $PG_ADM_USR -d trep0 -c "grant all on schema public to trep;"
 GRANT
-$ psql -h $PG_SVR -U $PG_ADM_USR -d trep -c "create schema trep; grant all on schema trep to trep; grant all privileges on all tables in schema trep to trep;"
+$ psql -h $PG_SVR -U $PG_ADM_USR -d trep0 -c "create schema trep; grant all on schema trep to trep; grant all privileges on all tables in schema trep to trep;"
+GRANT
+$ psql -h $PG_SVR -U $PG_ADM_USR -d trep1 -c "grant all on schema public to trep;"
+GRANT
+$ psql -h $PG_SVR -U $PG_ADM_USR -d trep1 -c "create schema trep; grant all on schema trep to trep; grant all privileges on all tables in schema trep to trep;"
 GRANT
 ```
 
 * Check that the access to the PostgreSQL database works:
 
 ```bash
-$ psql -h $PG_SVR -U techref -d techref -c "select 42 as nb;"
+$ psql -h $PG_SVR -U trep -d trep0 -c "select 42 as nb;"
+ nb 
+----
+ 42
+(1 row)
+
+$ psql -h $PG_SVR -U trep -d trep1 -c "select 42 as nb;"
  nb 
 ----
  42
