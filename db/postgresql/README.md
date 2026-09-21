@@ -137,7 +137,10 @@ $ psql -h $PG_SVR -U guest -c "select 42 as nb;"
   Python bindings, indexing [OpenTravelData (OPTD)](https://github.com/opentraveldata/opentraveldata)
   POR data. See its
   [`README.md`](https://github.com/trep/opentrep/blob/master/README.md) for the
-  PostgreSQL support context.
+  PostgreSQL support context, and the
+  [`opentrep` AI-agent skill](https://github.com/ai-helpers/ai-skills-curated/tree/main/agents/skills/opentrep)
+  for a broader overview of the project (development, indexing, and database-backend
+  workflows).
 
 * Create on PostgreSQL a `trep` database and a `trep` user:
 
